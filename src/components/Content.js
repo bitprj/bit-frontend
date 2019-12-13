@@ -5,8 +5,8 @@ const Content = () => {
     return (
         <div>
             <p>Some content here.</p>
-            <Button />
-            <Button />
+            <Button name="< Prev" class_name="button" />
+            <Button name="Next >" class_name="button invert" />
         </div>
     )
 }
