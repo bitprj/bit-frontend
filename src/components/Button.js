@@ -1,13 +1,19 @@
 import React from "react";
 
-const Button = () => (
-    <div className="button">
-        Hellow Button
-        <style jsx>{`
+class Button extends React.Component {
+    hellow() {
+        console.log('This is: ', this);
+    }
+
+    render() {
+        return (
+            <div className="button" onClick={(e) => this.hellow(e)}>
+                Hellow Button
+            <style jsx>{`
                 .button {
                     display: inline-block;
                     padding: .25rem .5rem;
-                    // margin: -.25rem -.5rem;
+                    margin: .2rem;
                     border: solid #0070f3;
                     border-radius: 7px;
                     background-color: #0070f3;
@@ -19,7 +25,9 @@ const Button = () => (
                     background-color: black;
                 }
             `}</style>
-    </div>
-)
+            </div>
+        )
+    }
+}
 
 export default Button;

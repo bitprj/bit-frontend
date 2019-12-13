@@ -7,8 +7,14 @@ function App() {
 	return (
 		<div className="App">
 			<NavBar />
-			<Navigation />
-			<Content />
+			<div class="learn-section">
+				<Navigation />
+				<Content />
+			</div>
+			<style jsx>{`
+                .learn-section {
+                    display: flex;
+            `}</style>
 		</div>
 	);
 }

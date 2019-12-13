@@ -5,13 +5,10 @@ const TopInfo = () => {
     const labName = "Object-Oriented Programming";
 
     return (
-        <div className="top-info">
+        <div>
             {moduleName}
             <h2>{labName}</h2>
             <style jsx>{`
-            // .top-info {
-            //     vcenter
-            // }
             h2 {
                 margin-top: 0;
                 margin-bottom: 0;
