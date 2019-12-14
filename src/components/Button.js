@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class Button extends Component {
     state = {
@@ -16,6 +16,7 @@ class Button extends Component {
         return (
             <div className={this.props.class_name} onClick={this.completeHandler}>
                 {this.props.name}
+
                 <style jsx>{`
                 .button {
                     display: inline-block;

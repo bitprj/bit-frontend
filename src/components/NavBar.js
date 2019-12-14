@@ -1,9 +1,13 @@
 import React from "react";
-import TopInfo from "./TopInfo"
+import GenInfo from "./GenInfo"
 
-const NavBar = () => (
+const NavBar = (props) => (
     <nav>
-        <TopInfo />
+        <GenInfo
+            labTitle={props.labTitle}
+            cardTitle={props.cardTitle}
+        />
+
         <style jsx>{`
             nav {
                 height: 60px;

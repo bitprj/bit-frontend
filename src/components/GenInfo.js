@@ -1,13 +1,11 @@
 import React from "react";
 
-const TopInfo = () => {
-    const moduleName = "Intro to Python";
-    const labName = "Object-Oriented Programming";
-
+const GenInfo = (props) => {
     return (
         <div>
-            {moduleName}
-            <h2>{labName}</h2>
+            {props.labTitle}
+            <h2>{props.cardTitle}</h2>
+
             <style jsx>{`
             h2 {
                 margin-top: 0;
@@ -18,4 +16,4 @@ const TopInfo = () => {
     )
 }
 
-export default TopInfo;
+export default GenInfo;
