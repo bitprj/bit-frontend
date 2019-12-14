@@ -1,12 +1,15 @@
 import React from "react";
-import GenInfo from "./GenInfo"
 
 const NavBar = (props) => (
     <nav>
-        <GenInfo
-            labTitle={props.labTitle}
-            cardTitle={props.cardTitle}
-        />
+        <div>
+            {props.labTitle}
+            <h2>{props.cardTitle}</h2>
+        </div>
+
+        <div>
+            <p>{props.totalGems} 💎</p>
+        </div>
 
         <style jsx>{`
             nav {
@@ -20,6 +23,11 @@ const NavBar = (props) => (
                 justify-content: space-between;
                 flex: 1;
                 position: relative;
+            }
+
+            h2 {
+                margin-top: 0;
+                margin-bottom: 0;
             }
         `}</style>
     </nav>

@@ -15,7 +15,8 @@ class App extends Component {
 			"And then Card 2",
 			"Also Card 3",
 			"End with Card 4"
-		]
+		],
+		totalGems: 256
 	}
 
 	cardTitleChangedHandler = (e) => {
@@ -28,6 +29,7 @@ class App extends Component {
 				<NavBar
 					labTitle={this.state.labTitle}
 					cardTitle={this.state.cardTitle}
+					totalGems={this.state.totalGems}
 				/>
 
 				<div className="learn-section">
