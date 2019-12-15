@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const MenuBar = styled.div`
     margin-top: 20px;
-    margin-right: 10rem;
+    width: 500px;
 `
 
 const Navigation = (props) => {
@@ -11,7 +11,7 @@ const Navigation = (props) => {
         <MenuBar>
             <ul>
                 {props.cardTitles.map(cardTitle => {
-                    return <li>{cardTitle}</li>
+                    return <li key={cardTitle}>{cardTitle}</li>
                 })}
             </ul>
         </MenuBar>
