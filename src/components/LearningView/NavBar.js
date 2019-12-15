@@ -8,7 +8,7 @@ const NavBar = (props) => (
         </div>
 
         <div>
-            <p>{props.totalGems} 💎</p>
+            <p>{props.totalGems} <span role="img" aria-label="Total Gems">💎</span></p>
         </div>
 
         <style jsx>{`
