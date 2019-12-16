@@ -6,7 +6,6 @@ import { importMDX } from 'mdx.macro';
 const Markdown = lazy(() => importMDX('../../../markdown.md'));
 
 const Content = (props) => {
-
     return (
         <div>
             <Suspense fallback={<div>Loading...</div>}>
