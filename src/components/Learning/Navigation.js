@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import NameCard from './Card';
 
+import CheckIcon from '../icons/check.js';
+
 const MenuBar = styled.div`
     margin: 20px 20px 0 0;
     width: 600px;
@@ -10,10 +12,14 @@ const MenuBar = styled.div`
 const Navigation = (props) => {
     const steps = props.cardTitles.map((cardTitle, index) => {
         const selected = (index === props.currentCard) ? "selected" : null;
+        const check = <span className="check-icon"><CheckIcon color="#2BDB66" /></span>;
+        const dot = <span className="dot"></span>
+        const icon = (index < props.lastCardUnlocked) ? check : dot;
         return (
             <li key={cardTitle} onClick={() => props.click(index)}>
+                {/* eslint-disable-next-line */}
                 <a className={selected}>
-                    <span className="dot"></span>
+                    {icon}
                     <span className="label">{cardTitle} - {index}</span>
                 </a>
             </li>
@@ -23,11 +29,28 @@ const Navigation = (props) => {
     return (
         <MenuBar>
             <NameCard />
-            <ul>
-                {steps}
-            </ul>
+            <div className="menu">
+                <ul>
+                    {steps}
+                </ul>
+            </div>
 
             <style jsx>{`
+                .menu {
+                    margin: 0 0 0 40px;
+                    padding: 50px 0 40px 0;
+                    border-left: 1px solid rgb(239, 239, 239);
+                }
+                ul {
+                    margin-block-start: 1em;
+                    margin-block-end: 1em;
+                    margin-inline-start: 0px;
+                    margin-inline-end: 0px;
+                    padding-inline-start: 0px;
+                }
+                .check-icon {
+                    margin-left: -0.5rem
+                }
                 li {
                     list-style: none;
                     margin: 12px 0;
@@ -43,7 +66,7 @@ const Navigation = (props) => {
                 }
                 .dot {
                     display: inline-block;
-                    margin-left: -1.25rem;
+                    // margin-left: -.5rem;
                     margin-right: -7px;
                     width: 7px;
                     height: 7px;

@@ -15,8 +15,8 @@ const Card = (props) => {
                 border-radius: 7px;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
                 overflow: hidden;
-                background-color: navy;
-                color: white;
+                // background-color: navy;
+                // color: white;
             }
             `}</style>
         </div>

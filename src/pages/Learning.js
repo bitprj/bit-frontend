@@ -22,6 +22,7 @@ class Learning extends Component {
                 "End with Card 4"
             ],
             currentCard: null,
+            lastCardUnlocked: null,
             totalGems: 256
         }
 
@@ -32,7 +33,8 @@ class Learning extends Component {
         this.learningService.getLabInfo().then(data => {
             this.setState({
                 labTitle: data.lab_title,
-                currentCard: data.last_card_opened
+                currentCard: data.last_card_unlocked,
+                lastCardUnlocked: data.last_card_unlocked
             })
         })
     }
@@ -58,6 +60,7 @@ class Learning extends Component {
                     <Navigation
                         cardTitles={this.state.cardTitles}
                         currentCard={this.state.currentCard}
+                        lastCardUnlocked={this.state.lastCardUnlocked}
                         click={this.stepClickedHandler}
                     />
                     <Content cardContent={this.state.cardContent} />
