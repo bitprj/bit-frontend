@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import NavBar from '../components/Learning/NavBar';
 import Navigation from '../components/Learning/Navigation';
 import Content from '../components/Learning/Content';
@@ -20,7 +21,7 @@ class Learning extends Component {
                 "Also Card 3",
                 "End with Card 4"
             ],
-            lastCardOpened: null,
+            currentCard: null,
             totalGems: 256
         }
 
@@ -31,13 +32,17 @@ class Learning extends Component {
         this.learningService.getLabInfo().then(data => {
             this.setState({
                 labTitle: data.lab_title,
-                lastCardOpened: data.last_card_opened
+                currentCard: data.last_card_opened
             })
         })
     }
 
-    cardTitleChangedHandler = (e) => {
-        this.setState({ cardTitle: e.target.value });
+    cardTitleChangedHandler = (event) => {
+        this.setState({ cardTitle: event.target.value });
+    }
+
+    stepClickedHandler = (index) => {
+        this.setState({ currentCard: index });
     }
 
     render() {
@@ -52,7 +57,8 @@ class Learning extends Component {
                 <div className="learn-section">
                     <Navigation
                         cardTitles={this.state.cardTitles}
-                        lastCardOpened={this.state.lastCardOpened}
+                        currentCard={this.state.currentCard}
+                        click={this.stepClickedHandler}
                     />
                     <Content cardContent={this.state.cardContent} />
                     <HintSection />

@@ -8,15 +8,13 @@ const MenuBar = styled.div`
 `
 
 const Navigation = (props) => {
-    const steps = props.cardTitles.map((cardTitle, i) => {
-        const selected = (i === props.lastCardOpened) ? "selected" : null;
+    const steps = props.cardTitles.map((cardTitle, index) => {
+        const selected = (index === props.currentCard) ? "selected" : null;
         return (
-            <li key={cardTitle}>
+            <li key={cardTitle} onClick={() => props.click(index)}>
                 <a className={selected}>
                     <span className="dot"></span>
-                    <span className="label">
-                        {cardTitle}
-                    </span>
+                    <span className="label">{cardTitle} - {index}</span>
                 </a>
             </li>
         )
@@ -73,7 +71,7 @@ const Navigation = (props) => {
                 }
                 .label {
                     margin-left: 1.25rem;
-                    transition: background 0.5s ease;
+                    transition: background 0.2s ease;
                 }
                 .selected .label {
                     font-weight: bold;
