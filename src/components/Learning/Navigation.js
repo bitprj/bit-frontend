@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import NameCard from './Card';
+// import Card from './Card';
 
 import CheckIcon from '../icons/check.js';
 
@@ -9,18 +9,47 @@ const MenuBar = styled.div`
     width: 600px;
 `
 
+const Course = styled.div`
+    margin: 0 0 0 15%;
+    padding: 50px 0 40px 0;
+    border-left: 1px solid rgb(239, 239, 239);
+`
+
+const LabCard = styled.div`
+    justify-content: space-between;
+    padding: .65rem;
+    border-radius: 7px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    background-color: #0b1354;
+    color: white;
+`
+
+const GemBox = styled.div`
+    display: block;
+    text-align: center;
+    justify-content: space-between;
+    border-radius: 30px;
+    width: 80px;
+    background-color: #0b0f3c;
+    float: right
+`
+
 const Navigation = (props) => {
+    const currentCardTitle = props.cardTitles[props.currentCard];
+
     const steps = props.cardTitles.map((cardTitle, index) => {
         const selected = (index === props.currentCard) ? "selected" : null;
         const check = <span className="check-icon"><CheckIcon color="#2BDB66" /></span>;
         const dot = <span className="dot"></span>
         const icon = (index < props.lastCardUnlocked) ? check : dot;
+
         return (
             <li key={cardTitle} onClick={() => props.click(index)}>
                 {/* eslint-disable-next-line */}
                 <a className={selected}>
                     {icon}
-                    <span className="label">{cardTitle} - {index}</span>
+                    <span className="label">{cardTitle}</span>
                 </a>
             </li>
         )
@@ -28,19 +57,19 @@ const Navigation = (props) => {
 
     return (
         <MenuBar>
-            <NameCard />
-            <div className="menu">
+            <LabCard>
+                <div>{props.labTitle.toUpperCase()}</div>
+                <h3>{currentCardTitle}</h3>
+                <GemBox><span role="img" aria-label="Total Gems">💎</span>{props.totalGems}</GemBox>
+            </LabCard>
+
+            <Course>
                 <ul>
                     {steps}
                 </ul>
-            </div>
+            </Course>
 
             <style jsx>{`
-                .menu {
-                    margin: 0 0 0 40px;
-                    padding: 50px 0 40px 0;
-                    border-left: 1px solid rgb(239, 239, 239);
-                }
                 ul {
                     margin-block-start: 1em;
                     margin-block-end: 1em;

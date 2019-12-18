@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import NavBar from '../components/Learning/NavBar';
 import Navigation from '../components/Learning/Navigation';
 import Content from '../components/Learning/Content';
 import HintSection from '../components/Learning/HintSection';
@@ -51,18 +50,10 @@ class Learning extends Component {
     render() {
         return (
             <div className="App">
-
-                <Modal />
-
-                <NavBar
-                    labTitle={this.state.labTitle}
-                    cardTitle={this.state.cardTitle}
-                    totalGems={this.state.totalGems}
-                />
-
-
                 <div className="learn-section">
                     <Navigation
+                        labTitle={this.state.labTitle}
+                        totalGems={this.state.totalGems}
                         cardTitles={this.state.cardTitles}
                         currentCard={this.state.currentCard}
                         lastCardUnlocked={this.state.lastCardUnlocked}
@@ -77,8 +68,11 @@ class Learning extends Component {
 						display: flex;
 				`}</style>
 
+
                 {/* input for testing */}
                 <input type='text' onChange={this.cardTitleChangedHandler} value={this.state.cardTitle} />
+
+                <Modal />
             </div>
         );
     }
