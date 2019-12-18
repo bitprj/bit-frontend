@@ -49,7 +49,9 @@ const Navigation = (props) => {
                     padding-inline-start: 0px;
                 }
                 .check-icon {
-                    margin-left: -0.5rem
+                    margin-left: -0.5rem;
+                    height: 16px;
+                    background-color: white;
                 }
                 li {
                     list-style: none;

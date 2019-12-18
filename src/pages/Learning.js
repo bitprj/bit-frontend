@@ -4,6 +4,7 @@ import NavBar from '../components/Learning/NavBar';
 import Navigation from '../components/Learning/Navigation';
 import Content from '../components/Learning/Content';
 import HintSection from '../components/Learning/HintSection';
+import Modal from '../components/Learning/Modal'
 
 import LearningService from '../services/LearningService';
 
@@ -50,11 +51,15 @@ class Learning extends Component {
     render() {
         return (
             <div className="App">
+
+                <Modal />
+
                 <NavBar
                     labTitle={this.state.labTitle}
                     cardTitle={this.state.cardTitle}
                     totalGems={this.state.totalGems}
                 />
+
 
                 <div className="learn-section">
                     <Navigation
