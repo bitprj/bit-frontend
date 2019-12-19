@@ -21,7 +21,7 @@ const LabCard = styled.div`
     border-radius: 7px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     overflow: hidden;
-    background-color: #0b1354;
+    background-color: #000033;
     color: white;
 `
 
@@ -31,7 +31,7 @@ const GemBox = styled.div`
     justify-content: space-between;
     border-radius: 30px;
     width: 80px;
-    background-color: #0b0f3c;
+    background-color: #000066;
     float: right
 `
 

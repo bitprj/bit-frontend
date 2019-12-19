@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import Button from './Button'
+import Button from '../Button'
 
 import { importMDX } from 'mdx.macro';
 

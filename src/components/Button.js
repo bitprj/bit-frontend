@@ -12,7 +12,7 @@ const Button = (props) => {
                 cursor: pointer;
                 text-decoration: none;
                 padding: 0.25rem 0.5rem;
-                margin: 0.25rem 0.5rem;
+                margin: 2.5rem 2rem 0.5rem;
                 border-radius: 7px;
                 color: #0070f3;
                 background-color: transparent;
@@ -27,7 +27,6 @@ const Button = (props) => {
                 background: rgba(0, 118, 255, 0.1);
             }
             .button.invert {
-                margin: 0;
                 padding: 0 3.5rem;
                 line-height: 2.5rem;
                 border-radius: 7px;

@@ -68,7 +68,6 @@ class Learning extends Component {
 						display: flex;
 				`}</style>
 
-
                 {/* input for testing */}
                 <input type='text' onChange={this.cardTitleChangedHandler} value={this.state.cardTitle} />
 

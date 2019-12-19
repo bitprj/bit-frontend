@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import Button from './Button'
+import Button from '../Button'
 
 const Window = styled.div`
     padding: 1rem;
