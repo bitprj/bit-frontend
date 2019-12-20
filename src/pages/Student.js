@@ -20,7 +20,7 @@ class Student extends Component {
                 topicDescription: "Lorem ipsum Art of Programming."
             },
             currentLab: {
-                labIcon: "https://maxcdn.icons8.com/Share/icon/p1em/Logos/github1600.png",
+                labIcon: "https://www.nicepng.com/png/full/52-520535_free-files-github-github-icon-png-white.png",
                 labTitle: "Intro to Github",
                 labDescription: "Bacon ipsum dolor amet pancetta short ribs pig shankle chicken. Kielbasa ribeye salami jerky ham hock short ribs pork belly boudin filet mignon ham, ball tip beef ribs turducken."
             }

@@ -6,7 +6,7 @@ import GreetingSection from './GreetingSection';
 import LabVerticalCard from './LabVerticalCard';
 
 const Hero = styled.div`
-    background-color: #0b1330;
+    background-color: #000;
     color: white;
     margin: 0 -8px;
 `
@@ -16,8 +16,8 @@ const StudentHero = (props) => {
     return (
         <Hero align='stretch' pad={{ horizontal: 'large' }}>
             <Grid
-                rows={['auto', 'auto']}
-                columns={['auto', 'medium']}
+                rows={['auto', '50%']}
+                columns={['auto', '50%']}
                 gap="small"
                 areas={[
                     { name: 'greeting', start: [0, 0], end: [0, 1] },

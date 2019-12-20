@@ -1,20 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import Button from '../Button';
 
 
 const NavyCard = styled.div`
-    position: relative;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 1rem;
+    padding: 44px 32px;
     border-radius: 7px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     overflow: hidden;
-    background-color: #0b1354;
+    background-color: #232323;
     text-align: center;
+    width: 325px;
+`
+const ContainDescription = styled.p`
+    max-width: 80%;
+    text-align: center;
+    position: relative;
 `
 
 const LabVerticalCard = (props) => {
@@ -22,7 +28,7 @@ const LabVerticalCard = (props) => {
         <NavyCard>
             <img class="img-center" alt="labLogo" src={props.labIcon} height="64" width="64" />
             <h2>{props.labTitle}</h2>
-            <p>{props.labDescription}</p>
+            <ContainDescription>{props.labDescription}</ContainDescription>
             <Button buttonState="Resume" class_name={props.buttonClass} clicked={() => props.buttonClicked} />
 
             <style jsx>{`
