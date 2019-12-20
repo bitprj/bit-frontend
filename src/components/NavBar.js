@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Nav = styled.div`
@@ -16,7 +17,9 @@ const Nav = styled.div`
 
 const NavBar = () => (
     <Nav>
-        <h1>Hello World</h1>
+        <Link to={"/"}><h1>Bit Project</h1></Link>
+        <Link to={"/learn"}>Learn</Link>
+        <Link to={"/student"}>Student</Link>
     </Nav>
 )
 

@@ -100,7 +100,7 @@ class Modal extends Component {
                         {this.state.slides.map((slide, index) => {
                             const picked = (index === this.state.currentSlide) ? "picked" : null;
                             return (
-                                <Dot key={`key-${slide.id}`} className={picked} onClick={() => this.dotClickedHandler(index)}>
+                                <Dot key={`dot-${slide.id}`} className={picked} onClick={() => this.dotClickedHandler(index)}>
 
                                     <style jsx>{`
                                     .picked {
