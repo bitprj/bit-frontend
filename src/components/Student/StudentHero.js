@@ -2,26 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { Box, Grid } from 'grommet';
 
-import Button from '../Button';
-import Card from '../Card';
+import GreetingSection from './GreetingSection';
+import LabVerticalCard from './LabVerticalCard';
 
 const Hero = styled.div`
     background-color: #0b1330;
     color: white;
-`
-
-const ResumeContent = styled.div`
-    text-align: center;
-    margin: 3rem auto;
+    margin: 0 -8px;
 `
 
 const StudentHero = (props) => {
-    const content = (<ResumeContent>
-        <img alt="labLogo" src={props.labIcon} height="64" width="64" />
-        <h2>{props.labTitle}</h2>
-        <p>{props.labDescription}</p>
-        <Button name="Resume" class_name="button invert" clicked={() => props.resumeClicked} />
-    </ResumeContent>)
 
     return (
         <Hero align='stretch' pad={{ horizontal: 'large' }}>
@@ -35,20 +25,18 @@ const StudentHero = (props) => {
                 ]}
             >
                 <Box gridArea="greeting">
-                    <div className="greeting-area">
-                        <h1>Hello, {props.studentName}</h1>
-                        <h3>Welcome Back!</h3>
-                    </div>
+                    <GreetingSection title={`Hello ${props.studentName} `}
+                        subtitle="Welcome Back!" />
                 </Box>
                 <Box gridArea="resume" margin="20px 20px" alignContent="center">
-                    <Card content={content} />
+                    <LabVerticalCard labIcon={props.labIcon}
+                        labTitle={props.labTitle}
+                        labDescription={props.labDescription}
+                        buttonState="resume"
+                        buttonClass="button invert"
+                        buttonClicked={() => props.resumeClicked} />
                 </Box>
             </Grid>
-
-            <style jsx>{`
-                .greeting-area {
-                    margin: auto 0 auto 20%;
-			`}</style>
         </Hero>
     )
 }

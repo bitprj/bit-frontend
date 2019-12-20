@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 // import Card from './Card';
 
-import CheckIcon from '../icons/check.js';
+import CheckIcon from '../icons/check';
 
 const MenuBar = styled.div`
     margin: 20px 20px 0 0;
@@ -40,7 +40,7 @@ const Navigation = (props) => {
 
     const steps = props.cardTitles.map((cardTitle, index) => {
         const selected = (index === props.currentCard) ? "selected" : null;
-        const check = <span className="check-icon"><CheckIcon color="#2BDB66" /></span>;
+        const check = <CheckIcon color="#2BDB66" />;
         const dot = <span className="dot"></span>
         const icon = (index < props.lastCardUnlocked) ? check : dot;
 
@@ -77,11 +77,11 @@ const Navigation = (props) => {
                     margin-inline-end: 0px;
                     padding-inline-start: 0px;
                 }
-                .check-icon {
-                    margin-left: -0.5rem;
-                    height: 16px;
-                    background-color: white;
-                }
+                // .check-icon {
+                //     margin-left: -0.5rem;
+                //     height: 16px;
+                //     background-color: white;
+                // }
                 li {
                     list-style: none;
                     margin: 12px 0;

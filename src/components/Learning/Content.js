@@ -11,8 +11,8 @@ const Content = (props) => {
             <Suspense fallback={<div>Loading...</div>}>
                 {/* <p>{props.cardContent}</p> */}
                 <Markdown />
-                <Button name="< Prev" class_name="button" />
-                <Button name="Next >" class_name="button invert" />
+                <Button buttonState="< Prev" class_name="button" />
+                <Button buttonState="Next >" class_name="button invert" />
             </Suspense>
         </div>
     )

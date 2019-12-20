@@ -22,6 +22,8 @@ class StudentContent extends Component {
                 currentWindow={this.state.currentWindow}
                 clicked={this.windowClickedHandler.bind(this)}
             />
+            // <div>{this.props.trackTitle}</div>
+
         )
     }
 }
