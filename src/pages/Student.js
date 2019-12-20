@@ -11,8 +11,9 @@ class Student extends Component {
         this.state = {
             studentName: "Moomin Azkaban",
             currentTrack: {
-                trackTitle: "Computer Science",
-                trackDescription: "Lorem ipsum CS Major."
+                trackID: null,
+                trackTitle: "",
+                trackDescription: ""
             },
             currentTopic: {
                 topicTitle: "Art of Programming",
@@ -27,14 +28,17 @@ class Student extends Component {
         this.studentService = new StudentService()
     }
 
-    // componentDidMount() {
-    //     this.studentService.getStudentInfo().then(data => {
-    //         this.setState({
-    //             studentName: data.student_name,
-    //             currentTrack: data.current_track,
-    //         })
-    //     })
-    // }
+    componentDidMount() {
+        this.studentService.getCurrentTrack().then(data => {
+            this.setState({
+                currentTrack: {
+                    trackID: data.id,
+                    trackTitle: data.name,
+                    trackDescription: data.description,
+                }
+            })
+        })
+    }
 
     resumeClickedHandler() {
         // go to current lab
