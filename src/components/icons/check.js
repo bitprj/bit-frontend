@@ -6,9 +6,9 @@ const Check = styled.div`
     height: 16px;
 `
 
-export default ({ color }) => (
+export default ({ color, check_width, check_height }) => (
     <Check>
-        <svg viewBox="0 0 16 16" width="32" height="32">
+        <svg viewBox="0 0 16 16" width={check_width} height={check_height}>
             <g fill={color || '#111111'}>
                 <path
                     fill={color || '#111111'}

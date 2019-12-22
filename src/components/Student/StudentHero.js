@@ -12,7 +12,6 @@ const Hero = styled.div`
 `
 
 const StudentHero = (props) => {
-
     return (
         <Hero align='stretch' pad={{ horizontal: 'large' }}>
             <Grid

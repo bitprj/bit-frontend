@@ -93,32 +93,32 @@ class Modal extends Component {
                 })}
 
                 <div className="control">
-                    <Button name="< Prev" class_name="button" clicked={() => this.moveClickedHandler(-1)} />
-                    <Button name="Next >" class_name="button invert" clicked={() => this.moveClickedHandler(1)} />
+                    <Button name="< Prev" class_name="button" click={() => this.moveClickedHandler(-1)} />
+                    <Button name="Next >" class_name="button invert" click={() => this.moveClickedHandler(1)} />
 
                     <div className="dot-area">
                         {this.state.slides.map((slide, index) => {
-                            const picked = (index === this.state.currentSlide) ? "picked" : null;
+                            const picked = (index === this.state.currentSlide) ? "dot-picked" : null;
                             return (
                                 <Dot key={`dot-${slide.id}`} className={picked} onClick={() => this.dotClickedHandler(index)}>
 
                                     <style jsx>{`
-                                    .picked {
-                                        background-color: #0070f3;
-                                    }
+                                        .dot-picked {
+                                            background-color: #0070f3;
+                                        }
                                     `}</style>
                                 </Dot>
                             )
                         })}
 
                         <style jsx>{`
-                        .control {
-                            margin-top: 80px;
-                            text-align: center;
-                        }
-                        .dot-area {
-                            margin-top: 15px;
-                        }
+                            .control {
+                                margin-top: 80px;
+                                text-align: center;
+                            }
+                            .dot-area {
+                                margin-top: 15px;
+                            }
                         `}</style>
                     </div>
                 </div>

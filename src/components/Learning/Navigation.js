@@ -40,7 +40,7 @@ const Navigation = (props) => {
 
     const steps = props.cardTitles.map((cardTitle, index) => {
         const selected = (index === props.currentCard) ? "selected" : null;
-        const check = <CheckIcon color="#2BDB66" />;
+        const check = <CheckIcon color="#2BDB66" check_width="16" check_height="16" />;
         const dot = <span className="dot"></span>
         const icon = (index < props.lastCardUnlocked) ? check : dot;
 

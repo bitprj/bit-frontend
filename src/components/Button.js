@@ -5,13 +5,11 @@ import CheckIcon from './icons/check';
 const Button = (props) => {
     if (props.buttonState === "Check") {
         return (
-            <CheckIcon color="#2BDB66" />
+            <CheckIcon color="#2BDB66" check_width="32" check_height="32" />
         )
     } else {
-
-
         return (
-            <div className={props.class_name} onClick={props.clicked}>
+            <div className={props.class_name} onClick={props.click}>
                 {props.buttonState}
 
                 <style jsx>{`
