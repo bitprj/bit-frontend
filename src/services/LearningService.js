@@ -4,7 +4,7 @@ import axios from 'axios';
 class LearningService {
     async getLabInfo() {
         // const url = `${API_URL}/lab/{{lab_id}}/fetch`;
-        const url = 'https://b52cc6f9-6c0c-409e-b757-f09a7c4aeb11.mock.pstmn.io/lab/1/fetch';
+        const url = 'https://60c44f49-e9b9-4587-b8c9-3dbe7647af8b.mock.pstmn.io/lab/1/fetch';
         return axios.get(url).then(response => response.data);
     }
 }

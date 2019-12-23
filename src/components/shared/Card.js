@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const NavyCard = styled.div`
+const RenderedCard = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
@@ -10,14 +10,13 @@ const NavyCard = styled.div`
     border-radius: 7px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     overflow: hidden;
-    background-color: #0b1354;
 `
 
 const Card = (props) => {
     return (
-        <NavyCard>
+        <RenderedCard>
             {props.content}
-        </NavyCard>
+        </RenderedCard>
     )
 }
 

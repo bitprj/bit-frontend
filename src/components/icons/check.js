@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Check = styled.div`
-    margin: 1rem;
+    margin: -9px;
     height: 16px;
+    background-color: white;
 `
 
 export default ({ color, check_width, check_height }) => (

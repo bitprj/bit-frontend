@@ -6,7 +6,6 @@ import CheckIcon from '../icons/check';
 
 const MenuBar = styled.div`
     margin: 20px 20px 0 0;
-    width: 600px;
 `
 
 const Course = styled.div`

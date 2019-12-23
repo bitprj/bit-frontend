@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import Button from '../Button'
+import Button from '../shared/Button'
 
 const Window = styled.div`
     padding: 1rem;
@@ -52,7 +52,6 @@ class Modal extends Component {
             ],
             currentSlide: 0,
         }
-
     }
 
     dotClickedHandler = (index) => {
@@ -93,8 +92,8 @@ class Modal extends Component {
                 })}
 
                 <div className="control">
-                    <Button name="< Prev" class_name="button" click={() => this.moveClickedHandler(-1)} />
-                    <Button name="Next >" class_name="button invert" click={() => this.moveClickedHandler(1)} />
+                    <Button buttonState="< Prev" class_name="button" click={() => this.moveClickedHandler(-1)} />
+                    <Button buttonState="Next >" class_name="button invert" click={() => this.moveClickedHandler(1)} />
 
                     <div className="dot-area">
                         {this.state.slides.map((slide, index) => {

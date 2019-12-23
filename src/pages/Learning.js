@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
-import Navigation from '../components/Learning/Navigation';
 import Content from '../components/Learning/Content';
 import HintSection from '../components/Learning/HintSection';
-import Modal from '../components/Learning/Modal'
+import Modal from '../components/Learning/Modal';
+import Navigation from '../components/Learning/Navigation';
+
+import Grid from '@material-ui/core/Grid';
 
 import LearningService from '../services/LearningService';
 
@@ -49,24 +51,26 @@ class Learning extends Component {
 
     render() {
         return (
-            <div className="App">
-                <div className="learn-section">
-                    <Navigation
-                        labTitle={this.state.labTitle}
-                        totalGems={this.state.totalGems}
-                        cardTitles={this.state.cardTitles}
-                        currentCard={this.state.currentCard}
-                        lastCardUnlocked={this.state.lastCardUnlocked}
-                        click={this.stepClickedHandler}
-                    />
-                    <Content cardContent={this.state.cardContent} />
-                    <HintSection />
-                </div>
+            <div>
+                <Grid container spacing={1}>
+                    <Grid item xs={3} sm={2}>
+                        <Navigation
+                            labTitle={this.state.labTitle}
+                            totalGems={this.state.totalGems}
+                            cardTitles={this.state.cardTitles}
+                            currentCard={this.state.currentCard}
+                            lastCardUnlocked={this.state.lastCardUnlocked}
+                            click={this.stepClickedHandler}
+                        />
+                    </Grid>
+                    <Grid item xs={9} sm={6}>
+                        <Content cardContent={this.state.cardContent} />
 
-                <style jsx>{`
-					.learn-section {
-						display: flex;
-				`}</style>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <HintSection />
+                    </Grid>
+                </Grid>
 
                 {/* input for testing */}
                 <input type='text' onChange={this.cardTitleChangedHandler} value={this.state.cardTitle} />

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Aux from '../../HOC/Aux';
+import Aux from '../HOC/Aux';
 
 import NavBar from './NavBar'
 

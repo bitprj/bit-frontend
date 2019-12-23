@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CheckIcon from './icons/check';
+import CheckIcon from '../icons/check';
 
 const Button = (props) => {
     if (props.buttonState === "Check") {
@@ -18,7 +18,7 @@ const Button = (props) => {
                     cursor: pointer;
                     text-decoration: none;
                     padding: 0.25rem 0.5rem;
-                    margin: 2.5rem 2rem 0.5rem;
+                    margin: 1rem 0.5rem;
                     border-radius: 7px;
                     color: #0070f3;
                     background-color: transparent;

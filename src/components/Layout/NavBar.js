@@ -19,7 +19,7 @@ const Nav = styled.div`
 
 const NavBar = (props) => (
     <Nav>
-        <Link to={"/"}><h1>Bit Project - {JSON.stringify(props)}</h1></Link>
+        <Link to={"/"}><h1>Bit Project</h1></Link>
         {(props.userType === "student") ? <Link to={"/learn"}>Learn</Link> : null}
         {(props.userType === "student") ? <Link to={"/student"}>Student</Link> : null}
         {(props.userType === "visitor") ? <Link to={"/login"}>Login</Link> : <Link to={"/logout"}>Logout</Link>}

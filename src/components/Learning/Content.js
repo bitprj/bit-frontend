@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
-import Button from '../Button'
-
 import { importMDX } from 'mdx.macro';
+
+import Button from '../shared/Button'
 
 const Markdown = lazy(() => importMDX('../../../markdown.md'));
 

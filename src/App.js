@@ -9,7 +9,7 @@ import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Student from './pages/Student';
 
-import WithAuthentication from './HOC/WithAuthentication';
+import WithAuthentication from './components/HOC/WithAuthentication';
 
 class App extends Component {
     render() {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import AuthService from '../services/AuthService';
+import AuthService from '../../services/AuthService';
 import { withRouter } from 'react-router-dom';
 // import axios from 'axios';
 
 import { connect } from 'react-redux';
-import { action } from '../actions/action';
+import { action } from '../../redux/actions/action';
 
 class WithAuthentication extends Component {
     constructor() {
