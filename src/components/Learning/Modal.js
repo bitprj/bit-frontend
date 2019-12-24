@@ -4,13 +4,22 @@ import styled from 'styled-components';
 import Button from '../shared/Button'
 
 const Window = styled.div`
-    padding: 1rem;
+    padding: .5rem;
     border-radius: 7px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     overflow: hidden;
 `
 
 const Slide = styled.div`
+`
+
+const ControlSection = styled.div`
+    margin-top: 80px;
+    text-align: center;
+`
+
+const DotArea = styled.div`
+    margin-top: 15px;
 `
 
 const Dot = styled.div`
@@ -22,6 +31,10 @@ const Dot = styled.div`
     border-radius: 50%;
     background: #efefef;
     transition: background 0.5s ease;
+
+    &.dot-picked {
+        background-color: #0070f3;
+    }
 `
 
 class Modal extends Component {
@@ -85,42 +98,26 @@ class Modal extends Component {
                     return (
                         (index === this.state.currentSlide) ?
                             <Slide key={`slide-${slide.id}`}>
-                                {slide.title} - {slide.content}
+                                <h3>{slide.title}</h3>
+                                <div>{slide.content}</div>
                             </Slide>
                             : null
                     )
                 })}
 
-                <div className="control">
+                <ControlSection>
                     <Button buttonState="< Prev" class_name="button" click={() => this.moveClickedHandler(-1)} />
                     <Button buttonState="Next >" class_name="button invert" click={() => this.moveClickedHandler(1)} />
 
-                    <div className="dot-area">
+                    <DotArea>
                         {this.state.slides.map((slide, index) => {
                             const picked = (index === this.state.currentSlide) ? "dot-picked" : null;
                             return (
-                                <Dot key={`dot-${slide.id}`} className={picked} onClick={() => this.dotClickedHandler(index)}>
-
-                                    <style jsx>{`
-                                        .dot-picked {
-                                            background-color: #0070f3;
-                                        }
-                                    `}</style>
-                                </Dot>
+                                <Dot key={`dot-${slide.id}`} className={picked} onClick={() => this.dotClickedHandler(index)}></Dot>
                             )
                         })}
-
-                        <style jsx>{`
-                            .control {
-                                margin-top: 80px;
-                                text-align: center;
-                            }
-                            .dot-area {
-                                margin-top: 15px;
-                            }
-                        `}</style>
-                    </div>
-                </div>
+                    </DotArea>
+                </ControlSection>
             </Window>
         )
     }

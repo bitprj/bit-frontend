@@ -1,12 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-// import Card from './Card';
 
 import CheckIcon from '../icons/check';
-
-const MenuBar = styled.div`
-    margin: 20px 20px 0 0;
-`
+import GemBox from '../shared/GemBox';
 
 const Course = styled.div`
     margin: 0 0 0 15%;
@@ -24,23 +20,13 @@ const LabCard = styled.div`
     color: white;
 `
 
-const GemBox = styled.div`
-    display: block;
-    text-align: center;
-    justify-content: space-between;
-    border-radius: 30px;
-    width: 80px;
-    background-color: #000066;
-    float: right
-`
-
 const Navigation = (props) => {
     const currentCardTitle = props.cardTitles[props.currentCard];
 
     const steps = props.cardTitles.map((cardTitle, index) => {
         const selected = (index === props.currentCard) ? "selected" : null;
         const check = <CheckIcon color="#2BDB66" check_width="16" check_height="16" />;
-        const dot = <span className="dot"></span>
+        const dot = <span className="dot"></span>;
         const icon = (index < props.lastCardUnlocked) ? check : dot;
 
         return (
@@ -55,11 +41,11 @@ const Navigation = (props) => {
     })
 
     return (
-        <MenuBar>
+        <div>
             <LabCard>
-                <div>{props.labTitle.toUpperCase()}</div>
+                <div>{props.labTitle}</div>
                 <h3>{currentCardTitle}</h3>
-                <GemBox><span role="img" aria-label="Total Gems">💎</span>{props.totalGems}</GemBox>
+                <GemBox gems={props.totalGems} />
             </LabCard>
 
             <Course>
@@ -76,11 +62,6 @@ const Navigation = (props) => {
                     margin-inline-end: 0px;
                     padding-inline-start: 0px;
                 }
-                // .check-icon {
-                //     margin-left: -0.5rem;
-                //     height: 16px;
-                //     background-color: white;
-                // }
                 li {
                     list-style: none;
                     margin: 12px 0;
@@ -88,15 +69,12 @@ const Navigation = (props) => {
                 a {
                     display: flex;
                     align-items: center;
-                    color: unset;
-                    text-decoration: none;
                 }
                 a:hover {
                     color: gray;
                 }
                 .dot {
                     display: inline-block;
-                    // margin-left: -.5rem;
                     margin-right: -7px;
                     width: 7px;
                     height: 7px;
@@ -130,7 +108,7 @@ const Navigation = (props) => {
                     font-weight: bold;
                 }
             `}</style>
-        </MenuBar>
+        </div>
     )
 }
 

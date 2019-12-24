@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const HintSection = () => {
-    return (
-        <div className='hint-section'>
-            HelloWorld
+import Hint from './Hint';
 
-            <style jsx>{`	
-            .hint-section {
-                margin: 20px 0 0 20px;
-            }
-            `}</style>
-        </div>
-    )
+class HintSection extends Component {
+    render() {
+        return (
+            <div>
+                <Hint />
+            </div>
+        )
+    }
 }
 
 export default HintSection;
