@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import decode from 'jwt-decode';
 
-const API_URL = 'https://60c44f49-e9b9-4587-b8c9-3dbe7647af8b.mock.pstmn.io';
+import { API_URL } from './API_URL';
 
 class AuthService {
     async login(username, password) {

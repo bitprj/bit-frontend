@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Grid from '@material-ui/core/Grid';
 
 import Content from '../components/Learning/Content';
 import HintSection from '../components/Learning/HintSection';
 import Modal from '../components/Learning/Modal';
 import Navigation from '../components/Learning/Navigation';
 
-import Grid from '@material-ui/core/Grid';
-
-import LearningService from '../services/LearningService';
+import LearnService from '../services/LearnService';
 
 const LearningSection = styled.div`
     margin-top: 20px;
@@ -21,12 +20,7 @@ class Learning extends Component {
             labID: null,
             labTitle: '',
             cards: null,
-            cardTitles: [
-                // "This is Card 1",
-                // "And then Card 2",
-                // "Also Card 3",
-                // "End with Card 4"
-            ],
+            cardTitles: [],
             currentCard: null,
             lastCardUnlocked: null,
             totalGems: 256
@@ -35,7 +29,7 @@ class Learning extends Component {
         this.stepClickedHandler = this.stepClickedHandler.bind(this);
         this.moveClickedHandler = this.moveClickedHandler.bind(this);
 
-        this.service = new LearningService();
+        this.service = new LearnService();
     }
 
     componentDidMount() {

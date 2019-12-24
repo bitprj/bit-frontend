@@ -4,14 +4,11 @@ import styled from 'styled-components';
 import Button from '../shared/Button';
 
 const NavyCard = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     padding: 1rem;
+    max-width: 350px;
+    min-height: 375px;
     border-radius: 7px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-    overflow: hidden;
     background-color: #0b1354;
     text-align: center;
 `

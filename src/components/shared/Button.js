@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import CheckIcon from '../icons/check';
+import CheckIcon from '../../assets/icons/check';
 
 const RenderedButton = styled.div`
     display: inline-block;

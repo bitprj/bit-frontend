@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Box, Grid } from 'grommet';
+// import { Box, Grid } from 'grommet';
+import Grid from '@material-ui/core/Grid';
 
 import GreetingSection from './GreetingSection';
 import LabVerticalCard from './LabVerticalCard';
@@ -9,32 +10,26 @@ const Hero = styled.div`
     background-color: #0b1330;
     color: white;
     margin: 0 -8px;
+    padding: 20px;
 `
 
 const StudentHero = (props) => {
     return (
-        <Hero align='stretch' pad={{ horizontal: 'large' }}>
-            <Grid
-                rows={['auto', 'auto']}
-                columns={['auto', 'medium']}
-                gap="small"
-                areas={[
-                    { name: 'greeting', start: [0, 0], end: [0, 1] },
-                    { name: 'resume', start: [1, 0], end: [1, 1] },
-                ]}
-            >
-                <Box gridArea="greeting">
+        <Hero>
+            <Grid container spacing={0}>
+                <Grid item xs>
                     <GreetingSection title={`Hello ${props.studentName} `}
                         subtitle="Welcome Back!" />
-                </Box>
-                <Box gridArea="resume" margin="20px 20px" alignContent="center">
+                </Grid>
+
+                <Grid item xs={5}>
                     <LabVerticalCard labIcon={props.labIcon}
                         labTitle={props.labTitle}
                         labDescription={props.labDescription}
                         buttonState="resume"
                         buttonClass="button invert"
                         buttonClicked={() => props.resumeClicked} />
-                </Box>
+                </Grid>
             </Grid>
         </Hero>
     )

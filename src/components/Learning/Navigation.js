@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import CheckIcon from '../icons/check';
+import CheckIcon from '../../assets/icons/check';
 import GemBox from '../shared/GemBox';
 
 const Course = styled.div`

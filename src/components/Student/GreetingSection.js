@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Greeting = styled.div`
-    margin: auto 0 auto 20%;
+    margin: 15vh 20%;
 `
 
 const GreetingSection = (props) => {

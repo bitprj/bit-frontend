@@ -9,11 +9,11 @@ import AuthService from '../services/AuthService';
 class Logout extends Component {
     constructor() {
         super();
-        this.authService = new AuthService();
+        this.service = new AuthService();
     }
 
     componentDidMount() {
-        this.authService.logout();
+        this.service.logout();
         this.props.logout();
     }
 

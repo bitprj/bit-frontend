@@ -10,15 +10,6 @@ class Student extends Component {
         super();
         this.state = {
             studentName: "Moomin Azkaban",
-            currentTrack: {
-                trackID: null,
-                trackTitle: "",
-                trackDescription: ""
-            },
-            currentTopic: {
-                topicTitle: "Art of Programming",
-                topicDescription: "Lorem ipsum Art of Programming."
-            },
             currentLab: {
                 labIcon: "https://maxcdn.icons8.com/Share/icon/p1em/Logos/github1600.png",
                 labTitle: "Intro to Github",
@@ -29,15 +20,7 @@ class Student extends Component {
     }
 
     componentDidMount() {
-        this.studentService.getCurrentTrack().then(data => {
-            this.setState({
-                currentTrack: {
-                    trackID: data.id,
-                    trackTitle: data.name,
-                    trackDescription: data.description,
-                }
-            })
-        })
+
     }
 
     resumeClickedHandler() {
@@ -55,12 +38,7 @@ class Student extends Component {
                     resumeClicked={this.state.resumeClickedHandler}
                 />
 
-                <StudentContent
-                    trackTitle={this.state.currentTrack.trackTitle}
-                    trackDescription={this.state.currentTrack.trackDescription}
-                    topicTitle={this.state.currentTopic.topicTitle}
-                    topicDescription={this.state.currentTopic.topicDescription}
-                />
+                <StudentContent />
             </div >
         )
     }

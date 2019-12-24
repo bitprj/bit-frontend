@@ -4,7 +4,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 
 import Home from './pages/Home';
-import Learning from './pages/Learning';
+import Learn from './pages/Learn';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Student from './pages/Student';
@@ -22,7 +22,7 @@ class App extends Component {
                             render={(props) => <Login {...props} userLogin={this.userLoginHandler} />} />
 
                         <WithAuthentication userLogin={this.userLoginHandler}>
-                            <Route path="/learn" exact component={Learning} />
+                            <Route path="/learn" exact component={Learn} />
                             <Route path="/student" exact component={Student} />
                             <Route path="/logout" exact component={Logout} />
                         </WithAuthentication>

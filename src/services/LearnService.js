@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'https://b2757d6e-6fd4-4877-887f-7cc9531408a8.mock.pstmn.io';
+import { API_URL } from './API_URL';
 
-class LearningService {
+class LearnService {
     async getLabInfo(labID) {
         const url = `${API_URL}/lab/${labID}/fetch`;
         return axios.get(url).then(response => response.data);
@@ -19,4 +19,4 @@ class LearningService {
     }
 }
 
-export default LearningService;
+export default LearnService;

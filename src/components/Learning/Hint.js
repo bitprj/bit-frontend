@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import GemBox from '../shared/GemBox';
 
-import LearningService from '../../services/LearningService';
+import LearnService from '../../services/LearnService';
 
 const HintCard = styled.div`
     flex-direction: column;
@@ -35,7 +35,7 @@ class Hint extends Component {
             steps: null
         }
 
-        this.service = new LearningService();
+        this.service = new LearnService();
     }
 
     componentDidMount() {
@@ -45,6 +45,8 @@ class Hint extends Component {
                 title: data.name,
                 difficulty: data.difficulty,
                 gems: data.gems,
+                content: data.content,
+                steps: data.steps
             })
         })
     }

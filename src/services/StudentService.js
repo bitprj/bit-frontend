@@ -1,9 +1,15 @@
 import axios from 'axios';
 
+import { API_URL } from './API_URL';
+
 class StudentService {
-    async getCurrentTrack() {
-        // const url = `${API_URL}/lab/{{lab_id}}/fetch`;
-        const url = 'https://b52cc6f9-6c0c-409e-b757-f09a7c4aeb11.mock.pstmn.io/tracks/1';
+    async getTopic(topicID) {
+        const url = `${API_URL}/topics/${topicID}`;
+        return axios.get(url).then(response => response.data);
+    }
+
+    async getTrack(trackID) {
+        const url = `${API_URL}/tracks/${trackID}`;
         return axios.get(url).then(response => response.data);
     }
 }
