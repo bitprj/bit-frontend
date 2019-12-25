@@ -23,7 +23,7 @@ const RenderedButton = styled.div`
     }
 
     &.invert {
-        padding: 0 3.5rem;
+        padding: 0 2rem;
         line-height: 2.5rem;
         border-radius: 7px;
         background-color: #0070f3;

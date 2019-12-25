@@ -10,7 +10,7 @@ const Hero = styled.div`
     background-color: #0b1330;
     color: white;
     margin: 0 -8px;
-    padding: 20px;
+    padding: 40px;
 `
 
 const StudentHero = (props) => {

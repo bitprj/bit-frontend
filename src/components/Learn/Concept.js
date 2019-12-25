@@ -37,7 +37,7 @@ const Dot = styled.div`
     }
 `
 
-class Modal extends Component {
+class Concept extends Component {
     constructor() {
         super();
         this.state = {
@@ -123,4 +123,4 @@ class Modal extends Component {
     }
 }
 
-export default Modal;
+export default Concept;

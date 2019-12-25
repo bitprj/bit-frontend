@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 
-import Content from '../components/Learning/Content';
-import HintSection from '../components/Learning/HintSection';
-import Modal from '../components/Learning/Modal';
-import Navigation from '../components/Learning/Navigation';
+import Content from '../components/Learn/Content';
+import HintSection from '../components/Learn/HintSection';
+import Concept from '../components/Learn/Concept';
+import Navigation from '../components/Learn/Navigation';
 
 import LearnService from '../services/LearnService';
 
-const LearningSection = styled.div`
+const LearnSection = styled.div`
     margin-top: 20px;
 `
 
-class Learning extends Component {
+class Learn extends Component {
     constructor() {
         super();
         this.state = {
@@ -50,21 +50,25 @@ class Learning extends Component {
     }
 
     stepClickedHandler = (index) => {
-        this.setState({ currentCard: index });
+        if (index < this.state.lastCardUnlocked) {
+            this.setState({ currentCard: index });
+        }
     }
 
     moveClickedHandler = (step) => {
         const destination = this.state.currentCard + step;
+        const last = (destination > this.state.lastCardUnlocked) ? destination : this.state.lastCardUnlocked;
         if (destination >= 0 && destination < this.state.cards.length) {
             this.setState({
-                currentCard: destination
+                currentCard: destination,
+                lastCardUnlocked: last
             })
         };
     }
 
     render() {
         return (
-            <LearningSection>
+            <LearnSection>
                 <Grid container spacing={2}>
                     <Grid item xs={3} sm={2}>
                         <Navigation
@@ -86,9 +90,9 @@ class Learning extends Component {
                 </Grid>
 
                 {/* <Modal /> */}
-            </LearningSection>
+            </LearnSection>
         );
     }
 }
 
-export default Learning;
+export default Learn;

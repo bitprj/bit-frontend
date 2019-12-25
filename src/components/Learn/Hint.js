@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import GemBox from '../shared/GemBox';
+import HintModal from './HintModal';
 
 import LearnService from '../../services/LearnService';
 
 const HintCard = styled.div`
-    flex-direction: column;
-    justify-content: space-between;
     padding: .65rem;
     border-radius: 7px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
@@ -29,11 +27,12 @@ class Hint extends Component {
             title: '',
             difficulty: '',
             gems: null,
-            locked: true,
+            isLocked: true,
             content: '',
             parent: null,
             steps: null
         }
+        this.unlockClickedHandler = this.unlockClickedHandler.bind(this);
 
         this.service = new LearnService();
     }
@@ -51,16 +50,23 @@ class Hint extends Component {
         })
     }
 
+    unlockClickedHandler = () => {
+        alert('clicked');
+    }
+
     render() {
         return (
             <div>
-                {this.state.locked ?
-                    <HintCard locked={this.state.locked}>
+                {this.state.isLocked ?
+                    <HintCard locked={this.state.isLocked}>
                         <HintTitle>{this.state.title}</HintTitle>
-                        <GemBox gems={this.state.gems} />
+                        <HintModal
+                            hintID={this.state.id}
+                            gems={this.state.gems}
+                            unlockClick={this.unlockClickedHandler} />
                     </HintCard>
                     :
-                    <HintCard locked={this.state.locked}>
+                    <HintCard locked={this.state.isLocked}>
                         <HintTitle>{this.state.title}</HintTitle>
                         <div>{this.state.content}</div>
                     </HintCard>

@@ -16,7 +16,10 @@ const RenderedGemBox = styled.div`
 
 const GemBox = (props) => (
     <RenderedGemBox>
-        <span role="img" aria-label="Total Gems">💎</span>{props.gems}
+        <div onClick={props.click}>
+            <span role="img" aria-label="Total Gems">💎</span>
+            {props.gems}
+        </div>
     </RenderedGemBox>
 )
 
