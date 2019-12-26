@@ -52,6 +52,7 @@ class Hint extends Component {
 
     unlockClickedHandler = () => {
         alert('clicked');
+        // later - API call to unlock card and get its content
     }
 
     render() {

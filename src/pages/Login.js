@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import AuthService from '../services/AuthService';
 
 import { connect } from 'react-redux';
-import { action } from '../redux/actions/action';
+import { login } from '../redux/actions/action';
 
 class Login extends Component {
     constructor() {
@@ -12,6 +12,7 @@ class Login extends Component {
             email: null,
             password: null,
         }
+
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.formSubmitHandler = this.formSubmitHandler.bind(this);
         this.authService = new AuthService();
@@ -35,7 +36,7 @@ class Login extends Component {
         try {
             await this.authService.login(this.state.email, this.state.password);
             if (this.authService.userAuthenticated) {
-                this.props.action();
+                this.props.login();
                 this.props.history.push('/student');
             }
         } catch (err) {
@@ -75,7 +76,7 @@ class Login extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        action: () => dispatch(action())
+        login: () => dispatch(login())
     }
 }
 

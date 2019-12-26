@@ -1,7 +1,7 @@
 const type = localStorage.getItem('userType')
 
 const initialState = {
-    userType: type ? type : 'visitor'
+    userType: type ? type : 'Visitor'
 }
 
 const reducer = (state = initialState, action) => {
@@ -9,12 +9,12 @@ const reducer = (state = initialState, action) => {
         case 'STUDENT_LOGIN':
             return {
                 ...state,
-                userType: 'student'
+                userType: 'Student'
             }
         case 'USER_LOGOUT':
             return {
                 ...state,
-                userType: 'visitor'
+                userType: 'Visitor'
             }
         default:
             return state

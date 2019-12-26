@@ -1,43 +1,21 @@
 import React, { Component } from 'react';
 import AuthService from '../../services/AuthService';
 import { withRouter } from 'react-router-dom';
-// import axios from 'axios';
-
-import { connect } from 'react-redux';
-import { action } from '../../redux/actions/action';
 
 class WithAuthentication extends Component {
     constructor() {
         super();
-        this.state = {
-            user: null
-        }
-
-        // might change the paramter later
-        this.authService = new AuthService();
+        this.service = new AuthService();
     }
 
     componentDidMount() {
-        if (!this.authService.userAuthenticated()) {
+        if (!this.service.userAuthenticated()) {
             this.props.history.push("/");
-        } else {
-            // const url = '/getUser/';
-            // const token = this.authService.getToken();
-
-            // this dummy call will be changed to the one commented below
-            const fakeUser = {
-                name: "Moomin",
-                type: "student"
-            }
-
-            this.setState({ user: fakeUser })
-
-            // this.authService.getUserInfo();
         }
     }
 
     render() {
-        if (this.state.user) {
+        if (this.service.userAuthenticated()) {
             return (
                 <div>{this.props.children}</div>
             )
@@ -47,10 +25,4 @@ class WithAuthentication extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        action: () => dispatch(action())
-    }
-}
-
-export default connect(null, mapDispatchToProps)(withRouter(WithAuthentication));
+export default withRouter(WithAuthentication);

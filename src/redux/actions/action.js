@@ -1,4 +1,4 @@
-export const action = () => dispatch => {
+export const login = () => dispatch => {
     dispatch({
         type: 'STUDENT_LOGIN'
     })

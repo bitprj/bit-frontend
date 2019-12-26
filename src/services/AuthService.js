@@ -10,8 +10,10 @@ class AuthService {
         axios.post(url).then(response => {
             // console.log('token', response.data.access_token);
             const token = response.data.access_token;
-            localStorage.setItem('userType', 'student')
-            localStorage.setItem('token', token);
+            const userType = response.data.user_type;
+
+            this.setUserType(userType)
+            this.setToken(token);
         })
 
         // change to this later on
@@ -35,13 +37,29 @@ class AuthService {
     }
 
     userAuthenticated() {
-        const token = localStorage.getItem('token')
+        const token = this.getToken();
         return token != null;
     }
 
     logout() {
         localStorage.removeItem('userType');
         localStorage.removeItem('token');
+    }
+
+    setUserType(userType) {
+        return localStorage.setItem('userType', userType)
+    }
+
+    getUserType() {
+        return localStorage.getItem('userType')
+    }
+
+    setToken(token) {
+        return localStorage.setItem('token', token)
+    }
+
+    getToken() {
+        return localStorage.getItem('token')
     }
 }
 

@@ -73,7 +73,7 @@ const HintModal = (props) => {
                         <img style={imgCenter} src='https://gamepedia.cursecdn.com/zelda_gamepedia_en/thumb/f/fb/Cielaph.png/302px-Cielaph.png?version=11c2e049da27d8f6e1c0a758077857c3' />
 
                         <Button buttonState="< Cancel" class_name="button" click={modalClosedHandler} />
-                        <Button buttonState="Unlock" class_name="button invert" />
+                        <Button buttonState="Unlock" class_name="button invert" click={props.unlockClick} />
                     </ModalCard>
                 </Fade>
             </Modal>

@@ -9,6 +9,7 @@ import AuthService from '../services/AuthService';
 class Logout extends Component {
     constructor() {
         super();
+
         this.service = new AuthService();
     }
 

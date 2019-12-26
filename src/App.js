@@ -18,10 +18,9 @@ class App extends Component {
                 <Layout>
                     <Switch>
                         <Route path="/" exact component={Home} />
-                        <Route path="/login" exact
-                            render={(props) => <Login {...props} userLogin={this.userLoginHandler} />} />
+                        <Route path="/login" exact component={Login} />
 
-                        <WithAuthentication userLogin={this.userLoginHandler}>
+                        <WithAuthentication>
                             <Route path="/learn" exact component={Learn} />
                             <Route path="/student" exact component={Student} />
                             <Route path="/logout" exact component={Logout} />

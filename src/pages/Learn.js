@@ -88,8 +88,6 @@ class Learn extends Component {
                         <HintSection />
                     </Grid>
                 </Grid>
-
-                {/* <Modal /> */}
             </LearnSection>
         );
     }
