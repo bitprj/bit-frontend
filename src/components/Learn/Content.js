@@ -1,29 +1,53 @@
-import React, { lazy, Suspense } from 'react';
-import { importMDX } from 'mdx.macro';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import RichTextToReact from 'rich-text-to-react';
+
+import { RenderingOptions } from '../../services/RenderingOptions';
+import ContentService from '../../services/ContentService';
 
 import Button from '../shared/Button'
-
-const Markdown = lazy(() => importMDX('../../../markdown.md'));
 
 const ButtonSection = styled.div`
     text-align: right;
 `
 
-const Content = (props) => {
-    return (
-        <div>
-            <Suspense fallback={<div>Loading...</div>}>
-                {/* <p>{props.cardContent}</p> */}
-                <Markdown />
+class Content extends Component {
+    constructor() {
+        super();
+        this.state = {
+            content: {
+                fields: {
+                    title: '',
+                    content: ''
+                }
+            }
+        }
+
+        this.service = new ContentService();
+    }
+
+    componentDidMount() {
+        this.service.getCardContent(1).then(response => {
+            this.setState({
+                content: response.items[1]
+            })
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <RichTextToReact document={this.state.content.fields.content} options={RenderingOptions} />
 
                 <ButtonSection>
-                    <Button buttonState="< Prev" class_name="button" click={() => props.click(-1)} />
-                    <Button buttonState="Next >" class_name="button invert" click={() => props.click(1)} />
+                    <Button buttonState="< Prev" class_name="button" click={() => this.props.click(-1)} />
+                    <Button buttonState="Next >" class_name="button invert" click={() => this.props.click(1)} />
                 </ButtonSection>
-            </Suspense>
-        </div>
-    )
+            </div>
+        )
+    }
 }
+
+
 
 export default Content;

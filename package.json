@@ -1,5 +1,5 @@
 {
-  "name": "Bit-Project-React",
+  "name": "bit-project-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,15 +8,18 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.0",
+    "contentful": "^7.11.3",
     "jwt-decode": "^2.2.0",
-    "mdx.macro": "^0.2.9",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-markdown": "^4.2.2",
     "react-redux": "^7.1.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
+    "react-syntax-highlighter": "^12.2.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "rich-text-to-react": "^1.1.0",
     "styled-components": "^4.4.1"
   },
   "scripts": {

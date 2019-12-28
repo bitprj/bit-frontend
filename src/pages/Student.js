@@ -9,18 +9,23 @@ class Student extends Component {
     constructor() {
         super();
         this.state = {
-            studentName: "Moomin Azkaban",
+            studentName: '',
             currentLab: {
                 labIcon: "https://maxcdn.icons8.com/Share/icon/p1em/Logos/github1600.png",
                 labTitle: "Intro to Github",
                 labDescription: "Bacon ipsum dolor amet pancetta short ribs pig shankle chicken. Kielbasa ribeye salami jerky ham hock short ribs pork belly boudin filet mignon ham, ball tip beef ribs turducken."
             }
         }
-        this.studentService = new StudentService()
+        this.service = new StudentService()
     }
 
     componentDidMount() {
-
+        this.service.getStudentInfo('token').then(data => {
+            console.log('student', data);
+            this.setState({
+                studentName: data.name,
+            })
+        })
     }
 
     resumeClickedHandler() {

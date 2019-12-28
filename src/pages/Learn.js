@@ -33,7 +33,7 @@ class Learn extends Component {
     }
 
     componentDidMount() {
-        this.service.getLabInfo(1).then(data => {
+        this.service.getActivityInfo(1).then(data => {
             this.setState({
                 labID: data.lab_id,
                 labTitle: data.lab_title,
