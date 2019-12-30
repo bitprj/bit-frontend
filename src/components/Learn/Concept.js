@@ -1,20 +1,29 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import RichTextToReact from 'rich-text-to-react';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 
 import Button from '../shared/Button'
+
+import { RenderingOptions } from '../../services/RenderingOptions';
+import ContentfulService from '../../services/ContentfulService';
 
 const Window = styled.div`
     padding: .5rem;
     border-radius: 7px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     overflow: hidden;
+    background-color: white;
+    max-width: 800px
+    margin: 2rem;
 `
 
 const Slide = styled.div`
 `
 
 const ControlSection = styled.div`
-    margin-top: 80px;
     text-align: center;
 `
 
@@ -41,30 +50,19 @@ class Concept extends Component {
     constructor() {
         super();
         this.state = {
-            slides: [
-                {
-                    id: 123,
-                    title: 'Concept 1',
-                    content: 'In a synchronous programming model, things happen.'
-                },
-                {
-                    id: 321,
-                    title: 'Concept 2',
-                    content: 'And that is, a lot of things.'
-                },
-                {
-                    id: 456,
-                    title: 'Concept 3',
-                    content: 'Also there are those things.'
-                },
-                {
-                    id: 654,
-                    title: 'Concept 4',
-                    content: 'Weeheehee.'
-                }
-            ],
+            slides: [],
             currentSlide: 0,
         }
+
+        this.service = new ContentfulService();
+    }
+
+    componentDidMount() {
+        this.service.getConceptContent('1gzvGY8AuGVhyxwAirTDrZ').then(data => {
+            this.setState({
+                slides: data
+            })
+        })
     }
 
     dotClickedHandler = (index) => {
@@ -99,7 +97,8 @@ class Concept extends Component {
                         (index === this.state.currentSlide) ?
                             <Slide key={`slide-${slide.id}`}>
                                 <h3>{slide.title}</h3>
-                                <div>{slide.content}</div>
+                                {/* <div>{slide.content}</div> */}
+                                <RichTextToReact document={slide.content} options={RenderingOptions} />
                             </Slide>
                             : null
                     )

@@ -10,7 +10,7 @@ const Heading = styled.div`
 `
 
 const img_style = {
-    maxWidth: '80%',
+    maxWidth: '90%',
     display: 'block',
     marginLeft: 'auto',
     marginRight: 'auto',
