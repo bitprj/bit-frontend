@@ -36,7 +36,6 @@ class Content extends Component {
         return (
             <div>
                 <RichTextToReact document={this.state.content} options={RenderingOptions} />
-
                 <ButtonSection>
                     <Button buttonState="< Prev" class_name="button" click={() => this.props.click(-1)} />
                     <Button buttonState="Next >" class_name="button invert" click={() => this.props.click(1)} />
