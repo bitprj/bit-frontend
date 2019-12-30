@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Grid from '@material-ui/core/Grid';
 import RichTextToReact from 'rich-text-to-react';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+
+import ReactMarkdown from 'react-markdown';
+import CodeBlock from '../shared/CodeBlock';
 
 import Button from '../shared/Button'
 
@@ -16,7 +17,8 @@ const Window = styled.div`
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     overflow: hidden;
     background-color: white;
-    max-width: 800px
+    max-width: 80%;
+    max-height: 80%;
     margin: 2rem;
 `
 
@@ -25,6 +27,7 @@ const Slide = styled.div`
 
 const ControlSection = styled.div`
     text-align: center;
+    margin-bottom: 10px
 `
 
 const DotArea = styled.div`
@@ -45,6 +48,17 @@ const Dot = styled.div`
         background-color: #0070f3;
     }
 `
+
+const img_style = {
+    // maxWidth: '90%',
+    // maxHeight: '500px',
+    height: '100%',
+    width: '100%',
+    display: 'block',
+    float: 'right',
+    margin: '-.5rem',
+}
+
 
 class Concept extends Component {
     constructor() {
@@ -96,27 +110,40 @@ class Concept extends Component {
                     return (
                         (index === this.state.currentSlide) ?
                             <Slide key={`slide-${slide.id}`}>
-                                <h3>{slide.title}</h3>
-                                {/* <div>{slide.content}</div> */}
-                                <RichTextToReact document={slide.content} options={RenderingOptions} />
+                                <Grid container spacing={0}>
+                                    <Grid item xs={6}>
+                                        <h3>{slide.title}</h3>
+                                        <RichTextToReact document={slide.content} options={RenderingOptions} />
+
+                                        <ControlSection>
+                                            <Button buttonState="< Prev" class_name="button" click={() => this.moveClickedHandler(-1)} />
+                                            <Button buttonState="Next >" class_name="button invert" click={() => this.moveClickedHandler(1)} />
+
+                                            <DotArea>
+                                                {this.state.slides.map((slide, index) => {
+                                                    const picked = (index === this.state.currentSlide) ? "dot-picked" : null;
+                                                    return (
+                                                        <Dot key={`dot-${slide.id}`} className={picked} onClick={() => this.dotClickedHandler(index)}></Dot>
+                                                    )
+                                                })}
+                                            </DotArea>
+                                        </ControlSection>
+                                    </Grid>
+
+                                    <Grid item xs={6}>
+                                        {slide.image ?
+                                            <img src={slide.image.fields.file.url} style={img_style} />
+                                            : null}
+                                        {slide.snippet ?
+                                            // <div>{JSON.stringify(slide.snippet)}</div>
+                                            <ReactMarkdown source={slide.snippet} renderers={{ code: CodeBlock }} />
+                                            : null}
+                                    </Grid>
+                                </Grid>
                             </Slide>
                             : null
                     )
                 })}
-
-                <ControlSection>
-                    <Button buttonState="< Prev" class_name="button" click={() => this.moveClickedHandler(-1)} />
-                    <Button buttonState="Next >" class_name="button invert" click={() => this.moveClickedHandler(1)} />
-
-                    <DotArea>
-                        {this.state.slides.map((slide, index) => {
-                            const picked = (index === this.state.currentSlide) ? "dot-picked" : null;
-                            return (
-                                <Dot key={`dot-${slide.id}`} className={picked} onClick={() => this.dotClickedHandler(index)}></Dot>
-                            )
-                        })}
-                    </DotArea>
-                </ControlSection>
             </Window>
         )
     }

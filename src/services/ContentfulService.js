@@ -16,7 +16,9 @@ class ContentfulService {
             const stepID = stepInfo.sys.id;
             const slide = await this.getStepContent(stepID).then(step => ({
                 title: step.title,
-                content: step.content
+                content: step.content,
+                image: step.image,
+                snippet: step.snippet
             }))
             return slide;
         }));

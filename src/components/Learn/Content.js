@@ -7,7 +7,7 @@ import ContentfulService from '../../services/ContentfulService';
 
 import Button from '../shared/Button'
 
-import Concept from './Concept';
+// import Concept from './Concept';
 import ConceptModal from './ConceptModal';
 
 const ButtonSection = styled.div`
