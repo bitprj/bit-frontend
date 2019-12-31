@@ -22,7 +22,7 @@ const styledLink = styled.link`
 
 const NavBar = (props) => (
     <Nav>
-        <Link style={{color: 'black', textDecoration: 'none'}} to={"/"}><h1>Bit Project</h1></Link>
+        <Link style={{color: 'black', textDecoration: 'none'}} to={"/"}>BitProject</Link>
         {(props.userType === "Student") ? <Link style={{color: 'black', textDecoration: 'none'}}  to={"/learn"}>Learn</Link> : null}
         {(props.userType === "Student") ? <Link style={{color: 'black', textDecoration: 'none'}}  to={"/student"}>Student</Link> : null}
         {(props.userType === "Visitor") ? <Link style={{color: 'black', textDecoration: 'none'}}  to={"/login"}>Login</Link> : <Link to={"/logout"}>Logout</Link>}
