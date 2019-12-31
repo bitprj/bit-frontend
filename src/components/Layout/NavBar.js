@@ -16,16 +16,18 @@ const Nav = styled.div`
     position: relative;
 `
 
-const styledLink = styled.link`
-    font-size: 20px;
-`
+const styledLink = {
+    fontSize: '16px',
+    color: 'black',
+    textDecoration: 'none'
+}
 
 const NavBar = (props) => (
     <Nav>
-        <Link style={{color: 'black', textDecoration: 'none'}} to={"/"}><h1>Bit Project</h1></Link>
-        {(props.userType === "Student") ? <Link style={{color: 'black', textDecoration: 'none'}}  to={"/learn"}>Learn</Link> : null}
-        {(props.userType === "Student") ? <Link style={{color: 'black', textDecoration: 'none'}}  to={"/student"}>Student</Link> : null}
-        {(props.userType === "Visitor") ? <Link style={{color: 'black', textDecoration: 'none'}}  to={"/login"}>Login</Link> : <Link to={"/logout"}>Logout</Link>}
+        <Link style={{ color: 'black', textDecoration: 'none' }} to={"/"}><h1>Bit Project</h1></Link>
+        {(props.userType === "Student") ? <Link style={styledLink} to={"/learn"}>Learn</Link> : null}
+        {(props.userType === "Student") ? <Link style={styledLink} to={"/student"}>Student</Link> : null}
+        {(props.userType === "Visitor") ? <Link style={styledLink} to={"/login"}>Login</Link> : <Link style={styledLink} to={"/logout"}>Logout</Link>}
     </Nav>
 )
 

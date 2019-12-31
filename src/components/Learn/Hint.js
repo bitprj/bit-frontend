@@ -50,10 +50,7 @@ class Hint extends Component {
                 title: data.title,
                 steps: data.steps
             })
-            console.log(this.state.steps);
-            // this.state.steps.map(step => { console.log(step.title) })
-
-            // console.log(JSON.stringify(this.state.steps))
+            // console.log(this.state.steps);
         })
 
         // this.service.getHint(1).then(data => {
@@ -75,10 +72,6 @@ class Hint extends Component {
             isLocked: false
         })
     }
-
-    // render() {
-    //     return JSON.stringify(this.state.steps);
-    // }
 
     render() {
         const steps = this.state.steps.map((step) => {

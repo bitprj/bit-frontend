@@ -25,13 +25,14 @@ class Content extends Component {
         this.service = new ContentfulService();
     }
 
-    componentDidMount() {
-        this.switchContent();
+    componentDidUpdate(prevProps) {
+        if (this.props.cardID !== prevProps.cardID) {
+            this.switchContent(this.props.cardID);
+        }
     }
 
-    switchContent() {
-        this.service.getCard(this.props.cardID).then(data => {
-            // console.log('data', data)
+    switchContent(cardID) {
+        this.service.getCard(cardID).then(data => {
             this.setState({
                 cardData: data.content
             })
@@ -40,25 +41,21 @@ class Content extends Component {
 
     moveToPrev = () => {
         this.props.click(-1);
-        this.switchContent();
     }
 
     moveToNext = () => {
         this.props.click(1);
-        this.switchContent();
     }
 
     render() {
         return (
             <div>
-                {this.props.cardID}
+                <RichTextToReact document={this.state.cardData} options={RenderingOptions} />
+
                 <ButtonSection>
                     <Button buttonState="< Prev" class_name="button" click={this.moveToPrev} />
                     <Button buttonState="Next >" class_name="button invert" click={this.moveToNext} />
                 </ButtonSection>
-                <h1>{this.state.title}</h1>
-                <RichTextToReact document={this.state.cardData} options={RenderingOptions} />
-
 
                 <ConceptModal />
             </div>
