@@ -23,11 +23,11 @@ const Window = styled.div`
 `
 
 const Slide = styled.div`
-display: flex;
-flex-flow: row wrap;
-justify-content: center;
-width:100%;
-margin-right: auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width:100%;
+    margin-right: auto;
     margin-left: auto;
     padding-left: 0px;
     padding-right: 0px;
@@ -65,32 +65,32 @@ const img_style = {
 }
 
 const ResponsivePanel = styled.div`
-display: flex;
-flex-flow: column wrap;
-justify-content: flex-start;
-position: relative;
-padding: 0px;
-width: 50%;
-${media.tablet`min-width: 80vw;`};
-${media.phone`min-width: 80vw;`};
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    position: relative;
+    padding: 0px;
+    width: 50%;
+    ${media.tablet`min-width: 80vw;`};
+    ${media.phone`min-width: 80vw;`};
 `
 const ResponsiveAssets = styled.div`
-display: flex;
-background-color:rgb(43, 43, 43);
-flex-flow: column wrap;
-justify-content: flex-start;
-position: relative;
-padding: 0px;
-width: 50%;
-${media.tablet`min-width: 80vw;`};
-${media.phone`min-width: 80vw;`};
+    display: flex;
+    background-color: rgb(43, 43, 43);
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    position: relative;
+    padding: 0px;
+    width: 50%;
+    ${media.tablet`min-width: 80vw;`};
+    ${media.phone`min-width: 80vw;`};
 `
 const StyledTextArea = styled.div`
-margin-top: auto;
-margin-bottom: auto;
-text-align: center;
-vertical-align: middle;
-padding:10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
 `
 
 

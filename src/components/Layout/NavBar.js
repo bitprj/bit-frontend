@@ -16,9 +16,11 @@ const Nav = styled.div`
     position: relative;
 `
 
-const styledLink = styled.link`
-    font-size: 20px;
-`
+const styledLink = {
+    fontSize: '16px',
+    color: 'black',
+    textDecoration: 'none'
+}
 
 const NavBar = (props) => (
     <Nav>

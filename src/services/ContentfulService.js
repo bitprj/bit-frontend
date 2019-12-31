@@ -1,14 +1,17 @@
 import { createClient } from 'contentful';
 
 const client = createClient({
+    // personal space
+    // space: 'pzyvtdq9rd3m',
+    // accessToken: 'KALCGtRrMBhwxFWoocht9nVHhkRBGR0xkbDcnT6OXIU'
+
+    // bit space
     space: 'aq4puo31m564',
     accessToken: 'JEvRcauV8GVKsh3-VSW3Klc9WSnUKNzsvcfwRb6A9F4'
 })
 
 class ContentfulService {
     async getCard(cardID) {
-        // console.log('cardID', cardID);
-        // return client.getEntries({ content_type: 'card' });
         return client.getEntry(cardID).then(response => response.fields);
     }
 
@@ -36,7 +39,6 @@ class ContentfulService {
 
     async getEachStep(stepID) {
         return client.getEntry(stepID).then(response => response.fields);
-        // return client.getEntry(stepID);
     }
 
     async getHint(hintID) {

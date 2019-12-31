@@ -49,8 +49,8 @@ class Learn extends Component {
         this.setState({
             labID: '12345',
             labTitle: 'Intro to Programming',
-            cardIDs: ['5PKQgXzL92klwCqFkjdgSO', '1JwAQjfrrVPrX5vTTssXuk', '1jxXINtvTvhZXHT8eDiKPK'],
-            cardTitles: ['Card 0', 'Card 1', 'Card 2', 'Card 3'],
+            cardIDs: ['5PKQgXzL92klwCqFkjdgSO', '1JwAQjfrrVPrX5vTTssXuk', '1jxXINtvTvhZXHT8eDiKPK', '5SFmjFkBTVdDyiSt32slHU'],
+            cardTitles: ['Card 1', 'Card 2', 'Card 3', 'Card 4'],
             currentCardID: '5PKQgXzL92klwCqFkjdgSO',
             currentCard: 0,
             lastCardUnlocked: 0
@@ -106,7 +106,6 @@ class Learn extends Component {
                     </Grid>
 
                     <Grid item xs={9} sm={7}>
-                        {this.state.currentCard} - {this.state.lastCardUnlocked}
                         <Content cardID={this.state.currentCardID} click={this.moveClickedHandler} />
                     </Grid>
 
