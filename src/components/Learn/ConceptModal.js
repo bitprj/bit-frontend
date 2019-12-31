@@ -26,12 +26,6 @@ const ConceptModal = (props) => {
         setOpen(false);
     };
 
-    const imgCenter = {
-        display: 'block',
-        margin: '3rem auto',
-        width: '50%'
-    }
-
     return (
         <div>
             <button gems={props.gems} onClick={modalOpenedHandler}>Concept</button>
@@ -49,12 +43,9 @@ const ConceptModal = (props) => {
                 }}>
 
                 <Fade in={open}>
-                    <Concept>
-                        {/* <h2 id="transition-modal-title">Unlock a Hint</h2>
+                    <Concept />
+                    {/* <h2 id="transition-modal-title">Unlock a Hint</h2>
                         <p id="transition-modal-description">react-transition-group animates me.</p> */}
-
-
-                    </Concept>
                 </Fade>
             </Modal>
         </div>

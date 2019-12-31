@@ -50,8 +50,6 @@ const Dot = styled.div`
 `
 
 const img_style = {
-    // maxWidth: '90%',
-    // maxHeight: '500px',
     height: '100%',
     width: '100%',
     display: 'block',
@@ -72,7 +70,7 @@ class Concept extends Component {
     }
 
     componentDidMount() {
-        this.service.getConceptContent('1gzvGY8AuGVhyxwAirTDrZ').then(data => {
+        this.service.getConcept('1gzvGY8AuGVhyxwAirTDrZ').then(data => {
             this.setState({
                 slides: data
             })
@@ -85,7 +83,7 @@ class Concept extends Component {
             renderSlides: this.state.slides.map((slide, index) => {
                 return (
                     (this.state.currentSlide === index) ?
-                        <Slide key={`slide - ${slide.id} `}>
+                        <Slide key={`slide-${slide.id} `}>
                             {slide.title}
                         </Slide>
                         : null
@@ -103,6 +101,7 @@ class Concept extends Component {
         };
     }
 
+    // give keys to these below
     render() {
         return (
             <Window>
@@ -113,7 +112,7 @@ class Concept extends Component {
                                 <Grid container spacing={0}>
                                     <Grid item xs={6}>
                                         <h3>{slide.title}</h3>
-                                        <RichTextToReact document={slide.content} options={RenderingOptions} />
+                                        <RichTextToReact key={`concept-${slide.id}`} document={slide.content} options={RenderingOptions} />
 
                                         <ControlSection>
                                             <Button buttonState="< Prev" class_name="button" click={() => this.moveClickedHandler(-1)} />
@@ -132,10 +131,9 @@ class Concept extends Component {
 
                                     <Grid item xs={6}>
                                         {slide.image ?
-                                            <img src={slide.image.fields.file.url} style={img_style} />
+                                            <img src={slide.image.fields.file.url} style={img_style} alt={slide.image.fields.title} />
                                             : null}
                                         {slide.snippet ?
-                                            // <div>{JSON.stringify(slide.snippet)}</div>
                                             <ReactMarkdown source={slide.snippet} renderers={{ code: CodeBlock }} />
                                             : null}
                                     </Grid>

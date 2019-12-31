@@ -6,8 +6,6 @@ import { RenderingOptions } from '../../services/RenderingOptions';
 import ContentfulService from '../../services/ContentfulService';
 
 import Button from '../shared/Button'
-
-// import Concept from './Concept';
 import ConceptModal from './ConceptModal';
 
 const ButtonSection = styled.div`
@@ -15,32 +13,53 @@ const ButtonSection = styled.div`
 `
 
 class Content extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
-            content: {}
+            cardData: {}
         }
+        this.switchContent = this.switchContent.bind(this);
+        this.moveToPrev = this.moveToPrev.bind(this);
+        this.moveToNext = this.moveToNext.bind(this);
 
         this.service = new ContentfulService();
     }
 
     componentDidMount() {
-        this.service.getCardContent('5PKQgXzL92klwCqFkjdgSO').then(response => {
+        this.switchContent();
+    }
+
+    switchContent() {
+        this.service.getCard(this.props.cardID).then(data => {
+            // console.log('data', data)
             this.setState({
-                content: response.content
+                cardData: data.content
             })
         })
+    }
+
+    moveToPrev = () => {
+        this.props.click(-1);
+        this.switchContent();
+    }
+
+    moveToNext = () => {
+        this.props.click(1);
+        this.switchContent();
     }
 
     render() {
         return (
             <div>
-                <RichTextToReact document={this.state.content} options={RenderingOptions} />
-
+                {this.props.cardID}
                 <ButtonSection>
-                    <Button buttonState="< Prev" class_name="button" click={() => this.props.click(-1)} />
-                    <Button buttonState="Next >" class_name="button invert" click={() => this.props.click(1)} />
+                    <Button buttonState="< Prev" class_name="button" click={this.moveToPrev} />
+                    <Button buttonState="Next >" class_name="button invert" click={this.moveToNext} />
                 </ButtonSection>
+                <h1>{this.state.title}</h1>
+                <RichTextToReact document={this.state.cardData} options={RenderingOptions} />
+
+
                 <ConceptModal />
             </div>
         )

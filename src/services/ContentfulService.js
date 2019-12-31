@@ -6,15 +6,16 @@ const client = createClient({
 })
 
 class ContentfulService {
-    async getCardContent(cardID) {
+    async getCard(cardID) {
+        // console.log('cardID', cardID);
         // return client.getEntries({ content_type: 'card' });
         return client.getEntry(cardID).then(response => response.fields);
     }
 
-    async getSteps(steps) {
+    async getAllSteps(steps) {
         const slides = await Promise.all(steps.map(async stepInfo => {
             const stepID = stepInfo.sys.id;
-            const slide = await this.getStepContent(stepID).then(step => ({
+            const slide = await this.getEachStep(stepID).then(step => ({
                 title: step.title,
                 content: step.content,
                 image: step.image,
@@ -26,16 +27,29 @@ class ContentfulService {
         return slides
     }
 
-    async getConceptContent(conceptID) {
+    async getConcept(conceptID) {
         return client.getEntry(conceptID)
             .then(response => {
-                return this.getSteps(response.fields.steps).then(slides => slides);
+                return this.getAllSteps(response.fields.steps).then(slides => slides);
             });
     }
 
-    async getStepContent(stepID) {
-        return client.getEntry(stepID).then(response => response.fields)
+    async getEachStep(stepID) {
+        return client.getEntry(stepID).then(response => response.fields);
         // return client.getEntry(stepID);
+    }
+
+    async getHint(hintID) {
+        return client.getEntry(hintID)
+            .then(response => {
+                // console.log('res', response);
+                return this.getAllSteps(response.fields.steps).then(steps => {
+                    return {
+                        title: response.fields.title,
+                        steps: steps
+                    }
+                });
+            });
     }
 }
 

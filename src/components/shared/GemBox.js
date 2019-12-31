@@ -6,11 +6,14 @@ const RenderedGemBox = styled.div`
     text-align: center;
     border-radius: 30px;
     padding: .2rem .6rem;
-    background-color: salmon;
+    background-color: white;
+    color: black;
+    width: 60px;
     float: right;
+    vertical-align: middle;
     transition: background .2s ease, color .2s ease, box-shadow .2s ease, opacity .2s ease;
     &:hover {
-        background-color: rgb(242, 104, 100);
+        background-color: #F0F8FF;
     }
 `
 

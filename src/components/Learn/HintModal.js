@@ -38,7 +38,12 @@ const HintModal = (props) => {
         setOpen(false);
     };
 
-    const imgCenter = {
+    const unlockAndCloseHandler = () => {
+        props.unlockHint();
+        setOpen(false);
+    }
+
+    const img_center = {
         display: 'block',
         margin: '3rem auto',
         width: '50%'
@@ -46,7 +51,7 @@ const HintModal = (props) => {
 
     return (
         <div>
-            <GemBox gems={props.gems} click={modalOpenedHandler} />
+            <GemBox gems={props.gems} type={'Hint'} click={modalOpenedHandler} />
 
             <Modal
                 // aria-labelledby="transition-modal-title"
@@ -70,10 +75,10 @@ const HintModal = (props) => {
                             <strong>{props.gems} Gems</strong> to unlock this hint?
                         </p>
 
-                        <img style={imgCenter} src='https://gamepedia.cursecdn.com/zelda_gamepedia_en/thumb/f/fb/Cielaph.png/302px-Cielaph.png?version=11c2e049da27d8f6e1c0a758077857c3' />
+                        <img alt='some alt here' style={img_center} src='https://gamepedia.cursecdn.com/zelda_gamepedia_en/thumb/f/fb/Cielaph.png/302px-Cielaph.png?version=11c2e049da27d8f6e1c0a758077857c3' />
 
                         <Button buttonState="< Cancel" class_name="button" click={modalClosedHandler} />
-                        <Button buttonState="Unlock" class_name="button invert" click={props.unlockClick} />
+                        <Button buttonState="Unlock" class_name="button invert" click={unlockAndCloseHandler} />
                     </ModalCard>
                 </Fade>
             </Modal>
