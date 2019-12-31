@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import CodeBlock from '../components/shared/CodeBlock';
 
 const Heading = styled.div`
-    color: red;
+    color: black;
 `
 
 const img_style = {
