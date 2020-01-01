@@ -1,6 +1,6 @@
 import { createClient } from 'contentful';
 
-const client = createClient({
+export const client = createClient({
     // personal space
     // space: 'pzyvtdq9rd3m',
     // accessToken: 'KALCGtRrMBhwxFWoocht9nVHhkRBGR0xkbDcnT6OXIU'

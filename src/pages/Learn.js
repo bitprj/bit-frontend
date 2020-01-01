@@ -50,12 +50,32 @@ class Learn extends Component {
             labID: '12345',
             labTitle: 'Intro to Programming',
             cardIDs: ['5PKQgXzL92klwCqFkjdgSO', '1JwAQjfrrVPrX5vTTssXuk', '1jxXINtvTvhZXHT8eDiKPK', '5SFmjFkBTVdDyiSt32slHU'],
-            cardTitles: ['Card 1', 'Card 2', 'Card 3', 'Card 4'],
+            cardTitles: ['Card 1', 'Card 2', 'Card 3', 'Card 4',],
             currentCardID: '5PKQgXzL92klwCqFkjdgSO',
             currentCard: 0,
             lastCardUnlocked: 0
         })
+
+        // console.log(this.state.cardIDs);
+
+        // const cardTitles = this.service.getCardTitles(this.state.cardIDs);
+        // // console.log(cardTitles);
+        // this.setState({
+        //     cardTitles: cardTitles
+        // })
     }
+
+    // componentDidUpdate(prevProps) {
+    //     if (this.props.cardIDs !== prevProps.cardIDs) {
+    //         console.log(this.state.cardIDs);
+
+    //         const cardTitles = this.service.getCardTitles(this.state.cardIDs);
+    //         // console.log(cardTitles);
+    //         this.setState({
+    //             cardTitles: cardTitles
+    //         })
+    //     }
+    // }
 
     cardTitleChangedHandler = (event) => {
         this.setState({ cardTitle: event.target.value });
@@ -105,11 +125,11 @@ class Learn extends Component {
                             click={this.stepClickedHandler} />
                     </Grid>
 
-                    <Grid item xs={9} sm={7}>
+                    <Grid item xs={9} sm={6}>
                         <Content cardID={this.state.currentCardID} click={this.moveClickedHandler} />
                     </Grid>
 
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} sm={4}>
                         <HintSection changeTotalGems={this.changeTotalGems} />
                     </Grid>
                 </Grid>

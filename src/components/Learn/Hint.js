@@ -21,6 +21,7 @@ const HintCard = styled.div`
     overflow: hidden;
     margin-bottom: .5rem;
     background-color: ${props => props.locked ? '#000033' : 'white'};
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     color: ${props => props.locked ? 'white' : 'black'};
 `
 
@@ -34,9 +35,12 @@ class Hint extends Component {
             gems: -50, // get from API call
             isLocked: true,
             parent: null,
-            steps: []
+            steps: [],
+            isExpanded: false,
         }
         this.unlockHint = this.unlockHint.bind(this);
+        this.expandHint = this.expandHint.bind(this);
+        this.shrinkHint = this.shrinkHint.bind(this);
 
         this.service = new ContentfulService();
         // this.service = new LearnService();
@@ -73,6 +77,20 @@ class Hint extends Component {
         })
     }
 
+    expandHint = () => {
+        this.props.expandHint(this.state.id);
+        this.setState({
+            isExpanded: true
+        })
+    }
+
+    shrinkHint = () => {
+        this.props.shrinkHint(this.state.id);
+        this.setState({
+            isExpanded: false
+        })
+    }
+
     render() {
         const steps = this.state.steps.map((step) => {
             return (
@@ -94,37 +112,38 @@ class Hint extends Component {
 
         return (
             <div>
-                {
-                    this.state.isLocked ?
-                        <HintCard locked={this.state.isLocked}>
-                            <Grid container spacing={0}>
-                                <Grid item xs={8} >
-                                    <div>{this.state.title}</div>
-                                </Grid>
-
-                                <Grid item xs={4} >
-                                    <HintModal
-                                        hintID={this.state.id}
-                                        gems={this.state.gems}
-                                        unlockHint={this.unlockHint} />
-                                </Grid>
+                {this.state.isLocked ?
+                    <HintCard locked={this.state.isLocked}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={8} >
+                                <div>{this.state.title}</div>
                             </Grid>
 
-                        </HintCard>
-                        :
-                        <HintCard locked={this.state.isLocked}>
-                            <Grid container spacing={0}>
-                                <Grid item xs={8} >
-                                    <div>{this.state.title}</div>
-                                </Grid>
-
-                                <Grid item xs={4} >
-                                    <MoreVertIcon />
-                                </Grid>
+                            <Grid item xs={4} >
+                                <HintModal
+                                    hintID={this.state.id}
+                                    gems={this.state.gems}
+                                    unlockHint={this.unlockHint} />
                             </Grid>
-                            {steps}
-                        </HintCard>
-                }
+                        </Grid>
+
+                    </HintCard>
+                    :
+                    <HintCard locked={this.state.isLocked}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={8} >
+                                <div>{this.state.title}</div>
+                            </Grid>
+
+                            <Grid item xs={4} >
+                                <MoreVertIcon />
+                                {this.state.isExpanded ?
+                                    <button onClick={this.shrinkHint}>back</button>
+                                    : <button onClick={this.expandHint}>go</button>}
+                            </Grid>
+                        </Grid>
+                        {/* {steps} */}
+                    </HintCard>}
             </div >
         )
     }
