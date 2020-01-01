@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 
 import { RenderingOptions } from '../../services/RenderingOptions';
 
+import Button from '../shared/Button';
 import CodeBlock from '../shared/CodeBlock';
 import HintModal from './HintModal';
 
@@ -25,6 +26,10 @@ const HintCard = styled.div`
     color: ${props => props.locked ? 'white' : 'black'};
 `
 
+const ButtonSection = styled.div`
+    text-align: right;
+`
+
 class Hint extends Component {
     constructor() {
         super();
@@ -37,10 +42,12 @@ class Hint extends Component {
             parent: null,
             steps: [],
             isExpanded: false,
+            currentStep: 0
         }
         this.unlockHint = this.unlockHint.bind(this);
         this.expandHint = this.expandHint.bind(this);
         this.shrinkHint = this.shrinkHint.bind(this);
+        this.showNextStep = this.showNextStep.bind(this);
 
         this.service = new ContentfulService();
         // this.service = new LearnService();
@@ -48,25 +55,13 @@ class Hint extends Component {
 
     componentDidMount() {
         this.service.getHint(this.props.id).then(data => {
-            // console.log(data)
             this.setState({
                 id: this.props.id,
                 title: data.title,
+                // isLocked: data.isLocked,
                 steps: data.steps
             })
-            // console.log(this.state.steps);
         })
-
-        // this.service.getHint(1).then(data => {
-        //     this.setState({
-        //         id: data.id,
-        //         title: data.name,
-        //         difficulty: data.difficulty,
-        //         gems: data.gems,
-        //         content: data.content,
-        //         steps: data.steps
-        //     })
-        // })
     }
 
     unlockHint = () => {
@@ -91,23 +86,45 @@ class Hint extends Component {
         })
     }
 
+    showNextStep = (index) => {
+        const newSteps = [...this.state.steps];
+        newSteps[index + 1].isShown = true;
+        this.setState({
+            steps: newSteps,
+            currentStep: index + 1
+        })
+    }
+
     render() {
-        const steps = this.state.steps.map((step) => {
-            return (
+        const steps = this.state.steps.map((step, index) => {
+            const renderedStep = (step.isShown && this.state.isExpanded) ?
                 <div>
-                    <RichTextToReact key={`hint-${this.state.id}`} document={step.content} options={RenderingOptions} />
-                    {
-                        step.image ?
-                            <img src={step.image.fields.file.url} alt={step.image.fields.title} />
-                            : null
-                    }
-                    {
-                        step.snippet ?
-                            <ReactMarkdown source={step.snippet} renderers={{ code: CodeBlock }} />
-                            : null
-                    }
+                    <HintCard key={`step-${step.title}`} locked={this.state.isLocked}>
+                        <RichTextToReact key={`hint-${this.state.id}`}
+                            document={step.content}
+                            options={RenderingOptions} />
+
+                        {step.image ?
+                            <img src={step.image.fields.file.url}
+                                alt={step.image.fields.title} />
+                            : null}
+                        {step.snippet ?
+                            <ReactMarkdown source={step.snippet}
+                                renderers={{ code: CodeBlock }} />
+                            : null}
+                    </HintCard>
+
+                    {(index < this.state.steps.length - 1 && index === this.state.currentStep) ?
+                        <ButtonSection>
+                            <Button buttonState="NextHint"
+                                class_name="button invert"
+                                index={index}
+                                click={this.showNextStep} />
+                        </ButtonSection>
+                        : null}
                 </div>
-            );
+                : null;
+            return renderedStep;
         })
 
         return (
@@ -128,22 +145,23 @@ class Hint extends Component {
                         </Grid>
 
                     </HintCard>
-                    :
-                    <HintCard locked={this.state.isLocked}>
-                        <Grid container spacing={0}>
-                            <Grid item xs={8} >
-                                <div>{this.state.title}</div>
-                            </Grid>
+                    : (<div>
+                        <HintCard locked={this.state.isLocked}>
+                            <Grid container spacing={0}>
+                                <Grid item xs={8} >
+                                    <div>{this.state.title}</div>
+                                </Grid>
 
-                            <Grid item xs={4} >
-                                <MoreVertIcon />
-                                {this.state.isExpanded ?
-                                    <button onClick={this.shrinkHint}>back</button>
-                                    : <button onClick={this.expandHint}>go</button>}
+                                <Grid item xs={4} >
+                                    <MoreVertIcon />
+                                    {this.state.isExpanded ?
+                                        <button onClick={this.shrinkHint}>back</button>
+                                        : <button onClick={this.expandHint}>go</button>}
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        {/* {steps} */}
-                    </HintCard>}
+                        </HintCard>
+                        {steps}
+                    </div>)}
             </div >
         )
     }

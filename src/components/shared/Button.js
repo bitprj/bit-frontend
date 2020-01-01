@@ -46,6 +46,12 @@ const Button = (props) => {
         return (
             <CheckIcon color="#2BDB66" check_width="32" check_height="32" />
         )
+    } else if (props.buttonState === "NextHint") {
+        return (
+            <RenderedButton className={props.class_name} onClick={() => props.click(props.index)}>
+                >
+            </RenderedButton>
+        )
     } else {
         return (
             <RenderedButton className={props.class_name} onClick={props.click}>
