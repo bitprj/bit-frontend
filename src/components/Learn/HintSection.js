@@ -29,14 +29,14 @@ class HintSection extends Component {
     render() {
         const hints = this.state.hintIDs.map(hintID => {
             const currentHint = this.state.currentHint;
-            const renderedHint = (!currentHint || hintID === currentHint) ?
+            const display = (!currentHint || hintID === currentHint) ? true : false;
+            const renderedHint = (
                 <Hint key={`hint-${hintID}`}
                     id={hintID}
+                    display={display}
                     changeTotalGems={this.props.changeTotalGems}
                     expandHint={this.expandHint}
-                    shrinkHint={this.shrinkHint} />
-                : null;
-
+                    shrinkHint={this.shrinkHint} />)
             return renderedHint;
         })
 

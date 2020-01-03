@@ -19,7 +19,7 @@ class ContentfulService {
         const slides = await Promise.all(steps.map(async (stepInfo, index) => {
             const stepID = stepInfo.sys.id;
             const slide = await this.getEachStep(stepID).then(step => ({
-                title: step.title,
+                heading: step.heading,
                 content: step.content,
                 image: step.image,
                 snippet: step.snippet
@@ -48,7 +48,7 @@ class ContentfulService {
                 // console.log('res', response);
                 return this.getAllSteps(response.fields.steps).then(steps => {
                     return {
-                        title: response.fields.title,
+                        title: response.fields.name,
                         // isLocked: response.fields.isLocked,
                         steps: steps
                     }

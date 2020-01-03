@@ -109,7 +109,9 @@ class Concept extends Component {
         this.service.getConcept('1gzvGY8AuGVhyxwAirTDrZ').then(data => {
             this.setState({
                 slides: data
-            })
+            });
+            console.log(data);
+
         })
     }
 
@@ -120,7 +122,7 @@ class Concept extends Component {
                 return (
                     (this.state.currentSlide === index) ?
                         <Slide key={`slide-${slide.id} `}>
-                            {slide.title}
+                            {slide.heading}
                         </Slide>
                         : null
                 )
@@ -147,7 +149,7 @@ class Concept extends Component {
                             <Slide key={`slide-${slide.id}`}>
                                 <ResponsivePanel>
                                     <StyledTextArea>
-                                        <h3>{slide.title}</h3>
+                                        <h3>{slide.heading}</h3>
                                         <RichTextToReact key={`concept-${slide.id}`} document={slide.content} options={RenderingOptions} />
                                     </StyledTextArea>
                                     <ControlSection>

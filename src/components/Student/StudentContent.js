@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Activity from './Activity';
 import Curriculum from './Curriculum';
 import MenuBar from './MenuBar';
-import Progress from './Progress';
+import Progress from './Progress/Progress';
 import Profile from './Profile';
 
 import StudentService from '../../services/StudentService';

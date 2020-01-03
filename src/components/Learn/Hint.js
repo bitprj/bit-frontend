@@ -24,9 +24,10 @@ const HintCard = styled.div`
     background-color: ${props => props.locked ? '#000033' : 'white'};
     transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     color: ${props => props.locked ? 'white' : 'black'};
+    display: ${props => props.display ? 'block' : 'none'};
 `
 
-const ButtonSection = styled.div`
+const ExpandWrapper = styled.div`
     text-align: right;
 `
 
@@ -55,6 +56,8 @@ class Hint extends Component {
 
     componentDidMount() {
         this.service.getHint(this.props.id).then(data => {
+            console.log(data);
+
             this.setState({
                 id: this.props.id,
                 title: data.title,
@@ -97,9 +100,11 @@ class Hint extends Component {
 
     render() {
         const steps = this.state.steps.map((step, index) => {
+            // const renderedStep = JSON.stringify(step.isShown && this.state.isExpanded)
             const renderedStep = (step.isShown && this.state.isExpanded) ?
                 <div>
-                    <HintCard key={`step-${step.title}`} locked={this.state.isLocked}>
+                    <HintCard key={`step-${step.title}`} display={step.isShown}>
+                        <h3>{step.heading}</h3>
                         <RichTextToReact key={`hint-${this.state.id}`}
                             document={step.content}
                             options={RenderingOptions} />
@@ -114,14 +119,20 @@ class Hint extends Component {
                             : null}
                     </HintCard>
 
-                    {(index < this.state.steps.length - 1 && index === this.state.currentStep) ?
-                        <ButtonSection>
+                    <ExpandWrapper>
+                        {(index < this.state.steps.length - 1 && index === this.state.currentStep) ?
                             <Button buttonState="NextHint"
                                 class_name="button invert"
                                 index={index}
                                 click={this.showNextStep} />
-                        </ButtonSection>
-                        : null}
+                            : null}
+
+                        {(index === this.state.steps.length - 1) ?
+                            <Button buttonState="<"
+                                class_name="button invert"
+                                click={this.shrinkHint} />
+                            : null}
+                    </ExpandWrapper>
                 </div>
                 : null;
             return renderedStep;
@@ -130,7 +141,7 @@ class Hint extends Component {
         return (
             <div>
                 {this.state.isLocked ?
-                    <HintCard locked={this.state.isLocked}>
+                    <HintCard locked={this.state.isLocked} display={this.props.display}>
                         <Grid container spacing={0}>
                             <Grid item xs={8} >
                                 <div>{this.state.title}</div>
@@ -146,17 +157,19 @@ class Hint extends Component {
 
                     </HintCard>
                     : (<div>
-                        <HintCard locked={this.state.isLocked}>
+                        <HintCard locked={this.state.isLocked} display={this.props.display}>
                             <Grid container spacing={0}>
                                 <Grid item xs={8} >
                                     <div>{this.state.title}</div>
                                 </Grid>
 
                                 <Grid item xs={4} >
-                                    <MoreVertIcon />
-                                    {this.state.isExpanded ?
-                                        <button onClick={this.shrinkHint}>back</button>
-                                        : <button onClick={this.expandHint}>go</button>}
+                                    <ExpandWrapper>
+                                        <MoreVertIcon onClick={this.expandHint} />
+                                        {/* {this.state.isExpanded ?
+                                            <button onClick={this.shrinkHint}>back</button>
+                                            : <button onClick={this.expandHint}>go</button>} */}
+                                    </ExpandWrapper>
                                 </Grid>
                             </Grid>
                         </HintCard>

@@ -20,12 +20,18 @@ const LabCard = styled.div`
     color: white;
 `
 
+const icon_style = {
+    margin: '-8px',
+    height: '15px',
+    backgroundColor: 'white'
+}
+
 const Navigation = (props) => {
     const currentCardTitle = props.cardTitles[props.currentCard];
 
     const steps = props.cardTitles.map((cardTitle, index) => {
         const selected = (index === props.currentCard) ? "selected" : null;
-        const check = <CheckIcon color="#2BDB66" check_width="16" check_height="16" />;
+        const check = <CheckIcon color="#2BDB66" check_width="16" check_height="16" icon_style={icon_style} />;
         const dot = <span className="dot"></span>;
         const icon = (index < props.lastCardUnlocked) ? check : dot;
 

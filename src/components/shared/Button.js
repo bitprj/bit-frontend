@@ -42,22 +42,24 @@ const RenderedButton = styled.div`
 `
 
 const Button = (props) => {
-    if (props.buttonState === "Check") {
-        return (
-            <CheckIcon color="#2BDB66" check_width="32" check_height="32" />
-        )
-    } else if (props.buttonState === "NextHint") {
-        return (
-            <RenderedButton className={props.class_name} onClick={() => props.click(props.index)}>
-                >
-            </RenderedButton>
-        )
-    } else {
-        return (
-            <RenderedButton className={props.class_name} onClick={props.click}>
-                {props.buttonState}
-            </RenderedButton>
-        )
+    switch (props.buttonState) {
+        case 'Check':
+            return <CheckIcon color="#2BDB66" check_width="32" check_height="32" />
+        case 'NextHint':
+            return (
+                <RenderedButton className={props.class_name} onClick={() => props.click(props.index)}>
+                    >
+                </RenderedButton>
+            )
+        case '':
+            return true;
+
+        default:
+            return (
+                <RenderedButton className={props.class_name} onClick={props.click}>
+                    {props.buttonState}
+                </RenderedButton>
+            )
     }
 }
 

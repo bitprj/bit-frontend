@@ -53,7 +53,8 @@ class Learn extends Component {
             cardTitles: ['Card 1', 'Card 2', 'Card 3', 'Card 4',],
             currentCardID: '5PKQgXzL92klwCqFkjdgSO',
             currentCard: 0,
-            lastCardUnlocked: 0
+            lastCardUnlocked: 0,
+            totalGems: 256
         })
 
         // console.log(this.state.cardIDs);
