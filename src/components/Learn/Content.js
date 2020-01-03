@@ -53,8 +53,14 @@ class Content extends Component {
                 <RichTextToReact document={this.state.cardData} options={RenderingOptions} />
 
                 <ButtonSection>
-                    <Button buttonState="< Prev" class_name="button" click={this.moveToPrev} />
-                    <Button buttonState="Next >" class_name="button invert" click={this.moveToNext} />
+                    {!this.props.firstCard ?
+                        <Button buttonState="< Prev" class_name="button" click={this.moveToPrev} />
+                        : null
+                    }
+                    {!this.props.lastCard ?
+                        <Button buttonState="Next >" class_name="button invert" click={this.moveToNext} />
+                        : <Button buttonState="Submit" class_name="button invert" />
+                    }
                 </ButtonSection>
 
                 <ConceptModal />

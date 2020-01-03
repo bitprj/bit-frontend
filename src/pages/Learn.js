@@ -113,6 +113,8 @@ class Learn extends Component {
     }
 
     render() {
+        const firstCard = this.state.currentCard === 0;
+        const lastCard = this.state.currentCard === this.state.cardIDs.length - 1;
         return (
             <LearnSection>
                 <Grid container spacing={2}>
@@ -127,7 +129,11 @@ class Learn extends Component {
                     </Grid>
 
                     <Grid item xs={9} sm={6}>
-                        <Content cardID={this.state.currentCardID} click={this.moveClickedHandler} />
+                        <Content
+                            cardID={this.state.currentCardID}
+                            click={this.moveClickedHandler}
+                            firstCard={firstCard}
+                            lastCard={lastCard} />
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
