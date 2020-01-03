@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import CheckIcon from '../../assets/icons/check';
-import GemBox from '../shared/GemBox';
+import CheckIcon from '../../../assets/icons/check';
+import GemBox from '../../shared/GemBox';
 
 const Course = styled.div`
     margin: 0 0 0 15%;

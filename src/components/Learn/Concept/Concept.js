@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import RichTextToReact from 'rich-text-to-react';
 
 import ReactMarkdown from 'react-markdown';
-import CodeBlock from '../shared/CodeBlock';
+import CodeBlock from '../../shared/CodeBlock';
 
-import Button from '../shared/Button'
-import media from '../shared/media'
+import Button from '../../shared/Button'
+import media from '../../shared/media'
 
-import { RenderingOptions } from '../../services/RenderingOptions';
-import ContentfulService from '../../services/ContentfulService';
+import { RenderingOptions } from '../../../services/RenderingOptions';
+import ContentfulService from '../../../services/ContentfulService';
 
 const Window = styled.div`
     padding: 0px;
@@ -149,7 +149,7 @@ class Concept extends Component {
                             <Slide key={`slide-${slide.id}`}>
                                 <ResponsivePanel>
                                     <StyledTextArea>
-                                        <h3>{slide.heading}</h3>
+                                        <h3>{slide.heading} - {slide.id}</h3>
                                         <RichTextToReact key={`concept-${slide.id}`} document={slide.content} options={RenderingOptions} />
                                     </StyledTextArea>
                                     <ControlSection>

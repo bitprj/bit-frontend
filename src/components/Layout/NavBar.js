@@ -14,6 +14,7 @@ const Nav = styled.div`
     justify-content: space-between;
     flex: 1;
     position: relative;
+    height: 40px;
 `
 
 const styledLink = {
@@ -24,7 +25,7 @@ const styledLink = {
 
 const NavBar = (props) => (
     <Nav>
-        <Link style={{ color: 'black', textDecoration: 'none' }} to={"/"}>BitProject</Link>
+        <Link style={styledLink} to={"/"}>BitProject</Link>
         {(props.userType === "Student") ? <Link style={styledLink} to={"/learn"}>Learn</Link> : null}
         {(props.userType === "Student") ? <Link style={styledLink} to={"/student"}>Student</Link> : null}
         {(props.userType === "Visitor") ? <Link style={styledLink} to={"/login"}>Login</Link> : <Link style={styledLink} to={"/logout"}>Logout</Link>}

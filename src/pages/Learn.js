@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 
-import Content from '../components/Learn/Content';
-import HintSection from '../components/Learn/HintSection';
-import Navigation from '../components/Learn/Navigation';
+import Content from '../components/Learn/Content/Content';
+import HintSection from '../components/Learn/Hint/HintSection';
+import Navigation from '../components/Learn/Navigation/Navigation';
 
 import LearnService from '../services/LearnService';
 
@@ -115,6 +115,7 @@ class Learn extends Component {
     render() {
         const firstCard = this.state.currentCard === 0;
         const lastCard = this.state.currentCard === this.state.cardIDs.length - 1;
+
         return (
             <LearnSection>
                 <Grid container spacing={2}>
