@@ -51,6 +51,19 @@ const Button = (props) => {
                     >
                 </RenderedButton>
             )
+        case 'PrevCard':
+            const prev = '< Prev';
+            return (
+                <RenderedButton className={props.class_name} onClick={() => props.moveToPrev(-1)}>
+                    {prev}
+                </RenderedButton>
+            )
+        case 'NextCard':
+            return (
+                <RenderedButton className={props.class_name} onClick={() => props.moveToNext(1)}>
+                    Next >
+                    </RenderedButton>
+            )
         case '':
             return true;
 

@@ -5,18 +5,18 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import RichTextToReact from 'rich-text-to-react';
 import ReactMarkdown from 'react-markdown';
 
-import { RenderingOptions } from '../../services/RenderingOptions';
+import { RenderingOptions } from '../../../services/RenderingOptions';
 
-import Button from '../shared/Button';
-import CodeBlock from '../shared/CodeBlock';
+import Button from '../../shared/Button';
+import CodeBlock from '../../shared/CodeBlock';
 import HintModal from './HintModal';
 
 // import LearnService from '../../services/LearnService';
-import ContentfulService from '../../services/ContentfulService';
+import ContentfulService from '../../../services/ContentfulService';
 
 const HintCard = styled.div`
     position: relative;
-    padding: .65rem;
+    padding: ${props => props.step ? '.65rem' : '1.5rem'};
     border-radius: 7px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     overflow: hidden;
@@ -29,6 +29,10 @@ const HintCard = styled.div`
 
 const ExpandWrapper = styled.div`
     text-align: right;
+`
+
+const StepHeading = styled.div`
+    font-weight: bold;
 `
 
 class Hint extends Component {
@@ -103,8 +107,8 @@ class Hint extends Component {
             // const renderedStep = JSON.stringify(step.isShown && this.state.isExpanded)
             const renderedStep = (step.isShown && this.state.isExpanded) ?
                 <div>
-                    <HintCard key={`step-${step.title}`} display={step.isShown}>
-                        <h3>{step.heading}</h3>
+                    <HintCard key={`step-${step.title}`} display={step.isShown} step={true}>
+                        <StepHeading>{step.heading}</StepHeading>
                         <RichTextToReact key={`hint-${this.state.id}`}
                             document={step.content}
                             options={RenderingOptions} />
@@ -166,9 +170,6 @@ class Hint extends Component {
                                 <Grid item xs={4} >
                                     <ExpandWrapper>
                                         <MoreVertIcon onClick={this.expandHint} />
-                                        {/* {this.state.isExpanded ?
-                                            <button onClick={this.shrinkHint}>back</button>
-                                            : <button onClick={this.expandHint}>go</button>} */}
                                     </ExpandWrapper>
                                 </Grid>
                             </Grid>
