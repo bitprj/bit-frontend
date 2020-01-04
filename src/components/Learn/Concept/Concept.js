@@ -74,6 +74,7 @@ const ResponsivePanel = styled.div`
     ${media.tablet`min-width: 80vw;`};
     ${media.phone`min-width: 80vw;`};
 `
+
 const ResponsiveAssets = styled.div`
     display: flex;
     background-color: rgb(43, 43, 43);
@@ -93,11 +94,11 @@ const StyledTextArea = styled.div`
     padding: 10px;
 `
 
-
 class Concept extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
+            id: props.conceptID,
             slides: [],
             currentSlide: 0,
         }
@@ -106,12 +107,10 @@ class Concept extends Component {
     }
 
     componentDidMount() {
-        this.service.getConcept('1gzvGY8AuGVhyxwAirTDrZ').then(data => {
+        this.service.getConcept(this.state.id).then(data => {
             this.setState({
                 slides: data
             });
-            console.log(data);
-
         })
     }
 

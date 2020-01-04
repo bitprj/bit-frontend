@@ -17,23 +17,28 @@ class Content extends Component {
     constructor(props) {
         super();
         this.state = {
+            cardID: null,
+            conceptID: props.conceptID,
             cardData: {}
         }
-        this.switchContent = this.switchContent.bind(this);
+        this.switchCard = this.switchCard.bind(this);
 
         this.service = new ContentfulService();
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.cardID !== prevProps.cardID) {
-            this.switchContent(this.props.cardID);
+            this.switchCard(this.props.cardID);
+            this.setState({
+                conceptID: this.props.conceptID
+            })
         }
     }
 
-    switchContent(cardID) {
+    switchCard(cardID) {
         this.service.getCard(cardID).then(data => {
             this.setState({
-                cardData: data.content
+                cardData: data.content,
             })
         })
     }
@@ -56,7 +61,11 @@ class Content extends Component {
                     }
                 </ButtonSection>
 
-                <ConceptModal />
+                {this.state.conceptID ?
+                    <ConceptModal conceptID={this.state.conceptID} />
+                    : null
+                }
+
                 <UploadModal />
             </div>
         )
