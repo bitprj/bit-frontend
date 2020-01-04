@@ -20,8 +20,6 @@ class Content extends Component {
             cardData: {}
         }
         this.switchContent = this.switchContent.bind(this);
-        // this.moveToPrev = this.moveToPrev.bind(this);
-        // this.moveToNext = this.moveToNext.bind(this);
 
         this.service = new ContentfulService();
     }
@@ -39,14 +37,6 @@ class Content extends Component {
             })
         })
     }
-
-    // moveToPrev = () => {
-    //     this.props.click(-1);
-    // }
-
-    // moveToNext = () => {
-    //     this.props.click(1);
-    // }
 
     render() {
         return (
