@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import styled from 'styled-components';
 
-import Card from './LabCard';
-import StatusIcon from '../../shared/StatusIcon';
+import Card from './LabCard'
+import StatusIcon from '../../shared/StatusIcon'
 
 const RenderModuleSection = styled.div`
     margin: 2.5rem auto;
@@ -42,6 +42,17 @@ const ModuleLayout = styled.div`
 `
 
 const ModuleSection = props => {
+
+    const moduleCards = props.moduleContents.map((moduleContent, index) => {
+        return <Card
+            key={moduleContent._id}
+            name={moduleContent.name}
+            image={moduleContent.image}
+            description={moduleContent.description}
+            status={moduleContent.status}
+        />
+    })
+
     return (
         <RenderModuleSection>
             <SectionStatusWrapper>
@@ -56,30 +67,7 @@ const ModuleSection = props => {
             </SectionDescription>
 
             <ModuleLayout>
-                <Card
-                    name="Programming Principles"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                    tempor incididunt ut labore et dolore magna aliqua."
-                    status={props.moduleStatuses[0].status}
-                />
-                <Card
-                    name="Intro to Python"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                    tempor incididunt ut labore et dolore magna aliqua."
-                    status={props.moduleStatuses[1].status}
-                />
-                <Card
-                    name="OOP"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                    tempor incididunt ut labore et dolore magna aliqua."
-                    status={props.moduleStatuses[2].status}
-                />
-                <Card
-                    name="Data Structures"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                    tempor incididunt ut labore et dolore magna aliqua."
-                    status={props.moduleStatuses[3].status}
-                />
+                {moduleCards}
             </ModuleLayout>
         </RenderModuleSection>
     )    

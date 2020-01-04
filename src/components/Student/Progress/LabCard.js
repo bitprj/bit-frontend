@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import BrickWall from '../../../assets/icons/brickwall'
+import GitHub from '../../../assets/icons/github'
+
 import StatusIcon from '../../shared/StatusIcon'
 
 const RenderedCard = styled.div`
@@ -21,7 +23,7 @@ const Name = styled.h3`
 
 const Description = styled.p`
     font-size: 1rem;
-    padding: 0 50px;
+    padding: 0 3.125rem;
 `
 
 const StatusWrapper = styled.div`
@@ -29,20 +31,32 @@ const StatusWrapper = styled.div`
 `
 
 const LabCard = props => {
-    const { status } = props
+
+    const renderAppropriateImage = (imageName, width, height) => {
+        switch (imageName) {
+            case 'brickwall':
+                return <BrickWall color="#FFF" width={width} height={height}/>
+    
+            case 'github': 
+                return <GitHub color="#FFF" width={width} height={height}/>
+    
+            default:
+                return null
+        }
+    }
 
     return (
         <RenderedCard className={props.class_name}>
             <IconWrapper>
-                <BrickWall color="#fff" width="48" />
+                {renderAppropriateImage(props.image, "3rem")}
             </IconWrapper>
             <Name>{props.name}</Name>
             <Description>{props.description}</Description>
             <StatusWrapper>
-                <StatusIcon type={status} />
+                <StatusIcon type={props.status}/>
             </StatusWrapper>
         </RenderedCard>
     );
 }
 
-export default LabCard;
+export default LabCard
