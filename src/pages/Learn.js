@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Content from '../components/Learn/Content/Content';
 import HintSection from '../components/Learn/Hint/HintSection';
 import Navigation from '../components/Learn/Navigation/Navigation';
+// import ConceptModal from '../components/Learn/Concept/ConceptModal';
 
 import LearnService from '../services/LearnService';
 
@@ -18,8 +19,7 @@ class Learn extends Component {
         this.state = {
             labID: null,
             labTitle: '',
-            // cards: null,
-            cardIDs: [],
+            cards: [],
             cardTitles: [],
             currentCard: null,
             lastCardUnlocked: null,
@@ -49,17 +49,32 @@ class Learn extends Component {
         this.setState({
             labID: '12345',
             labTitle: 'Intro to Programming',
-            cardIDs: ['5PKQgXzL92klwCqFkjdgSO', '1JwAQjfrrVPrX5vTTssXuk', '1jxXINtvTvhZXHT8eDiKPK', '5SFmjFkBTVdDyiSt32slHU'],
-            cardTitles: ['Card 1', 'Card 2', 'Card 3', 'Card 4',],
+            cards: [
+                {
+                    cardID: '5PKQgXzL92klwCqFkjdgSO',
+                    conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
+                },
+                {
+                    cardID: '1JwAQjfrrVPrX5vTTssXuk',
+                    conceptID: '3eMbITuRyLlFGUuAZ2X2NP',
+                },
+                {
+                    cardID: '1jxXINtvTvhZXHT8eDiKPK',
+                    conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
+                },
+                {
+                    cardID: '5SFmjFkBTVdDyiSt32slHU',
+                    conceptID: null,
+                },
+            ],
+            cardTitles: ['Card 1', 'Card 2', 'Card 3', 'Card 4'],
             currentCardID: '5PKQgXzL92klwCqFkjdgSO',
             currentCard: 0,
             lastCardUnlocked: 0,
             totalGems: 256
         })
 
-        // console.log(this.state.cardIDs);
-
-        // const cardTitles = this.service.getCardTitles(this.state.cardIDs);
+        // const cardTitles = this.service.getCardTitles(this.state.cards);
         // // console.log(cardTitles);
         // this.setState({
         //     cardTitles: cardTitles
@@ -67,10 +82,10 @@ class Learn extends Component {
     }
 
     // componentDidUpdate(prevProps) {
-    //     if (this.props.cardIDs !== prevProps.cardIDs) {
-    //         console.log(this.state.cardIDs);
+    //     if (this.props.cards !== prevProps.cards) {
+    //         console.log(this.state.cards);
 
-    //         const cardTitles = this.service.getCardTitles(this.state.cardIDs);
+    //         const cardTitles = this.service.getCardTitles(this.state.cards);
     //         // console.log(cardTitles);
     //         this.setState({
     //             cardTitles: cardTitles
@@ -86,17 +101,17 @@ class Learn extends Component {
         if (index <= this.state.lastCardUnlocked) {
             this.setState({
                 currentCard: index,
-                currentCardID: this.state.cardIDs[index],
+                currentCardID: this.state.cards[index].cardID,
             });
         }
     }
 
     moveClickedHandler = (step) => {
         const destination = this.state.currentCard + step;
-        const nextCardID = this.state.cardIDs[destination];
+        const nextCardID = this.state.cards[destination].cardID;
         const last = (destination > this.state.lastCardUnlocked) ? destination : this.state.lastCardUnlocked;
 
-        if (destination >= 0 && destination < this.state.cardIDs.length && destination !== this.state.currentCard) {
+        if (destination >= 0 && destination < this.state.cards.length && destination !== this.state.currentCard) {
             this.setState({
                 currentCard: destination,
                 currentCardID: nextCardID,
@@ -114,7 +129,8 @@ class Learn extends Component {
 
     render() {
         const firstCard = this.state.currentCard === 0;
-        const lastCard = this.state.currentCard === this.state.cardIDs.length - 1;
+        const lastCard = this.state.currentCard === this.state.cards.length - 1;
+        const conceptID = this.state.cards[this.state.currentCard] ? this.state.cards[this.state.currentCard].conceptID : null;
 
         return (
             <LearnSection>
@@ -132,15 +148,23 @@ class Learn extends Component {
                     <Grid item xs={9} sm={6}>
                         <Content
                             cardID={this.state.currentCardID}
+                            conceptID={conceptID}
                             click={this.moveClickedHandler}
                             firstCard={firstCard}
                             lastCard={lastCard} />
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
-                        <HintSection changeTotalGems={this.changeTotalGems} />
+                        <HintSection
+                            cardID={this.state.currentCardID}
+                            changeTotalGems={this.changeTotalGems} />
                     </Grid>
                 </Grid>
+
+                {/* {conceptID ?
+                    <ConceptModal conceptID={conceptID} />
+                    : null
+                } */}
             </LearnSection>
         );
     }
