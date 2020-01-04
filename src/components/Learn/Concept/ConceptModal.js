@@ -7,42 +7,32 @@ import Concept from './Concept';
 
 class ConceptModal extends React.Component {
     state = {
-        open: true,
+        // open: true
+        open: false
     }
 
-    modalOpenedHandler = () => {
+    setOpen = (value) => {
         this.setState({
-            open: true
+            open: value
         })
-    };
-
-    modalClosedHandler = () => {
-        this.setState({
-            open: false
-        })
-    };
+    }
 
     componentDidUpdate(prevProps) {
         if (this.props.conceptID !== prevProps.conceptID) {
-            this.setState({
-                open: true
-            })
+            // this.setOpen(true);
         }
     }
 
     render() {
         return (
             <div>
-                <button gems={this.props.gems} onClick={this.modalOpenedHandler}>Concept</button>
+                <button gems={this.props.gems} onClick={() => this.setOpen(true)}>Concept</button>
 
-                <Modal
-                    className='modal'
+                <Modal className='modal'
                     open={this.state.open}
-                    onClose={this.modalClosedHandler}
+                    onClose={() => this.setOpen(false)}
                     BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 200,
-                    }}>
+                    BackdropProps={{ timeout: 200, }} >
 
                     <Fade in={this.state.open}>
                         <Concept conceptID={this.props.conceptID} />

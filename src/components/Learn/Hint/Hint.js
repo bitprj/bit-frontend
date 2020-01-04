@@ -3,13 +3,12 @@ import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import RichTextToReact from 'rich-text-to-react';
-import ReactMarkdown from 'react-markdown';
 
 import { RenderingOptions } from '../../../services/RenderingOptions';
 
 import Button from '../../shared/Button';
-import CodeBlock from '../../shared/CodeBlock';
 import HintModal from './HintModal';
+import StepAsset from '../../shared/StepAsset';
 
 // import LearnService from '../../services/LearnService';
 import ContentfulService from '../../../services/ContentfulService';
@@ -27,7 +26,7 @@ const HintCard = styled.div`
     display: ${props => props.display ? 'block' : 'none'};
 `
 
-const ExpandWrapper = styled.div`
+const FloatRight = styled.div`
     text-align: right;
 `
 
@@ -36,14 +35,14 @@ const Heading = styled.div`
 `
 
 class Hint extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
             id: null,
             title: '',
             difficulty: '',
             gems: -50, // get from API call
-            isLocked: true,
+            isLocked: props.isLocked,
             parent: null,
             steps: [],
             isExpanded: false,
@@ -63,7 +62,6 @@ class Hint extends Component {
             this.setState({
                 id: this.props.id,
                 title: data.title,
-                // isLocked: data.isLocked,
                 steps: data.steps
             })
         })
@@ -103,7 +101,6 @@ class Hint extends Component {
 
     render() {
         const steps = this.state.steps.map((step, index) => {
-            // const renderedStep = JSON.stringify(step.isShown && this.state.isExpanded)
             const renderedStep = (step.isShown && this.state.isExpanded) ?
                 <div>
                     <HintCard key={`step-${step.title}`} display={step.isShown} step={true}>
@@ -112,17 +109,10 @@ class Hint extends Component {
                             document={step.content}
                             options={RenderingOptions} />
 
-                        {step.image ?
-                            <img src={step.image.fields.file.url}
-                                alt={step.image.fields.title} />
-                            : null}
-                        {step.snippet ?
-                            <ReactMarkdown source={step.snippet}
-                                renderers={{ code: CodeBlock }} />
-                            : null}
+                        <StepAsset image={step.image} snippet={step.snippet} />
                     </HintCard>
 
-                    <ExpandWrapper>
+                    <FloatRight>
                         {(index < this.state.steps.length - 1 && index === this.state.currentStep) ?
                             <Button buttonState="NextHint"
                                 class_name="button invert"
@@ -135,18 +125,18 @@ class Hint extends Component {
                                 class_name="button invert"
                                 click={this.shrinkHint} />
                             : null}
-                    </ExpandWrapper>
+                    </FloatRight>
                 </div>
                 : null;
             return renderedStep;
         })
 
 
-        const icon = <ExpandWrapper>
+        const icon = <FloatRight>
             {this.state.isExpanded ?
                 <VisibilityIcon onClick={this.shrinkHint} />
                 : <VisibilityIcon onClick={this.expandHint} />}
-        </ExpandWrapper>
+        </FloatRight>
 
         return (
             <div>

@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import RichTextToReact from 'rich-text-to-react';
 
-import ReactMarkdown from 'react-markdown';
-import CodeBlock from '../../shared/CodeBlock';
-
-import Button from '../../shared/Button'
-import media from '../../shared/media'
+import Button from '../../shared/Button';
+import media from '../../shared/media';
+import StepAsset from '../../shared/StepAsset';
 
 import { RenderingOptions } from '../../../services/RenderingOptions';
 import ContentfulService from '../../../services/ContentfulService';
@@ -57,12 +55,6 @@ const Dot = styled.div`
         background-color: #0070f3;
     }
 `
-
-const img_style = {
-    height: '100%',
-    width: '100%',
-    display: 'block',
-}
 
 const ResponsivePanel = styled.div`
     display: flex;
@@ -148,7 +140,7 @@ class Concept extends Component {
                             <Slide key={`slide-${slide.id}`}>
                                 <ResponsivePanel>
                                     <StyledTextArea>
-                                        <h3>{slide.heading} - {slide.id}</h3>
+                                        <h3>{slide.heading}</h3>
                                         <RichTextToReact key={`concept-${slide.id}`} document={slide.content} options={RenderingOptions} />
                                     </StyledTextArea>
                                     <ControlSection>
@@ -167,12 +159,7 @@ class Concept extends Component {
                                 </ResponsivePanel>
 
                                 <ResponsiveAssets>
-                                    {slide.image ?
-                                        <img src={slide.image.fields.file.url} style={img_style} alt={slide.image.fields.title} />
-                                        : null}
-                                    {slide.snippet ?
-                                        <ReactMarkdown source={slide.snippet} renderers={{ code: CodeBlock }} />
-                                        : null}
+                                    <StepAsset image={slide.image} snippet={slide.snippet} />
                                 </ResponsiveAssets>
                             </Slide>
                             : null

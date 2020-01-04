@@ -13,10 +13,10 @@ const LearnSection = styled.div`
 `
 
 class Learn extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
-            labID: null,
+            labID: '12345', // props.labID
             labTitle: '',
             cards: [],
             cardTitles: [],
@@ -149,6 +149,7 @@ class Learn extends Component {
 
                     <Grid item xs={12} sm={4}>
                         <HintSection
+                            labID={this.state.labID}
                             cardID={this.state.currentCardID}
                             changeTotalGems={this.changeTotalGems} />
                     </Grid>
