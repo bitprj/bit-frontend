@@ -9,8 +9,6 @@ const RenderedGemBox = styled.div`
     background-color: white;
     color: black;
     width: 60px;
-    float: right;
-    vertical-align: middle;
     transition: background .2s ease, color .2s ease, box-shadow .2s ease, opacity .2s ease;
     &:hover {
         background-color: #F0F8FF;

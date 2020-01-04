@@ -1,6 +1,6 @@
-import axios from 'axios';
+// import axios from 'axios';
 
-import { API_URL } from './API_URL';
+// import { API_URL } from './API_URL';
 import { client } from '../services/ContentfulService';
 
 class LearnService {
@@ -28,18 +28,18 @@ class LearnService {
         return client.getEntry(cardID).then(response => response.fields);
     }
 
-    async getCardTitles(cardIDs) {
-        console.log('IDs', cardIDs);
-        const cardTitles = await Promise.all(cardIDs.map(async cardID => {
-            const cardTitle = await this.getCard(cardID).then(data => {
-                console.log(data.name);
-                return data.name;
-            })
+    // async getCardTitles(cardIDs) {
+    //     console.log('IDs', cardIDs);
+    //     const cardTitles = await Promise.all(cardIDs.map(async cardID => {
+    //         const cardTitle = await this.getCard(cardID).then(data => {
+    //             console.log(data.name);
+    //             return data.name;
+    //         })
 
-            // return cardTitle
-        }));
-        return cardTitles;
-    }
+    //         // return cardTitle
+    //     }));
+    //     return cardTitles;
+    // }
 
     async getAllSteps(steps) {
         const slides = await Promise.all(steps.map(async (stepInfo, index) => {

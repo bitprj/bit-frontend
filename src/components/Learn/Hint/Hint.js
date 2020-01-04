@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import RichTextToReact from 'rich-text-to-react';
 import ReactMarkdown from 'react-markdown';
 
@@ -31,7 +31,7 @@ const ExpandWrapper = styled.div`
     text-align: right;
 `
 
-const StepHeading = styled.div`
+const Heading = styled.div`
     font-weight: bold;
 `
 
@@ -60,8 +60,6 @@ class Hint extends Component {
 
     componentDidMount() {
         this.service.getHint(this.props.id).then(data => {
-            console.log(data);
-
             this.setState({
                 id: this.props.id,
                 title: data.title,
@@ -75,8 +73,9 @@ class Hint extends Component {
         this.props.changeTotalGems(this.state.gems);
         // later - API call to unlock card and get its content
         this.setState({
-            isLocked: false
+            isLocked: false,
         })
+        this.expandHint();
     }
 
     expandHint = () => {
@@ -108,7 +107,7 @@ class Hint extends Component {
             const renderedStep = (step.isShown && this.state.isExpanded) ?
                 <div>
                     <HintCard key={`step-${step.title}`} display={step.isShown} step={true}>
-                        <StepHeading>{step.heading}</StepHeading>
+                        <Heading>{step.heading}</Heading>
                         <RichTextToReact key={`hint-${this.state.id}`}
                             document={step.content}
                             options={RenderingOptions} />
@@ -142,13 +141,20 @@ class Hint extends Component {
             return renderedStep;
         })
 
+
+        const icon = <ExpandWrapper>
+            {this.state.isExpanded ?
+                <VisibilityIcon onClick={this.shrinkHint} />
+                : <VisibilityIcon onClick={this.expandHint} />}
+        </ExpandWrapper>
+
         return (
             <div>
                 {this.state.isLocked ?
                     <HintCard locked={this.state.isLocked} display={this.props.display}>
                         <Grid container spacing={0}>
                             <Grid item xs={8} >
-                                <div>{this.state.title}</div>
+                                <Heading>{this.state.title}</Heading>
                             </Grid>
 
                             <Grid item xs={4} >
@@ -158,7 +164,6 @@ class Hint extends Component {
                                     unlockHint={this.unlockHint} />
                             </Grid>
                         </Grid>
-
                     </HintCard>
                     : (<div>
                         <HintCard locked={this.state.isLocked} display={this.props.display}>
@@ -168,9 +173,7 @@ class Hint extends Component {
                                 </Grid>
 
                                 <Grid item xs={4} >
-                                    <ExpandWrapper>
-                                        <MoreVertIcon onClick={this.expandHint} />
-                                    </ExpandWrapper>
+                                    {icon}
                                 </Grid>
                             </Grid>
                         </HintCard>

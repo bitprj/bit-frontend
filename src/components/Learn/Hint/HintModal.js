@@ -18,6 +18,10 @@ const ModalCard = styled.div`
     background-color: white;
 `
 
+const FloatRight = styled.div`
+    float: right;
+`
+
 const useStyles = makeStyles(theme => ({
     modal: {
         display: 'flex',
@@ -51,7 +55,9 @@ const HintModal = (props) => {
 
     return (
         <div>
-            <GemBox gems={props.gems} type={'Hint'} click={modalOpenedHandler} />
+            <FloatRight>
+                <GemBox gems={props.gems} type={'Hint'} click={modalOpenedHandler} />
+            </FloatRight>
 
             <Modal
                 // aria-labelledby="transition-modal-title"
