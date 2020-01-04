@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import RichTextToReact from 'rich-text-to-react';
 
 import Button from '../../shared/Button';
 import media from '../../shared/media';
 import StepAsset from '../../shared/StepAsset';
+import RenderedContent from '../../shared/RenderedContent';
 
-import { RenderingOptions } from '../../../services/RenderingOptions';
 import ContentfulService from '../../../services/ContentfulService';
 
 const Window = styled.div`
@@ -141,8 +140,9 @@ class Concept extends Component {
                                 <ResponsivePanel>
                                     <StyledTextArea>
                                         <h3>{slide.heading}</h3>
-                                        <RichTextToReact key={`concept-${slide.id}`} document={slide.content} options={RenderingOptions} />
+                                        <RenderedContent uniqueKey={`concept-${slide.id}`} content={slide.content} />
                                     </StyledTextArea>
+
                                     <ControlSection>
                                         <Button buttonState="< Prev" class_name="button" click={() => this.moveClickedHandler(-1)} />
                                         <Button buttonState="Next >" class_name="button invert" click={() => this.moveClickedHandler(1)} />

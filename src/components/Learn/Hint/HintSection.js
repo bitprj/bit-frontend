@@ -11,7 +11,6 @@ class HintSection extends Component {
             labID: props.labID,
             cardID: props.cardID,
             hints: [],
-            // hintIDs: ['348E6VILsWPo8dO6aMJfqI', '5ccsEwASPP5PIR8IlAVgV6'],
             currentHint: null
         }
         this.expandHint = this.expandHint.bind(this);
@@ -26,25 +25,13 @@ class HintSection extends Component {
         if (this.props.cardID !== prevProps.cardID) {
             this.setCardID(this.props.cardID);
             this.setCurrentHint(null);
-            this.service.getHintStatus(this.state.labID, this.state.cardID).then(data => {
-                const unlocks = data.hints_unlocked.map(hint => {
-                    return {
-                        id: hint.contentful_id,
-                        isLocked: false
-                    }
+            this.service.getHintStatus(this.state.labID, this.state.cardID)
+                .then(rawData => this.service.processHintStatus(rawData))
+                .then(data => {
+                    this.setState({
+                        hints: data
+                    })
                 });
-
-                const locks = data.hints_locked.map(hint => {
-                    return {
-                        id: hint.contentful_id,
-                        isLocked: true
-                    }
-                });
-
-                this.setState({
-                    hints: [...unlocks, ...locks]
-                })
-            });
         }
     }
 
@@ -67,7 +54,7 @@ class HintSection extends Component {
     render() {
         const hints = this.state.hints.map(hint => {
             const currentHint = this.state.currentHint;
-            const display = (!currentHint || hint.id === currentHint) ? true : false;
+            const display = (!currentHint || hint.id === currentHint) ? 1 : 0;
             const renderedHint = <Hint key={`hint-${hint.id}`}
                 id={hint.id}
                 display={display}

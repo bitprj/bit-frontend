@@ -28,7 +28,6 @@ class ContentfulService {
                 return this.getAllSteps(response.fields.steps).then(steps => {
                     return {
                         title: response.fields.name,
-                        // isLocked: response.fields.isLocked,
                         steps: steps
                     }
                 });

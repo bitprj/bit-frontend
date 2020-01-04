@@ -27,6 +27,24 @@ class LearnService {
         const url = `${API_URL}/lab/${labID}/card/${cardID}/fetch`;
         return axios.get(url).then(response => response.data);
     }
+
+    async processHintStatus(data) {
+        const unlocks = data.hints_unlocked.map(hint => {
+            return {
+                id: hint.contentful_id,
+                isLocked: false
+            }
+        });
+
+        const locks = data.hints_locked.map(hint => {
+            return {
+                id: hint.contentful_id,
+                isLocked: true
+            }
+        });
+
+        return [...unlocks, ...locks];
+    }
 }
 
 export default LearnService;

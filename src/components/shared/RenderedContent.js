@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { BLOCKS } from '@contentful/rich-text-types';
 
+import RichTextToReact from 'rich-text-to-react';
 import ReactMarkdown from 'react-markdown';
-import CodeBlock from '../components/shared/CodeBlock';
+import CodeBlock from './CodeBlock';
 
 const Heading = styled.div`
     color: black;
@@ -16,11 +17,10 @@ const img_style = {
     marginRight: 'auto',
 }
 
-export const RenderingOptions = {
+const renderingOptions = {
     renderMark: {
     },
     renderNode: {
-        // Pass the node data for the inline embed to MyCustomComponent.
         [BLOCKS.EMBEDDED_ENTRY]: (node, key, next, options) => <ReactMarkdown source={node.data.target.fields.markdown} renderers={{ code: CodeBlock }} />,
         [BLOCKS.HEADING_3]: (node, key, next) => <Heading key={key} as="h3">{next(node.content, key, next)}</Heading>,
         'embedded-asset-block': (node) => <img alt={node.data.target.fields.title} style={img_style} src={node.data.target.fields.file.url} />,
@@ -29,3 +29,9 @@ export const RenderingOptions = {
         // )
     }
 }
+
+export default (props) => (
+    <RichTextToReact key={props.uniqueKey}
+        document={props.content}
+        options={renderingOptions} />
+)

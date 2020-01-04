@@ -7,8 +7,7 @@ import Concept from './Concept';
 
 class ConceptModal extends React.Component {
     state = {
-        // open: true
-        open: false
+        open: true
     }
 
     setOpen = (value) => {
@@ -19,7 +18,7 @@ class ConceptModal extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.conceptID !== prevProps.conceptID) {
-            // this.setOpen(true);
+            this.setOpen(true);
         }
     }
 

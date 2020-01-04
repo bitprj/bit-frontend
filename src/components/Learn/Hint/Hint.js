@@ -4,7 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import RichTextToReact from 'rich-text-to-react';
 
-import { RenderingOptions } from '../../../services/RenderingOptions';
+// import { RenderingOptions } from '../../../services/RenderingOptions';
+import RenderedContent from '../../shared/RenderedContent';
 
 import Button from '../../shared/Button';
 import HintModal from './HintModal';
@@ -105,9 +106,11 @@ class Hint extends Component {
                 <div>
                     <HintCard key={`step-${step.title}`} display={step.isShown} step={true}>
                         <Heading>{step.heading}</Heading>
-                        <RichTextToReact key={`hint-${this.state.id}`}
+                        <RenderedContent uniqueKey={`hint-${this.state.id}`}
+                            content={step.content} />
+                        {/* <RichTextToReact key={`hint-${this.state.id}`}
                             document={step.content}
-                            options={RenderingOptions} />
+                            options={RenderingOptions} /> */}
 
                         <StepAsset image={step.image} snippet={step.snippet} />
                     </HintCard>

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import RichTextToReact from 'rich-text-to-react';
 
-import { RenderingOptions } from '../../../services/RenderingOptions';
+import RenderedContent from '../../shared/RenderedContent';
 import ContentfulService from '../../../services/ContentfulService';
 
 import Button from '../../shared/Button'
@@ -46,7 +45,7 @@ class Content extends Component {
     render() {
         return (
             <div>
-                <RichTextToReact document={this.state.cardData} options={RenderingOptions} />
+                <RenderedContent content={this.state.cardData} />
 
                 <ButtonSection>
                     {!this.props.firstCard ?
