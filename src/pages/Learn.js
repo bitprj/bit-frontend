@@ -12,6 +12,11 @@ const LearnSection = styled.div`
     margin-top: 5px;
 `
 
+const navbar_style = {
+    background: '#0a192f',
+    marginTop: '3px'
+}
+
 class Learn extends Component {
     constructor(props) {
         super();
@@ -128,7 +133,7 @@ class Learn extends Component {
         return (
             <LearnSection>
                 <Grid container spacing={2}>
-                    <Grid item xs={3} sm={2} style={{background:"#0a192f"}}>
+                    <Grid item xs={3} sm={2} style={navbar_style}>
                         <Navigation
                             labTitle={this.state.labTitle}
                             totalGems={this.state.totalGems}

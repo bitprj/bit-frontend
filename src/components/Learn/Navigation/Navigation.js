@@ -10,16 +10,6 @@ const Course = styled.div`
     // border-left: 1px solid rgb(239, 239, 239);
 `
 
-// const LabCard = styled.div`
-//     justify-content: space-between;
-//     padding: .65rem;
-//     border-radius: 7px;
-//     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-//     overflow: hidden;
-//     background-color: #000033;
-//     color: white;
-// `
-
 const NavSection = styled.div`
     color: white;
     padding: 3rem 1rem;
