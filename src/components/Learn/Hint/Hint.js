@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import RichTextToReact from 'rich-text-to-react';
 
-// import { RenderingOptions } from '../../../services/RenderingOptions';
 import RenderedContent from '../../shared/RenderedContent';
 
 import Button from '../../shared/Button';
 import HintModal from './HintModal';
 import StepAsset from '../../shared/StepAsset';
 
-// import LearnService from '../../services/LearnService';
 import ContentfulService from '../../../services/ContentfulService';
 
 const HintCard = styled.div`
@@ -108,9 +105,6 @@ class Hint extends Component {
                         <Heading>{step.heading}</Heading>
                         <RenderedContent uniqueKey={`hint-${this.state.id}`}
                             content={step.content} />
-                        {/* <RichTextToReact key={`hint-${this.state.id}`}
-                            document={step.content}
-                            options={RenderingOptions} /> */}
 
                         <StepAsset image={step.image} snippet={step.snippet} />
                     </HintCard>
