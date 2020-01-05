@@ -11,6 +11,9 @@ import UploadModal from '../Upload/UploadModal';
 const ButtonSection = styled.div`
     text-align: right;
 `
+const StyledContent = styled.div`
+    padding: 30px;
+`
 
 class Content extends Component {
     constructor(props) {
@@ -45,7 +48,7 @@ class Content extends Component {
     render() {
         return (
             <div>
-                <RenderedContent content={this.state.cardData} />
+                <StyledContent><RenderedContent content={this.state.cardData} /></StyledContent>
 
                 <ButtonSection>
                     {!this.props.firstCard ?

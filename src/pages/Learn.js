@@ -9,7 +9,7 @@ import Navigation from '../components/Learn/Navigation/Navigation';
 import LearnService from '../services/LearnService';
 
 const LearnSection = styled.div`
-    margin-top: 20px;
+    margin-top: 5px;
 `
 
 class Learn extends Component {
@@ -128,7 +128,7 @@ class Learn extends Component {
         return (
             <LearnSection>
                 <Grid container spacing={2}>
-                    <Grid item xs={3} sm={2}>
+                    <Grid item xs={3} sm={2} style={{background:"#0a192f"}}>
                         <Navigation
                             labTitle={this.state.labTitle}
                             totalGems={this.state.totalGems}

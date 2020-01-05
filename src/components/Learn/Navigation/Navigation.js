@@ -21,7 +21,6 @@ const Course = styled.div`
 // `
 
 const NavSection = styled.div`
-    background-color: rgb(0, 0, 117);
     color: white;
     padding: 3rem 1rem;
 `
@@ -62,17 +61,14 @@ const Navigation = (props) => {
 
     return (
         <NavSection>
-            <GemBox gems={props.totalGems} />
-
             <LabTitle>{props.labTitle}</LabTitle>
             <CardTitle>{currentCardTitle}</CardTitle>
-
             <Course>
                 <ul>
                     {steps}
                 </ul>
             </Course>
-
+            <GemBox gems={props.totalGems} />
             <style jsx>{`
                 ul {
                     margin-block-start: 1em;
