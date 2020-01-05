@@ -51,4 +51,3 @@ class ConceptModal extends React.Component {
 }
 
 export default ConceptModal;
-

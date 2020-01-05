@@ -5,28 +5,19 @@ import CheckIcon from '../../../assets/icons/check';
 import GemBox from '../../shared/GemBox';
 
 const Course = styled.div`
-    margin: 0 0 0 5%;
+    margin: 0 0 0 15%;
     padding: 50px 0 40px 0;
-    // border-left: 1px solid rgb(239, 239, 239);
+    border-left: 1px solid rgb(239, 239, 239);
 `
 
 const NavSection = styled.div`
     color: white;
-    padding: 3rem 1rem;
-`
-
-const CardTitle = styled.div`
-    font-weight: bold;
-    font-size: 20px;
-`
-
-const LabTitle = styled.div`
-    font-size: 14px;
 `
 
 const icon_style = {
     margin: '-8px',
     height: '15px',
+    backgroundColor: 'white'
 }
 
 const Navigation = (props) => {
@@ -70,7 +61,6 @@ const Navigation = (props) => {
                 li {
                     list-style: none;
                     margin: 12px 0;
-                    // color: white
                 }
                 a {
                     display: flex;
@@ -114,7 +104,7 @@ const Navigation = (props) => {
                     font-weight: bold;
                 }
             `}</style>
-        </NavSection>
+        </div>
     )
 }
 
