@@ -5,19 +5,38 @@ import CheckIcon from '../../../assets/icons/check';
 import GemBox from '../../shared/GemBox';
 
 const Course = styled.div`
-    margin: 0 0 0 15%;
+    margin: 0 0 0 5%;
     padding: 50px 0 40px 0;
-    border-left: 1px solid rgb(239, 239, 239);
+    // border-left: 1px solid rgb(239, 239, 239);
 `
+
+// const LabCard = styled.div`
+//     justify-content: space-between;
+//     padding: .65rem;
+//     border-radius: 7px;
+//     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+//     overflow: hidden;
+//     background-color: #000033;
+//     color: white;
+// `
 
 const NavSection = styled.div`
     color: white;
+    padding: 3rem 1rem;
+`
+
+const CardTitle = styled.div`
+    font-weight: bold;
+    font-size: 20px;
+`
+
+const LabTitle = styled.div`
+    font-size: 14px;
 `
 
 const icon_style = {
     margin: '-8px',
     height: '15px',
-    backgroundColor: 'white'
 }
 
 const Navigation = (props) => {
@@ -42,14 +61,17 @@ const Navigation = (props) => {
 
     return (
         <NavSection>
+
             <LabTitle>{props.labTitle}</LabTitle>
             <CardTitle>{currentCardTitle}</CardTitle>
+
             <Course>
                 <ul>
                     {steps}
                 </ul>
             </Course>
             <GemBox gems={props.totalGems} />
+
             <style jsx>{`
                 ul {
                     margin-block-start: 1em;
@@ -61,6 +83,7 @@ const Navigation = (props) => {
                 li {
                     list-style: none;
                     margin: 12px 0;
+                    // color: white
                 }
                 a {
                     display: flex;
@@ -104,7 +127,7 @@ const Navigation = (props) => {
                     font-weight: bold;
                 }
             `}</style>
-        </div>
+        </NavSection>
     )
 }
 
