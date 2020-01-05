@@ -144,8 +144,14 @@ class Concept extends Component {
                                     </StyledTextArea>
 
                                     <ControlSection>
+                                    {index > 0 ?
                                         <Button buttonState="< Prev" class_name="button" click={() => this.moveClickedHandler(-1)} />
+                                        : null
+                                    }
+                                    {index < (this.state.slides.length - 1) ?
                                         <Button buttonState="Next >" class_name="button invert" click={() => this.moveClickedHandler(1)} />
+                                        : <Button buttonState="Next >" class_name="button invert" click={() => this.props.closeModal(false)} />
+                                    }
 
                                         <DotArea>
                                             {this.state.slides.map((slide, index) => {
