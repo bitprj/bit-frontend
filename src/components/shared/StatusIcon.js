@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CheckIcon from '../../assets/icons/check'
-import CircleIcon from '../../assets/icons/circle'
+import ThreeDotsIcon from '../../assets/icons/threedots'
 import LockIcon from '../../assets/icons/lock'
 
 /**
@@ -12,13 +12,13 @@ const StatusIcon = props => {
     const { type, width, height } = props;
     switch (type) {
         case 'complete':
-            return <CheckIcon color="#2BDB66" check_width={width || "2.25rem"} check_height={height} />
+            return <CheckIcon color="#2BDB66" check_width={width || "2.25em"} check_height={height} />
 
         case 'incomplete':
-            return <CircleIcon color="#FF5454" width={width || "2.25rem"} height={height} />
+            return <ThreeDotsIcon color="#FF5454" width={width || "2.25em"} height={height} />
 
         case 'locked':
-            return <LockIcon color="#FFE554" width={width || "2.25rem"} height={height} />
+            return <LockIcon color="#FFE554" width={width || "2.25em"} height={height} />
 
         default:
             return null

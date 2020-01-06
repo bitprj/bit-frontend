@@ -4,31 +4,32 @@ import styled from 'styled-components';
 import AtomIcon from '../../../assets/icons/atom';
 
 const RenderSelectTopic = styled.div`
-    padding: 6rem 7rem;
+    padding: 3em 10%;
     background-color: #205791;
     color: #fff;
     text-align: center;
-    border-radius: 0.5rem;
+    border-radius: 0.5em;
 `
 
 const AtomWrapper = styled.div`
     transform: scale(-1, 1);
+    margin: 1em 0;
 `
 
 const Name = styled.h1`
-
+    margin: 0 0;
 `
 
 const Description = styled.p`
-    font-size: 1.5rem;
-    padding: 0 6rem;
+    font-size: 1.5em;
+    padding: 0 5%;
 `
 
 const SelectTopic = props => {
     return (
         <RenderSelectTopic>
             <AtomWrapper>
-                <AtomIcon color="#fff" width="10rem" />
+                <AtomIcon color="#fff" width="8em" />
             </AtomWrapper>
             <Name>Select a Topic to Explore</Name>
             <Description>

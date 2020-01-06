@@ -5,7 +5,8 @@ const RenderSubject = styled.div`
 `
 
 const Title = styled.h1`
-    margin-bottom: 0.5rem;
+    margin-top: 0;
+    margin-bottom: 0.3em;
 `
 
 const Subtitle = styled.h3`
@@ -13,13 +14,13 @@ const Subtitle = styled.h3`
 `
 
 const Description = styled.p`
-    margin: 0.5rem 0 3rem;
-    width: 70%;
+    margin: 0.5em 0 2em;
+    width: 75%;
 `
 
 const ProgressBar = styled.div`
-    width: 95%;
-    height: 1rem;
+    width: 93%;
+    height: 1em;
     background-color: #eee;
     position: relative;
 
@@ -35,11 +36,15 @@ const ProgressBar = styled.div`
 
     &:after {
         content: '${props => props.progress}';
-        line-height: 1rem;
+        line-height: 1em;
         position: absolute;
         top: 0;
         bottom: 0;
-        right: -5%;
+        right: -3em;
+    }
+
+    @media only screen and (max-width: 555px) {
+        width: 90%;
     }
 `
 
