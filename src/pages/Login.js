@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import AuthService from '../services/AuthService';
 
@@ -46,7 +46,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
+            <Fragment>
                 <h1>Login</h1>
                 <form onSubmit={this.formSubmitHandler}>
                     <input
@@ -69,7 +69,7 @@ class Login extends Component {
                         type="submit"
                     />
                 </form>
-            </div>
+            </Fragment>
         );
     }
 }

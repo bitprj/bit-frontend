@@ -51,10 +51,8 @@ const Navigation = (props) => {
 
     return (
         <NavSection>
-
             <LabTitle>{props.labTitle}</LabTitle>
             <CardTitle>{currentCardTitle}</CardTitle>
-
             <Course>
                 <ul>
                     {steps}
