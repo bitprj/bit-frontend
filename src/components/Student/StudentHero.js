@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-// import { Box, Grid } from 'grommet';
 import Grid from '@material-ui/core/Grid';
 
 import GreetingSection from './GreetingSection';

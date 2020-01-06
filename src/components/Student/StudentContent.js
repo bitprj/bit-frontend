@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import Activity from './Activity';
-import Curriculum from './Curriculum';
+import Activity from './Activity/Activity';
+import Curriculum from './Curriculum/Curriculum';
 import MenuBar from './MenuBar';
 import Progress from './Progress/Progress';
-import Profile from './Profile';
+import Profile from './Profile/Profile';
 
 import StudentService from '../../services/StudentService';
 

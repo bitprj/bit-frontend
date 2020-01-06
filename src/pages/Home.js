@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import Teacher from '../pages/Teacher';
+
 class Home extends Component {
     render() {
         return (
-            <h1>Home Page</h1>
+            <Teacher />
+            // <h1>Home Page</h1>
         )
     }
 }
