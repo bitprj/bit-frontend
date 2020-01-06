@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -136,7 +136,7 @@ class Hint extends Component {
         </FloatRight>
 
         return (
-            <div>
+            <Fragment>
                 {this.state.isLocked ?
                     <HintCard locked={this.state.isLocked} display={this.props.display}>
                         <Grid container spacing={0}>
@@ -166,7 +166,7 @@ class Hint extends Component {
                         </HintCard>
                         {steps}
                     </div>)}
-            </div >
+            </Fragment>
         )
     }
 }

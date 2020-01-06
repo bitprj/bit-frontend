@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 
 import RenderedContent from '../../shared/RenderedContent';
@@ -47,8 +47,10 @@ class Content extends Component {
 
     render() {
         return (
-            <div>
-                <StyledContent><RenderedContent content={this.state.cardData} /></StyledContent>
+            <Fragment>
+                <StyledContent>
+                    <RenderedContent content={this.state.cardData} />
+                </StyledContent>
 
                 <ButtonSection>
                     {!this.props.firstCard ?
@@ -69,7 +71,7 @@ class Content extends Component {
                 }
 
                 <UploadModal />
-            </div>
+            </Fragment>
         )
     }
 }

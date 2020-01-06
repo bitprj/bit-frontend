@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
@@ -54,7 +54,7 @@ const HintModal = (props) => {
     }
 
     return (
-        <div>
+        <Fragment>
             <FloatRight>
                 <GemBox gems={props.gems} type={'Hint'} click={modalOpenedHandler} />
             </FloatRight>
@@ -88,7 +88,7 @@ const HintModal = (props) => {
                     </ModalCard>
                 </Fade>
             </Modal>
-        </div>
+        </Fragment>
     );
 }
 

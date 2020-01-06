@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import Hint from './Hint';
 
@@ -66,9 +66,9 @@ class HintSection extends Component {
         });
 
         return (
-            <div>
+            <Fragment>
                 {hints}
-            </div >
+            </Fragment>
         )
     }
 }

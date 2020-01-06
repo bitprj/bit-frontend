@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import Activity from './Activity/Activity';
 import Curriculum from './Curriculum/Curriculum';
@@ -58,7 +58,7 @@ class StudentContent extends Component {
 
     render() {
         return (
-            <div>
+            <Fragment>
                 <MenuBar
                     currentWindow={this.state.currentWindow}
                     clicked={this.windowClickedHandler.bind(this)} />
@@ -81,7 +81,7 @@ class StudentContent extends Component {
                 {this.state.currentWindow === 3 ?
                     <Profile />
                     : null}
-            </div>
+            </Fragment>
         )
     }
 }
