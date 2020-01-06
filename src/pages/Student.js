@@ -21,7 +21,6 @@ class Student extends Component {
 
     componentDidMount() {
         this.service.getStudentInfo('token').then(data => {
-            console.log('student', data);
             this.setState({
                 studentName: data.name,
             })

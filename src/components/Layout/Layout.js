@@ -1,16 +1,16 @@
 import React from 'react';
 
-import Aux from '../HOC/Auxiliary';
+import Auxiliary from '../HOC/Auxiliary';
 
 import NavBar from './NavBar'
 
 const Layout = (props) => (
-    <Aux>
+    <Auxiliary>
         <NavBar />
         <main>
             {props.children}
         </main>
-    </Aux>
+    </Auxiliary>
 )
 
 export default Layout;
