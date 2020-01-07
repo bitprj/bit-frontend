@@ -56,15 +56,17 @@ class Learn extends Component {
             cards: [
                 {
                     cardID: '5PKQgXzL92klwCqFkjdgSO',
-                    conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
+                    // conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
                 },
                 {
                     cardID: '1JwAQjfrrVPrX5vTTssXuk',
-                    conceptID: '3eMbITuRyLlFGUuAZ2X2NP',
+                    conceptID: null,
+                    // conceptID: '3eMbITuRyLlFGUuAZ2X2NP',
                 },
                 {
                     cardID: '1jxXINtvTvhZXHT8eDiKPK',
-                    conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
+                    conceptID: null,
+                    // conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
                 },
                 {
                     cardID: '5SFmjFkBTVdDyiSt32slHU',
@@ -72,9 +74,9 @@ class Learn extends Component {
                 },
             ],
             cardTitles: ['Card 1', 'Card 2', 'Card 3', 'Card 4'],
-            currentCardID: '5PKQgXzL92klwCqFkjdgSO',
-            currentCard: 0,
-            lastCardUnlocked: 0,
+            currentCardID: '1jxXINtvTvhZXHT8eDiKPK',
+            currentCard: 2,
+            lastCardUnlocked: 2,
             totalGems: 256
         })
     }

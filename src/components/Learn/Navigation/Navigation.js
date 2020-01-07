@@ -20,6 +20,10 @@ const CardTitle = styled.div`
     font-size: 20px;
 `
 
+const TitleItem = styled.div`
+    margin: 5px 0;
+`
+
 const LabTitle = styled.div`
     font-size: 14px;
 `
@@ -39,13 +43,13 @@ const Navigation = (props) => {
         const icon = (index < props.lastCardUnlocked) ? check : dot;
 
         return (
-            <li key={cardTitle} onClick={() => props.click(index)}>
+            <TitleItem key={cardTitle} onClick={() => props.click(index)}>
                 {/* eslint-disable-next-line */}
                 <a className={selected}>
                     {icon}
                     <span className="label">{cardTitle}</span>
                 </a>
-            </li>
+            </TitleItem>
         )
     })
 
@@ -54,31 +58,17 @@ const Navigation = (props) => {
             <LabTitle>{props.labTitle}</LabTitle>
             <CardTitle>{currentCardTitle}</CardTitle>
             <Course>
-                <ul>
-                    {steps}
-                </ul>
+                {steps}
             </Course>
             <GemBox gems={props.totalGems} />
 
             <style jsx>{`
-                ul {
-                    margin-block-start: 1em;
-                    margin-block-end: 1em;
-                    margin-inline-start: 0px;
-                    margin-inline-end: 0px;
-                    padding-inline-start: 0px;
-                }
-                li {
-                    list-style: none;
-                    margin: 12px 0;
-                    // color: white
-                }
                 a {
                     display: flex;
                     align-items: center;
                 }
                 a:hover {
-                    color: gray;
+                    color: salmon;
                 }
                 .dot {
                     display: inline-block;
@@ -96,7 +86,7 @@ const Navigation = (props) => {
                     width: 9px;
                     height: 9px;
                     min-width: 9px;
-                    background: #111;
+                    background: salmon;
                     transform: translateX(-5px);
                 }
                 .finished .dot {
