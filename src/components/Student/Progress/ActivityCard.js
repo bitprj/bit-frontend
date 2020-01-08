@@ -13,6 +13,7 @@ const RenderedCard = styled.div`
   color: #fff;
   border-radius: 0.5em;
   padding: 2em;
+  padding-top: ${props => props.type === "CURRENT" ? '1em' : '2em'}
   padding-bottom: ${props => props.type === "CURRENT" ? '1em' : '4em'};
   margin: 0.5em;
   min-width: 300px;

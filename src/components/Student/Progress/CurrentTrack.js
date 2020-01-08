@@ -54,7 +54,8 @@ const Subject = props => {
       <Title>{props.name}</Title>
       <Subtitle>with emphasis in React.js</Subtitle>
       <Description>{props.description}</Description>
-      <ProgressBar progress={props.sectionProgress} />
+      <ProgressBar progress={"69%"} />
+      {/* <ProgressBar progress={props.sectionProgress} /> */}
     </RenderSubject>
   );
 };
