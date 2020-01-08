@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import RenderedContent from '../../shared/RenderedContent';
@@ -11,8 +11,8 @@ import UploadModal from '../Upload/UploadModal';
 const ButtonSection = styled.div`
     text-align: right;
 `
-const StyledContent = styled.div`
-    padding: 30px;
+const ContentWrapper = styled.div`
+    padding: 30px 30px 0 30px;
 `
 
 class Content extends Component {
@@ -47,10 +47,8 @@ class Content extends Component {
 
     render() {
         return (
-            <Fragment>
-                <StyledContent>
-                    <RenderedContent content={this.state.cardData} />
-                </StyledContent>
+            <ContentWrapper>
+                <RenderedContent content={this.state.cardData} />
 
                 <ButtonSection>
                     {!this.props.firstCard ?
@@ -71,7 +69,7 @@ class Content extends Component {
                 }
 
                 <UploadModal />
-            </Fragment>
+            </ContentWrapper>
         )
     }
 }
