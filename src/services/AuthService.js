@@ -9,7 +9,8 @@ class AuthService {
 
         axios.post(url).then(response => {
             // console.log('token', response.data.access_token);
-            const token = response.data.access_token;
+            // const token = response.data.access_token;
+            const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzgyNzg1MDcsImV4cCI6MTU3ODM2NDkwNywianRpIjoiN2NiMzFkNDgtZDIxNy00MjU3LTk1ODctY2ZiOTkyYWNlNzFiIiwiaWQiOjQsInJscyI6IlN0dWRlbnQiLCJyZl9leHAiOjE1NzgzNjQ5MDd9.cr7bgCT52cD1cCA1hDhYcilSdPAfje0StTe_AmXt4sw"
             const userType = response.data.user_type;
 
             this.setUserType(userType)
@@ -54,6 +55,13 @@ class AuthService {
         return localStorage.getItem('userType')
     }
 
+    /**
+     * Note: idk if this is temp but setting token thru local storage is not safe bc it can be accessed with 
+     * javascript. a better place is through cookies with 'htmlonly' property so it can't be accessed
+     * through javascript
+     * 
+     * Also thru research there appears to be something called 'authorization code flow' which is serverside
+     */
     setToken(token) {
         return localStorage.setItem('token', token)
     }

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import AuthService from '../services/AuthService';
 
 import { connect } from 'react-redux';
-import { login } from '../redux/actions/action';
+import { login } from '../redux/actions/actions';
 
 class Login extends Component {
     constructor() {

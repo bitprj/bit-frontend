@@ -16,14 +16,20 @@ position: relative;
 const MenuBar = (props) => {
     const windowTitles = ["Curriculum", "Activity", "Progress", "Profile"];
 
+    const menuTabClickedHandler = (index) => {
+        props.clicked(index)
+        // window.scroll(0, document.getElementById('content').offsetTop)
+        // window.location.hash="#content"
+    }
+
     const windowPortals = windowTitles.map((title, index) => {
         const windowSelected = (index === props.currentWindow) ? "windowSelected" : null;
         return (
             <h3 key={`window-${index}`} className={`window-title ${windowSelected}`}
-                onClick={() => props.clicked(index)}>
+                onClick={() => menuTabClickedHandler(index)}>
                 {title}
 
-                < style jsx > {`
+                <style jsx="true"> {`
                     .windowSelected {
                         color: #0070f3;
                     }
