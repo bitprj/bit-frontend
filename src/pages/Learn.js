@@ -9,12 +9,13 @@ import Navigation from '../components/Learn/Navigation/Navigation';
 import LearnService from '../services/LearnService';
 
 const LearnSection = styled.div`
-    margin-top: 5px;
+    margin: 10px -5px -5px -5px;
+    display: flex;
 `
 
 const navbar_style = {
     background: '#0a192f',
-    marginTop: '3px'
+    marginTop: '-5px',
 }
 
 class Learn extends Component {
@@ -134,8 +135,8 @@ class Learn extends Component {
 
         return (
             <LearnSection>
-                <Grid container spacing={2}>
-                    <Grid item xs={3} sm={2} style={navbar_style}>
+                <Grid container spacing={1} justify='center'>
+                    <Grid item xs={12} sm={4} md={3} style={navbar_style}>
                         <Navigation
                             labTitle={this.state.labTitle}
                             totalGems={this.state.totalGems}
@@ -145,7 +146,7 @@ class Learn extends Component {
                             click={this.stepClickedHandler} />
                     </Grid>
 
-                    <Grid item xs={9} sm={6}>
+                    <Grid item xs={12} sm={8} md={5}>
                         <Content
                             cardID={this.state.currentCardID}
                             conceptID={conceptID}
@@ -154,7 +155,7 @@ class Learn extends Component {
                             lastCard={lastCard} />
                     </Grid>
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={12} md={4}>
                         <HintSection
                             labID={this.state.labID}
                             cardID={this.state.currentCardID}

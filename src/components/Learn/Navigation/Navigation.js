@@ -1,18 +1,31 @@
-import React from 'react';
+import React, { useLayoutEffect, useState, Fragment } from 'react';
 import styled from 'styled-components';
 
 import CheckIcon from '../../../assets/icons/check';
 import GemBox from '../../shared/GemBox';
+import NavDropdown from './NavDropdown';
 
 const Course = styled.div`
-    margin: 0 0 0 5%;
-    padding: 50px 0 40px 0;
-    // border-left: 1px solid rgb(239, 239, 239);
+    margin: 0 0 0 20px;
+    padding: 20px 0 40px 0;
 `
 
 const NavSection = styled.div`
     color: white;
-    padding: 3rem 1rem;
+    padding-top: 3rem;
+`
+
+const NormalNav = styled.div`
+    min-height: 100vh
+`
+
+const TitleSection = styled.div`
+    margin-left: 30px;
+`
+
+const LabTitle = styled.div`
+    font-size: 14px;
+    margin-top: 5px;
 `
 
 const CardTitle = styled.div`
@@ -21,10 +34,7 @@ const CardTitle = styled.div`
 `
 
 const TitleItem = styled.div`
-    margin: 5px 0;
-`
-
-const LabTitle = styled.div`
+    margin: 10px 0 0 15%;
     font-size: 14px;
 `
 
@@ -35,6 +45,16 @@ const icon_style = {
 
 const Navigation = (props) => {
     const currentCardTitle = props.cardTitles[props.currentCard];
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useLayoutEffect(() => {
+        function updateWindowWidth() {
+            setWindowWidth(window.innerWidth);
+        }
+        window.addEventListener('resize', updateWindowWidth);
+        updateWindowWidth();
+        return () => window.removeEventListener('resize', updateWindowWidth);
+    }, []);
 
     const steps = props.cardTitles.map((cardTitle, index) => {
         const selected = (index === props.currentCard) ? "selected" : null;
@@ -53,14 +73,30 @@ const Navigation = (props) => {
         )
     })
 
+    const labTitle = <LabTitle>{props.labTitle}</LabTitle>;
+    const cardTitle = <CardTitle>{currentCardTitle}</CardTitle>;
+    const gemBox = <GemBox gems={props.totalGems} />
+
     return (
         <NavSection>
-            <LabTitle>{props.labTitle}</LabTitle>
-            <CardTitle>{currentCardTitle}</CardTitle>
-            <Course>
-                {steps}
-            </Course>
-            <GemBox gems={props.totalGems} />
+            {windowWidth < 600 ?
+                <NavDropdown labTitle={labTitle}
+                    cardTitle={cardTitle}
+                    gemBox={gemBox}
+                    steps={steps} />
+
+                : <NormalNav>
+                    <TitleSection>
+                        {gemBox}
+                        {labTitle}
+                        {cardTitle}
+                    </TitleSection>
+
+                    <Course>
+                        {steps}
+                    </Course>
+                </NormalNav>
+            }
 
             <style jsx>{`
                 a {
@@ -77,7 +113,7 @@ const Navigation = (props) => {
                     height: 7px;
                     min-width: 7px;
                     border-radius: 50%;
-                    background: #efefef;
+                    background: white;
                     transform: translateX(-4px);
                     transition: background 0.5s ease;
                 }

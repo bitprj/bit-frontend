@@ -1,8 +1,13 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 import Hint from './Hint';
 
 import LearnService from '../../../services/LearnService';
+
+const HintArea = styled.div`
+    margin: 30px 10px; 
+`
 
 class HintSection extends Component {
     constructor(props) {
@@ -66,9 +71,9 @@ class HintSection extends Component {
         });
 
         return (
-            <Fragment>
+            <HintArea>
                 {hints}
-            </Fragment>
+            </HintArea>
         )
     }
 }
