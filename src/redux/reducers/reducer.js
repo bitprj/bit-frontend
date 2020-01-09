@@ -1,3 +1,5 @@
+import * as actionTypes from '../actions/actionTypes'
+
 const type = localStorage.getItem('userType')
 
 const initialState = {
@@ -6,12 +8,12 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'STUDENT_LOGIN':
+        case actionTypes.STUDENT_LOGIN:
             return {
                 ...state,
                 userType: 'Student'
             }
-        case 'USER_LOGOUT':
+        case actionTypes.USER_LOGOUT:
             return {
                 ...state,
                 userType: 'Visitor'

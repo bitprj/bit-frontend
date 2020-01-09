@@ -53,6 +53,18 @@ class ContentfulService {
     async getEachStep(stepID) {
         return client.getEntry(stepID).then(response => response.fields);
     }
+    
+    /* ===== STUDENT */
+
+    async fetch(objectID) {
+        return client.getEntry(objectID)
+        .then(response => response.fields)
+        .catch(e => console.log(e))
+    }
+
+    // async fetchTrack(trackID) {
+    //     return client.getEntry(trackID).then(response => response.fields)
+    // }
 }
 
 export default ContentfulService;
