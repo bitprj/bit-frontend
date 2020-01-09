@@ -49,6 +49,7 @@ class LearnService {
     async uploadFiles(files) {
         let srcFile = null;
         let testsFile = null;
+        let token = localStorage.getItem('token');
 
         files.forEach(file => {
             if (file.filename === 'src.zip') {
@@ -58,23 +59,32 @@ class LearnService {
             }
         })
 
-        if (srcFile && testsFile) {
-            const formattedData = {
-                src: srcFile,
-                tests: testsFile
-            };
-            axios.post(UPLOAD_URL, formattedData)
-                .then(response => {
-                    console.log(response);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            return 'dung ui!';
-        } else {
-            const err = new Error('du ma may');
-            throw err;
-        }
+        return axios.get(UPLOAD_URL).then(response => console.log(response))
+
+        // if (srcFile && testsFile) {
+        //     const formattedData = {
+        //         src: srcFile,
+        //         tests: testsFile,
+        //         jwt_token: token
+        //     };
+        //     const headers = {
+        //         'Content-Type': 'application/json',
+        //         'Access-Control-Allow-Origin': 'https://darlene-okpy.herokuapp.com/uploader'
+        //     }
+
+
+        //     axios.post(UPLOAD_URL, formattedData, { crossdomain: true })
+        //         .then(response => {
+        //             console.log(response);
+        //         })
+        //         .catch(err => {
+        //             console.log(err);
+        //         })
+        //     return 'dung ui!';
+        // } else {
+        //     const err = new Error('du ma may');
+        //     throw err;
+        // }
     }
 }
 
