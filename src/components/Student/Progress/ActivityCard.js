@@ -65,37 +65,37 @@ const StatusWrapper = styled.div`
 `;
 
 const ActivityCard = props => {
-  const renderAppropriateImage = (imageName, width, height) => {
-    switch (imageName) {
-      case "brickwall":
-        return <BrickWall color="#FFF" width={width} height={height} />;
+    const renderAppropriateImage = (imageName, width, height) => {
+        switch (imageName) {
+            case "brickwall":
+                return <BrickWall color="#FFF" width={width} height={height} />;
 
-      case "github":
-        return <GitHub color="#FFF" width={width} height={height} />;
+            case "github":
+                return <GitHub color="#FFF" width={width} height={height} />;
 
-      default:
-        return null;
-    }
-  };
+            default:
+                return null;
+        }
+    };
 
-  return (
-    <RenderedCard type={props.type}>
-      <IconWrapper>{renderAppropriateImage(props.image, "3em")}</IconWrapper>
-      <Name>{props.name}</Name>
-      <Description>{props.description}</Description>
-      {props.type === "CURRENT" ? (
-        <Button
-          buttonState={"Resume"}
-          class_name={props.buttonClass}
-          clicked={() => props.buttonClicked}
-        />
-      ) : (
-        <StatusWrapper>
-          <StatusIcon type={props.status} />
-        </StatusWrapper>
-      )}
-    </RenderedCard>
-  );
+    return (
+        <RenderedCard type={props.type}>
+            <IconWrapper>{renderAppropriateImage(props.image, "3em")}</IconWrapper>
+            <Name>{props.name}</Name>
+            <Description>{props.description}</Description>
+            {props.type === "CURRENT" ? (
+                <Button
+                    buttonState={"Resume"}
+                    class_name={props.buttonClass}
+                    clicked={() => props.buttonClicked}
+                />
+            ) : (
+                    <StatusWrapper>
+                        <StatusIcon type={props.status} />
+                    </StatusWrapper>
+                )}
+        </RenderedCard>
+    );
 };
 
 /**
@@ -109,24 +109,24 @@ const ActivityCard = props => {
  *        - everything will be rendered
  */
 const mapStateToProps = (state, ownProps) => {
-  const studentData = state.studentData; // creating reference for less typing
+    const studentData = state.studentData; // creating reference for less typing
 
-  if (ownProps.type === "CURRENT") {
-    if (!studentData.suggested_activity) {
-      return {
-        image: "",
-        name: "",
-        description: ""
-      };
+    if (ownProps.type === "CURRENT") {
+        if (!studentData.suggested_activity) {
+            return {
+                image: "",
+                name: "",
+                description: ""
+            };
+        }
+        return {
+            image: "github",
+            name: studentData.suggested_activity.name,
+            description:
+                "I am a static piece text. Bacon ipsum dolor amet pancetta short ribs pig shankle chicken. Kielbasa ribeye salami jerky ham hock short ribs."
+        };
     }
-    return {
-      image: "github",
-      name: studentData.suggested_activity.name,
-      description:
-        "I am a static piece text. Bacon ipsum dolor amet pancetta short ribs pig shankle chicken. Kielbasa ribeye salami jerky ham hock short ribs."
-    };
-  }
-  return state;
+    return state;
 };
 
 export default connect(mapStateToProps)(ActivityCard);

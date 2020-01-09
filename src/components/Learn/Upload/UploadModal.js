@@ -16,24 +16,24 @@ const useStyles = makeStyles(theme => ({
 
 const UploadModal = (props) => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
-    const modalOpenedHandler = () => {
+    const openModal = () => {
         setOpen(true);
     };
 
-    const modalClosedHandler = () => {
+    const closeModal = () => {
         setOpen(false);
     };
 
     return (
         <div>
-            <button onClick={modalOpenedHandler}>Upload</button>
+            <button onClick={openModal}>Upload</button>
 
             <Modal
                 className={classes.modal}
                 open={open}
-                onClose={modalClosedHandler}
+                onClose={closeModal}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
@@ -41,7 +41,7 @@ const UploadModal = (props) => {
                 }}>
 
                 <Fade in={open}>
-                    <Upload />
+                    <Upload closeModal={closeModal} />
                 </Fade>
             </Modal>
         </div>

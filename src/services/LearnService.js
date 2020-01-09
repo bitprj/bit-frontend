@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_URL } from './API_URL';
+import { API_URL, UPLOAD_URL } from './API_URL';
 
 class LearnService {
     // async getActivityInfo(labID) {
@@ -44,6 +44,37 @@ class LearnService {
         });
 
         return [...unlocks, ...locks];
+    }
+
+    async uploadFiles(files) {
+        let srcFile = null;
+        let testsFile = null;
+
+        files.forEach(file => {
+            if (file.filename === 'src.zip') {
+                srcFile = file;
+            } else if (file.filename === 'tests.zip') {
+                testsFile = file;
+            }
+        })
+
+        if (srcFile && testsFile) {
+            const formattedData = {
+                src: srcFile,
+                tests: testsFile
+            };
+            axios.post(UPLOAD_URL, formattedData)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            return 'dung ui!';
+        } else {
+            const err = new Error('du ma may');
+            throw err;
+        }
     }
 }
 
