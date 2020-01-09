@@ -8,6 +8,7 @@ import Learn from './pages/Learn';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Student from './pages/Student';
+import NotFound from './pages/NotFound';
 
 import WithAuthentication from './components/HOC/WithAuthentication';
 
@@ -25,6 +26,8 @@ class App extends Component {
                             <Route path="/student" exact component={Student} />
                             <Route path="/logout" exact component={Logout} />
                         </WithAuthentication>
+
+                        <Route component={NotFound} />
                     </Switch>
                 </Layout>
             </BrowserRouter>

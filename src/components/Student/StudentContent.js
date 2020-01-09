@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import Activity from './Activity';
-import Curriculum from './Curriculum';
+import Activity from './Activity/Activity';
+import Curriculum from './Curriculum/Curriculum';
 import MenuBar from './MenuBar';
 import Progress from './Progress/Progress';
-import Profile from './Profile';
+import Profile from './Profile/Profile';
 
 class StudentContent extends Component {
     state = {
@@ -19,7 +19,7 @@ class StudentContent extends Component {
 
     render() {
         return (
-            <div /* id='content' */>
+            <>
                 <MenuBar
                     currentWindow={this.state.currentWindow}
                     clicked={this.windowClickedHandler.bind(this)}
@@ -40,7 +40,7 @@ class StudentContent extends Component {
                 {this.state.currentWindow === 3 ?
                     <Profile />
                     : null}
-            </div>
+            </>
         )
     }
 }

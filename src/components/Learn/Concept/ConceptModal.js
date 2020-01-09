@@ -34,7 +34,8 @@ class ConceptModal extends React.Component {
                     BackdropProps={{ timeout: 200, }} >
 
                     <Fade in={this.state.open}>
-                        <Concept conceptID={this.props.conceptID} closeModal={this.setOpen.bind(this)} />
+                        <Concept conceptID={this.props.conceptID}
+                            closeModal={this.setOpen.bind(this)} />
                     </Fade>
                 </Modal>
 

@@ -1,28 +1,31 @@
-import React from 'react';
+import React, { useLayoutEffect, useState, Fragment } from 'react';
 import styled from 'styled-components';
 
 import CheckIcon from '../../../assets/icons/check';
 import GemBox from '../../shared/GemBox';
+import NavDropdown from './NavDropdown';
 
 const Course = styled.div`
-    margin: 0 0 0 5%;
-    padding: 50px 0 40px 0;
-    // border-left: 1px solid rgb(239, 239, 239);
+    margin: 0 0 0 20px;
+    padding: 20px 0 40px 0;
 `
-
-// const LabCard = styled.div`
-//     justify-content: space-between;
-//     padding: .65rem;
-//     border-radius: 7px;
-//     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-//     overflow: hidden;
-//     background-color: #000033;
-//     color: white;
-// `
 
 const NavSection = styled.div`
     color: white;
-    padding: 3rem 1rem;
+    padding-top: 3rem;
+`
+
+const NormalNav = styled.div`
+    min-height: 100vh
+`
+
+const TitleSection = styled.div`
+    margin-left: 30px;
+`
+
+const LabTitle = styled.div`
+    font-size: 14px;
+    margin-top: 5px;
 `
 
 const CardTitle = styled.div`
@@ -30,7 +33,8 @@ const CardTitle = styled.div`
     font-size: 20px;
 `
 
-const LabTitle = styled.div`
+const TitleItem = styled.div`
+    margin: 10px 0 0 15%;
     font-size: 14px;
 `
 
@@ -41,6 +45,16 @@ const icon_style = {
 
 const Navigation = (props) => {
     const currentCardTitle = props.cardTitles[props.currentCard];
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useLayoutEffect(() => {
+        function updateWindowWidth() {
+            setWindowWidth(window.innerWidth);
+        }
+        window.addEventListener('resize', updateWindowWidth);
+        updateWindowWidth();
+        return () => window.removeEventListener('resize', updateWindowWidth);
+    }, []);
 
     const steps = props.cardTitles.map((cardTitle, index) => {
         const selected = (index === props.currentCard) ? "selected" : null;
@@ -49,48 +63,48 @@ const Navigation = (props) => {
         const icon = (index < props.lastCardUnlocked) ? check : dot;
 
         return (
-            <li key={cardTitle} onClick={() => props.click(index)}>
+            <TitleItem key={cardTitle} onClick={() => props.click(index)}>
                 {/* eslint-disable-next-line */}
                 <a className={selected}>
                     {icon}
                     <span className="label">{cardTitle}</span>
                 </a>
-            </li>
+            </TitleItem>
         )
     })
 
+    const labTitle = <LabTitle>{props.labTitle}</LabTitle>;
+    const cardTitle = <CardTitle>{currentCardTitle}</CardTitle>;
+    const gemBox = <GemBox gems={props.totalGems} />
+
     return (
         <NavSection>
+            {windowWidth < 600 ?
+                <NavDropdown labTitle={labTitle}
+                    cardTitle={cardTitle}
+                    gemBox={gemBox}
+                    steps={steps} />
 
-            <LabTitle>{props.labTitle}</LabTitle>
-            <CardTitle>{currentCardTitle}</CardTitle>
+                : <NormalNav>
+                    <TitleSection>
+                        {gemBox}
+                        {labTitle}
+                        {cardTitle}
+                    </TitleSection>
 
-            <Course>
-                <ul>
-                    {steps}
-                </ul>
-            </Course>
-            <GemBox gems={props.totalGems} />
+                    <Course>
+                        {steps}
+                    </Course>
+                </NormalNav>
+            }
 
             <style jsx>{`
-                ul {
-                    margin-block-start: 1em;
-                    margin-block-end: 1em;
-                    margin-inline-start: 0px;
-                    margin-inline-end: 0px;
-                    padding-inline-start: 0px;
-                }
-                li {
-                    list-style: none;
-                    margin: 12px 0;
-                    // color: white
-                }
                 a {
                     display: flex;
                     align-items: center;
                 }
                 a:hover {
-                    color: gray;
+                    color: salmon;
                 }
                 .dot {
                     display: inline-block;
@@ -99,7 +113,7 @@ const Navigation = (props) => {
                     height: 7px;
                     min-width: 7px;
                     border-radius: 50%;
-                    background: #efefef;
+                    background: white;
                     transform: translateX(-4px);
                     transition: background 0.5s ease;
                 }
@@ -108,7 +122,7 @@ const Navigation = (props) => {
                     width: 9px;
                     height: 9px;
                     min-width: 9px;
-                    background: #111;
+                    background: salmon;
                     transform: translateX(-5px);
                 }
                 .finished .dot {

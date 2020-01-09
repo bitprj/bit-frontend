@@ -9,12 +9,13 @@ import Navigation from '../components/Learn/Navigation/Navigation';
 import LearnService from '../services/LearnService';
 
 const LearnSection = styled.div`
-    margin-top: 5px;
+    margin: 10px -5px -5px -5px;
+    display: flex;
 `
 
 const navbar_style = {
     background: '#0a192f',
-    marginTop: '3px'
+    marginTop: '-5px',
 }
 
 class Learn extends Component {
@@ -56,15 +57,17 @@ class Learn extends Component {
             cards: [
                 {
                     cardID: '5PKQgXzL92klwCqFkjdgSO',
-                    conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
+                    // conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
                 },
                 {
                     cardID: '1JwAQjfrrVPrX5vTTssXuk',
-                    conceptID: '3eMbITuRyLlFGUuAZ2X2NP',
+                    conceptID: null,
+                    // conceptID: '3eMbITuRyLlFGUuAZ2X2NP',
                 },
                 {
                     cardID: '1jxXINtvTvhZXHT8eDiKPK',
-                    conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
+                    conceptID: null,
+                    // conceptID: '1gzvGY8AuGVhyxwAirTDrZ',
                 },
                 {
                     cardID: '5SFmjFkBTVdDyiSt32slHU',
@@ -72,9 +75,9 @@ class Learn extends Component {
                 },
             ],
             cardTitles: ['Card 1', 'Card 2', 'Card 3', 'Card 4'],
-            currentCardID: '5PKQgXzL92klwCqFkjdgSO',
-            currentCard: 0,
-            lastCardUnlocked: 0,
+            currentCardID: '1jxXINtvTvhZXHT8eDiKPK',
+            currentCard: 2,
+            lastCardUnlocked: 2,
             totalGems: 256
         })
     }
@@ -132,8 +135,8 @@ class Learn extends Component {
 
         return (
             <LearnSection>
-                <Grid container spacing={2}>
-                    <Grid item xs={3} sm={2} style={navbar_style}>
+                <Grid container spacing={1} justify='center'>
+                    <Grid item xs={12} sm={4} md={3} style={navbar_style}>
                         <Navigation
                             labTitle={this.state.labTitle}
                             totalGems={this.state.totalGems}
@@ -143,7 +146,7 @@ class Learn extends Component {
                             click={this.stepClickedHandler} />
                     </Grid>
 
-                    <Grid item xs={9} sm={6}>
+                    <Grid item xs={12} sm={8} md={5}>
                         <Content
                             cardID={this.state.currentCardID}
                             conceptID={conceptID}
@@ -152,7 +155,7 @@ class Learn extends Component {
                             lastCard={lastCard} />
                     </Grid>
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={12} md={4}>
                         <HintSection
                             labID={this.state.labID}
                             cardID={this.state.currentCardID}
