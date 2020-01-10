@@ -1,48 +1,51 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import Activity from './Activity/Activity';
-import Curriculum from './Curriculum/Curriculum';
-import MenuBar from './MenuBar';
-import Progress from './Progress/Progress';
-import Profile from './Profile/Profile';
+import MenuBar from "./MenuBar";
+import Curriculum from "./Curriculum/Curriculum";
+import Activity from "./Activity/Activity";
+import Progress from "./Progress/Progress";
+import Module from "./Progress/Module";
+import Profile from "./Profile/Profile";
+
+import * as viewTypes from "../../redux/utils/viewTypes";
 
 class StudentContent extends Component {
-    state = {
-        currentWindow: 2
+  handleCurrentView() {
+    switch (this.props.currentView) {
+      case viewTypes.CURRICULUM:
+        return <Curriculum />;
+
+      case viewTypes.ACTIVITY:
+        return <Activity />;
+
+      case viewTypes.PROGRESS:
+        return <Module />;
+        return <Progress />;
+      case viewTypes.PROGRESS_MODULE:
+
+      case viewTypes.PROFILE:
+        return <Profile />;
+      default:
+        return null;
     }
+  }
 
-    windowClickedHandler(index) {
-        this.setState({
-            currentWindow: index
-        })
-    }
+  render() {
+    return (
+      <>
+        <MenuBar currentView={this.props.currentView} />
 
-    render() {
-        return (
-            <>
-                <MenuBar
-                    currentWindow={this.state.currentWindow}
-                    clicked={this.windowClickedHandler.bind(this)}
-                    />
-
-                {this.state.currentWindow === 0 ?
-                    <Curriculum />
-                    : null}
-
-                {this.state.currentWindow === 1 ?
-                    <Activity />
-                    : null}
-
-                {this.state.currentWindow === 2 ?
-                    <Progress />
-                    : null}
-
-                {this.state.currentWindow === 3 ?
-                    <Profile />
-                    : null}
-            </>
-        )
-    }
+        {this.handleCurrentView()}
+      </>
+    );
+  }
 }
 
-export default StudentContent;
+const mapStateToProps = state => {
+  return {
+    currentView: state.viewManager.current_view_student
+  };
+};
+
+export default connect(mapStateToProps)(StudentContent);

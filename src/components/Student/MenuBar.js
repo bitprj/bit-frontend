@@ -1,55 +1,57 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+
+import { setViewStudent } from "../../redux/actions/viewManager";
+
+import "./Student.css";
 
 const Menu = styled.div`
-    padding: 10px;
-    margin: -8px -8px 0 -8px;
-    box-shadow: 0 4px 30px 0 rgba(144, 144, 144, 0.2);
-    align-items: center;
-    flex-wrap: wrap;
-    display: flex;
-    justify-content: space-between;
-    flex: 1;
-    position: relative;
-`
+  box-shadow: 0 4px 30px 0 rgba(144, 144, 144, 0.2);
+  flex-wrap: wrap;
+  display: flex;
+  text-align: center;
+`;
 
-const MenuBar = (props) => {
-    const windowTitles = ["Curriculum", "Activity", "Progress", "Profile"];
+const Tab = styled.div`
+  transition: 0.2s ease;
+  padding: 15px 0;
+  flex: 1;
 
-    const menuTabClickedHandler = (index) => {
-        props.clicked(index)
-        // window.scroll(0, document.getElementById('content').offsetTop)
-        // window.location.hash="#content"
-    }
+  &:hover {
+    color: #0070f3;
+    cursor: pointer;
+  }
+`;
 
-    const windowPortals = windowTitles.map((title, index) => {
-        const windowSelected = (index === props.currentWindow) ? "windowSelected" : null;
-        return (
-            <h3 key={`window-${index}`} className={`window-title ${windowSelected}`}
-                onClick={() => menuTabClickedHandler(index)}>
-                {title}
+const MenuBar = props => {
+  const windowTitles = ["Curriculum", "Activity", "Progress", "Profile"];
 
-                <style jsx="true"> {`
-                    .windowSelected {
-                        color: #0070f3;
-                    }
-                    .window-title {
-                        transition: 0.20s ease;
-                    }
-                    .window-title:hover {
-                        color: #0070f3;
-                    }
-                `}</style>
-            </h3 >
-        )
-    })
-
-
+  const windowPortals = windowTitles.map((title, index) => {
     return (
-        <Menu>
-            {windowPortals}
-        </Menu>
-    )
-}
+      <Tab
+        key={`menubar-${index}`}
+        className={
+          title.toUpperCase() === props.currentView.toUpperCase()
+            ? "menu-tab-active"
+            : null
+        }
+        onClick={() => props.onSetViewStudent(title.toUpperCase())}
+      >
+        {title}
+      </Tab>
+    );
+  });
 
-export default MenuBar;
+  return <Menu>{windowPortals}</Menu>;
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetViewStudent: viewName => {
+      dispatch(setViewStudent(viewName));
+    }
+  };
+};
+
+export default connect(null, mapDispatchToProps)(MenuBar);

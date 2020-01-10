@@ -7,18 +7,18 @@ import * as studentData from "../redux/actions/studentData";
 
 class Student extends Component {
   componentDidMount() {
-    this.props.onSetStudentData();
+    this.props.onInitStudentData();
   }
 
   componentDidUpdate() {
     console.log("[Student Updated]");
     if (this.props.is_student_data_loaded) {
       if (!this.props.suggested_activity)
-        this.props.onSetSuggestedActivity(this.props.current_activities[0].id);
+        this.props.onInitSuggestedActivity(this.props.current_activities[0].id);
       if (!this.props.current_track)
-        this.props.onSetCurrentTrack(this.props.current_track_id);
+        this.props.onInitCurrentTrack(this.props.current_track_id);
       if (!this.props.current_topic)
-        this.props.onSetCurrentTopic(this.props.current_topic_id);
+        this.props.onInitCurrentTopic(this.props.current_topic_id);
     }
   }
 
@@ -42,11 +42,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetStudentData: () => dispatch(studentData.initStudentData()),
-    onSetSuggestedActivity: id => dispatch(studentData.initSuggestedActivity(id)),
-    onSetCurrentTrack: id => dispatch(studentData.initCurrentTrack(id)),
-    onSetCurrentTopic: id => dispatch(studentData.initCurrentTopic(id))
+    onInitStudentData: () => dispatch(studentData.initStudentData()),
+    onInitSuggestedActivity: id => dispatch(studentData.initSuggestedActivity(id)),
+    onInitCurrentTrack: id => dispatch(studentData.initCurrentTrack(id)),
+    onInitCurrentTopic: id => dispatch(studentData.initCurrentTopic(id))
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Student);
+ 

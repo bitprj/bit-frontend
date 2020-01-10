@@ -79,7 +79,7 @@ const ActivityCard = props => {
   };
 
   return (
-    <RenderedCard type={props.type}>
+    <RenderedCard onClick={props.clicked} type={props.type}>
       <IconWrapper>{renderAppropriateImage(props.image, "3em")}</IconWrapper>
       <Name>{props.name}</Name>
       <Description>{props.description}</Description>

@@ -1,12 +1,8 @@
-import { cloneDeep } from 'lodash'
-
 import StudentService from "../../services/StudentService";
-// import ContentfulService from "../../services/ContentfulService";
 
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from "../utils/actionTypes";
 
 const studentService = new StudentService();
-// const contentfulService = new ContentfulService();
 
 export const setStudentData = studentData => {
   return {
@@ -18,7 +14,7 @@ export const setStudentData = studentData => {
 export const initStudentData = () => {
   return dispatch => {
     studentService.getStudentInfo().then(fetchedStudentData => {
-      const studentData = cloneDeep(fetchedStudentData);
+      const studentData = { ...fetchedStudentData };
       dispatch(setStudentData(studentData));
     });
   };
@@ -34,7 +30,7 @@ export const setCurrentTrack = currentTrack => {
 export const initCurrentTrack = currentTrackID => {
   return dispatch => {
     studentService.getTrack(currentTrackID).then(trackData => {
-      const currentTrack = cloneDeep(trackData);
+      const currentTrack = { ...trackData };
       // contentfulService.fetch(trackData.contentfulID).then(cTrackData => {
       //   console.log("backend_fetchTrack", trackData)
       //   console.log("contentful_fetchTrack", cTrackData); // used for more info about each topic
@@ -54,7 +50,7 @@ export const setCurrentTopic = currentTopic => {
 export const initCurrentTopic = currentTopicID => {
   return dispatch => {
     studentService.getTopic(currentTopicID).then(topicData => {
-      const currentTopic = cloneDeep(topicData);
+      const currentTopic = { ...topicData };
       dispatch(setCurrentTopic(currentTopic));
       // return topicData;
     });
@@ -80,7 +76,7 @@ export const initSuggestedActivity = suggestedActivityID => {
   return dispatch => {
     let suggestedActivity = {};
     studentService.getActivity(suggestedActivityID).then(activityData => {
-      suggestedActivity = cloneDeep(activityData);
+      suggestedActivity = { ...activityData };
       dispatch(setSuggestedActivity(suggestedActivity));
     });
   };

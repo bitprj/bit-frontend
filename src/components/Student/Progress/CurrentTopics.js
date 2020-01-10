@@ -5,6 +5,9 @@ import { connect } from "react-redux";
 import ActivityCard from "./ActivityCard";
 import StatusIcon from "../../shared/StatusIcon";
 
+import { setViewStudent } from "../../../redux/actions/viewManager";
+import * as viewTypes from "../../../redux/utils/viewTypes";
+
 const RenderModuleSection = styled.div`
   margin: 2.5em auto;
   padding: 0 10%;
@@ -49,18 +52,21 @@ const ModuleLayout = styled.div`
 `;
 
 const ModuleSection = props => {
+
   const moduleCards =
     props.modules.length !== 0
-      ? props.modules.map((moduleCard, index) => {
+      ? props.modules.map(moduleCard => {
           return (
             <ActivityCard
-              type={""}
               key={moduleCard.id}
               name={moduleCard.id}
               image={"brickwall"}
               // description={moduleCard.description}
-              description={'I am a static piece text, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'}
+              description={
+                "I am a static piece text, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+              }
               status={"locked"}
+              clicked={() => props.onSetViewStudent(viewTypes.PROGRESS_MODULE)}
             />
           );
         })
@@ -81,7 +87,7 @@ const ModuleSection = props => {
 
 const mapStateToProps = state => {
   const studentData = state.studentData;
-  
+
   if (!studentData.current_topic) {
     return {
       name: "",
@@ -91,9 +97,18 @@ const mapStateToProps = state => {
   }
   return {
     name: studentData.current_topic.name,
-    description: "I am a static piece text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    description:
+      "I am a static piece text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     modules: studentData.current_topic.modules
   };
 };
 
-export default connect(mapStateToProps)(ModuleSection);
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetViewStudent: viewName => {
+      dispatch(setViewStudent(viewName));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModuleSection);

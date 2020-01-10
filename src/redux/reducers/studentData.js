@@ -1,27 +1,26 @@
-import { cloneDeep, merge } from "lodash";
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from "../utils/actionTypes";
 
 const initialState = {};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_STUDENT_DATA: {
-      const newState = cloneDeep(state);
+      const newState = { ...state };
       newState.is_student_data_loaded = true;
-      return merge(newState, action.studentData);
+      return { ...newState, ...action.studentData };
     }
     case actionTypes.SET_CURRENT_TRACK: {
-      const newState = cloneDeep(state);
+      const newState = { ...state };
       newState.current_track = { ...action.currentTrack };
       return newState;
     }
     case actionTypes.SET_CURRENT_TOPIC: {
-      const newState = cloneDeep(state);
+      const newState = { ...state };
       newState.current_topic = { ...action.currentTopic };
       return newState;
     }
     case actionTypes.SET_SUGGESTED_ACTIVITY: {
-      const newState = cloneDeep(state);
+      const newState = { ...state };
       newState.suggested_activity = { ...action.suggestedActivity };
       return newState;
     }
