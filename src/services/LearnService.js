@@ -29,21 +29,23 @@ class LearnService {
     }
 
     async processHintStatus(data) {
-        const unlocks = data.hints_unlocked.map(hint => {
+        const hints = data.map(hint => {
+            const children = hint.hint_children.map(child => {
+                return {
+                    dbID: child.hint.id,
+                    id: child.hint.contentful_id,
+                    isLocked: child.is_locked
+                }
+            })
             return {
-                id: hint.contentful_id,
-                isLocked: false
+                dbID: hint.hint.id,
+                id: hint.hint.contentful_id,
+                isLocked: hint.is_locked,
+                children: children
             }
         });
 
-        const locks = data.hints_locked.map(hint => {
-            return {
-                id: hint.contentful_id,
-                isLocked: true
-            }
-        });
-
-        return [...unlocks, ...locks];
+        return hints;
     }
 }
 
