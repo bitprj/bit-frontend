@@ -59,27 +59,59 @@ class LearnService {
             }
         })
 
-        return axios.get(UPLOAD_URL).then(response => console.log(response))
+        // return axios.get(UPLOAD_URL).then(response => console.log(response))
+        const headers = {
+            'Content-Type': 'application/multipart/form-data',
+            'Access-Control-Request-Method': 'POST',
+            'Access-Control-Request-Headers': 'X-PINGOTHER, Content-Type'
+        }
+
+        let formData = new FormData();
+
+        formData.append('name', 'wee');
+        formData.append('src', files[0].file);
+        formData.append('tests', files[1].file);
+        formData.append('jwt_token', token);
+        formData.append('checkpoint_id', 12)
+
+
+        let request = new XMLHttpRequest();
+        request.open('POST', UPLOAD_URL);
+        request.send(formData);
+
+        request.onreadystatechange = function () {
+            if (request.readyState == XMLHttpRequest.DONE) {
+                console.log(request.responseText);
+            }
+        }
 
         // if (srcFile && testsFile) {
         //     const formattedData = {
-        //         src: srcFile,
-        //         tests: testsFile,
+        //         src: srcFile.filename,
+        //         tests: testsFile.filename,
         //         jwt_token: token
         //     };
         //     const headers = {
         //         'Content-Type': 'application/json',
-        //         'Access-Control-Allow-Origin': 'https://darlene-okpy.herokuapp.com/uploader'
+        //         'Access-Control-Request-Method': 'POST',
+        //         'Access-Control-Request-Headers': 'X-PINGOTHER, Content-Type'
         //     }
 
-
-        //     axios.post(UPLOAD_URL, formattedData, { crossdomain: true })
+        //     axios.post(UPLOAD_URL, files = formattedData, headers)
         //         .then(response => {
         //             console.log(response);
         //         })
         //         .catch(err => {
         //             console.log(err);
         //         })
+
+        // axios.get(UPLOAD_URL, { crossdomain: true })
+        //     .then(response => {
+        //         console.log(response);
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //     })
         //     return 'dung ui!';
         // } else {
         //     const err = new Error('du ma may');

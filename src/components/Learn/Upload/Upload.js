@@ -58,7 +58,6 @@ class Upload extends Component {
 
     fileUpload = (fileItems) => {
         // Set currently active file objects to this.state
-        console.log(fileItems);
         this.setState({
             files: fileItems
         })
@@ -70,11 +69,9 @@ class Upload extends Component {
             <Window>
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6} >
-
                         <img width='200px' src='https://media1.tenor.com/images/61410e9c5c66ba51358bc498a76d25ad/tenor.gif?itemid=9295601' alt='Upload Icon' />
 
                         <h2>Checkpoint</h2>
-
                         <p>Upload solution.py making sure that it satisfies all of the test cases mentioned above.</p>
 
                         <ButtonWrapper>
@@ -83,6 +80,19 @@ class Upload extends Component {
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
+                        {/* <input type="file" onChange={(e) => {
+                            console.log(e.target.files);
+                            let formData = new FormData();
+
+                            formData.append('name', 'wee');
+                            formData.append('filehere', e.target.files[0]);
+
+                            let request = new XMLHttpRequest();
+                            request.open('POST', 'http://506fda49.ngrok.io/test');
+                            request.send(formData);
+                        }} /> */}
+
+
                         <FilePond
                             ref={ref => (this.pond = ref)}
                             // files={this.state.files}
@@ -90,8 +100,7 @@ class Upload extends Component {
                             maxFiles={3}
                             // server="/api"
                             // oninit={() => this.handleInit()}
-                            onupdatefiles={fileItems => this.fileUpload(fileItems)}
-                        />
+                            onupdatefiles={fileItems => this.fileUpload(fileItems)} />
 
                         <Button buttonState="Upload" class_name="button invert" click={this.upload} />
                     </Grid>
