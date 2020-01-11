@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import decode from 'jwt-decode';
 
-import { API_URL } from './API_URL';
+import { API_URL } from './API_URLs';
 
 class AuthService {
     async login(username, password) {

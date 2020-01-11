@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 
-import { FilePond, File, registerPlugin } from 'react-filepond';
+import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
@@ -80,19 +80,6 @@ class Upload extends Component {
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                        {/* <input type="file" onChange={(e) => {
-                            console.log(e.target.files);
-                            let formData = new FormData();
-
-                            formData.append('name', 'wee');
-                            formData.append('filehere', e.target.files[0]);
-
-                            let request = new XMLHttpRequest();
-                            request.open('POST', 'http://506fda49.ngrok.io/test');
-                            request.send(formData);
-                        }} /> */}
-
-
                         <FilePond
                             ref={ref => (this.pond = ref)}
                             // files={this.state.files}

@@ -72,6 +72,7 @@ class HintSection extends Component {
 
         return (
             <HintArea>
+                {/* hellow */}
                 {hints}
             </HintArea>
         )
