@@ -34,13 +34,13 @@ class LearnService {
                 return {
                     dbID: child.hint.id,
                     id: child.hint.contentful_id,
-                    isLocked: child.is_locked
+                    isLocked: !child.is_unlocked
                 }
             })
             return {
                 dbID: hint.hint.id,
                 id: hint.hint.contentful_id,
-                isLocked: hint.is_locked,
+                isLocked: !hint.is_unlocked,
                 children: children
             }
         });
@@ -74,22 +74,22 @@ class LearnService {
             formData.append('jwt_token', token);
             formData.append('checkpoint_id', 12)
 
-            axios.post(UPLOAD_URL, formData, { headers })
-                .then(response => console.log(response))
-                .catch(err => {
-                    console.log(err);
-                });
-            return 'dung ui!';
+            let request = new XMLHttpRequest();
+            request.open('POST', UPLOAD_URL);
+            request.send(formData);
 
-            // let request = new XMLHttpRequest();
-            // request.open('POST', UPLOAD_URL);
-            // request.send(formData);
+            request.onreadystatechange = function () {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    console.log(request.responseText);
+                }
+            }
 
-            // request.onreadystatechange = function () {
-            //     if (request.readyState === XMLHttpRequest.DONE) {
-            //         console.log(request.responseText);
-            //     }
-            // }
+            // axios.post(UPLOAD_URL, formData, { headers })
+            //     .then(response => console.log(response))
+            //     .catch(err => {
+            //         console.log(err);
+            //     });
+            // return 'dung ui!';
         } else {
             const err = new Error('du ma may');
             throw err;
