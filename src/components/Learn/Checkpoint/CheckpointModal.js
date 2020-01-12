@@ -5,6 +5,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 
 import Upload from './Upload';
+import Result from './Result';
 
 const useStyles = makeStyles(theme => ({
     modal: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const UploadModal = (props) => {
+const CheckpointModal = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -28,7 +29,7 @@ const UploadModal = (props) => {
 
     return (
         <div>
-            <button onClick={openModal}>Upload</button>
+            <button onClick={openModal}>Checkpoint</button>
 
             <Modal
                 className={classes.modal}
@@ -42,10 +43,11 @@ const UploadModal = (props) => {
 
                 <Fade in={open}>
                     <Upload closeModal={closeModal} />
+                    {/* <Result closeModal={closeModal} /> */}
                 </Fade>
             </Modal>
         </div>
     );
 }
 
-export default UploadModal;
+export default CheckpointModal;

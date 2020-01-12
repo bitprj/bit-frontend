@@ -32,8 +32,6 @@ class HintSection extends Component {
             this.service.getHintStatus(this.state.labID, this.state.cardID)
                 .then(rawData => this.service.processHintStatus(rawData))
                 .then(data => {
-                    // console.log(data)
-
                     this.setState({
                         hints: data
                     })
@@ -84,7 +82,7 @@ class HintSection extends Component {
 
             return <Fragment>
                 {renderedHint}
-                {(!hint.isLocked) ? children : null}
+                {!hint.isLocked ? children : null}
             </Fragment>
         });
 
