@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
+import CodeIcon from '@material-ui/icons/Code';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 import Button from '../../shared/Button';
 
@@ -19,7 +21,6 @@ const Window = styled.div`
 `
 
 const CaseEntry = styled.div`
-    // padding: 0 10px;
     align-items: center;
     display: flex;
     justify-content: space-between;
@@ -33,16 +34,6 @@ const ButtonWrapper = styled.div`
     margin: 0 10px;
 `
 
-// change name later
-const HintCard = styled.div`
-    position: relative;
-    padding: 1.5rem;
-    border-radius: 7px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-    overflow: hidden;
-    background: white;
-    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-`
 const StatusBox = styled.div`
     width: 60px;
     padding: .2rem;
@@ -69,6 +60,43 @@ const CodeArea = styled.div`
     margin: 5px 0 10px;
     line-height: .5;
 `
+
+const CodeCard = styled.div`
+    position: relative;
+    padding: 1rem;
+    border-radius: 7px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    background: white;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+`
+
+const Header = styled.div`;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0 30px 0;
+`
+
+const RefreshWrapper = styled.div`
+    text-align: center;
+    margin-top: 20px;
+`
+
+const Time = styled.div`
+    color: grey;
+    font-size: 14px;
+`
+
+const code_icon_style = {
+    margin: '0 3px -5px 0',
+}
+
+const submitted_code_style = {
+    margin: '0 -1rem 0 -1rem',
+    borderRadius: '0',
+    minHeight: '300px'
+}
 
 // for making UI, replaced by props.result later
 const data = {
@@ -106,10 +134,30 @@ const Result = (props) => {
         <Window>
             <Grid container spacing={2} justify='center'>
                 <Grid item sm={6}>
-                    <HintCard>
-                        wee
-                </HintCard>
+                    <CodeCard>
+                        <Header>
+                            <div>
+                                <CodeIcon fontSize={'small'} style={code_icon_style} />
+                                solution.py
+                            </div>
+                            <Time>2 min ago</Time>
+                        </Header>
 
+                        <CodeArea style={submitted_code_style}>
+                            <pre>
+                                <code>
+                                    <p># This program prints Hello World!</p>
+                                </code>
+                                <code>
+                                    <p>print('Hello World!')</p>
+                                </code>
+                            </pre>
+                        </CodeArea>
+
+                        <RefreshWrapper>
+                            <RefreshIcon />
+                        </RefreshWrapper>
+                    </CodeCard>
                 </Grid>
 
                 <Grid item sm={6}>
