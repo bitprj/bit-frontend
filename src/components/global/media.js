@@ -1,6 +1,12 @@
-import { css } from 'styled-components';
+import { css } from "styled-components";
+
+// desktop-first design
+export const PHONE = "600px";
+export const TABLET = "992px";
 
 const sizes = {
+  massive: 1920,
+  thicc: 1680,
   giant: 1440,
   bigDesktop: 1200,
   desktop: 1000,
@@ -8,7 +14,7 @@ const sizes = {
   thone: 600,
   phablet: 480,
   phone: 376,
-  tiny: 330,
+  tiny: 330
 };
 
 // iterate through the sizes and create a media template

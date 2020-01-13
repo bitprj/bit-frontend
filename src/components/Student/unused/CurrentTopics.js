@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import ActivityCard from "./ActivityCard";
+import ActivityCard from "../ActivityCard";
 import StatusIcon from "../../shared/StatusIcon";
 
 import { setViewStudent } from "../../../redux/actions/viewManager";
@@ -66,7 +66,7 @@ const ModuleSection = props => {
                 "I am a static piece text, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
               }
               status={"locked"}
-              clicked={() => props.onSetViewStudent(viewTypes.PROGRESS_MODULE)}
+              clicked={() => props.onSetViewStudent(viewTypes.MODULE)}
             />
           );
         })

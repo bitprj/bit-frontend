@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import Button from "../shared/Button";
+import Button from "../../shared/Button";
 
 const NavyCard = styled.div`
   padding: 1rem;

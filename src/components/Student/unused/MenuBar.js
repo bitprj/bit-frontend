@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { setViewStudent } from "../../redux/actions/viewManager";
+import { setViewStudent } from "../../../redux/actions/viewManager";
 
 import "./Student.css";
 

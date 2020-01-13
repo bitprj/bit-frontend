@@ -8,7 +8,7 @@ const RenderedGemBox = styled.div`
     padding: .2rem .6rem;
     background-color: white;
     color: black;
-    width: 60px;
+    width: 69px;
     transition: background .2s ease, color .2s ease, box-shadow .2s ease, opacity .2s ease;
     &:hover {
         background-color: #F0F8FF;

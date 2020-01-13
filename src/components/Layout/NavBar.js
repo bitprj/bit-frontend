@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 
 const Nav = styled.div`
     padding: 10px;
-    margin: -8px -8px 0 -8px;
     box-shadow: 0 4px 30px 0 rgba(144, 144, 144, 0.2);
     align-items: center;
     flex-wrap: wrap;

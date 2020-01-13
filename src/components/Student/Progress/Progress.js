@@ -1,33 +1,34 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import media from '../../global/media'
+import React, { Component } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import Subject from './CurrentTrack';
-import ModuleSection from './CurrentTopics';
-import SelectTopic from './SelectTopic';
+import StudentHero from "../../../components/Student/StudentHero";
+import CurrentTopics from "../unused/CurrentTopics";
 
-const Page = styled.div`
-	padding: 3% 5%;
-	margin: 0 auto;
-	font-size: 28px;
+// const P
 
-	${media.giant`font-size: 18px;`};
-	${media.desktop`font-size: 16px;`};
-	${media.tablet`font-size: 14px;`};
-	${media.phablet`font-size: 13px;`};
-	${media.phone`font-size: 13px;`};
-`
+const Content = styled.div`
+  padding: 3% 5%;
+  margin: 0 auto;
+`;
 
 class Progress extends Component {
-    render() {
-        return (
-			<Page>
-				<Subject />
-				<ModuleSection />
-				<SelectTopic />
-			</Page>
-        )
-    }
+  render() {
+    return (
+      <>
+        <StudentHero for={"CURRENT"} />
+        <Content>
+          <CurrentTopics />
+        </Content>
+      </>
+    );
+  }
 }
 
-export default Progress;
+const mapStateToProps = state => {
+  return {
+    ...state.studentData
+  };
+};
+
+export default connect(mapStateToProps)(Progress);
