@@ -11,7 +11,7 @@ class Teacher extends Component {
             pendingAssignments: 4,
             submittedAssignments: 4,
         }
-        // this.service = new TeacherService()
+        // this.service = new TeacherService();
     }
 
 

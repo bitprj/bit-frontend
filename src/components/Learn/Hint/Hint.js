@@ -36,12 +36,11 @@ class Hint extends Component {
     constructor(props) {
         super();
         this.state = {
-            id: null,
+            dbID: props.dbID,
+            id: props.id,
             title: '',
-            difficulty: '',
             gems: -50, // get from API call
             isLocked: props.isLocked,
-            parent: null,
             steps: [],
             isExpanded: false,
             currentStep: 0
@@ -58,15 +57,17 @@ class Hint extends Component {
     componentDidMount() {
         this.service.getHint(this.props.id).then(data => {
             this.setState({
-                id: this.props.id,
                 title: data.title,
-                steps: data.steps
+                steps: data.steps,
             })
         })
     }
 
     unlockHint = () => {
         this.props.changeTotalGems(this.state.gems);
+        if (this.props.isParent) {
+            this.props.showChildrenHints(this.props.index);
+        }
         // later - API call to unlock card and get its content
         this.setState({
             isLocked: false,
@@ -75,14 +76,14 @@ class Hint extends Component {
     }
 
     expandHint = () => {
-        this.props.expandHint(this.state.id);
+        this.props.setCurrentHint(this.state.id);
         this.setState({
             isExpanded: true
         })
     }
 
     shrinkHint = () => {
-        this.props.shrinkHint(this.state.id);
+        this.props.setCurrentHint(null);
         this.setState({
             isExpanded: false
         })

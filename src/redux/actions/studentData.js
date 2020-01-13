@@ -5,10 +5,10 @@ import * as actionTypes from "../utils/actionTypes";
 const studentService = new StudentService();
 
 export const setStudentData = studentData => {
-  return {
-    type: actionTypes.SET_STUDENT_DATA,
-    studentData
-  };
+    return {
+        type: actionTypes.SET_STUDENT_DATA,
+        studentData
+    };
 };
 
 export const initStudentData = () => {
@@ -21,10 +21,10 @@ export const initStudentData = () => {
 };
 
 export const setCurrentTrack = currentTrack => {
-  return {
-    type: actionTypes.SET_CURRENT_TRACK,
-    currentTrack
-  };
+    return {
+        type: actionTypes.SET_CURRENT_TRACK,
+        currentTrack
+    };
 };
 
 export const initCurrentTrack = currentTrackID => {
@@ -41,10 +41,10 @@ export const initCurrentTrack = currentTrackID => {
 };
 
 export const setCurrentTopic = currentTopic => {
-  return {
-    type: actionTypes.SET_CURRENT_TOPIC,
-    currentTopic
-  };
+    return {
+        type: actionTypes.SET_CURRENT_TOPIC,
+        currentTopic
+    };
 };
 
 export const initCurrentTopic = currentTopicID => {
@@ -59,17 +59,17 @@ export const initCurrentTopic = currentTopicID => {
     //     console.log("response: ", response); // used for more info about each topic
     //     // currentTopic.modules = { ...cTopicData.modules };
 
-    //     dispatch(setCurrentTopic(currentTopic));
-    //   });
-    // });
-  };
+        //     dispatch(setCurrentTopic(currentTopic));
+        //   });
+        // });
+    };
 };
 
 export const setSuggestedActivity = suggestedActivity => {
-  return {
-    type: actionTypes.SET_SUGGESTED_ACTIVITY,
-    suggestedActivity
-  };
+    return {
+        type: actionTypes.SET_SUGGESTED_ACTIVITY,
+        suggestedActivity
+    };
 };
 
 export const initSuggestedActivity = suggestedActivityID => {

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, Fragment } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import CheckIcon from '../../../assets/icons/check';

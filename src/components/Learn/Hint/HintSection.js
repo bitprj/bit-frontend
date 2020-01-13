@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 
 import Hint from './Hint';
@@ -18,10 +18,9 @@ class HintSection extends Component {
             hints: [],
             currentHint: null
         }
-        this.expandHint = this.expandHint.bind(this);
-        this.shrinkHint = this.shrinkHint.bind(this);
         this.setCurrentHint = this.setCurrentHint.bind(this);
         this.setCardID = this.setCardID.bind(this);
+        this.showChildrenHints = this.showChildrenHints.bind(this);
 
         this.service = new LearnService();
     }
@@ -40,14 +39,6 @@ class HintSection extends Component {
         }
     }
 
-    expandHint = (hintID) => {
-        this.setCurrentHint(hintID);
-    }
-
-    shrinkHint = () => {
-        this.setCurrentHint(null);
-    }
-
     setCardID = id => {
         this.setState({ cardID: id });
     }
@@ -56,18 +47,43 @@ class HintSection extends Component {
         this.setState({ currentHint: status });
     }
 
+    showChildrenHints = (index) => {
+        const newHints = [...this.state.hints];
+        newHints[index].isLocked = false;
+        this.setState({ hints: newHints });
+        console.log('newHInts', this.state.hints)
+    }
+
     render() {
-        const hints = this.state.hints.map(hint => {
+        const hints = this.state.hints.map((hint, index) => {
             const currentHint = this.state.currentHint;
             const display = (!currentHint || hint.id === currentHint) ? 1 : 0;
             const renderedHint = <Hint key={`hint-${hint.id}`}
+                dbID={hint.dbID}
                 id={hint.id}
                 display={display}
+                index={index}
                 isLocked={hint.isLocked}
+                isParent={true}
                 changeTotalGems={this.props.changeTotalGems}
-                expandHint={this.expandHint}
-                shrinkHint={this.shrinkHint} />;
-            return renderedHint;
+                showChildrenHints={this.showChildrenHints}
+                setCurrentHint={this.setCurrentHint} />;
+
+            const children = hint.children.map(child => {
+                const childDisplay = (!currentHint || child.id === currentHint) ? 1 : 0;
+                return <Hint key={`child-${child.id}`}
+                    id={child.id}
+                    display={childDisplay}
+                    isLocked={child.isLocked}
+                    isParent={false}
+                    changeTotalGems={this.props.changeTotalGems}
+                    setCurrentHint={this.setCurrentHint} />;
+            });
+
+            return <Fragment>
+                {renderedHint}
+                {!hint.isLocked ? children : null}
+            </Fragment>
         });
 
         return (

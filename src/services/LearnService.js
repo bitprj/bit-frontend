@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_URL } from './API_URL';
+import { API_URL, UPLOAD_URL } from './API_URLs';
 
 class LearnService {
     // async getActivityInfo(labID) {
@@ -29,21 +29,71 @@ class LearnService {
     }
 
     async processHintStatus(data) {
-        const unlocks = data.hints_unlocked.map(hint => {
+        const hints = data.map(hint => {
+            const children = hint.hint_children.map(child => {
+                return {
+                    dbID: child.hint.id,
+                    id: child.hint.contentful_id,
+                    isLocked: !child.is_unlocked
+                }
+            })
             return {
-                id: hint.contentful_id,
-                isLocked: false
+                dbID: hint.hint.id,
+                id: hint.hint.contentful_id,
+                isLocked: !hint.is_unlocked,
+                children: children
             }
         });
 
-        const locks = data.hints_locked.map(hint => {
-            return {
-                id: hint.contentful_id,
-                isLocked: true
-            }
-        });
+        return hints;
+    }
 
-        return [...unlocks, ...locks];
+    async uploadFiles(fileItems) {
+        let srcFile = null;
+        let testsFile = null;
+        let token = localStorage.getItem('token');
+
+        fileItems.forEach(fileItem => {
+            if (fileItem.filename === 'src.zip') {
+                srcFile = fileItem.file;
+            } else if (fileItem.filename === 'tests.zip') {
+                testsFile = fileItem.file;
+            }
+        })
+
+        if (srcFile && testsFile) {
+            const headers = {
+                'Content-Type': 'multipart/form-data',
+                'Access-Control-Request-Method': 'POST',
+                'Access-Control-Request-Headers': 'X-PINGOTHER, Content-Type'
+            }
+
+            let formData = new FormData();
+            formData.append('src', srcFile);
+            formData.append('tests', testsFile);
+            formData.append('jwt_token', token);
+            formData.append('checkpoint_id', 12)
+
+            let request = new XMLHttpRequest();
+            request.open('POST', UPLOAD_URL);
+            request.send(formData);
+
+            request.onreadystatechange = function () {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    console.log(request.responseText);
+                }
+            }
+
+            // axios.post(UPLOAD_URL, formData, { headers })
+            //     .then(response => console.log(response))
+            //     .catch(err => {
+            //         console.log(err);
+            //     });
+            // return 'dung ui!';
+        } else {
+            const err = new Error('du ma may');
+            throw err;
+        }
     }
 }
 

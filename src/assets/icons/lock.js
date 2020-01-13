@@ -1,13 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const Lock = styled.div`
-
-`
 
 export default ({ color, width, height }) => (
-    <Lock>        
-        {/* More advanced padlock but relies on background color for padlock */}
+        // More advanced padlock but relies on background color for padlock
         <svg viewBox="0 0 299.995 299.995" width={width} height={height}>
             <g fill={color}>
                 <path
@@ -27,21 +21,20 @@ export default ({ color, width, height }) => (
             </g>
         </svg>
         
-        {/* Simple black-outline padlock */}
-        {/* <svg viewBox="-448 -386 1280 1280" width={diameter} height={diameter}>
-            <circle
-                fill={color || '#111111'}
-                cx="196" cy="292" r="640"
-            />
-            <path
-                d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0
-                26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969
-                16-16v-224c0-8.832031-7.1875-16-16-16zm0 0"
-            />
-            <path 
-                d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969
-                16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0"
-            />
-        </svg> */}
-    </Lock>
+        // Simple black-outline padlock
+        // <svg viewBox="-448 -386 1280 1280" width={diameter} height={diameter}>
+        //     <circle
+        //         fill={color || '#111111'}
+        //         cx="196" cy="292" r="640"
+        //     />
+        //     <path
+        //         d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0
+        //         26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969
+        //         16-16v-224c0-8.832031-7.1875-16-16-16zm0 0"
+        //     />
+        //     <path 
+        //         d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969
+        //         16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0"
+        //     />
+        // </svg>
 );

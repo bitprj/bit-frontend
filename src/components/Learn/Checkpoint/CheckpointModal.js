@@ -5,6 +5,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 
 import Upload from './Upload';
+import Result from './Result';
 
 const useStyles = makeStyles(theme => ({
     modal: {
@@ -14,38 +15,51 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const UploadModal = (props) => {
+const CheckpointModal = (props) => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
+    const [currentSlide, setSlide] = React.useState('checkpoint');
 
-    const modalOpenedHandler = () => {
+    const openModal = () => {
         setOpen(true);
     };
 
-    const modalClosedHandler = () => {
+    const closeModal = () => {
         setOpen(false);
     };
 
+    const submit = () => {
+        setSlide('checkpoint');
+    }
+
+    const resubmit = () => {
+        setSlide('upload');
+    }
+
     return (
         <div>
-            <button onClick={modalOpenedHandler}>Upload</button>
+            <button onClick={openModal}>Checkpoint</button>
 
             <Modal
                 className={classes.modal}
                 open={open}
-                onClose={modalClosedHandler}
+                onClose={closeModal}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
-                    timeout: 200,
+                    timeout: 500,
                 }}>
 
                 <Fade in={open}>
-                    <Upload />
+                    {currentSlide === 'upload' ?
+                        <Upload closeModal={closeModal} />
+                        : <Result closeModal={closeModal}
+                            resubmit={resubmit} />
+                    }
                 </Fade>
             </Modal>
         </div>
     );
 }
 
-export default UploadModal;
+export default CheckpointModal;

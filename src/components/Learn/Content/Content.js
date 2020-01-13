@@ -6,7 +6,7 @@ import ContentfulService from '../../../services/ContentfulService';
 
 import Button from '../../shared/Button'
 import ConceptModal from '../Concept/ConceptModal';
-import UploadModal from '../Upload/UploadModal';
+import CheckpointModal from '../Checkpoint/CheckpointModal';
 
 const ButtonSection = styled.div`
     text-align: right;
@@ -68,7 +68,7 @@ class Content extends Component {
                     : null
                 }
 
-                <UploadModal />
+                <CheckpointModal />
             </ContentWrapper>
         )
     }
