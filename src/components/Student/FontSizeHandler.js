@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import media from "../global/media";
+import media from '../../assets/styles/Media'
 
 const FontSize = styled.div`
   font-size: 32px;

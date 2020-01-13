@@ -7,7 +7,7 @@ import Fade from "@material-ui/core/Fade";
 
 import BrickWall from "../../../assets/icons/brickwall";
 
-import { PHONE } from '../../global/media'
+import { PHONE } from '../../../assets/styles/Media'
 
 const useStyles = makeStyles(() => ({
   modal: {

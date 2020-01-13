@@ -7,7 +7,7 @@ import ProgressCircle from "../../shared/ProgressCircle";
 import FinalProjectModal from "./FinalProject";
 import Circle from "../../../assets/icons/circle";
 
-import { PHONE, TABLET } from '../../global/media'
+import { PHONE, TABLET } from '../../../assets/styles/Media'
 
 const Content = styled.div`
   display: flex;
