@@ -1,20 +1,6 @@
-// import React from 'react';
-
-// import Module from './Module';
-
-// const Progress = (props) => {
-//     return (
-//         <div>
-//             <h1>{props.topicTitle}</h1>
-//             <div>{props.topicDescription}</div>
-//             <Module />
-//         </div>
-//     )
-// }
-
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import media from '../../global/media'
+import media from '../../../assets/styles/media';
 
 import Subject from './CurrentTrack';
 import ModuleSection from './CurrentTopic';
@@ -37,7 +23,7 @@ class Progress extends Component {
 	// 	sectionProgress: '22%',
 	// 	sectionStatus: 'incomplete',
 	// 	moduleContents: [
-    //         {
+	//         {
 	// 			_id: "348u9eRWas0",
 	// 			name: "Programming Principles",
 	// 			image: "brickwall",
@@ -68,18 +54,18 @@ class Progress extends Component {
 	// 			description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 	// 			status: 'locked'
 	// 		}
-    //     ]
+	//     ]
 	// }
 
-    render() {
-        return (
+	render() {
+		return (
 			<Page>
 				<Subject />
 				<ModuleSection />
 				<SelectTopic />
 			</Page>
-        )
-    }
+		)
+	}
 }
 
 export default Progress;
