@@ -47,7 +47,7 @@ const CheckpointModal = (props) => {
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
-                    timeout: 200,
+                    timeout: 500,
                 }}>
 
                 <Fade in={open}>
