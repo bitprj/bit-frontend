@@ -51,14 +51,13 @@ class HintSection extends Component {
         const newHints = [...this.state.hints];
         newHints[index].isLocked = false;
         this.setState({ hints: newHints });
-        console.log('newHInts', this.state.hints)
     }
 
     render() {
         const hints = this.state.hints.map((hint, index) => {
             const currentHint = this.state.currentHint;
             const display = (!currentHint || hint.id === currentHint) ? 1 : 0;
-            const renderedHint = <Hint key={`hint-${hint.id}`}
+            const renderedHint = <Hint key={`parent-hint-${hint.id}`}
                 dbID={hint.dbID}
                 id={hint.id}
                 display={display}
@@ -71,7 +70,7 @@ class HintSection extends Component {
 
             const children = hint.children.map(child => {
                 const childDisplay = (!currentHint || child.id === currentHint) ? 1 : 0;
-                return <Hint key={`child-${child.id}`}
+                return <Hint key={`child-hint-${child.id}`}
                     id={child.id}
                     display={childDisplay}
                     isLocked={child.isLocked}
@@ -80,10 +79,12 @@ class HintSection extends Component {
                     setCurrentHint={this.setCurrentHint} />;
             });
 
-            return <Fragment>
-                {renderedHint}
-                {!hint.isLocked ? children : null}
-            </Fragment>
+            return (
+                <Fragment key={`hint-${hint.id}`}>
+                    {renderedHint}
+                    {!hint.isLocked ? children : null}
+                </Fragment>
+            )
         });
 
         return (

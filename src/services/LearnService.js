@@ -1,31 +1,9 @@
-import axios from 'axios';
-
-import { API_URL, UPLOAD_URL } from './API_URLs';
+import { backend, grader } from './AxiosInstances';
 
 class LearnService {
-    // async getActivityInfo(labID) {
-    //     const url = `${API_URL}/lab/${labID}/fetch`;
-    //     return axios.get(url).then(response => response.data);
-    // }
-
-    // // async getCard(cardID) {
-    // //     const url = `${API_URL}/cards/${cardID}`;
-    // //     return axios.get(url).then(response => response.data);
-    // // }
-
-    // async getHint(hintID) {
-    //     const url = `${API_URL}/hints/${hintID}`;
-    //     return axios.get(url).then(response => response.data);
-    // }
-
-    // async unlockHint(labID, cardID, hintID) {
-    //     const url = `${API_URL}/lab/${labID}/card/${cardID}/hint/${hintID}/unlock`;
-    //     return axios.get(url).then(response => response.data);
-    // }
-
     async getHintStatus(labID, cardID) {
-        const url = `${API_URL}/lab/${labID}/card/${cardID}/fetch`;
-        return axios.get(url).then(response => response.data);
+        const endpoint = `/lab/${labID}/card/${cardID}/fetch`;
+        return backend.get(endpoint);
     }
 
     async processHintStatus(data) {
@@ -74,24 +52,14 @@ class LearnService {
             formData.append('jwt_token', token);
             formData.append('checkpoint_id', 12)
 
-            // let request = new XMLHttpRequest();
-            // request.open('POST', UPLOAD_URL);
-            // request.send(formData);
-
-            // request.onreadystatechange = function () {
-            //     if (request.readyState === XMLHttpRequest.DONE) {
-            //         console.log(request.responseText);
-            //     }
-            // }
-
-            return axios.post(UPLOAD_URL, formData)
+            return grader.post('/uploader', formData)
+                // return axios.post(UPLOAD_URL, formData)
                 .then(response => response.data)
                 .catch(err => {
                     console.log(err);
                 });
-            // return 'dung ui!';
         } else {
-            const err = new Error('du ma may');
+            const err = new Error('Invalid Files');
             throw err;
         }
     }

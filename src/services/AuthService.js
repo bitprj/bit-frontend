@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import decode from 'jwt-decode';
 
-import { API_URL } from './API_URLs';
+const API_URL = 'https://b2757d6e-6fd4-4877-887f-7cc9531408a8.mock.pstmn.io'
 
 class AuthService {
     async login(username, password) {
@@ -22,19 +22,6 @@ class AuthService {
         //     email: this.state.email,
         //     password: this.state.password
         // }).then(response => this.setToken(response.data.access_token));
-    }
-
-    getUserInfo() {
-        // axios.get(url, {
-        //     headers: {
-        //         Authorization: `Bearer ${token}`
-        //     }
-        // }).then(res => this.setState({
-        //     user: res.data
-        // })).catch(err => {
-        //     this.authService.removeToken();
-        //     this.props.history.push("/login");
-        // })
     }
 
     userAuthenticated() {

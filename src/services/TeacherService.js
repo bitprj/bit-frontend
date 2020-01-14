@@ -1,11 +1,9 @@
-import axios from "axios";
-
-import { API_URL } from "./API_URLs";
+import { backend } from './AxiosInstances';
 
 class TeacherService {
     async getSubmissions(classroomID) {
-        const url = `${API_URL}/teachers/${classroomID}/grade`;
-        return axios.get(url).then(response => response.data);
+        const endpoint = `/teachers/${classroomID}/grade`;
+        return backend.get(endpoint);
     }
 }
 
