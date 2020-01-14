@@ -7,7 +7,7 @@ import ProgressCircle from "../../shared/ProgressCircle";
 import FinalProjectModal from "./FinalProject";
 import Circle from "../../../assets/icons/circle";
 
-import { PHONE, TABLET } from '../../../assets/styles/Media'
+import { PHONE, TABLET } from "../../../assets/styles/Media";
 
 const Content = styled.div`
   display: flex;
@@ -53,7 +53,7 @@ const TutorialsContainer = styled.div`
   @media screen and (max-width: ${PHONE}) {
     margin: 1em auto;
   }
-  
+
   @media screen and (min-width: ${TABLET}) {
     margin-right: 3em;
   }
@@ -159,7 +159,7 @@ const Module = props => {
 
   return (
     <>
-      <StudentHero for={"MODULE"} />
+      <StudentHero for={"MODULE"} heroBgColor="#0a192f" cardBgColor="#172A45" />
 
       <Content>
         <TutorialsContainer>

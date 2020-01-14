@@ -8,7 +8,7 @@ import StatusIcon from "../shared/StatusIcon";
 import Button from "../shared/Button";
 
 const RenderedCard = styled.div`
-  background-color: #172A45;
+  background-color: ${props => props.backgroundColor};
   color: #fff;
   padding: 2em;
   margin: 0.5em;
@@ -20,9 +20,9 @@ const RenderedCard = styled.div`
   width: ${props => (props.type === "VERTICAL" ? "17em" : "auto")};
 
   &:hover {
-    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.5);
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.5),
+      inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
     transform: translateY(-4px);
-    background-color: #223e67;
   }
 
   // @media screen and (max-width: 1199px) {
@@ -51,7 +51,7 @@ const Description = styled.p`
   margin: 0.5em 0;
   font-size: 80%;
   padding: 0 10%;
-  // min-height: 
+  // min-height:
 `;
 
 const StatusWrapper = styled.div`
@@ -77,7 +77,12 @@ const ActivityCard = props => {
   };
 
   return (
-    <RenderedCard onClick={props.clicked} type={props.type} width={props.width}>
+    <RenderedCard
+      type={props.type}
+      width={props.width}
+      backgroundColor={props.backgroundColor}
+      onClick={props.clicked}
+    >
       <IconWrapper>{renderAppropriateImage(props.image, "3em")}</IconWrapper>
       <Name>{props.name}</Name>
       <Description>{props.description}</Description>
@@ -86,6 +91,7 @@ const ActivityCard = props => {
           buttonState={"Resume"}
           class_name="button invert"
           clicked={() => props.buttonClicked}
+          style={{ backgroundColor: "#fff", color: "#000" }}
         />
       ) : (
         <StatusWrapper>

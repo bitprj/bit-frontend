@@ -1,38 +1,155 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-import { connect } from 'react-redux';
+import FontSizeHandler from "../../components/Student/FontSizeHandler";
 
-const Nav = styled.div`
-    padding: 10px;
-    box-shadow: 0 4px 30px 0 rgba(144, 144, 144, 0.2);
-    align-items: center;
-    flex-wrap: wrap;
-    display: flex;
-    justify-content: space-between;
-    flex: 1;
-    position: relative;
-    height: 40px;
-`
+import Logo from "../../assets/icons/logo";
+import SearchIcon from "@material-ui/icons/Search";
+import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+
+import Button from "../shared/Button";
+
+const contentHeight = "2.5em";
+
+const Nav = styled.nav`
+  font-size: 108%;
+  padding: 0.8em 1em;
+  box-shadow: 0 4px 30px 0 rgba(144, 144, 144, 0.2);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+const NavElement = styled.div`
+  margin: 0 1em;
+  line-height: ${contentHeight};
+`;
+
+const StudentContainer = styled.div``;
+
+const VisitorContainer = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const SearchBarContainer = styled.div`
+  position: relative;
+  background-color: #f1f1f1;
+  border-radius: ${contentHeight};
+  display: flex;
+`;
+
+const SearchBar = styled.input`
+  width: 100%;
+  line-height: ${contentHeight};
+  border: none;
+  background: none;
+  outline: none;
+  padding-left: 1.25em;
+  padding-right: ${contentHeight};
+  cursor: text;
+`;
+
+const SearchIconWrapper = styled.div`
+  position: absolute;
+  width: ${contentHeight};
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+  cursor: pointer;
+`;
+
+const ProfPicWrapper = styled.div``;
+
+const MuiIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const styledLink = {
-    fontSize: '16px',
-    color: 'black',
-    textDecoration: 'none'
-}
+  color: "black",
+  textDecoration: "none"
+};
 
-const NavBar = (props) => (
+const NavBar = props => (
+  <FontSizeHandler>
     <Nav>
-        <Link style={styledLink} to={"/"}>BitProject</Link>
-        {(props.userType === "Student") ? <Link style={styledLink} to={"/learn"}>Learn</Link> : null}
-        {(props.userType === "Student") ? <Link style={styledLink} to={"/student"}>Student</Link> : null}
-        {(props.userType === "Visitor") ? <Link style={styledLink} to={"/login"}>Login</Link> : <Link style={styledLink} to={"/logout"}>Logout</Link>}
+      <NavElement style={{ height: contentHeight }}>
+        <Link to={"/student"}>
+          <Logo width={contentHeight} />
+          {/* <img src="../../assets/icons/logo.png" alt="Bit Project" /> */}
+        </Link>
+      </NavElement>
+      <NavElement>
+        <Link style={styledLink} to={"/learn"}>
+          Explore
+        </Link>
+      </NavElement>
+      <NavElement>
+        <Link style={styledLink} to={"/"}>
+          Community
+        </Link>
+      </NavElement>
+
+      {props.userType === "Student" ? (
+        <>
+          <NavElement style={{ flex: "1" }}>
+            <SearchBarContainer>
+              <SearchBar />
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+            </SearchBarContainer>
+          </NavElement>
+
+          <NavElement>
+            <MuiIconWrapper>
+              <NotificationsOutlinedIcon />
+            </MuiIconWrapper>
+          </NavElement>
+
+          <NavElement>
+            <Link style={styledLink} to={"/logout"}>
+              <ProfPicWrapper>
+                {/* <AccountCircleIcon style={{ height: "100%" }} /> */}
+              </ProfPicWrapper>
+              <span>Bob</span>
+            </Link>
+          </NavElement>
+        </>
+      ) : null}
+
+      {props.userType === "Visitor" ? (
+        <VisitorContainer>
+          <Link style={styledLink} to={"/login"}>
+            <Button
+              buttonState="Login"
+              class_name="invert less-round"
+              style={{ margin: "0 0.25em", width: "7.5em" }}
+            />
+          </Link>
+
+          <Link style={styledLink} to={"/login"}>
+            <Button
+              buttonState="Sign Up"
+              class_name="outline less-round"
+              style={{ margin: "0 0.25em", width: "7.5em" }}
+            />
+          </Link>
+        </VisitorContainer>
+      ) : null}
     </Nav>
-)
+  </FontSizeHandler>
+);
 
 const mapStateToProps = state => ({
-    userType: state.reducer.userType
-})
+  userType: state.reducer.userType
+});
 
 export default connect(mapStateToProps)(NavBar);

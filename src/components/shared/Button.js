@@ -16,6 +16,8 @@ const RenderedButton = styled.div`
   font-size: inherit;
   line-height: inherit;
   transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+  border: 1px solid transparent;
 
   &:hover {
     color: #0070f3;
@@ -23,8 +25,6 @@ const RenderedButton = styled.div`
   }
 
   &.invert {
-    padding: 0 2em;
-    line-height: 2em;
     border-radius: 7px;
     background-color: #0070f3;
     box-shadow: 0 4px 14px 0 rgba(0, 118, 255, 0.39);
@@ -38,6 +38,14 @@ const RenderedButton = styled.div`
 
   &.invert:active {
     background: #006ae6;
+  }
+
+  &.outline {
+    border: 1px #0070f3 solid;
+  }
+
+  &.less-round {
+    border-radius: 3.5px;
   }
 `;
 
@@ -78,7 +86,7 @@ const Button = props => {
 
     default:
       return (
-        <RenderedButton className={props.class_name} onClick={props.click}>
+        <RenderedButton className={props.class_name} onClick={props.click} style={props.style}>
           {props.buttonState}
         </RenderedButton>
       );

@@ -19,18 +19,18 @@ class Student extends Component {
     if (this.props.is_student_data_loaded) {
       if (!this.props.suggested_activity)
         this.props.onInitSuggestedActivity(this.props.current_activities[0].id);
-      // if (!this.props.current_topic)
-      //   this.props.onInitCurrentTopic(this.props.current_topic_id);
+      if (!this.props.current_topic)
+        this.props.onInitCurrentTopic(this.props.current_topic_id);
     }
   }
 
   handleCurrentView() {
     switch (this.props.currentView) {
       case viewTypes.PROGRESS:
-        return <Module />;
+        return <Progress />;
 
       case viewTypes.MODULE:
-        return <Progress />;
+        return <Module />;
 
       default:
         return null;

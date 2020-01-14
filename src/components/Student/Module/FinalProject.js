@@ -40,7 +40,7 @@ const Content = styled.div`
     // height: 60%;
   }
 
-  @media screen and (orientation: landscape) and (max-height: ${PHONE}) {
+  @media screen and (orientation: landscape) and (max-width: ${PHONE}) {
     overflow-y: scroll;
   }
 `;

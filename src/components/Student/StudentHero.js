@@ -2,15 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import ActivityCard from "./ActivityCard";
+import ActivityCard from "./ProgressCard";
+
+import { setViewStudent } from "../../redux/actions/viewManager";
+import * as viewTypes from "../../redux/utils/viewTypes";
+
+// darkblue primary: 0a192f
 
 const HeroBackground = styled.div`
-  background-color: #0a192f;
+  background-color: ${props => props.color || "#0a192f"};
   position: absolute;
   left: 0;
   right: 0;
   height: 40em;
-  z-index: -99;
   clip-path: ellipse(110% 70% at 63% 25%);
 `;
 
@@ -20,6 +24,7 @@ const HeroContainer = styled.div`
   display: flex;
   flex-flow: row wrap;
   color: white;
+  position: relative;
 `;
 
 const DescriptionWrapper = styled.div`
@@ -64,18 +69,35 @@ const StudentHero = props => {
 
   return (
     <>
-      <HeroBackground />
+      <HeroBackground color={props.heroBgColor} />
       <HeroContainer>
         <DescriptionWrapper>
           <Description>
-            <p>&#8249; Back to modules</p>
-            <h1 style={{ margin: 0 }}>Programming Principles</h1>
-            <p>
-              Coding Best Practices are a set of informal rules that the
-              software development community has learned over time which can
-              help improve the quality of software
-            </p>
-            <ProgressBar progress={"69%"} />
+            {props.for === "TOPIC" ? (
+              <>
+                <h1 style={{ margin: 0 }}>Intro to Python</h1>
+                <p>
+                  Coding Best Practices are a set of informal rules that the
+                  software development community has learned over time which can
+                  help improve the quality of software
+                </p>
+              </>
+            ) : null}
+
+            {props.for === "MODULE" ? (
+              <>
+                <p onClick={() => props.onSetViewStudent(viewTypes.PROGRESS)}>
+                  &#8249; Back to modules
+                </p>
+                <h1 style={{ margin: 0 }}>Programming Principles</h1>
+                <p>
+                  Coding Best Practices are a set of informal rules that the
+                  software development community has learned over time which can
+                  help improve the quality of software
+                </p>
+                <ProgressBar progress={"69%"} />
+              </>
+            ) : null}
           </Description>
         </DescriptionWrapper>
         <CardWrapper>
@@ -84,6 +106,7 @@ const StudentHero = props => {
             image={props.suggestedActivity.image}
             name={props.suggestedActivity.name}
             description={props.suggestedActivity.description}
+            backgroundColor={props.cardBgColor}
             buttonClicked={() => props.resumeClicked}
           />
         </CardWrapper>
@@ -91,6 +114,7 @@ const StudentHero = props => {
     </>
   );
 };
+
 
 /**
  * ===================== DEPRECATED =======================
@@ -134,4 +158,12 @@ const mapStateToProps = (state, ownProps) => {
   return newProps;
 };
 
-export default connect(mapStateToProps)(StudentHero);
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetViewStudent: viewName => {
+      dispatch(setViewStudent(viewName));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentHero);

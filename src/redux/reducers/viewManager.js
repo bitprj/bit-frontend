@@ -11,7 +11,7 @@ const reducer = (state = initialState, action) => {
       const newState = { ...state };
       newState.previous_view_student = newState.current_view_student;
       newState.current_view_student = action.viewName;
-      console.log(newState)
+      // console.log(newState)
       return newState;
     }
     default:
