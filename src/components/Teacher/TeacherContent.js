@@ -31,7 +31,7 @@ const data = [
                 "id": 40,
                 "is_completed": true,
                 "image": null,
-                "video": null,
+                "video": 'https://www.youtube.com/watch?v=Xk3LbSEbU2Y',
                 "type": "Video"
             }
         ]

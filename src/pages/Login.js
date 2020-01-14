@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import TextField from '@material-ui/core/TextField';
 
 import AuthService from '../services/AuthService';
 
@@ -13,8 +14,8 @@ class Login extends Component {
             password: null,
         }
 
-        this.inputChangeHandler = this.inputChangeHandler.bind(this);
-        this.formSubmitHandler = this.formSubmitHandler.bind(this);
+        this.changeInput = this.changeInput.bind(this);
+        this.submitForm = this.submitForm.bind(this);
         this.authService = new AuthService();
     }
 
@@ -24,13 +25,13 @@ class Login extends Component {
         }
     }
 
-    inputChangeHandler(e) {
+    changeInput(e) {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
 
-    async formSubmitHandler(e) {
+    async submitForm(e) {
         e.preventDefault();
 
         try {
@@ -48,23 +49,17 @@ class Login extends Component {
         return (
             <Fragment>
                 <h1>Login</h1>
-                <form onSubmit={this.formSubmitHandler}>
-                    <input
-                        className="form-item"
-                        placeholder="Email goes here..."
+                <form onSubmit={this.submitForm}>
+                    <TextField id="standard-basic"
+                        label="Email"
                         name="email"
-                        type="text"
-                        onChange={this.inputChangeHandler}
-                    />
-                    <input
-                        className="form-item"
-                        placeholder="Password goes here..."
+                        onChange={this.changeInput} />
+                    <TextField id="standard-basic"
+                        label="Password"
                         name="password"
                         type="password"
-                        onChange={this.inputChangeHandler}
-                    />
+                        onChange={this.changeInput} />
                     <input
-                        className="form-submit"
                         value="SUBMIT"
                         type="submit"
                     />
