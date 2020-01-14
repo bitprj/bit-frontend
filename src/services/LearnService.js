@@ -62,11 +62,11 @@ class LearnService {
         })
 
         if (srcFile && testsFile) {
-            const headers = {
-                'Content-Type': 'multipart/form-data',
-                'Access-Control-Request-Method': 'POST',
-                'Access-Control-Request-Headers': 'X-PINGOTHER, Content-Type'
-            }
+            // const headers = {
+            //     'Content-Type': 'multipart/form-data',
+            //     'Access-Control-Request-Method': 'POST',
+            //     'Access-Control-Request-Headers': 'X-PINGOTHER, Content-Type'
+            // }
 
             let formData = new FormData();
             formData.append('src', srcFile);
@@ -74,21 +74,21 @@ class LearnService {
             formData.append('jwt_token', token);
             formData.append('checkpoint_id', 12)
 
-            let request = new XMLHttpRequest();
-            request.open('POST', UPLOAD_URL);
-            request.send(formData);
+            // let request = new XMLHttpRequest();
+            // request.open('POST', UPLOAD_URL);
+            // request.send(formData);
 
-            request.onreadystatechange = function () {
-                if (request.readyState === XMLHttpRequest.DONE) {
-                    console.log(request.responseText);
-                }
-            }
+            // request.onreadystatechange = function () {
+            //     if (request.readyState === XMLHttpRequest.DONE) {
+            //         console.log(request.responseText);
+            //     }
+            // }
 
-            // axios.post(UPLOAD_URL, formData, { headers })
-            //     .then(response => console.log(response))
-            //     .catch(err => {
-            //         console.log(err);
-            //     });
+            return axios.post(UPLOAD_URL, formData)
+                .then(response => response.data)
+                .catch(err => {
+                    console.log(err);
+                });
             // return 'dung ui!';
         } else {
             const err = new Error('du ma may');
