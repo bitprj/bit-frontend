@@ -23,15 +23,15 @@ const data = [
             {
                 "id": 39,
                 "is_completed": true,
-                "image": "https://projectbit.s3-us-west-1.amazonaws.com/darlene/checkpoints/Image%20from%20iOS.jpg",
-                "video": null,
+                "image": null,
+                "video": 'https://projectbit.s3-us-west-1.amazonaws.com/darlene/checkpoints/Snow%20Falling%20Down.mp4',
                 "type": "Image"
             },
             {
                 "id": 40,
                 "is_completed": true,
                 "image": null,
-                "video": 'https://www.youtube.com/watch?v=Xk3LbSEbU2Y',
+                "video": 'https://projectbit.s3-us-west-1.amazonaws.com/darlene/checkpoints/Snow%20Falling%20Down.mp4',
                 "type": "Video"
             }
         ]
@@ -41,6 +41,13 @@ const data = [
         "studentName": "K. Denial",
         "activityName": "Cava",
         "checkpoints": [
+            {
+                "id": 14,
+                "is_completed": true,
+                "image": null,
+                "video": "https://projectbit.s3-us-west-1.amazonaws.com/darlene/checkpoints/Snow%20Falling%20Down.mp4",
+                "type": "Video"
+            },
             {
                 "id": 12,
                 "is_completed": true,
@@ -54,13 +61,6 @@ const data = [
                 "image": "https://projectbit.s3-us-west-1.amazonaws.com/darlene/checkpoints/Image%20from%20iOS.jpg",
                 "video": null,
                 "type": "Image"
-            },
-            {
-                "id": 14,
-                "is_completed": true,
-                "image": null,
-                "video": "https://projectbit.s3-us-west-1.amazonaws.com/darlene/checkpoints/Snow%20Falling%20Down.mp4",
-                "type": "Video"
             }
         ]
     }
@@ -79,6 +79,7 @@ class TeacherContent extends Component {
             currentSubmission: 0
         }
 
+        this.switchSubmission = this.switchSubmission.bind(this);
         this.service = new TeacherService();
     }
 
@@ -89,12 +90,18 @@ class TeacherContent extends Component {
         this.setState({ submissions: data });
     }
 
+    switchSubmission = (index) => {
+        this.setState({ currentSubmission: index });
+    }
+
     render() {
         const entries = this.state.submissions.map((submission, index) => {
             return <EntryBox key={`entry-${index}`}
                 studentName={submission.studentName}
                 activityName={submission.activityName}
-                time={'2 min ago'} />
+                time={'2 min ago'}
+                index={index}
+                switchSubmission={this.switchSubmission} />
         });
 
         const submission = this.state.submissions[this.state.currentSubmission];

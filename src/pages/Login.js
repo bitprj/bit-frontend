@@ -61,8 +61,7 @@ class Login extends Component {
                         onChange={this.changeInput} />
                     <input
                         value="SUBMIT"
-                        type="submit"
-                    />
+                        type="submit" />
                 </form>
             </Fragment>
         );
