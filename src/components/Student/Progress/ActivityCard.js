@@ -1,16 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 
+const ActivityCardWrapper = styled.div`
+  margin: 6em 3em;
+  position: relative;
+`;
+
 const RenderActivityCard = styled.div`
-  margin: 3.3em;
   padding: 3em 3em 0;
-  min-height: 24em;
-  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+  height: 24em;
   border-radius: 1em;
   background-color: #fff;
   text-align: center;
   display: inline-block;
-  position: relative;
+  overflow-y: auto;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+
+  transition: 0.2s ease all;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 24px rgba(38, 38, 38, 0.2);
+  }
 `;
 const DottedLine = styled.div`
   border-bottom: 3px #eaeaea dashed;
@@ -36,12 +48,14 @@ const StatusContainer = styled.div`
 
 const ActivityCard = props => {
   return (
-    <RenderActivityCard onClick={props.clicked}>
-      <StatusContainer>+</StatusContainer>
-      <h2>Python Basics</h2>
-      <p>Choose a module to learn an interesting tidbit about Python</p>
+    <ActivityCardWrapper onClick={props.clicked}>
+      <RenderActivityCard>
+        <StatusContainer>+</StatusContainer>
+        <h2>Python Basics</h2>
+        <p>Choose a module to learn an interesting tidbit about Python</p>
+      </RenderActivityCard>
       {!props.isLast ? <DottedLine isLeft={props.isLeft} /> : null}
-    </RenderActivityCard>
+    </ActivityCardWrapper>
   );
 };
 

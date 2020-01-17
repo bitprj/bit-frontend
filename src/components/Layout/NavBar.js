@@ -3,9 +3,6 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import FontSizeHandler from "../../components/Student/FontSizeHandler";
-
-import Logo from "../../assets/icons/logo";
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
@@ -72,80 +69,82 @@ const MuiIconWrapper = styled.div`
   align-items: center;
 `;
 
+const Logo = styled.img`
+  width: ${contentHeight};
+  height: ${contentHeight};
+`
+
 const styledLink = {
   color: "black",
   textDecoration: "none"
 };
 
 const NavBar = props => (
-  <FontSizeHandler>
-    <Nav>
-      <NavElement style={{ height: contentHeight }}>
-        <Link to={"/student"}>
-          <Logo width={contentHeight} />
-          {/* <img src="../../assets/icons/logo.png" alt="Bit Project" /> */}
-        </Link>
-      </NavElement>
-      <NavElement>
-        <Link style={styledLink} to={"/learn"}>
-          Explore
-        </Link>
-      </NavElement>
-      <NavElement>
-        <Link style={styledLink} to={"/"}>
-          Community
-        </Link>
-      </NavElement>
+  <Nav>
+    <NavElement style={{ height: contentHeight }}>
+      <Link to={"/student"}>
+        <Logo src={require("../../assets/icons/logo.png")} alt="Bit Project" />
+      </Link>
+    </NavElement>
+    <NavElement>
+      <Link style={styledLink} to={"/learn"}>
+        Explore
+      </Link>
+    </NavElement>
+    <NavElement>
+      <Link style={styledLink} to={"/"}>
+        Community
+      </Link>
+    </NavElement>
 
-      {props.userType === "Student" ? (
-        <>
-          <NavElement style={{ flex: "1" }}>
-            <SearchBarContainer>
-              <SearchBar />
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-            </SearchBarContainer>
-          </NavElement>
+    {props.userType === "Student" ? (
+      <>
+        <NavElement style={{ flex: "1" }}>
+          <SearchBarContainer>
+            <SearchBar />
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+          </SearchBarContainer>
+        </NavElement>
 
-          <NavElement>
-            <MuiIconWrapper>
-              <NotificationsOutlinedIcon />
-            </MuiIconWrapper>
-          </NavElement>
+        <NavElement>
+          <MuiIconWrapper>
+            <NotificationsOutlinedIcon />
+          </MuiIconWrapper>
+        </NavElement>
 
-          <NavElement>
-            <Link style={styledLink} to={"/logout"}>
-              <ProfPicWrapper>
-                {/* <AccountCircleIcon style={{ height: "100%" }} /> */}
-              </ProfPicWrapper>
-              <span>Bob</span>
-            </Link>
-          </NavElement>
-        </>
-      ) : null}
-
-      {props.userType === "Visitor" ? (
-        <VisitorContainer>
-          <Link style={styledLink} to={"/login"}>
-            <Button
-              buttonState="Login"
-              class_name="invert less-round"
-              style={{ margin: "0 0.25em", width: "7.5em" }}
-            />
+        <NavElement>
+          <Link style={styledLink} to={"/logout"}>
+            <ProfPicWrapper>
+              {/* <AccountCircleIcon style={{ height: "100%" }} /> */}
+            </ProfPicWrapper>
+            <span>Bob</span>
           </Link>
+        </NavElement>
+      </>
+    ) : null}
 
-          <Link style={styledLink} to={"/login"}>
-            <Button
-              buttonState="Sign Up"
-              class_name="outline less-round"
-              style={{ margin: "0 0.25em", width: "7.5em" }}
-            />
-          </Link>
-        </VisitorContainer>
-      ) : null}
-    </Nav>
-  </FontSizeHandler>
+    {props.userType === "Visitor" ? (
+      <VisitorContainer>
+        <Link style={styledLink} to={"/login"}>
+          <Button
+            buttonState="Login"
+            class_name="invert less-round"
+            style={{ margin: "0 0.25em", width: "7.5em" }}
+          />
+        </Link>
+
+        <Link style={styledLink} to={"/login"}>
+          <Button
+            buttonState="Sign Up"
+            class_name="outline less-round"
+            style={{ margin: "0 0.25em", width: "7.5em" }}
+          />
+        </Link>
+      </VisitorContainer>
+    ) : null}
+  </Nav>
 );
 
 const mapStateToProps = state => ({

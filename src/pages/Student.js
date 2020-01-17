@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import FontSizeHandler from "../components/Student/FontSizeHandler";
-
 import Progress from "../components/Student/Progress/Progress";
 import Module from "../components/Student/Module/Module";
 
@@ -42,7 +40,7 @@ class Student extends Component {
   }
 
   render() {
-    return <FontSizeHandler>{this.handleCurrentView()}</FontSizeHandler>;
+    return <>{this.handleCurrentView()}</>;
   }
 }
 

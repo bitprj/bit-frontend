@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
@@ -8,8 +8,7 @@ import ActivityCard from "./ActivityCard";
 import { setViewStudent } from "../../../redux/actions/viewManager";
 import * as viewTypes from "../../../redux/utils/viewTypes";
 
-import { PHONE, TABLET } from "../../../assets/styles/Media";
-// const P
+import { sizes } from "../../../assets/styles/Media";
 
 const Content = styled.div`
   display: flex;
@@ -19,18 +18,18 @@ const Content = styled.div`
   margin: 0 2em;
   position: relative;
 
-  @media screen and (max-width: ${PHONE}) {
+  @media screen and (max-width: ${sizes.thone}px) {
     flex-direction: column;
   }
 
-  @media screen and (min-width: ${TABLET}) {
+  @media screen and (min-width: ${sizes.desktop}px) {
     margin: 0 8em;
   }
 `;
 
 const ColOne = styled.div`
   flex: 1;
-`;
+`;  
 
 const ColTwo = styled.div`
   flex: 1;
@@ -43,13 +42,22 @@ const PickModule = styled.div`
   margin-top: 0;
   padding: 2em;
   height: 20em;
-  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
   border-radius: 1em;
   background-color: #fff;
   text-align: center;
 
   display: flex;
   align-items: center;
+  
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+
+  transition: 0.2s ease all;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 24px rgba(38, 38, 38, 0.2);
+  }
 `;
 const PickButton = styled.div`
   font-size: 1.5em;

@@ -62,6 +62,16 @@ const ProgressBar = styled.div`
   }
 `;
 
+const Back = styled.p`
+  cursor: pointer;
+  display: inline-block;
+  transition: ease color 0.15s;
+
+  &:hover {
+    color: #86c5ff;
+  }
+`
+
 const StudentHero = props => {
   const resumeClickedHandler = () => {
     // go to current lab
@@ -86,9 +96,9 @@ const StudentHero = props => {
 
             {props.for === "MODULE" ? (
               <>
-                <p onClick={() => props.onSetViewStudent(viewTypes.PROGRESS)}>
-                  &#8249; Back to modules
-                </p>
+                <Back onClick={() => props.onSetViewStudent(viewTypes.PROGRESS)}>
+                  &#8249; Back to Topics
+                </Back>
                 <h1 style={{ margin: 0 }}>Programming Principles</h1>
                 <p>
                   Coding Best Practices are a set of informal rules that the
@@ -115,9 +125,8 @@ const StudentHero = props => {
   );
 };
 
-
 /**
- * ===================== DEPRECATED =======================
+ * ===================== DEPRECATED INFO =======================
  * Component will update two times (at least). Further updates are caused by
  * subscription feature and updates elsewhere in application
  *    > [FIRST] when student_data will be loaded (causing update):

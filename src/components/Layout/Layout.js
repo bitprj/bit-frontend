@@ -5,6 +5,7 @@ import NavBar from './NavBar'
 
 const Main = styled.main`
     background-color: #F5FAFF;
+    position: relative;
 `
 
 const Layout = (props) => (

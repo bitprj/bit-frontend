@@ -7,29 +7,30 @@ import ProgressCircle from "../../shared/ProgressCircle";
 import FinalProjectModal from "./FinalProject";
 import Circle from "../../../assets/icons/circle";
 
-import { PHONE, TABLET } from "../../../assets/styles/Media";
+import media from "../../../assets/styles/Media";
 
 const Content = styled.div`
   display: flex;
   flex-flow: row wrap;
   align-items: start;
   font-size: 90%;
-  margin: 0 2em;
+  margin: 0 8em;
   position: relative;
 
-  @media screen and (max-width: ${PHONE}) {
+  ${media.thone`
     flex-direction: column;
-  }
+  `}
 
-  @media screen and (min-width: ${TABLET}) {
-    margin: 0 8em;
-  }
+  ${media.desktop`
+    margin: 0 2em;
+  `}
 `;
 
 const TutorialsContainer = styled.div`
   flex: 1;
   margin: 1em;
-  padding: 0 4em 4em 0;
+  margin-right: 3em;
+  padding: 0 2em 4em;
   border-radius: 0.5em;
   background-color: white;
   position: relative;
@@ -43,35 +44,51 @@ const TutorialsContainer = styled.div`
     width: 0.25em;
     height: 60%;
     position: absolute;
-    left: 15%;
+    left: 4.375em;
     top: 50%;
     transform: translateY(-50%);
     background-color: #ebebeb;
     z-index: -1;
   }
 
-  @media screen and (max-width: ${PHONE}) {
+  ${media.thone`
     margin: 1em auto;
-  }
+  `}
 
-  @media screen and (min-width: ${TABLET}) {
-    margin-right: 3em;
-  }
+  ${media.desktop`
+    margin-right: 1em;
+  `}
 `;
 const ActivityList = styled.div`
   display: grid;
-  grid-row-gap: 6em;
+  grid-row-gap: 2em;
+`;
+const ActivityTitle = styled.div`
+  margin: 3.5em 0;
+  display: flex;
+  align-items: center;
+
+  background-color: #fff;
 `;
 const ActivityContainer = styled.div`
+  padding: 1.5em 0;
+  padding-right: 1.5em;
   display: flex;
+  align-items: center;
+
+  cursor: pointer;
+  transition: ease box-shadow 0.15s;
+
+  &:hover {
+    background-color: white;
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+  }
 `;
 const ProgressWrapper = styled.div`
-  flex: 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 1em;
-  background-color: #fff;
+  width: 5em;
 `;
 const CircleWrapper = styled.div`
   background-color: #fff;
@@ -101,7 +118,7 @@ const PickContainer = styled.div`
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0px 12px 24px rgba(38, 38, 38, 0.5);
+    box-shadow: 0px 12px 24px rgba(38, 38, 38, 0.3);
   }
 `;
 const PickButton = styled.div`
@@ -163,14 +180,14 @@ const Module = props => {
 
       <Content>
         <TutorialsContainer>
-          <ActivityContainer style={{ padding: "3.5em 0" }}>
+          <ActivityTitle>
             <ProgressWrapper>
               <ProgressCircle size={"4em"} value={60} color={"#0070f3"} />
             </ProgressWrapper>
             <ActivityContent>
-              <h2>Tutorials</h2>
+              <h2 style={{ marginLeft: "1em" }}>Tutorials</h2>
             </ActivityContent>
-          </ActivityContainer>
+          </ActivityTitle>
 
           <ActivityList>{activityContentList}</ActivityList>
         </TutorialsContainer>
@@ -185,7 +202,14 @@ const Module = props => {
         </PickContainer>
       </Content>
 
-      <FinalProjectModal open={open} closed={handleClose} />
+      <FinalProjectModal
+        open={open}
+        closed={handleClose}
+        name="Tip Calculator"
+        description="Design a calculator to calculate the tip you have to leave when you go to a restaurant"
+        img="http://squareone.co.in/wp-content/uploads/2018/08/food-Birsto-Oakwood-Premier12-720x700.jpg"
+        time="4 hours"
+      />
     </>
   );
 };
