@@ -16,11 +16,11 @@ class Login extends Component {
 
         this.changeInput = this.changeInput.bind(this);
         this.submitForm = this.submitForm.bind(this);
-        this.authService = new AuthService();
+        this.service = new AuthService();
     }
 
     componentDidMount() {
-        if (this.authService.userAuthenticated()) {
+        if (this.service.userAuthenticated()) {
             this.props.history.push('/');
         }
     }
@@ -33,10 +33,9 @@ class Login extends Component {
 
     async submitForm(e) {
         e.preventDefault();
-
         try {
-            await this.authService.login(this.state.email, this.state.password);
-            if (this.authService.userAuthenticated) {
+            await this.service.login(this.state.email, this.state.password);
+            if (this.service.userAuthenticated) {
                 this.props.login();
                 this.props.history.push('/student');
             }
