@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import setTheme from "../../redux/theme/themeAction";
+import setTheme from "../../redux/theme/actions";
 import { palepink } from '../../config/theme'
 
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import Button from "../shared/NewButton";
+import Button from "../shared/gadgets/NewButton";
 
 const contentHeight = "2.5em";
 
@@ -90,7 +90,7 @@ const NavBar = props => (
       </Link>
     </NavElement>
     <NavElement>
-      <Link style={styledLink} to={"/learn"}>
+      <Link style={styledLink} to={"/explore"}>
         Explore
       </Link>
     </NavElement>

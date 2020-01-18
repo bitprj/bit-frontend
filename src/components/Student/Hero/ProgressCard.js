@@ -4,8 +4,8 @@ import styled from "styled-components";
 import BrickWall from "../../../assets/icons/brickwall";
 import GitHub from "../../../assets/icons/github";
 
-import StatusIcon from "../../shared/StatusIcon";
-import Button from "../../shared/NewButton";
+import StatusIcon from "../../shared/gadgets/StatusIcon";
+import Button from "../../shared/gadgets/NewButton";
 
 const RenderedCard = styled.div`
   background-color: ${props => props.theme.bgVariant};

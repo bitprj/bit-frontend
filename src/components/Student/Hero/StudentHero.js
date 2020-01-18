@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import ProgressCard from "./ProgressCard";
 
-import { setViewStudent } from "../../../redux/actions/viewManager";
+import { setViewStudent } from "../../../redux/viewManager/actions";
 import * as viewTypes from "../../../redux/utils/viewTypes";
 
 const HeroBackground = styled.div`

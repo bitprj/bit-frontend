@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import DynamicModal from "../../shared/DynamicModal";
-import ProgressBar from "../../shared/ProgressBar";
-import Button from "../../shared/NewButton";
-import ClampedText from "../../shared/ClampedText";
+import DynamicModal from "../../shared/containers/DynamicModal";
+import ProgressBar from "../../shared/gadgets/ProgressBar";
+import Button from "../../shared/gadgets/NewButton";
+import ClampedText from "../../shared/utils/ClampedText";
 
 const Header = styled.div`
   padding: 2em 4em 0;

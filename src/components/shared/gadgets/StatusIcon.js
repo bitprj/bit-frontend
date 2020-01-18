@@ -1,8 +1,8 @@
 import React from 'react';
 
-import CheckIcon from '../../assets/icons/check';
-import ThreeDotsIcon from '../../assets/icons/threedots';
-import LockIcon from '../../assets/icons/lock';
+import CheckIcon from '../../../assets/icons/check';
+import ThreeDotsIcon from '../../../assets/icons/threedots';
+import LockIcon from '../../../assets/icons/lock';
 
 /**
  * Helper Class to choose Status Icon appropriately

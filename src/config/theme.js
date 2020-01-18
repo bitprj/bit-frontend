@@ -21,7 +21,14 @@ export const palepink = {
 }
 
 export const black = {
-  
+  accent: "#565656",
+  accentVariant: "#787878",
+  bg: "#121212",
+  bgVariant: "#232323",
+  bgPage: "#efefef",
+  font: "#000",
+  offFont: "#ebebeb",
+  fontInvert: "#fff"
 }
 
 export default bitblue;

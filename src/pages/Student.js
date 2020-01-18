@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Progress from "../components/Student/Progress/Progress";
 import Module from "../components/Student/Module/Module";
 
-import * as studentData from "../redux/actions/studentData";
+import * as studentData from "../redux/studentData/actions";
 import * as viewTypes from "../redux/utils/viewTypes";
 
 class Student extends Component {

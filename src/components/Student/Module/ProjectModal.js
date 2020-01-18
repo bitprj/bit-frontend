@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import DynamicModal from "../../shared/DynamicModal";
+import DynamicModal from "../../shared/containers/DynamicModal";
 import { sizes } from "../../../assets/styles/Media";
 
 import Project from "./Project";
 
-import DotRating from "../../shared/DotRating";
-import Button from "../../shared/NewButton";
+import DotRating from "../../shared/gadgets/DotRating";
+import Button from "../../shared/gadgets/NewButton";
 
 // const Sparkles2 = styled.div
 //   box-shadow: 0 0 7px 7px #f2f2f2;
@@ -66,6 +66,13 @@ const Nbsp = styled.p`
 const FinalProject = props => {
   const [listView, setListView] = useState(true);
 
+  const handleClosed = () => {
+    props.closed()
+    setTimeout(() => {
+      setListView(true)
+    }, 69)
+  }
+
   /**
    * LIST VIEW
    */
@@ -90,7 +97,7 @@ const FinalProject = props => {
             key={`project-${index}`}
             name={props.name}
             description={props.description}
-            img={props.img}
+            imgURL={props.img}
             time={props.time}
             clicked={() => setListView(false)}
           />
@@ -128,7 +135,7 @@ const FinalProject = props => {
       leftPanel={<LeftPanel>{listView ? choose : description}</LeftPanel>}
       rightPanel={listView ? projects : fullPic}
       open={props.open}
-      closed={props.closed}
+      closed={handleClosed}
     />
   );
 };

@@ -28,8 +28,6 @@ const Rating = props => {
         key={`dots-${index}`}
         filled={index < props.rating}
         type={props.type}
-        onColor={props.onColor}
-        offColor={props.offColor}
       />
     );
   });

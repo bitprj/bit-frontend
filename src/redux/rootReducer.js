@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import reducer from './reducers/reducer';
-import studentData from './reducers/studentData'
-import viewManager from './reducers/viewManager'
-import theme from './theme/themeReducer'
+import reducer from './account/reducer';
+import studentData from './studentData/reducer'
+import viewManager from './viewManager/reducer'
+import theme from './theme/reducer'
 
 export default combineReducers({
     reducer,

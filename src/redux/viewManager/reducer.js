@@ -2,7 +2,7 @@ import * as actionTypes from "../utils/actionTypes";
 import * as viewTypes from "../utils/viewTypes";
 
 const initialState = {
-  current_view_student: viewTypes.MODULE,
+  current_view_student: viewTypes.PROGRESS,
   previous_view_student: ''
 };
 

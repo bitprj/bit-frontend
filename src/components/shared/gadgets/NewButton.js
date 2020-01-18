@@ -40,7 +40,6 @@ const RenderedButton = styled.button.attrs(props => ({
                 : props.dark + "16"
               : props.accent + "16"
           }`}
-    
   }
 
   &:active {
@@ -77,7 +76,7 @@ const Button = props => {
       sharp={props.sharp}
       onClick={props.clicked}
     >
-      {props.children}
+      <span>{props.children}</span>
     </RenderedButton>
   );
 };

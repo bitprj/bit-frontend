@@ -3,7 +3,7 @@ import styled, { ThemeContext } from "styled-components";
 import { connect } from "react-redux";
 
 import StudentHero from "../Hero/StudentHero";
-import ProgressCircle from "../../shared/ProgressCircle";
+import ProgressCircle from "../../shared/gadgets/ProgressCircle";
 import Circle from "../../../assets/icons/circle";
 import ActivityModal from "./ActivityModal";
 import ProjectModal from "./ProjectModal";
