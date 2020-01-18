@@ -29,7 +29,6 @@ class LearnService {
     async uploadFiles(fileItems) {
         let srcFile = null;
         let testsFile = null;
-        let token = localStorage.getItem('token');
 
         fileItems.forEach(fileItem => {
             if (fileItem.filename === 'src.zip') {
@@ -48,7 +47,6 @@ class LearnService {
             let formData = new FormData();
             formData.append('src', srcFile);
             formData.append('tests', testsFile);
-            formData.append('jwt_token', token);
             formData.append('checkpoint_id', 12)
 
             return grader.post('/uploader', formData)
