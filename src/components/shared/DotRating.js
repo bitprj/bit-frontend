@@ -13,7 +13,7 @@ const Dot = styled.div`
   vertical-align: middle;
   ${props => (props.type !== "BOX" ? "border-radius: 50%" : "")}
 
-  background-color: ${props => (props.filled ? props.onColor : props.offColor)};
+  background-color: ${props => (props.filled ? props.theme.accent : props.theme.accentVariant)};
 `;
 // 007BED
 

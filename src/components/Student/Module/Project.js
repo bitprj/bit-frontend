@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+import ClampedText from '../../shared/ClampedText'
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 
 const Container = styled.div`
@@ -46,13 +47,6 @@ const Description = styled.div`
   margin-left: 7px;
 `;
 
-const ClampedText = styled.div`
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-`;
-
 const Time = styled.span`
   line-height: 1em;
   margin-left: 0.4em;
@@ -62,8 +56,17 @@ const Project = props => {
   return (
     <Container onClick={props.clicked}>
       <IconContainer>
-        <img style={{ width: "7em", borderRadius: "1.25em" }} src={props.img} />
-        <Sparkles>✨40</Sparkles>
+        <img
+          alt="Icon"
+          style={{ width: "7em", borderRadius: "1.25em" }}
+          src={props.img}
+        />
+        <Sparkles>
+          <span role="img" aria-label="sparkles">
+            ✨
+          </span>
+          40
+        </Sparkles>
       </IconContainer>
 
       <Description>

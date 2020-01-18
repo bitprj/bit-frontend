@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
@@ -18,6 +17,8 @@ const Container = styled.div`
   font-size: 125%;
   height: 36em; // ipad vertical
   ${props => (props.type === "PANELS" ? "display: flex" : "")};
+  ${props =>
+    props.type === "POST" ? "flex-direction: column; display: flex" : ""};
   background-color: #fff;
 
   @media screen and (orientation: landscape) {
@@ -43,8 +44,6 @@ const Container = styled.div`
  */
 const LeftPanel = styled.div`
   flex: 3;
-  background-color: black;
-  color: white;
   position: relative;
 
   @media screen and (orientation: portrait) {
@@ -61,6 +60,19 @@ const RightPanel = styled.div`
   overflow-y: auto;
 `;
 
+/**
+ * POST
+ * - header, content, optional submit
+ */
+const Header = styled.div`
+  flex: 1;
+  background-color: black;
+  color: white;
+`;
+const Content = styled.div`
+  flex: ${props => props.flex || 2};
+`;
+
 const DynamicModal = props => {
   const contentType = () => {
     switch (props.type) {
@@ -72,8 +84,14 @@ const DynamicModal = props => {
           </>
         );
 
-      case "STACK":
-        return <></>;
+      case "POST":
+        return (
+          <>
+            <Header>{props.header}</Header>
+            <Content flex={props.contentRatio}>{props.content}</Content>
+            {props.children}
+          </>
+        );
 
       default:
         return props.children;

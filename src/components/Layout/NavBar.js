@@ -3,11 +3,14 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
+import setTheme from "../../redux/theme/themeAction";
+import { palepink } from '../../config/theme'
+
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import Button from "../shared/Button";
+import Button from "../shared/NewButton";
 
 const contentHeight = "2.5em";
 
@@ -72,7 +75,7 @@ const MuiIconWrapper = styled.div`
 const Logo = styled.img`
   width: ${contentHeight};
   height: ${contentHeight};
-`
+`;
 
 const styledLink = {
   color: "black",
@@ -128,20 +131,16 @@ const NavBar = props => (
     {props.userType === "Visitor" ? (
       <VisitorContainer>
         <Link style={styledLink} to={"/login"}>
-          <Button
-            buttonState="Login"
-            class_name="invert less-round"
-            style={{ margin: "0 0.25em", width: "7.5em" }}
-          />
+          <Button invert width={"8em"} margin={"0 0.5em"}>
+            Login
+          </Button>
         </Link>
 
-        <Link style={styledLink} to={"/login"}>
-          <Button
-            buttonState="Sign Up"
-            class_name="outline less-round"
-            style={{ margin: "0 0.25em", width: "7.5em" }}
-          />
-        </Link>
+        {/* <Link style={styledLink} to={"/login"}> */}
+          <Button width={"8em"} margin={"0 0.5em"} clicked={() => props.onSetTheme(palepink)}>
+            Sign Up
+          </Button>
+        {/* </Link> */}
       </VisitorContainer>
     ) : null}
   </Nav>
@@ -151,4 +150,10 @@ const mapStateToProps = state => ({
   userType: state.reducer.userType
 });
 
-export default connect(mapStateToProps)(NavBar);
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetTheme: (theme) => dispatch(setTheme(theme))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

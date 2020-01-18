@@ -2,15 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import ActivityCard from "./ProgressCard";
+import ProgressCard from "./ProgressCard";
 
-import { setViewStudent } from "../../redux/actions/viewManager";
-import * as viewTypes from "../../redux/utils/viewTypes";
-
-// darkblue primary: 0a192f
+import { setViewStudent } from "../../../redux/actions/viewManager";
+import * as viewTypes from "../../../redux/utils/viewTypes";
 
 const HeroBackground = styled.div`
-  background-color: ${props => props.color || "#0a192f"};
+  background-color: ${props => props.theme.bg};
   position: absolute;
   left: 0;
   right: 0;
@@ -48,7 +46,10 @@ const ProgressBar = styled.div`
   margin-top: 2em;
   width: 90%;
   height: 0.5em;
-  background-color: #eee;
+  background-color: ${props =>
+    props.theme.fontInvert.length === 4
+      ? props.theme.fontInvert + "c"
+      : props.theme.fontInvert + "cc"};
   position: relative;
 
   &:before {
@@ -58,7 +59,7 @@ const ProgressBar = styled.div`
     bottom: 0;
     left: 0;
     width: ${props => props.progress};
-    background-color: #4788ff;
+    background-color: ${props => props.theme.accent};
   }
 `;
 
@@ -68,9 +69,9 @@ const Back = styled.p`
   transition: ease color 0.15s;
 
   &:hover {
-    color: #86c5ff;
+    color: ${props => props.theme.accentVariant};
   }
-`
+`;
 
 const StudentHero = props => {
   const resumeClickedHandler = () => {
@@ -79,7 +80,7 @@ const StudentHero = props => {
 
   return (
     <>
-      <HeroBackground color={props.heroBgColor} />
+      <HeroBackground />
       <HeroContainer>
         <DescriptionWrapper>
           <Description>
@@ -96,10 +97,12 @@ const StudentHero = props => {
 
             {props.for === "MODULE" ? (
               <>
-                <Back onClick={() => props.onSetViewStudent(viewTypes.PROGRESS)}>
+                <Back
+                  onClick={() => props.onSetViewStudent(viewTypes.PROGRESS)}
+                >
                   &#8249; Back to Topics
                 </Back>
-                <h1 style={{ margin: 0 }}>Programming Principles</h1>
+                <h1 style={{ margin: 0, whiteSpace: 'nowrap' }}>Programming Principles</h1>
                 <p>
                   Coding Best Practices are a set of informal rules that the
                   software development community has learned over time which can
@@ -111,12 +114,11 @@ const StudentHero = props => {
           </Description>
         </DescriptionWrapper>
         <CardWrapper>
-          <ActivityCard
+          <ProgressCard
             type="VERTICAL"
             image={props.suggestedActivity.image}
             name={props.suggestedActivity.name}
             description={props.suggestedActivity.description}
-            backgroundColor={props.cardBgColor}
             buttonClicked={() => props.resumeClicked}
           />
         </CardWrapper>
@@ -136,7 +138,7 @@ const StudentHero = props => {
  *    > [SECOND] when suggested_activity will be loaded by dispatch earlier (causing update):
  *        - everything will be rendered
  */
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   const studentData = state.studentData; // creating reference for less typing
   const newProps = {};
 

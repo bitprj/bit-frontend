@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 
 import Layout from "./components/Layout/Layout";
@@ -11,10 +11,11 @@ import Student from "./pages/Student";
 import NotFound from "./pages/NotFound";
 
 import WithAuthentication from "./components/HOC/WithAuthentication";
+import WithProviders from "./components/HOC/WithProviders";
 
-class App extends Component {
-  render() {
-    return (
+const App = props => {
+  return (
+    <WithProviders>
       <BrowserRouter>
         <Layout>
           <Switch>
@@ -32,8 +33,8 @@ class App extends Component {
           </Switch>
         </Layout>
       </BrowserRouter>
-    );
-  }
-}
+    </WithProviders>
+  );
+};
 
 export default App;

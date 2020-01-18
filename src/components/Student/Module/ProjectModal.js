@@ -7,6 +7,7 @@ import { sizes } from "../../../assets/styles/Media";
 import Project from "./Project";
 
 import DotRating from "../../shared/DotRating";
+import Button from "../../shared/NewButton";
 
 // const Sparkles2 = styled.div
 //   box-shadow: 0 0 7px 7px #f2f2f2;
@@ -14,6 +15,16 @@ import DotRating from "../../shared/DotRating";
 //   line-height: 0.8em;
 //   padding: 0.5em 0.7em;
 // `;
+
+const LeftPanel = styled.div`
+  margin: 0 auto;
+  padding: 1.5em 2.5em 2.5em;
+  background-color: ${props => props.theme.font};
+  color: ${props => props.theme.fontInvert};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
 const FullImg = styled.div`
   width: 100%;
@@ -32,13 +43,6 @@ const FullImg = styled.div`
   }
 `;
 
-const ProjectInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 1.5em 2.5em 2.5em;
-`;
-
 const Back = styled.p`
   cursor: pointer;
   display: inline-block;
@@ -51,19 +55,6 @@ const Back = styled.p`
 
 const SmallText = styled.div`
   font-size: 80%;
-`;
-
-const StartButton = styled.button`
-  padding: 1em 0;
-  margin: 2em 0 1em;
-  border: none;
-  width: 100%;
-
-  background-color: #007bed;
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  font-size: 115%;
 `;
 
 const Nbsp = styled.p`
@@ -79,7 +70,7 @@ const FinalProject = props => {
    * LIST VIEW
    */
   const choose = (
-    <div style={{ margin: "0 auto", padding: "1.5em 2.5em 2.5em" }}>
+    <>
       <Nbsp>&nbsp;</Nbsp>
       <h2 style={{ marginBottom: 0 }}>Choose a Project</h2>
       <p>
@@ -89,7 +80,7 @@ const FinalProject = props => {
       {/* <Sparkles2>
       ✨<span style={{ fontSize: "125%" }}>33</span>/110
       </Sparkles2> */}
-    </div>
+    </>
   );
   const projects = (
     <div style={{ padding: "1em" }}>
@@ -112,20 +103,20 @@ const FinalProject = props => {
    * DESCRIPTION VIEW
    */
   const description = (
-    <ProjectInfo>
+    <>
       <Back onClick={() => setListView(true)}>&#8249; Back</Back>
       <h2 style={{ margin: 0 }}>{props.name}</h2>
       <p style={{ marginBottom: 0 }}>{props.description}</p>
       <br />
       <SmallText>difficulty</SmallText>
-      <DotRating rating={3} onColor="#007BED" offColor="#86C5FF" />
+      <DotRating rating={3} />
       <br />
       <SmallText>estimated time</SmallText>
       <span style={{ fontWeight: "bold" }}>{props.time}</span>
       <div style={{ flexGrow: "1", display: "flex", alignItems: "flex-end" }}>
-        <StartButton>Start Lab</StartButton>
+        <Button invert fullWidth>Start Lab</Button>
       </div>
-    </ProjectInfo>
+    </>
   );
   const fullPic = (
     <FullImg img="http://squareone.co.in/wp-content/uploads/2018/08/food-Birsto-Oakwood-Premier12-720x700.jpg" />
@@ -134,7 +125,7 @@ const FinalProject = props => {
   return (
     <DynamicModal
       type="PANELS"
-      leftPanel={listView ? choose : description}
+      leftPanel={<LeftPanel>{listView ? choose : description}</LeftPanel>}
       rightPanel={listView ? projects : fullPic}
       open={props.open}
       closed={props.closed}

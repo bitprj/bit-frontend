@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useContext } from "react";
+import styled, { ThemeContext } from "styled-components";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -14,13 +14,14 @@ const Back = styled.div`
 `;
 
 const ProgressCircle = props => {
+  const themeContext = useContext(ThemeContext);
   return (
     <>
       <Load>
         <CircularProgress
           variant="static"
           thickness={5}
-          style={{color: props.color}}
+          style={{ color: themeContext.accent }}
           size={props.size}
           value={props.value}
         />
@@ -30,7 +31,7 @@ const ProgressCircle = props => {
         <CircularProgress
           variant="static"
           thickness={5}
-          style={{ color: "#ebebeb" }}
+          style={{ color: themeContext.offFont }}
           size={props.size}
           value={100}
         />

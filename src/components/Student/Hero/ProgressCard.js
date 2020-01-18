@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-import BrickWall from "../../assets/icons/brickwall";
-import GitHub from "../../assets/icons/github";
+import BrickWall from "../../../assets/icons/brickwall";
+import GitHub from "../../../assets/icons/github";
 
-import StatusIcon from "../shared/StatusIcon";
-import Button from "../shared/Button";
+import StatusIcon from "../../shared/StatusIcon";
+import Button from "../../shared/NewButton";
 
 const RenderedCard = styled.div`
-  background-color: ${props => props.backgroundColor};
+  background-color: ${props => props.theme.bgVariant};
   color: #fff;
   padding: 2em;
   margin: 0.5em;
@@ -24,19 +24,6 @@ const RenderedCard = styled.div`
       inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
     transform: translateY(-4px);
   }
-
-  // @media screen and (max-width: 1199px) {
-  //   min-width: 200px;
-  // }
-
-  // @media screen and (max-width: 1000px) {
-  //   max-width: 200px;
-  //   min-width: 150px;
-  // }
-
-  // @media screen and (max-width: 657px) {
-  //   font-size: 125%;
-  // }
 `;
 
 const IconWrapper = styled.div`
@@ -80,7 +67,6 @@ const ActivityCard = props => {
     <RenderedCard
       type={props.type}
       width={props.width}
-      backgroundColor={props.backgroundColor}
       onClick={props.clicked}
     >
       <IconWrapper>{renderAppropriateImage(props.image, "3em")}</IconWrapper>
@@ -88,11 +74,13 @@ const ActivityCard = props => {
       <Description>{props.description}</Description>
       {props.type === "VERTICAL" ? (
         <Button
-          buttonState={"Resume"}
-          class_name="button invert"
+          light={"#fff"}
+          dark={"#000"}
+          margin={"1em 0 0.5em"}
           clicked={() => props.buttonClicked}
-          style={{ backgroundColor: "#fff", color: "#000" }}
-        />
+        >
+          Resume
+        </Button>
       ) : (
         <StatusWrapper>
           <StatusIcon type={props.status} />

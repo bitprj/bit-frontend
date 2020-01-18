@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import StudentHero from "../../../components/Student/StudentHero";
+import StudentHero from "../Hero/StudentHero";
 import ActivityCard from "./ActivityCard";
 
 import { setViewStudent } from "../../../redux/actions/viewManager";
@@ -66,8 +66,8 @@ const PickButton = styled.div`
   color: white;
   width: 1.5em;
   height: 1.5em;
-  background-color: #007bed;
-  box-shadow: 0 0 7px 7px #007bed07;
+  background-color: ${props => props.theme.accent};
+  box-shadow: 0 0 7px 7px ${props => props.theme.accent}07;
   cursor: pointer;
 
   transition: box-shadow 0.2s ease;
@@ -80,7 +80,7 @@ const PickButton = styled.div`
 const Progress = props => {
   return (
     <>
-      <StudentHero for={"TOPIC"} heroBgColor={"#000"} cardBgColor={"#232323"} />
+      <StudentHero for={"TOPIC"} />
 
       <Content>
         <ColOne>

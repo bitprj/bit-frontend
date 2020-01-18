@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useContext } from "react";
+import styled, { ThemeContext } from "styled-components";
 import { connect } from "react-redux";
 
-import StudentHero from "../../../components/Student/StudentHero";
+import StudentHero from "../Hero/StudentHero";
 import ProgressCircle from "../../shared/ProgressCircle";
-import FinalProjectModal from "./FinalProject";
 import Circle from "../../../assets/icons/circle";
+import ActivityModal from "./ActivityModal";
+import ProjectModal from "./ProjectModal";
 
 import media from "../../../assets/styles/Media";
 
@@ -128,8 +129,8 @@ const PickButton = styled.div`
   color: white;
   width: 1.5em;
   height: 1.5em;
-  background-color: #007bed;
-  box-shadow: 0 0 7px 7px #007bed07;
+  background-color: ${props => props.theme.accent};
+  box-shadow: 0 0 7px 7px ${props => props.theme.accent}07;
   cursor: pointer;
 
   transition: box-shadow 0.2s ease;
@@ -146,24 +147,23 @@ const PickImg = styled.img`
 `;
 
 const Module = props => {
-  const [open, setOpen] = useState(false);
+  const themeContext = useContext(ThemeContext);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const [openProject, setOpenProject] = useState(false);
+  const [openActivity, setOpenActivity] = useState(false);
 
   const activityContentList = [...Array(3)].map((project, index) => {
     return (
-      <ActivityContainer key={`module-${index}`}>
+      <ActivityContainer
+        key={`module-${index}`}
+        onClick={() => setOpenActivity(true)}
+      >
         <ProgressWrapper>
           <CircleWrapper>
-            <Circle color={"#0070f3"} width={"1em"} />
+            <Circle color={themeContext.accent} width={"1em"} />
           </CircleWrapper>
         </ProgressWrapper>
+
         <ActivityContent>
           <h3 style={{ margin: 0 }}>Intro to Command Line</h3>
           <p style={{ margin: 0 }}>
@@ -176,13 +176,13 @@ const Module = props => {
 
   return (
     <>
-      <StudentHero for={"MODULE"} heroBgColor="#0a192f" cardBgColor="#172A45" />
+      <StudentHero for={"MODULE"} />
 
       <Content>
         <TutorialsContainer>
           <ActivityTitle>
             <ProgressWrapper>
-              <ProgressCircle size={"4em"} value={60} color={"#0070f3"} />
+              <ProgressCircle size={"4em"} value={60} />
             </ProgressWrapper>
             <ActivityContent>
               <h2 style={{ marginLeft: "1em" }}>Tutorials</h2>
@@ -192,7 +192,7 @@ const Module = props => {
           <ActivityList>{activityContentList}</ActivityList>
         </TutorialsContainer>
 
-        <PickContainer onClick={handleOpen}>
+        <PickContainer onClick={() => setOpenProject(true)}>
           <h2>Pick a Project</h2>
           <p>
             Choose a Project to apply <br /> what you have learned!
@@ -202,9 +202,19 @@ const Module = props => {
         </PickContainer>
       </Content>
 
-      <FinalProjectModal
-        open={open}
-        closed={handleClose}
+      <ActivityModal
+        open={openActivity}
+        closed={() => setOpenActivity(false)}
+        name="Intro to Command Line"
+        description="Coding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software."
+        learningObjectives="Coding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software.
+        Coding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software.
+        Coding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software."
+      />
+
+      <ProjectModal
+        open={openProject}
+        closed={() => setOpenProject(false)}
         name="Tip Calculator"
         description="Design a calculator to calculate the tip you have to leave when you go to a restaurant"
         img="http://squareone.co.in/wp-content/uploads/2018/08/food-Birsto-Oakwood-Premier12-720x700.jpg"
