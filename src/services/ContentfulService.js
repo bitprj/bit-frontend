@@ -1,8 +1,8 @@
 import { createClient } from 'contentful';
 
 const client = createClient({
-    space: 'aq4puo31m564',
-    accessToken: 'JEvRcauV8GVKsh3-VSW3Klc9WSnUKNzsvcfwRb6A9F4'
+    space: process.env.REACT_APP_CONTENTFUL_SPACE,
+    accessToken: process.env.REACT_APP_CONTENTFUL_TOKEN
 })
 
 class ContentfulService {
