@@ -7,6 +7,7 @@ const Featured = styled.div`
   height: 20em;
   width: 40em;
   position: relative;
+  cursor: pointer;
 
   border-radius: 0.8em;
   background: ${props => props.theme.accentVariant} url(${props => props.url});
@@ -24,7 +25,11 @@ const Category = styled.div`
 
 const FeaturedDisplay = props => {
   return (
-    <Featured url={props.imgURL} bgColor={props.bgColor}>
+    <Featured
+      className="hover-raise transition-medium"
+      url={props.imgURL}
+      bgColor={props.bgColor}
+    >
       <h1 style={{ margin: 0 }}>{props.name}</h1>
       <Category>{props.category}</Category>
     </Featured>

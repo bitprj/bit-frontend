@@ -1,0 +1,27 @@
+/* .hover-lift-shadow {
+  transition: 0.2s ease all;
+} */
+.transition-medium {
+  transition: 0.2s ease all;
+}
+
+.transition-short {
+  transition: 0.1s ease all;
+}
+
+.lift,
+.hover-raise,
+.hover-lift:hover {
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+}
+
+.hover-lift:hover .lift {
+  box-shadow: none;
+}
+.hover-raise:hover,
+.hover-lift-shadowless:hover {
+  transform: translateY(-5px);
+}
+.hover-raise:hover {
+  box-shadow: 0px 12px 24px rgba(38, 38, 38, 0.2);
+}

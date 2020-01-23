@@ -49,15 +49,7 @@ const PickModule = styled.div`
   display: flex;
   align-items: center;
   
-  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-
-  transition: 0.2s ease all;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 12px 24px rgba(38, 38, 38, 0.2);
-  }
 `;
 const PickButton = styled.div`
   font-size: 1.5em;
@@ -84,7 +76,7 @@ const Progress = props => {
 
       <Content>
         <ColOne>
-          <PickModule>
+          <PickModule className="hover-raise transition-medium">
             <div>
               <h2>Pick a Module</h2>
               <p style={{ padding: "0 3em" }}>

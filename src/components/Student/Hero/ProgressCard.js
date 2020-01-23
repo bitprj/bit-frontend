@@ -15,14 +15,11 @@ const RenderedCard = styled.div`
   position: relative;
   min-height: 15em;
   cursor: ${props => (props.type === "VERTICAL" ? "auto" : "pointer")};
-  transition: all 0.2s ease-out;
   text-align: center;
   width: ${props => (props.type === "VERTICAL" ? "17em" : "auto")};
 
   &:hover {
-    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.5),
-      inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
-    transform: translateY(-4px);
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
   }
 `;
 
@@ -38,7 +35,6 @@ const Description = styled.p`
   margin: 0.5em 0;
   font-size: 80%;
   padding: 0 10%;
-  // min-height:
 `;
 
 const StatusWrapper = styled.div`
@@ -65,6 +61,7 @@ const ActivityCard = props => {
 
   return (
     <RenderedCard
+      className="hover-lift-shadowless transition-medium"
       type={props.type}
       width={props.width}
       onClick={props.clicked}

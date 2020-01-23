@@ -8,14 +8,13 @@ const RenderedIcon = styled.img`
   height: ${props => props.width || "5em"};
   border-radius: ${props => props.borderRadius || "1em"};
   ${props => props.src || `background-color: ${props.theme.accentVariant};`}
-
-  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
 `;
 
 const AppIcon = props => {
   return (
     <RenderedIcon
-      alt="Icon"
+      // alt="Icon"
+      className="lift transition-medium"
       margin={props.margin}
       marginRight={props.marginRight}
       width={props.width}

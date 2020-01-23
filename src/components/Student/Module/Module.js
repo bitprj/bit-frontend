@@ -78,11 +78,9 @@ const ActivityContainer = styled.div`
   align-items: center;
 
   cursor: pointer;
-  transition: ease box-shadow 0.15s;
 
   &:hover {
     background-color: white;
-    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
   }
 `;
 const ProgressWrapper = styled.div`
@@ -154,7 +152,7 @@ const Module = props => {
 
   const activityContentList = [...Array(3)].map((project, index) => {
     return (
-      <ActivityContainer
+      <ActivityContainer className="hover-lift transition-short"
         key={`module-${index}`}
         onClick={() => setOpenActivity(true)}
       >

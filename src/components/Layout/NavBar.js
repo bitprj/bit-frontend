@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import setTheme from "../../redux/theme/actions";
-import { palepink } from '../../config/theme'
+import { palepink } from "../../config/theme";
 
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
@@ -25,8 +25,8 @@ const Nav = styled.nav`
 
 const NavElement = styled.div`
   margin: 0 1em;
-  line-height: ${contentHeight};
 `;
+//^ line-height: ${contentHeight};
 
 const StudentContainer = styled.div``;
 
@@ -131,15 +131,20 @@ const NavBar = props => (
     {props.userType === "Visitor" ? (
       <VisitorContainer>
         <Link style={styledLink} to={"/login"}>
-          <Button invert width={"8em"} margin={"0 0.5em"}>
+          <Button invert width={"8em"} margin={"0 0.5em"} padding={"0.4em 0"}>
             Login
           </Button>
         </Link>
 
-        {/* <Link style={styledLink} to={"/login"}> */}
-          <Button width={"8em"} margin={"0 0.5em"} clicked={() => props.onSetTheme(palepink)}>
-            Sign Up
-          </Button>
+        {/* <Link style={styledLink} to={"/login"}> */} 
+        <Button
+          width={"8em"}
+          margin={"0 0.5em"}
+          padding={"0.4em 0"}
+          clicked={() => props.onSetTheme(palepink)}
+        >
+          Sign Up
+        </Button>
         {/* </Link> */}
       </VisitorContainer>
     ) : null}
@@ -152,7 +157,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetTheme: (theme) => dispatch(setTheme(theme))
+    onSetTheme: theme => dispatch(setTheme(theme))
   };
 };
 

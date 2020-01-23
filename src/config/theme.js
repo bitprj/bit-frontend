@@ -1,4 +1,9 @@
+const constant = {
+  // itemHoverShadow: "0px 4px 25px rgba(0, 0, 0, 0.15)"
+};
+
 export const bitblue = {
+  ...constant,
   accent: "#007bed",
   accentVariant: "#86c5ff",
   bg: "#0a192f",
@@ -10,6 +15,7 @@ export const bitblue = {
 };
 
 export const palepink = {
+  ...constant,
   accent: "#db7093",
   accentVariant: "#ffb5cd",
   bg: "#320b18",
@@ -18,9 +24,10 @@ export const palepink = {
   font: "#000",
   offFont: "#ebebeb",
   fontInvert: "#fff"
-}
+};
 
 export const black = {
+  ...constant,
   accent: "#565656",
   accentVariant: "#787878",
   bg: "#121212",
@@ -29,6 +36,6 @@ export const black = {
   font: "#000",
   offFont: "#ebebeb",
   fontInvert: "#fff"
-}
+};
 
 export default bitblue;

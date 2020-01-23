@@ -65,15 +65,17 @@ const RenderedButton = styled.button.attrs(props => ({
 const Button = props => {
   return (
     <RenderedButton
-      width={props.width}
-      margin={props.margin}
-      padding={props.padding}
       dark={props.dark}
       light={props.light}
       invert={props.invert}
       fullWidth={props.fullWidth}
       rounder={props.rounder}
+
       sharp={props.sharp}
+      width={props.width}
+      margin={props.margin}
+      padding={props.padding}
+      
       onClick={props.clicked}
     >
       <span>{props.children}</span>

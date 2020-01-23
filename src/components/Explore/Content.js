@@ -6,16 +6,23 @@ import TopicDisplay from "./TopicDisplay";
 
 const Container = styled.div`
   padding-top: 2em;
-  width: calc(100% - 20em);
+  width: calc(100% - 18em);
 `;
 
 const HorzScroll = styled.div`
+  padding: 2em;
+  padding-right: 2em;
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
 
+  ::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+  }
+
   > div {
-    flex: 0 0 auto;
+    flex-shrink: 0;
     margin-right: 2em;
   }
 

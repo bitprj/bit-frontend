@@ -13,12 +13,6 @@ const Container = styled.div`
   align-items: center;
   cursor: pointer;
   font-size: 95%;
-
-  transition: ease box-shadow 0.15s;
-
-  &:hover {
-    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
-  }
 `;
 
 const Sparkles = styled.div`
@@ -43,7 +37,7 @@ const Description = styled.div`
 
 const Project = props => {
   return (
-    <Container onClick={props.clicked}>
+    <Container className="hover-lift transition-short" onClick={props.clicked}>
       <AppIcon width="7em" url={props.imgURL} />
       <Sparkles>
         <span role="img" aria-label="sparkles">

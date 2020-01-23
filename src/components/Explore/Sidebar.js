@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  padding: 2em;
-  padding-left: 3em;
-  width: 20em;
+  padding: 2em 3em;
+  padding-right: 0;
+  width: 18em;
 `;
 
 const MenuItem = styled.div`

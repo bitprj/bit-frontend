@@ -5,20 +5,19 @@ import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import IconLine from "../shared/gadgets/IconLine";
 import AppIcon from "../shared/gadgets/AppIcon";
 
-const Container = styled.div`
-  margin-top: 2em;
-`;
+const Container = styled.div``;
 
 const RenderedActivity = styled.div`
-  margin: 2em 0;
-  margin-right: 2em;
+  padding: 1.5em 1.5em;
+  margin: 0.5em 0;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Activity = props => {
   return (
-    <RenderedActivity>
+    <RenderedActivity className="hover-lift transition-short">
       <AppIcon borderRadius="1.4em" marginRight="1.6em" />
       <div>
         <h3 style={{ margin: 0 }}>{props.name}</h3>
@@ -31,7 +30,7 @@ const Activity = props => {
 const TopicDisplay = props => {
   return (
     <Container>
-      <h1>{props.name}</h1>
+      <h1 style={{ marginLeft: "0.5em" }}>{props.name}</h1>
       <Activity name="Intro to Kubernetes" time="4 weeks" />
       <Activity name="Continuous Integration" time="4 weeks" />
       <Activity name="Intro to DevOps" time="4 weeks" />
