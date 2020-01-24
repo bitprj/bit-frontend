@@ -42,10 +42,6 @@ class Upload extends Component {
         this.service = new LearnService();
     }
 
-    // handleInit() {
-    //     console.log("FilePond instance has initialised", this.pond);
-    // }
-
     upload = () => {
         this.service.uploadFiles(this.state.files)
             .then(data => {
@@ -57,11 +53,9 @@ class Upload extends Component {
     }
 
     fileUpload = (fileItems) => {
-        // Set currently active file objects to this.state
         this.setState({
             files: fileItems
         })
-        // fileItems.map(fileItem => console.log(fileItem.file))
     }
 
     render() {
@@ -82,11 +76,8 @@ class Upload extends Component {
                     <Grid item xs={12} sm={6}>
                         <FilePond
                             ref={ref => (this.pond = ref)}
-                            // files={this.state.files}
                             allowMultiple={true}
                             maxFiles={3}
-                            // server="/api"
-                            // oninit={() => this.handleInit()}
                             onupdatefiles={fileItems => this.fileUpload(fileItems)} />
 
                         <Button buttonState="Upload" class_name="button invert" click={this.upload} />

@@ -1,18 +1,12 @@
-import axios from "axios";
-
-import { API_URL } from "./API_URLs";
+import { backend } from './AxiosInstances';
 
 class StudentService {
     /**
      * GET request for getting Student data
      */
     async getStudentInfo() {
-        const url = `${API_URL}/students/data`;
-        return axios
-            .get(url, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
-            })
-            .then(response => response.data);
+        const endpoint = 'students/data';
+        return backend.get(endpoint);
     }
 
     /**
@@ -20,13 +14,13 @@ class StudentService {
      * @param {String} trackID
      */
     async getTrack(trackID) {
-        const url = `${API_URL}/tracks/${trackID}`;
-        return axios.get(url).then(response => response.data);
+        const endpoint = `/tracks/${trackID}`;
+        return backend.get(endpoint);
     }
 
     async getTrackProgress(trackID) {
-        const url = `${API_URL}/tracks/${trackID}/progress`;
-        return axios.get(url).then(response => response.data);
+        const endpoint = `/tracks/${trackID}/progress`;
+        return backend.get(endpoint);
     }
 
     /**
@@ -34,8 +28,8 @@ class StudentService {
      * @param {String} topicID
      */
     async getTopic(topicID) {
-        const url = `${API_URL}/topics/${topicID}`;
-        return axios.get(url).then(response => response.data);
+        const endpoint = `/topics/${topicID}`;
+        return backend.get(endpoint);
     }
 
     /**
@@ -43,8 +37,8 @@ class StudentService {
      * @param {String} activityID
      */
     async getActivity(activityID) {
-        const url = `${API_URL}/activities/${activityID}`;
-        return axios.get(url).then(response => response.data);
+        const endpoint = `/activities/${activityID}`;
+        return backend.get(endpoint);
     }
 }
 

@@ -1,78 +1,64 @@
-import React, { Component, Fragment } from "react";
+import React, { useState } from "react";
+import TextField from "@material-ui/core/TextField";
 
 import AuthService from "../services/AuthService";
 
 import { connect } from "react-redux";
-import { login } from "../redux/account/actions";
+import { initLogin } from "../redux/account/actions";
 
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: null,
-      password: null
-    };
+const Login = props => {
+  const [userCombo, setUserCombo] = useState({ user: null, pass: null });
+  const [preventMultiSubmit, setPreventMultiSubmit] = useState(false);
 
-    this.inputChangeHandler = this.inputChangeHandler.bind(this);
-    this.formSubmitHandler = this.formSubmitHandler.bind(this);
-    this.authService = new AuthService();
-  }
-
-  componentDidMount() {
-    if (this.authService.userAuthenticated()) {
-      this.props.history.push("/");
-    }
-  }
-
-  inputChangeHandler(e) {
-    this.setState({
+  const changeInput = e => {
+    setUserCombo({
+      ...userCombo,
       [e.target.name]: e.target.value
     });
-  }
+  };
 
-  async formSubmitHandler(e) {
+  const submitForm = e => {
     e.preventDefault();
 
+    if (preventMultiSubmit) return;
+    setPreventMultiSubmit(true);
+
     try {
-      await this.authService.login(this.state.email, this.state.password);
-      if (this.authService.userAuthenticated) {
-        this.props.login();
-        this.props.history.push("/student");
-      }
+      props.onInitLogin(userCombo.user, userCombo.pass, () =>
+        setPreventMultiSubmit(false)
+      );
     } catch (err) {
       alert(err.message);
     }
-  }
+  };
 
-  render() {
-    return (
-      <Fragment>
-        <h1>Login</h1>
-        <form onSubmit={this.formSubmitHandler}>
-          <input
-            className="form-item"
-            placeholder="Email goes here..."
-            name="email"
-            type="text"
-            onChange={this.inputChangeHandler}
-          />
-          <input
-            className="form-item"
-            placeholder="Password goes here..."
-            name="password"
-            type="password"
-            onChange={this.inputChangeHandler}
-          />
-          <input className="form-submit" value="SUBMIT" type="submit" />
-        </form>
-      </Fragment>
-    );
-  }
-}
+  return (
+    <>
+      <h1>Login</h1>
+      <form onSubmit={submitForm}>
+        <TextField
+          id="standard-basic"
+          name="user"
+          label="Email"
+          onChange={changeInput}
+        />
+        <TextField
+          id="standard-basic"
+          name="pass"
+          label="Password"
+          type="password"
+          onChange={changeInput}
+        />
+        <input value="SUBMIT" type="submit" />
+      </form>
+    </>
+  );
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: () => dispatch(login())
+    onInitLogin: (user, pass, callback) =>
+      dispatch(initLogin(user, pass, callback))
   };
 };
 

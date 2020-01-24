@@ -1,57 +1,50 @@
-import axios from "axios";
-// import decode from 'jwt-decode';
-
-import { API_URL } from "./API_URLs";
+import { backend } from "./AxiosInstances";
 
 class AuthService {
-  async login(username, password) {
-    const url = `${API_URL}/user/login`;
-
-    axios.post(url).then(response => {
-      // console.log('token', response.data.access_token);
-      // const token = response.data.access_token;
-      // const userType = response.data.user_type;
-      // this.setUserType(userType)
-      // this.setToken(token);
+  async postLogin(username, password) {
+    const endpoint = "user/login";
+    return backend.post(endpoint, {
+      username,
+      password
     });
-
-    // change to this later on
-    // axios.post(url, {
-    //     email: this.state.email,
-    //     password: this.state.password
-    // }).then(response => this.setToken(response.data.access_token));
   }
 
-  getUserInfo() {
-    // axios.get(url, {
-    //     headers: {
-    //         Authorization: `Bearer ${token}`
-    //     }
-    // }).then(res => this.setState({
-    //     user: res.data
-    // })).catch(err => {
-    //     this.authService.removeToken();
-    //     this.props.history.push("/login");
-    // })
-  }
+  // const userType = response.data.user_type;
+  // this.setUserType(userType)
+  // this.setToken(token);
 
   userAuthenticated() {
     // const token = this.getToken();
     // return token != null;
   }
 
-  logout() {
-    // localStorage.removeItem('userType');
-    // localStorage.removeItem('token');
-  }
+  // logout() {
+  //     localStorage.removeItem('userType');
+  //     localStorage.removeItem('token');
+  // }
 
-  setUserType(userType) {
-    // return localStorage.setItem('userType', userType)
-  }
+  // setUserType(userType) {
+  //     return localStorage.setItem('userType', userType)
+  // }
 
-  getUserType() {
-    // return localStorage.getItem('userType')
-  }
+  // getUserType() {
+  //     return localStorage.getItem('userType')
+  // }
+
+  // /**
+  //  * Note: idk if this is temp but setting token thru local storage is not safe bc it can be accessed with
+  //  * javascript. a better place is through cookies with 'htmlonly' property so it can't be accessed
+  //  * through javascript
+  //  *
+  //  * Also thru research there appears to be something called 'authorization code flow' which is serverside
+  //  */
+  // setToken(token) {
+  //     return localStorage.setItem('token', token)
+  // }
+
+  // getToken() {
+  //     return localStorage.getItem('token')
+  // }
 }
 
 export default AuthService;

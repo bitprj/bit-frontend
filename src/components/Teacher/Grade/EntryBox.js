@@ -3,8 +3,15 @@ import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 
 const EntryWrapper = styled.div`
-    padding: 15px 10px;
+    padding: 25px 10px;
     border-bottom: 1.5px solid lightgrey;
+    transition: transform .2s;
+
+    &:hover {
+        transform: translateX(1px);
+        color: #0070f3;
+        background: rgba(0, 118, 255, 0.1);
+    }
 `
 
 const StudentName = styled.div`
@@ -18,10 +25,9 @@ const Time = styled.div`
 `
 
 const EntryBox = props => (
-    <EntryWrapper>
+    <EntryWrapper onClick={() => props.switchSubmission(props.index)}>
         <Grid container spacing={0}>
             <Grid item xs={1}>
-                {/* {props.status} */}
                 o
             </Grid>
 

@@ -1,13 +1,8 @@
 import { createClient } from 'contentful';
 
 const client = createClient({
-    // personal space
-    // space: 'pzyvtdq9rd3m',
-    // accessToken: 'KALCGtRrMBhwxFWoocht9nVHhkRBGR0xkbDcnT6OXIU'
-
-    // bit space
-    space: 'aq4puo31m564',
-    accessToken: 'JEvRcauV8GVKsh3-VSW3Klc9WSnUKNzsvcfwRb6A9F4'
+    space: process.env.REACT_APP_CONTENTFUL_SPACE,
+    accessToken: process.env.REACT_APP_CONTENTFUL_TOKEN
 })
 
 class ContentfulService {
@@ -53,13 +48,13 @@ class ContentfulService {
     async getEachStep(stepID) {
         return client.getEntry(stepID).then(response => response.fields);
     }
-    
+
     /* ===== STUDENT */
 
     async fetch(objectID) {
         return client.getEntry(objectID)
-        .then(response => response.fields)
-        .catch(e => console.log(e))
+            .then(response => response.fields)
+            .catch(e => console.log(e))
     }
 
     // async fetchTrack(trackID) {
