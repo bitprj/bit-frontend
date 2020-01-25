@@ -1,5 +1,5 @@
-export const STUDENT_LOGIN = "STUDENT_LOGIN";
-export const USER_LOGOUT = "USER_LOGOUT";
+export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
 
 export const SET_STUDENT_DATA = "SET_STUDENT_DATA";
 export const SET_CURRENT_TRACK = "SET_CURRENT_TRACK";

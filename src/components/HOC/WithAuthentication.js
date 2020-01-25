@@ -9,9 +9,9 @@ class WithAuthentication extends Component {
   }
 
   componentDidMount() {
-    if (!this.service.userAuthenticated()) {
-      this.props.history.push("/");
-    }
+    // if (!this.service.userAuthenticated()) {
+    //   this.props.history.push("/");
+    // }
   }
 
   render() {

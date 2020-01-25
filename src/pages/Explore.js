@@ -18,31 +18,38 @@ const Container = styled.div`
 
 const views = [
   {
-    name: "👋 For You",
+    // name: "👋 For You",
+    name: "For You",
     topics: [{}, {}]
   },
   {
-    name: "✏ Design",
+    // name: "✏ Design",
+    name: "Design",
     topics: [{}, {}]
   },
   {
-    name: "📈 Statistics",
+    // name: "📈 Statistics",
+    name: "Statistics",
     topics: [{}, {}]
   },
   {
-    name: "🐍 Python",
+    // name: "🐍 Python",
+    name: "Python",
     topics: [{}, {}]
   },
   {
-    name: "💻 Web Development ",
+    // name: "💻 Web Development ",
+    name: "Web Development ",
     topics: [{}, {}]
   },
   {
-    name: "⚛️ Logic and Math",
+    // name: "⚛️ Logic and Math",
+    name: "Logic and Math",
     topics: [{}, {}]
   },
   {
-    name: "📠 Machine Learning",
+    // name: "📠 Machine Learning",
+    name: "Machine Learning",
     topics: [{}, {}]
   }
 ];

@@ -37,15 +37,12 @@ const Login = props => {
       <h1>Login</h1>
       <form onSubmit={submitForm}>
         <TextField
-          id="standard-basic"
           name="user"
-          label="Email"
+          type="text"
           onChange={changeInput}
         />
         <TextField
-          id="standard-basic"
           name="pass"
-          label="Password"
           type="password"
           onChange={changeInput}
         />

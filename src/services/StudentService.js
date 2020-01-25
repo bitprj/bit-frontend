@@ -14,12 +14,12 @@ class StudentService {
      * @param {String} trackID
      */
     async getTrack(trackID) {
-        const endpoint = `/tracks/${trackID}`;
+        const endpoint = `tracks/${trackID}`;
         return backend.get(endpoint);
     }
 
     async getTrackProgress(trackID) {
-        const endpoint = `/tracks/${trackID}/progress`;
+        const endpoint = `tracks/${trackID}/progress`;
         return backend.get(endpoint);
     }
 
@@ -28,7 +28,7 @@ class StudentService {
      * @param {String} topicID
      */
     async getTopic(topicID) {
-        const endpoint = `/topics/${topicID}`;
+        const endpoint = `topics/${topicID}`;
         return backend.get(endpoint);
     }
 
@@ -37,7 +37,7 @@ class StudentService {
      * @param {String} activityID
      */
     async getActivity(activityID) {
-        const endpoint = `/activities/${activityID}`;
+        const endpoint = `activities/${activityID}`;
         return backend.get(endpoint);
     }
 }

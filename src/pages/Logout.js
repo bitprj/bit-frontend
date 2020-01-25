@@ -14,7 +14,7 @@ class Logout extends Component {
     }
 
     componentDidMount() {
-        this.service.logout();
+        // this.service.logout();
         this.props.logout();
     }
 

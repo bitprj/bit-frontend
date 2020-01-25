@@ -8,12 +8,12 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.STUDENT_LOGIN:
+    case actionTypes.LOGIN:
       return {
         ...state,
         userType: "Student"
       };
-    case actionTypes.USER_LOGOUT:
+    case actionTypes.LOGOUT:
       return {
         ...state,
         userType: "Visitor"
