@@ -18,7 +18,8 @@ const useStyles = makeStyles(theme => ({
 const CheckpointModal = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
-    const [currentSlide, setSlide] = React.useState('checkpoint');
+    const [result, setResult] = React.useState({});
+    const [currentSlide, setSlide] = React.useState('upload');
 
     const openModal = () => {
         setOpen(true);
@@ -28,12 +29,16 @@ const CheckpointModal = (props) => {
         setOpen(false);
     };
 
-    const submit = () => {
+    const switchToResult = () => {
         setSlide('checkpoint');
     }
 
-    const resubmit = () => {
+    const switchToUpload = () => {
         setSlide('upload');
+    }
+
+    const fillResult = (result) => {
+        setResult(result);
     }
 
     return (
@@ -52,9 +57,8 @@ const CheckpointModal = (props) => {
 
                 <Fade in={open}>
                     {currentSlide === 'upload' ?
-                        <Upload closeModal={closeModal} />
-                        : <Result closeModal={closeModal}
-                            resubmit={resubmit} />
+                        <Upload closeModal={closeModal} fillResult={fillResult} switchToResult={switchToResult} />
+                        : <Result closeModal={closeModal} result={result} switchToUpload={switchToUpload} />
                     }
                 </Fade>
             </Modal>

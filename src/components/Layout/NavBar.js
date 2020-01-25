@@ -28,7 +28,9 @@ const NavBar = (props) => (
         <Link style={styledLink} to={"/"}>BitProject</Link>
         {(props.userType === "Student") ? <Link style={styledLink} to={"/learn"}>Learn</Link> : null}
         {(props.userType === "Student") ? <Link style={styledLink} to={"/student"}>Student</Link> : null}
-        {(props.userType === "Visitor") ? <Link style={styledLink} to={"/login"}>Login</Link> : <Link style={styledLink} to={"/logout"}>Logout</Link>}
+        {(props.userType === "Visitor") ?
+            <Link style={styledLink} to={"/login"}>Login</Link>
+            : <Link style={styledLink} to={"/logout"}>Logout</Link>}
     </Nav>
 )
 

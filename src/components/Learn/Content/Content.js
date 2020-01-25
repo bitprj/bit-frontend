@@ -69,6 +69,29 @@ class Content extends Component {
                 }
 
                 <CheckpointModal />
+                <style >{`
+                    table {
+                        font-family: arial, sans-serif;
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    thead {
+                        // background: #fff5ee;
+                    }
+                    td, th {
+                        border: 1px solid #dddddd;
+                        text-align: left;
+                        padding: 12px;
+                    }
+                    tr:nth-child(even) {
+                        background-color: #f5f5f5;
+                    }
+                    tr:hover {
+                        // color: #555555;
+                        background-color: #f0f8ff;
+                        cursor: pointer;
+                    }
+                `}</style>
             </ContentWrapper>
         )
     }

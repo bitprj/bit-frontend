@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import CodeIcon from '@material-ui/icons/Code';
@@ -10,13 +10,12 @@ const Window = styled.div`
     padding: 20px;
     border-radius: 7px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-    overflow: hidden;
+    // overflow: hidden;
     background-color: white;
-    // max-width: 80%;
-    // margin: 2rem;
-    // max-height:80%;
-    height: 500px;
-    width: 700px;
+    max-width: 80%;
+    max-height: 80%;
+    min-height: 500px;
+    min-width: 700px;
     position: relative;
 `
 
@@ -43,6 +42,12 @@ const StatusBox = styled.div`
     font-weight: 600;
     font-size: 12px;
     text-align: center;
+    transition: background 0.2s ease, color 0.2s ease;
+
+    &:hover {
+        color: white;
+        background: ${props => props.pass ? '#1c6a00' : '#c70000'};
+    }
 `
 
 const CompareBox = styled.div`
@@ -98,112 +103,82 @@ const submitted_code_style = {
     minHeight: '300px'
 }
 
-// for making UI, replaced by props.result later
-const data = {
-    "cases": {
-        "1": { // testcase 1
-            "fail_case": {
-                // has data if this test failed, this test passed so this one doesn't
-            },
-            "pass_cases": [ // lines of code that okpy runs using the source test file
-                ">>> from a import *", // okpy needs to import ALL the source's functions before running (so it can test them)
-                ">>> from b import *",
-                ">>> num_sides(\"triangle\")",
-                "3"
-            ]
-        },
-        "2": { // testcase 2
-            "fail_case": {
-                "expected": "\"triangle\"", // expected output specified in test files
-                "actual": "'triangle'"      // actual output okpy runs the source to get this
-            },
-            "pass_cases": [ // still have data here even though this test failed, will remove this key-val pair in the future
-                ">>> from a import *",
-                ">>> from b import *"
-            ]
-        }
-    },
-    "results": { // summary bc y not
-        "num_pass": 1,
-        "num_fail": 1
-    }
-}
-
 const Result = (props) => {
+    const submission = <CodeCard>
+        <Header>
+            <div>
+                <CodeIcon fontSize={'small'} style={code_icon_style} />
+                {props.result.submission.name}
+            </div>
+            <Time>{props.result.submission.time}</Time>
+        </Header>
+
+        <CodeArea style={submitted_code_style}>
+            <pre>
+                <code>
+                    <p>{props.result.submission.content}</p>
+                </code>
+            </pre>
+        </CodeArea>
+
+        <RefreshWrapper>
+            <RefreshIcon />
+        </RefreshWrapper>
+    </CodeCard>;
+
+    const passCases = props.result.passCases.map(pass => (
+        <CaseEntry>
+            <strong>{pass.name}</strong>
+            <StatusBox pass={1}>Passed</StatusBox>
+        </CaseEntry>
+    ));
+
+    const fail = props.result.failCase;
+
+    const failCase = fail ?
+        <Fragment>
+            <CaseEntry>
+                <strong>{props.result.failCase.name}</strong>
+                <StatusBox pass={0}>Failed</StatusBox>
+            </CaseEntry>
+            <CompareBox>
+                <div>Expected Output:</div>
+                <CodeArea>
+                    <pre>
+                        <code>
+                            <p>{fail.expected}</p>
+                        </code>
+                    </pre>
+                </CodeArea>
+                <div>Your Output:</div>
+                <CodeArea>
+                    <pre>
+                        <code>
+                            <p>{fail.output}</p>
+                        </code>
+                    </pre>
+                </CodeArea>
+            </CompareBox>
+        </Fragment>
+        : null;
+
     return (
         <Window>
             <Grid container spacing={2} justify='center'>
                 <Grid item sm={6}>
-                    <CodeCard>
-                        <Header>
-                            <div>
-                                <CodeIcon fontSize={'small'} style={code_icon_style} />
-                                solution.py
-                            </div>
-                            <Time>2 min ago</Time>
-                        </Header>
-
-                        <CodeArea style={submitted_code_style}>
-                            <pre>
-                                <code>
-                                    <p># This program prints Hello World!</p>
-                                </code>
-                                <code>
-                                    <p>print('Hello World!')</p>
-                                </code>
-                            </pre>
-                        </CodeArea>
-
-                        <RefreshWrapper>
-                            <RefreshIcon />
-                        </RefreshWrapper>
-                    </CodeCard>
+                    {submission}
                 </Grid>
 
                 <Grid item sm={6}>
-                    <CaseEntry>
-                        <strong>Invalid Inputs</strong>
-                        <StatusBox pass={1}>Passed</StatusBox>
-                    </CaseEntry>
-                    <CaseEntry>
-                        <strong>Print Statement</strong>
-                        <StatusBox pass={0}>Failed</StatusBox>
-                    </CaseEntry>
-                    <CompareBox>
-                        <div>Expected Output:</div>
-                        <CodeArea>
-                            <pre>
-                                <code>
-                                    <p># This program prints Hello World!</p>
-                                </code>
-                                <code>
-                                    <p>print('Hello World!')</p>
-                                </code>
-                            </pre>
-                        </CodeArea>
-                        <div>Your Output:</div>
-                        <CodeArea>
-                            <pre>
-                                <code>
-                                    <p># This program prints Hello World!</p>
-                                </code>
-                                <code>
-                                    <p>print('HellowWorld!')</p>
-                                </code>
-                            </pre>
-                        </CodeArea>
-                    </CompareBox>
-                    <CaseEntry>
-                        <strong>What's Wrong Though ;_;</strong>
-                        <StatusBox pass={1}>Passed</StatusBox>
-                    </CaseEntry>
+                    {passCases}
+                    {failCase}
                 </Grid>
             </Grid>
 
             <ButtonWrapper>
                 <Button buttonState="< Resubmit"
                     class_name="button"
-                    click={props.resubmit}
+                    click={props.switchToUpload}
                 />
                 <Button buttonState="Next >"
                     class_name="button invert"

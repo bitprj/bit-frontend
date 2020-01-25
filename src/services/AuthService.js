@@ -7,15 +7,18 @@ class AuthService {
     async login(username, password) {
         const url = `${API_URL}/user/login`;
 
-        axios.post(url).then(response => {
-            // console.log('token', response.data.access_token);
-            // const token = response.data.access_token;
-            const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzgyNzg1MDcsImV4cCI6MTU3ODM2NDkwNywianRpIjoiN2NiMzFkNDgtZDIxNy00MjU3LTk1ODctY2ZiOTkyYWNlNzFiIiwiaWQiOjQsInJscyI6IlN0dWRlbnQiLCJyZl9leHAiOjE1NzgzNjQ5MDd9.cr7bgCT52cD1cCA1hDhYcilSdPAfje0StTe_AmXt4sw"
-            const userType = response.data.user_type;
+        this.setUserType('Student');
+        this.setToken('1234abcd');
 
-            this.setUserType(userType)
-            this.setToken(token);
-        })
+        // axios.post(url).then(response => {
+        //     console.log('token', response.data.access_token);
+        //     // const token = response.data.access_token;
+        //     const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzgyNzg1MDcsImV4cCI6MTU3ODM2NDkwNywianRpIjoiN2NiMzFkNDgtZDIxNy00MjU3LTk1ODctY2ZiOTkyYWNlNzFiIiwiaWQiOjQsInJscyI6IlN0dWRlbnQiLCJyZl9leHAiOjE1NzgzNjQ5MDd9.cr7bgCT52cD1cCA1hDhYcilSdPAfje0StTe_AmXt4sw"
+        //     const userType = response.data.user_type;
+
+        //     this.setUserType(userType)
+        //     this.setToken(token);
+        // })
 
         // change to this later on
         // axios.post(url, {

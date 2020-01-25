@@ -101,6 +101,7 @@ class TeacherContent extends Component {
                 activityName={submission.activityName}
                 time={'2 min ago'}
                 index={index}
+                currentSubmission={this.state.currentSubmission}
                 switchSubmission={this.switchSubmission} />
         });
 

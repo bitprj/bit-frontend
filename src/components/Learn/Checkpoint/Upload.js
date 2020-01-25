@@ -35,7 +35,7 @@ class Upload extends Component {
     constructor() {
         super();
         this.state = {
-            files: []
+            files: [],
         }
         this.upload = this.upload.bind(this);
 
@@ -44,11 +44,13 @@ class Upload extends Component {
 
     upload = () => {
         this.service.uploadFiles(this.state.files)
-            .then(data => {
-                console.log('data here', data);
+            .then(rawData => {
+                const data = this.service.processResult(rawData);
+                this.props.fillResult(data);
+                this.props.switchToResult();
             })
             .catch(err => {
-                console.log('error here', err);
+                alert(err);
             });
     }
 
