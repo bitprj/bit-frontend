@@ -6,6 +6,7 @@ const EntryWrapper = styled.div`
     padding: 25px 10px;
     border-bottom: 1.5px solid lightgrey;
     transition: transform .2s;
+    background: ${props => (props.index === props.current) ? 'rgba(0, 118, 255, 0.1)' : 'white'};
 
     &:hover {
         transform: translateX(1px);
@@ -25,7 +26,7 @@ const Time = styled.div`
 `
 
 const EntryBox = props => (
-    <EntryWrapper onClick={() => props.switchSubmission(props.index)}>
+    <EntryWrapper current={props.currentSubmission} index={props.index} onClick={() => props.switchSubmission(props.index)}>
         <Grid container spacing={0}>
             <Grid item xs={1}>
                 o

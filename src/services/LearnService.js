@@ -39,11 +39,6 @@ class LearnService {
         })
 
         if (srcFile && testsFile) {
-            // const headers = {
-            //     'Content-Type': 'multipart/form-data',
-            //     'Access-Control-Request-Method': 'POST',
-            //     'Access-Control-Request-Headers': 'X-PINGOTHER, Content-Type'
-            // }
             let formData = new FormData();
             formData.append('src', srcFile);
             formData.append('tests', testsFile);
@@ -61,12 +56,10 @@ class LearnService {
     }
 
     processResult(rawData) {
-        // console.log('raw', rawData);
-        // const result = rawData;
-
         const passCases = rawData.pass_cases.map(pass => {
             return pass;
         });
+
         const result = {
             submission: rawData.submission,
             passCases: passCases,
