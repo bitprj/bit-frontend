@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 import Button from '../../shared/Button';
 
 const GradingArea = styled.div`
@@ -27,7 +30,7 @@ class Submission extends Component {
     constructor(props) {
         super();
         this.state = {
-            submission: props.submission
+            submission: props.submission,
         }
 
         this.changeInput = this.changeInput.bind(this);
@@ -40,17 +43,23 @@ class Submission extends Component {
         }
     }
 
-    changeInput(e) {
+    // changeInput(e) {
+    //     this.setState({
+    //         [e.target.name]: e.target.value
+    //     })
+    // }
+
+    changeInput(value, name) {
         this.setState({
-            [e.target.name]: e.target.value
+            [name]: value
         })
+        console.log(value);
     }
 
     submitGrading = (event) => {
         event.preventDefault();
         // POST comments to backend
-        alert('submit');
-        console.log('comment', this.state);
+        console.log('comments', this.state);
     }
 
     render() {
@@ -85,17 +94,7 @@ class Submission extends Component {
                         </Grid>
 
                         <Comment>
-                            <form noValidate autoComplete="off">
-                                <TextField
-                                    id="filled-multiline-static"
-                                    name={`checkpoint-${index}-comment`}
-                                    label="Comment"
-                                    multiline
-                                    rows="10"
-                                    variant="filled"
-                                    fullWidth
-                                    onChange={this.changeInput} />
-                            </form>
+                            <ReactQuill onChange={value => this.changeInput(value, `comment-${index}`)} />
                         </Comment>
                     </Checkpoint>
                 )
@@ -104,6 +103,7 @@ class Submission extends Component {
 
         return (
             <GradingArea>
+                {this.state.text}
                 {checkpoints}
                 <Button buttonState="Submit" class_name="button invert" click={this.submitGrading} />
             </GradingArea>

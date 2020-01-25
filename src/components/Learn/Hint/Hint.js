@@ -18,7 +18,7 @@ const HintCard = styled.div`
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     overflow: hidden;
     margin-bottom: .5rem;
-    background-color: ${props => props.locked ? '#000033' : 'white'};
+    background: ${props => props.locked ? '#000033' : 'white'};
     transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     color: ${props => props.locked ? 'white' : 'black'};
     display: ${props => props.display ? 'block' : 'none'};
@@ -101,7 +101,7 @@ class Hint extends Component {
     render() {
         const steps = this.state.steps.map((step, index) => {
             const renderedStep = (step.isShown && this.state.isExpanded) ?
-                <div>
+                <Fragment>
                     <HintCard key={`step-${step.title}`} display={step.isShown} step={true}>
                         <Heading>{step.heading}</Heading>
                         <RenderedContent uniqueKey={`hint-${this.state.id}`}
@@ -124,7 +124,7 @@ class Hint extends Component {
                                 click={this.shrinkHint} />
                             : null}
                     </FloatRight>
-                </div>
+                </Fragment>
                 : null;
             return renderedStep;
         })
