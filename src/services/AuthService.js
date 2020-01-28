@@ -1,64 +1,50 @@
-import axios from 'axios';
-// import decode from 'jwt-decode';
-
-const API_URL = 'https://b2757d6e-6fd4-4877-887f-7cc9531408a8.mock.pstmn.io'
+import { backend } from "./AxiosInstances";
 
 class AuthService {
-    async login(username, password) {
-        const url = `${API_URL}/user/login`;
+  async postLogin(username, password) {
+    const endpoint = "user/login";
+    return backend.post(endpoint, {
+      username,
+      password
+    });
+  }
 
-        this.setUserType('Student');
-        this.setToken('1234abcd');
+  // const userType = response.data.user_type;
+  // this.setUserType(userType)
+  // this.setToken(token);
 
-        // axios.post(url).then(response => {
-        //     console.log('token', response.data.access_token);
-        //     // const token = response.data.access_token;
-        //     const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzgyNzg1MDcsImV4cCI6MTU3ODM2NDkwNywianRpIjoiN2NiMzFkNDgtZDIxNy00MjU3LTk1ODctY2ZiOTkyYWNlNzFiIiwiaWQiOjQsInJscyI6IlN0dWRlbnQiLCJyZl9leHAiOjE1NzgzNjQ5MDd9.cr7bgCT52cD1cCA1hDhYcilSdPAfje0StTe_AmXt4sw"
-        //     const userType = response.data.user_type;
+  userAuthenticated() {
+    // const token = this.getToken();
+    // return token != null;
+  }
 
-        //     this.setUserType(userType)
-        //     this.setToken(token);
-        // })
+  // logout() {
+  //     localStorage.removeItem('userType');
+  //     localStorage.removeItem('token');
+  // }
 
-        // change to this later on
-        // axios.post(url, {
-        //     email: this.state.email,
-        //     password: this.state.password
-        // }).then(response => this.setToken(response.data.access_token));
-    }
+  // setUserType(userType) {
+  //     return localStorage.setItem('userType', userType)
+  // }
 
-    userAuthenticated() {
-        const token = this.getToken();
-        return token != null;
-    }
+  // getUserType() {
+  //     return localStorage.getItem('userType')
+  // }
 
-    logout() {
-        localStorage.removeItem('userType');
-        localStorage.removeItem('token');
-    }
+  // /**
+  //  * Note: idk if this is temp but setting token thru local storage is not safe bc it can be accessed with
+  //  * javascript. a better place is through cookies with 'htmlonly' property so it can't be accessed
+  //  * through javascript
+  //  *
+  //  * Also thru research there appears to be something called 'authorization code flow' which is serverside
+  //  */
+  // setToken(token) {
+  //     return localStorage.setItem('token', token)
+  // }
 
-    setUserType(userType) {
-        return localStorage.setItem('userType', userType)
-    }
-
-    getUserType() {
-        return localStorage.getItem('userType')
-    }
-
-    /**
-     * Note: idk if this is temp but setting token thru local storage is not safe bc it can be accessed with 
-     * javascript. a better place is through cookies with 'htmlonly' property so it can't be accessed
-     * through javascript
-     * 
-     * Also thru research there appears to be something called 'authorization code flow' which is serverside
-     */
-    setToken(token) {
-        return localStorage.setItem('token', token)
-    }
-
-    getToken() {
-        return localStorage.getItem('token')
-    }
+  // getToken() {
+  //     return localStorage.getItem('token')
+  // }
 }
 
 export default AuthService;

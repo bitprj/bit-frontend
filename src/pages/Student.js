@@ -1,24 +1,37 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import StudentHero from "../components/Student/StudentHero";
-import StudentContent from "../components/Student/StudentContent";
-import * as studentData from "../redux/actions/studentData";
+import Progress from "../components/Student/Progress/Progress";
+import Module from "../components/Student/Module/Module";
+
+import * as studentData from "../redux/studentData/actions";
+import * as viewTypes from "../redux/utils/viewTypes";
 
 class Student extends Component {
   componentDidMount() {
-    this.props.onSetStudentData();
+    this.props.onInitStudentData();
   }
 
   componentDidUpdate() {
     console.log("[Student Updated]");
     if (this.props.is_student_data_loaded) {
       if (!this.props.suggested_activity)
-        this.props.onSetSuggestedActivity(this.props.current_activities[0].id);
-      if (!this.props.current_track)
-        this.props.onSetCurrentTrack(this.props.current_track_id);
+        this.props.onInitSuggestedActivity(this.props.current_activities[0].id);
       if (!this.props.current_topic)
-        this.props.onSetCurrentTopic(this.props.current_topic_id);
+        this.props.onInitCurrentTopic(this.props.current_topic_id);
+    }
+  }
+
+  handleCurrentView() {
+    switch (this.props.currentView) {
+      case viewTypes.PROGRESS:
+        return <Progress />;
+
+      case viewTypes.MODULE:
+        return <Module />;
+
+      default:
+        return null;
     }
   }
 
@@ -27,25 +40,24 @@ class Student extends Component {
   }
 
   render() {
-    return (
-      <>
-        <StudentHero resumeClicked={this.resumeClickedHandler} />
-        <StudentContent />
-      </>
-    );
+    return <>{this.handleCurrentView()}</>;
   }
 }
 
 const mapStateToProps = state => {
-  return state.studentData;
+  return {
+    currentView: state.viewManager.current_view_student,
+    ...state.studentData
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetStudentData: () => dispatch(studentData.initStudentData()),
-    onSetSuggestedActivity: id => dispatch(studentData.initSuggestedActivity(id)),
-    onSetCurrentTrack: id => dispatch(studentData.initCurrentTrack(id)),
-    onSetCurrentTopic: id => dispatch(studentData.initCurrentTopic(id))
+    onInitStudentData: () => dispatch(studentData.initStudentData()),
+    onInitSuggestedActivity: id =>
+      dispatch(studentData.initSuggestedActivity(id)),
+    onInitCurrentTrack: id => dispatch(studentData.initCurrentTrack(id)),
+    onInitCurrentTopic: id => dispatch(studentData.initCurrentTopic(id))
   };
 };
 

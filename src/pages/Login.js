@@ -1,76 +1,62 @@
-import React, { Component, Fragment } from 'react';
-import TextField from '@material-ui/core/TextField';
+import React, { useState } from "react";
+import TextField from "@material-ui/core/TextField";
 
-import AuthService from '../services/AuthService';
+import AuthService from "../services/AuthService";
 
-import { connect } from 'react-redux';
-import { login } from '../redux/actions/actions';
+import { connect } from "react-redux";
+import { initLogin } from "../redux/account/actions";
 
-class Login extends Component {
-    constructor() {
-        super();
-        this.state = {
-            email: null,
-            password: null,
-        }
+const Login = props => {
+  const [userCombo, setUserCombo] = useState({ user: null, pass: null });
+  const [preventMultiSubmit, setPreventMultiSubmit] = useState(false);
 
-        this.changeInput = this.changeInput.bind(this);
-        this.submitForm = this.submitForm.bind(this);
-        this.service = new AuthService();
+  const changeInput = e => {
+    setUserCombo({
+      ...userCombo,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const submitForm = e => {
+    e.preventDefault();
+
+    if (preventMultiSubmit) return;
+    setPreventMultiSubmit(true);
+
+    try {
+      props.onInitLogin(userCombo.user, userCombo.pass, () =>
+        setPreventMultiSubmit(false)
+      );
+    } catch (err) {
+      alert(err.message);
     }
+  };
 
-    componentDidMount() {
-        if (this.service.userAuthenticated()) {
-            this.props.history.push('/');
-        }
-    }
-
-    changeInput(e) {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
-
-    async submitForm(e) {
-        e.preventDefault();
-        try {
-            await this.service.login(this.state.email, this.state.password);
-            if (this.service.userAuthenticated) {
-                this.props.login();
-                this.props.history.push('/student');
-            }
-        } catch (err) {
-            alert(err.message);
-        }
-    }
-
-    render() {
-        return (
-            <Fragment>
-                <h1>Login</h1>
-                <form onSubmit={this.submitForm}>
-                    <TextField id="standard-basic"
-                        label="Email"
-                        name="email"
-                        onChange={this.changeInput} />
-                    <TextField id="standard-basic"
-                        label="Password"
-                        name="password"
-                        type="password"
-                        onChange={this.changeInput} />
-                    <input
-                        value="SUBMIT"
-                        type="submit" />
-                </form>
-            </Fragment>
-        );
-    }
-}
+  return (
+    <>
+      <h1>Login</h1>
+      <form onSubmit={submitForm}>
+        <TextField
+          name="user"
+          type="text"
+          onChange={changeInput}
+        />
+        <TextField
+          name="pass"
+          type="password"
+          onChange={changeInput}
+        />
+        <input value="SUBMIT" type="submit" />
+      </form>
+    </>
+  );
+};
 
 const mapDispatchToProps = dispatch => {
-    return {
-        login: () => dispatch(login())
-    }
-}
+  return {
+    onInitLogin: (user, pass, callback) =>
+      dispatch(initLogin(user, pass, callback))
+  };
+};
 
 export default connect(null, mapDispatchToProps)(Login);

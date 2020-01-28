@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { logout } from '../redux/actions/actions';
+import { logout } from '../redux/account/actions';
 
 import AuthService from '../services/AuthService';
 
@@ -14,7 +14,7 @@ class Logout extends Component {
     }
 
     componentDidMount() {
-        this.service.logout();
+        // this.service.logout();
         this.props.logout();
     }
 

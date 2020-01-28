@@ -1,71 +1,118 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import media from '../../../assets/styles/media';
+import React from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import Subject from './CurrentTrack';
-import ModuleSection from './CurrentTopic';
-import SelectTopic from './SelectTopic';
+import StudentHero from "../Hero/StudentHero";
+import ActivityCard from "./ActivityCard";
 
-const Page = styled.div`
-	padding: 3% 5%;
-	margin: 0 auto;
-	font-size: 28px;
+import { setViewStudent } from "../../../redux/viewManager/actions";
+import * as viewTypes from "../../../redux/utils/viewTypes";
 
-	${media.giant`font-size: 24px;`};
-	${media.desktop`font-size: 20px;`};
-	${media.tablet`font-size: 15px;`};
-	${media.phablet`font-size: 13px;`};
-	${media.phone`font-size: 13px;`};
-`
+import { sizes } from "../../../assets/styles/Media";
 
-class Progress extends Component {
-	// state = {
-	// 	sectionProgress: '22%',
-	// 	sectionStatus: 'incomplete',
-	// 	moduleContents: [
-	//         {
-	// 			_id: "348u9eRWas0",
-	// 			name: "Programming Principles",
-	// 			image: "brickwall",
-	// 			description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-	// 			status: 'complete'
-	// 		}, {
-	// 			_id: "348u9eRWas1",
-	// 			name: "Intro to Python",
-	// 			image: "brickwall",
-	// 			description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-	// 			status: 'complete'
-	// 		}, {
-	// 			_id: "348u9eRWas2",
-	// 			name: "OOP",
-	// 			image: "brickwall",
-	// 			description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-	// 			status: 'incomplete' 
-	// 		}, { 
-	// 			_id: "348u9eRWas3",
-	// 			name: "Data Structures",
-	// 			image: "brickwall",
-	// 			description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-	// 			status: 'locked'
-	// 		}, {
-	// 			_id: "348u9eRWas4",
-	// 			name: "Data Structures",
-	// 			image: "github",
-	// 			description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-	// 			status: 'locked'
-	// 		}
-	//     ]
-	// }
+const Content = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  align-items: start;
+  font-size: 90%;
+  margin: 0 2em;
+  position: relative;
 
-	render() {
-		return (
-			<Page>
-				<Subject />
-				<ModuleSection />
-				<SelectTopic />
-			</Page>
-		)
-	}
-}
+  @media screen and (max-width: ${sizes.thone}px) {
+    flex-direction: column;
+  }
 
-export default Progress;
+  @media screen and (min-width: ${sizes.desktop}px) {
+    margin: 0 8em;
+  }
+`;
+
+const ColOne = styled.div`
+  flex: 1;
+`;  
+
+const ColTwo = styled.div`
+  flex: 1;
+  position: relative;
+  top: 5em;
+`;
+
+const PickModule = styled.div`
+  margin: 2%;
+  margin-top: 0;
+  padding: 2em;
+  height: 20em;
+  border-radius: 1em;
+  background-color: #fff;
+  text-align: center;
+
+  display: flex;
+  align-items: center;
+  
+  cursor: pointer;
+`;
+const PickButton = styled.div`
+  font-size: 1.5em;
+  margin: 1.5em auto 1em;
+  border-radius: 0.2em;
+  color: white;
+  width: 1.5em;
+  height: 1.5em;
+  background-color: ${props => props.theme.accent};
+  box-shadow: 0 0 7px 7px ${props => props.theme.accent}07;
+  cursor: pointer;
+
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: none;
+  }
+`;
+
+const Progress = props => {
+  return (
+    <>
+      <StudentHero for={"TOPIC"} />
+
+      <Content>
+        <ColOne>
+          <PickModule className="hover-raise transition-medium">
+            <div>
+              <h2>Pick a Module</h2>
+              <p style={{ padding: "0 3em" }}>
+                Choose a module and learn an interesting tidbit about python
+              </p>
+              <PickButton>+</PickButton>
+            </div>
+          </PickModule>
+
+          <ActivityCard isLeft />
+          <ActivityCard isLeft isLast />
+        </ColOne>
+
+        <ColTwo>
+          <ActivityCard
+            clicked={() => props.onSetViewStudent(viewTypes.MODULE)}
+          />
+          <ActivityCard />
+        </ColTwo>
+      </Content>
+    </>
+  );
+};
+
+// const mapStateToProps = state => {
+//   return {
+//     // ...state.studentData
+//   };
+// };
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetViewStudent: viewName => {
+      dispatch(setViewStudent(viewName));
+    }
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Progress);
