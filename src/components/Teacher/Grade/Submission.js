@@ -43,17 +43,10 @@ class Submission extends Component {
         }
     }
 
-    // changeInput(e) {
-    //     this.setState({
-    //         [e.target.name]: e.target.value
-    //     })
-    // }
-
     changeInput(value, name) {
         this.setState({
             [name]: value
         })
-        console.log(value);
     }
 
     submitGrading = (event) => {
