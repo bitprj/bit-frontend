@@ -8,7 +8,7 @@ import ActivityCard from "./ActivityCard";
 import { setViewStudent } from "../../../redux/viewManager/actions";
 import * as viewTypes from "../../../redux/utils/viewTypes";
 
-import { sizes } from "../../../assets/styles/Media";
+import { sizes } from "../../../assets/styles/media";
 
 const Content = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ const Content = styled.div`
 
 const ColOne = styled.div`
   flex: 1;
-`;  
+`;
 
 const ColTwo = styled.div`
   flex: 1;

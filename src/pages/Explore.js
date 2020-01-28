@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Sidebar from "../components/Explore/Sidebar";
 import Content from "../components/Explore/Content";
 
-import { sizes } from "../assets/styles/Media";
+import { sizes } from "../assets/styles/media";
 
 const Container = styled.div`
   display: flex;

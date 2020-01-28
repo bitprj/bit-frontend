@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import setTheme from "../../redux/theme/actions";
-import { palepink } from "../../config/theme";
+import { palepink } from "../../assets/styles/theme";
 
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
@@ -136,7 +136,7 @@ const NavBar = props => (
           </Button>
         </Link>
 
-        {/* <Link style={styledLink} to={"/login"}> */} 
+        {/* <Link style={styledLink} to={"/login"}> */}
         <Button
           width={"8em"}
           margin={"0 0.5em"}

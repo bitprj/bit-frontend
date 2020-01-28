@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Student from "./pages/Student";
 import Explore from "./pages/Explore";
+import Teacher from "./pages/Teacher";
 import NotFound from "./pages/NotFound";
 
 import WithAuthentication from "./components/HOC/WithAuthentication";
@@ -21,13 +22,14 @@ const App = props => {
         <Layout>
           <Switch>
             <Route path="/" exact component={Student} />
-            <Route path="/login" exact component={Login} />
-            <Route path="/explore" exact component={Explore} />
+            <Route path="/login" component={Login} />
+            <Route path="/explore" component={Explore} />
 
             <WithAuthentication>
-              <Route path="/learn" exact component={Learn} />
-              <Route path="/student" exact component={Student} />
-              <Route path="/logout" exact component={Logout} />
+              <Route path="/learn" component={Learn} />
+              <Route path="/student" component={Student} />
+              <Route path="/teacher" component={Teacher} />
+              <Route path="/logout" component={Logout} />
             </WithAuthentication>
 
             <Route component={NotFound} />

@@ -1,5 +1,5 @@
 import { SET_THEME } from "../utils/actionTypes";
-import defaultTheme from "../../config/theme";
+import defaultTheme from "../../assets/styles/theme";
 
 const initialState = defaultTheme;
 
