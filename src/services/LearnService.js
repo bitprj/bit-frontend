@@ -11,7 +11,7 @@ class LearnService {
             const children = hint.hint_children.map(child => {
                 return {
                     dbID: child.hint.id,
-                    id: child.hint.contentful_id,
+                    id: child.hint.contentful_id,   
                     isLocked: !child.is_unlocked
                 }
             })

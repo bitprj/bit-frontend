@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import AuthService from "../services/AuthService";
 
 import { connect } from "react-redux";
-import { initLogin } from "../redux/account/actions";
+import { initLogin } from "../redux/actions/account";
 
 const Login = props => {
   const [userCombo, setUserCombo] = useState({ user: null, pass: null });

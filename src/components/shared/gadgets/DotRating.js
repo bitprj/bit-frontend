@@ -2,24 +2,28 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  height: 1em;
+  line-height: 1em;
 `;
 
 const Dot = styled.div`
   display: inline-block;
-  margin-right: 0.4em;
-  width: 0.3em;
+  ${props => (props.type === "RECT" ? "margin-right: 0.2em" : "margin-right: 0.4em")};
+  ${props => (props.type === "RECT" ? "width: 0.9em" : "width: 0.3em")};
   height: 0.3em;
   vertical-align: middle;
-  ${props => (props.type !== "BOX" ? "border-radius: 50%" : "")}
+  ${props =>
+    props.type !== "SQUARE" && props.type !== "RECT"
+      ? "border-radius: 50%"
+      : ""}
 
-  background-color: ${props => (props.filled ? props.theme.accent : props.theme.accentVariant)};
+  background-color: ${props =>
+    props.filled ? props.theme.accent : props.theme.accentVariant};
 `;
 // 007BED
 
 /**
- * 
- * @param {filled} props 
+ *
+ * @param {filled} props
  */
 const Rating = props => {
   const renderedDots = [...Array(props.outOf || 5)].map((project, index) => {
@@ -32,7 +36,7 @@ const Rating = props => {
     );
   });
 
-  return <Container>{renderedDots}</Container>;
+  return <Container style={props.style}>{renderedDots}</Container>;
 };
 
 export default Rating;

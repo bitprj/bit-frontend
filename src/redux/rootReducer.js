@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
-import reducer from './account/reducer';
-import studentData from './studentData/reducer'
-import viewManager from './viewManager/reducer'
-import theme from './theme/reducer'
+import account from './reducers/account';
+import studentData from './reducers/studentData'
+import learnData from './reducers/learnData'
+import viewManager from './reducers/viewManager'
+import theme from './reducers/theme'
 
 export default combineReducers({
-    reducer,
+    account,
     studentData,
+    learnData,
     viewManager,
     theme
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { Route } from "react-router-dom";
 import styled from "styled-components";
 
 import NavBar from "./NavBar";
@@ -10,7 +11,8 @@ const Main = styled.main`
 
 const Layout = props => (
   <>
-    <NavBar />
+    <Route path="/learn" />
+    <Route path="/" exact component={NavBar} />
     <Main>{props.children}</Main>
   </>
 );

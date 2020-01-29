@@ -1,15 +1,15 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
-import RenderedContent from '../../shared/RenderedContent';
+import RenderedContent from '../../shared/ParsedContent';
 
 import Button from '../../shared/Button';
 import HintModal from './HintModal';
 import StepAsset from '../../shared/StepAsset';
 
-import ContentfulService from '../../../services/ContentfulService';
+import { getHint } from '../../../services/ContentfulService';
 
 const HintCard = styled.div`
     position: relative;
@@ -50,12 +50,11 @@ class Hint extends Component {
         this.shrinkHint = this.shrinkHint.bind(this);
         this.showNextStep = this.showNextStep.bind(this);
 
-        this.service = new ContentfulService();
         // this.service = new LearnService();
     }
 
     componentDidMount() {
-        this.service.getHint(this.props.id).then(data => {
+        getHint(this.props.id).then(data => {
             this.setState({
                 title: data.title,
                 steps: data.steps,
@@ -101,7 +100,7 @@ class Hint extends Component {
     render() {
         const steps = this.state.steps.map((step, index) => {
             const renderedStep = (step.isShown && this.state.isExpanded) ?
-                <Fragment>
+                <>
                     <HintCard key={`step-${step.title}`} display={step.isShown} step={true}>
                         <Heading>{step.heading}</Heading>
                         <RenderedContent uniqueKey={`hint-${this.state.id}`}
@@ -124,7 +123,7 @@ class Hint extends Component {
                                 click={this.shrinkHint} />
                             : null}
                     </FloatRight>
-                </Fragment>
+                </>
                 : null;
             return renderedStep;
         })
@@ -137,7 +136,7 @@ class Hint extends Component {
         </FloatRight>
 
         return (
-            <Fragment>
+            <>
                 {this.state.isLocked ?
                     <HintCard locked={this.state.isLocked} display={this.props.display}>
                         <Grid container spacing={0}>
@@ -167,7 +166,7 @@ class Hint extends Component {
                         </HintCard>
                         {steps}
                     </div>)}
-            </Fragment>
+            </>
         )
     }
 }

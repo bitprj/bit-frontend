@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import setTheme from "../../redux/theme/actions";
+import setTheme from "../../redux/actions/theme";
 import { palepink } from "../../assets/styles/theme";
 
 import SearchIcon from "@material-ui/icons/Search";
@@ -85,7 +85,7 @@ const styledLink = {
 const NavBar = props => (
   <Nav>
     <NavElement style={{ height: contentHeight }}>
-      <Link to={"/student"}>
+      <Link to={"/"}>
         <Logo src={require("../../assets/icons/logo.png")} alt="Bit Project" />
       </Link>
     </NavElement>
@@ -95,7 +95,7 @@ const NavBar = props => (
       </Link>
     </NavElement>
     <NavElement>
-      <Link style={styledLink} to={"/"}>
+      <Link style={styledLink} to={"/learn"}>
         Community
       </Link>
     </NavElement>
@@ -152,7 +152,7 @@ const NavBar = props => (
 );
 
 const mapStateToProps = state => ({
-  userType: state.reducer.userType
+  userType: state.account.userType
 });
 
 const mapDispatchToProps = dispatch => {
