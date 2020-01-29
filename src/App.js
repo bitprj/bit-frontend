@@ -13,7 +13,7 @@ import Explore from './pages/Explore';
 import NotFound from './pages/NotFound';
 
 import WithProviders from './components/HOC/WithProviders';
-import { GlobalStyle, GlobalStyleReset } from './utils/styles/GlobalStyles'
+import { GlobalStyle, GlobalStyleReset } from './assets/styles/GlobalStyles'
 
 const App = props => {
   return (
