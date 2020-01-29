@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { logout } from '../redux/account/actions';
+import { logout } from '../redux/actions/account';
 
 import AuthService from '../services/AuthService';
 

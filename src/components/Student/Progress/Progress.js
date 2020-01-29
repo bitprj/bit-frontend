@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import StudentHero from "../Hero/StudentHero";
 import ActivityCard from "./ActivityCard";
 
-import { setViewStudent } from "../../../redux/viewManager/actions";
+import { setViewStudent } from "../../../redux/actions/viewManager";
 import * as viewTypes from "../../../redux/utils/viewTypes";
 
 import { sizes } from "../../../assets/styles/Media";
