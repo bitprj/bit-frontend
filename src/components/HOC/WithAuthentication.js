@@ -15,11 +15,11 @@ class WithAuthentication extends Component {
   }
 
   render() {
-    if (this.service.userAuthenticated()) {
-      return <>{this.props.children}</>;
-    } else {
-      return <h1>Loading...</h1>;
-    }
+    // if (this.service.userAuthenticated()) {
+    return <>{this.props.children}</>;
+    // } else {
+    //   return <h1>Loading...</h1>;
+    // }
   }
 }
 

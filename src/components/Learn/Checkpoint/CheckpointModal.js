@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 const CheckpointModal = (props) => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const [result, setResult] = React.useState({});
     const [currentSlide, setSlide] = React.useState('upload');
 

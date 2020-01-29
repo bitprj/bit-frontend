@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 import Button from '../../shared/Button';
+
+import TeacherService from '../../../services/TeacherService';
 
 const GradingArea = styled.div`
     padding: 1.5rem;
@@ -31,35 +33,55 @@ class Submission extends Component {
         super();
         this.state = {
             submission: props.submission,
+            feedbacks: [],
         }
 
+        this.initializeInputs = this.initializeInputs.bind(this);
         this.changeInput = this.changeInput.bind(this);
         this.submitGrading = this.submitGrading.bind(this);
+
+        this.service = new TeacherService();
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.submission !== prevProps.submission) {
             this.setState({ submission: this.props.submission });
+            this.initializeInputs();
         }
     }
 
-    // changeInput(e) {
-    //     this.setState({
-    //         [e.target.name]: e.target.value
-    //     })
-    // }
+    initializeInputs() {
+        if (this.props.submission) {
+            const emptyFeedbacks = [];
+            for (const checkpoint of this.props.submission.checkpoints) {
+                const emptyFeedback = {
+                    id: checkpoint.id,
+                    comment: "",
+                    passed: false
+                };
+                emptyFeedbacks.push(emptyFeedback);
+            }
+            this.setState({ feedbacks: [...emptyFeedbacks] });
 
-    changeInput(value, name) {
-        this.setState({
-            [name]: value
-        })
-        console.log(value);
+        }
+    }
+
+    changeInput(value, index) {
+        const newFeedbacks = [...this.state.feedbacks];
+        newFeedbacks[index].comment = value;
+        this.setState({ feedbacks: [...newFeedbacks] });
+    }
+
+    passCheckpoint(event, index) {
+        const newFeedbacks = [...this.state.feedbacks];
+        newFeedbacks[index].passed = event.target.checked;
+        this.setState({ feedbacks: [...newFeedbacks] });
     }
 
     submitGrading = (event) => {
         event.preventDefault();
         // POST comments to backend
-        console.log('comments', this.state);
+        this.service.submitFeedbacks(this.props.classroomID, this.state.submission.id, this.state.feedbacks);
     }
 
     render() {
@@ -67,7 +89,10 @@ class Submission extends Component {
             this.state.submission.checkpoints.map((checkpoint, index) => {
                 return (
                     <Checkpoint key={`checkpoint-${index}`}>
-                        <Title>Checkpoint #{++index}</Title>
+                        <Title>Checkpoint #{index + 1}</Title>
+                        <Checkbox
+                            onChange={event => this.passCheckpoint(event, index)}
+                            color="primary" />
                         <p>Bacon ipsum dolor amet swine picanha pork porchetta landjaeger sirloin venison spare ribs drumstick chislic beef ribs cow. </p>
 
                         <Grid container spacing={1}>
@@ -94,7 +119,7 @@ class Submission extends Component {
                         </Grid>
 
                         <Comment>
-                            <ReactQuill onChange={value => this.changeInput(value, `comment-${index}`)} />
+                            <ReactQuill onChange={value => this.changeInput(value, index)} />
                         </Comment>
                     </Checkpoint>
                 )

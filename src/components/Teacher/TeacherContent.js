@@ -116,7 +116,7 @@ class TeacherContent extends Component {
                 </Grid>
 
                 <Grid item xs={9}>
-                    <Submission submission={submission} />
+                    <Submission classroomID={this.state.classroomID} submission={submission} />
                 </Grid>
             </Grid>
         )

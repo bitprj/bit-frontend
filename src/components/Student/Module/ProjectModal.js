@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import DynamicModal from "../../shared/containers/DynamicModal";
-import { sizes } from "../../../assets/styles/Media";
+import { sizes } from "../../../assets/styles/media";
 
 import Project from "./Project";
 
