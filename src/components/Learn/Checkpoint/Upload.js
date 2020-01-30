@@ -10,7 +10,7 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 import Button from '../../shared/Button';
 
-import LearnService from '../../../services/LearnService';
+import { uploadFiles, processResult } from '../../../services/LearnService';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
@@ -38,14 +38,12 @@ class Upload extends Component {
             files: [],
         }
         this.upload = this.upload.bind(this);
-
-        this.service = new LearnService();
     }
 
     upload = () => {
-        this.service.uploadFiles(this.state.files)
+        uploadFiles(this.state.files)
             .then(rawData => {
-                const data = this.service.processResult(rawData);
+                const data = processResult(rawData);
                 this.props.fillResult(data);
                 this.props.switchToResult();
             })

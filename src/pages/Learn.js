@@ -6,8 +6,6 @@ import Content from '../components/Learn/Content/Content';
 import HintSection from '../components/Learn/Hint/HintSection';
 import Navigation from '../components/Learn/Navigation/Navigation';
 
-import LearnService from '../services/LearnService';
-
 const LearnSection = styled.div`
     margin: 10px -5px -5px -5px;
     display: flex;
@@ -35,8 +33,6 @@ class Learn extends Component {
         this.stepClickedHandler = this.stepClickedHandler.bind(this);
         this.moveClickedHandler = this.moveClickedHandler.bind(this);
         this.changeTotalGems = this.changeTotalGems.bind(this);
-
-        this.service = new LearnService();
     }
 
     componentDidMount() {

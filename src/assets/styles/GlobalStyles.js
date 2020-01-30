@@ -4,20 +4,33 @@ export const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro|Source+Serif+Pro');
   
   body {
-    font-family: 'Source Sans Pro';
+    font-family: 'Source Serif Pro';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4 {
-    font-family: 'Source Serif Pro';
+    font-family: 'Source Sans Pro';
   }
 
   code {
     font-family: 'Source Code Pro';
     font-size: 80%;
   }
+
+  /**
+   * HIDE SCROLLBAR
+   */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    ::-webkit-scrollbar {
+      display: none;
+    } 
+  }
   
+  /**
+   * TRANSITIONS 
+   */
   .transition-short {
     transition: 0.1s ease all;
   }
@@ -27,17 +40,14 @@ export const GlobalStyle = createGlobalStyle`
   .transition-long {
     transition: 0.4s ease all;
   }
-  
   .lift,
   .hover-raise,
   .hover-lift:hover {
     box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.075);
   }
-
   .big-lift {
     box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.15);
   }
-  
   .hover-lift:hover .lift {
     box-shadow: none;
   }

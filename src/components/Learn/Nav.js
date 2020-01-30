@@ -17,42 +17,44 @@ const ActiveWrapper = styled.div`
 `
 
 const Nav = props => {
-	const renderedSteps = props.steps && props.steps.map((step, index) => {
-    step = step.fields
+	const renderedSteps =
+		props.cards &&
+		props.cards.map((step, index) => {
+			step = step.fields
 
-		const className =
-			props.currentViewLearn === index
-				? 'active lift transition-medium'
-				: 'transition-medium'
-		return (
-			<ActiveWrapper
-				key={`learn-nav-${index}`}
-				className={className}
-				onClick={() => props.onSetViewLearn(index)}
-			>
-				<ImgAndContent
-          margin="0"
-          padding="0.5em 2em 0.5em 0"
-					imgWidthEms="3"
-					imgText={index + 1}
-					title={step.name}
-					time={'15 min'}
-				/>
-			</ActiveWrapper>
-		)
-	})
+			const className =
+				props.currentViewLearn === index
+					? 'active lift transition-medium'
+					: 'transition-medium'
+			return (
+				<ActiveWrapper
+					key={`learn-nav-${index}`}
+					className={className}
+					onClick={() => props.onSetViewLearn(index)}
+				>
+					<ImgAndContent
+						margin="0"
+						padding="0.5em 2em 0.5em 0"
+						imgWidthEms="3"
+						imgText={index + 1}
+						title={step.name}
+						time={'15 min'}
+					/>
+				</ActiveWrapper>
+			)
+		})
 
-	return <Container>{renderedSteps}</Container>
+	return <Container ref={props.containerRef} className="no-scrollbar">{renderedSteps}</Container>
 }
 
 const mapStateToProps = state => {
 	const {
 		viewManager: { current_view_learn },
-		learnData: { cards: steps }
+		learnData: { cards }
 	} = state
 
 	return {
-		steps,
+		cards,
 		currentViewLearn: current_view_learn
 	}
 }

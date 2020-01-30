@@ -6,11 +6,9 @@ import Toolbar from '../components/Learn/Toolbar'
 import Sidebar from '../components/Learn/Sidebar'
 import Content from '../components/Learn/Content'
 
-import { initActivity } from '../redux/actions/learnData'
+import { initLearnData } from '../redux/actions/learnData'
 
-import LearnService from '../services/LearnService'
-
-const learnService = new LearnService()
+// import {} from '../services/LearnService'
 
 const Container = styled.div`
 	display: flex;
@@ -25,7 +23,7 @@ const Container = styled.div`
 
 const Learn = props => {
 	useEffect(() => {
-		props.onInitActivity('1aCymuD1HKJ1UvBXODOCFI')
+		props.onInitLearnData('18mFbdi3UGiMZJSUXU7dxI')
 	}, [])
 
 	return (
@@ -39,7 +37,7 @@ const Learn = props => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onInitActivity: activityID => dispatch(initActivity(activityID)),
+		onInitLearnData: activityID => dispatch(initLearnData(activityID)),
 	}
 }
 

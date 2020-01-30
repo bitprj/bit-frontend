@@ -25,7 +25,8 @@ const App = props => {
         <Layout>
           <Switch>
             <Route path="/" exact component={Student} />
-            <Route path="/explore" exact component={NewLearn} />
+            <Route path="/explore" exact component={Explore} />
+            <Route path="/new-learn" exact component={NewLearn} />
             <Route path="/learn" exact component={Learn} />
 
             <Route path="/login" exact component={Login} />

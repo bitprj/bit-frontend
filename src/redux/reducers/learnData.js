@@ -1,10 +1,11 @@
-import { SET_ALL_CARDS, SET_ACTIVITY } from '../utils/actionTypes'
+import { SET_ACTIVITY } from '../utils/actionTypes'
 
 const initialState = {}
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
     case SET_ACTIVITY: {
+      console.log(state)
       return { ...state, ...action.activity }
     }
 		// case SET_ALL_CARDS: {

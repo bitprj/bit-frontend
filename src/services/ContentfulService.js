@@ -30,16 +30,25 @@ export const getConcept = conceptID => {
 	})
 }
 
-export const getHint = hintID => {
-	return client.getEntry(hintID).then(response => {
-		return getAllSteps(response.fields.steps).then(steps => {
-			return {
-				title: response.fields.name,
-				steps: steps
-			}
-		})
-	})
+export const getHint = async hintID => {
+	const hint = await genFetch(hintID)
+	const steps = await getAllSteps(hint.steps)
+	return {
+		title: hint.name,
+		steps
+	}
 }
+
+// export const getHint2 = hintID => {
+// 	return genFetch(hintID).then(hint => {
+// 		return getAllSteps(hint.steps).then(steps => {
+// 			return {
+// 				title: hint.name,
+// 				steps
+// 			}
+// 		})
+// 	})
+// }
 
 // async fetchTrack(trackID) {
 //     return client.getEntry(trackID).then(response => response.fields)
@@ -48,13 +57,15 @@ export const getHint = hintID => {
 /**
  * HELPERS
  */
+
+// @unused
 export const getCard = cardID => {
 	return client.getEntry(cardID).then(response => response.fields)
 }
 
 const getAllSteps = steps => {
 	const slides = Promise.all(
-		steps.map(async (stepInfo, index) => {
+		steps.map((stepInfo, index) => {
 			const stepID = stepInfo.sys.id
 			const slide = getEachStep(stepID).then(step => ({
 				id: stepID,
@@ -64,6 +75,7 @@ const getAllSteps = steps => {
 				snippet: step.snippet
 			}))
 			slide.isShown = !index ? true : false
+			// console.log('contentful-service', slide.isShown, index)
 			return slide
 		})
 	)

@@ -16,11 +16,6 @@ const HorzScroll = styled.div`
   flex-wrap: nowrap;
   overflow-x: auto;
 
-  ::-webkit-scrollbar {
-    display: none;
-    -ms-overflow-style: none;
-  }
-
   > div {
     flex-shrink: 0;
     margin-right: 2em;
@@ -33,22 +28,13 @@ const HorzScroll = styled.div`
     // width: 40em;
     height: 0.1px;
   }
-
-  // /* added */
-  // overflow-x: auto;
-  // transform: rotate(-90deg) translateY(-10em);
-  // transform-origin: 20em 10em;
-
-  // > div {
-  //   transform: rotate(90deg) translateX(10em);
-  // }
 `;
 
 const Content = props => {
   return (
     <Container>
       <h1>{props.activeName}</h1>
-      <HorzScroll>
+      <HorzScroll className="no-scrollbar">
         <FeaturedDisplay
           name="Simulating Nature with Algorithms"
           category="Algorithms"
@@ -58,7 +44,7 @@ const Content = props => {
         <FeaturedDisplay bgColor="#333" />
       </HorzScroll>
 
-      <HorzScroll>
+      <HorzScroll className="no-scrollbar">
         <TopicDisplay name="💻 DevOps" />
         <TopicDisplay name="🌎 Earth Day" />
       </HorzScroll>

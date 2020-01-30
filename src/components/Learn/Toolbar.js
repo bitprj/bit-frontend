@@ -9,6 +9,10 @@ const Container = styled.div`
   padding: 0.5em;
 
   background-color: ${props => props.theme.bg};
+
+  @media screen and (orientation: landscape) {
+    padding: 0.42em;
+  }
 `;
 
 const Elem = styled(Link)`
@@ -18,6 +22,11 @@ const Elem = styled(Link)`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  @media screen and (orientation: landscape) {
+    width: 2.4em;
+    height: 2.4em;
+  }
 `;
 
 const Logo = styled.img`
