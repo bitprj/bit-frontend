@@ -4,18 +4,17 @@ export const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro|Source+Serif+Pro');
   
   body {
-    font-family: 'Source Serif Pro';
+    font-family: 'Source Sans Pro';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4 {
-    font-family: 'Source Sans Pro';
+  span, p {
+    font-family: 'Source Serif Pro';
   }
 
-  code {
+  code, code * {
     font-family: 'Source Code Pro';
-    font-size: 80%;
   }
 
   /**
@@ -78,11 +77,11 @@ export const GlobalStyleReset = createGlobalStyle`
 
   /* Remove default margin */
   body,
-  h1,
-  h2,
-  h3,
-  h4,
-  p,
+  // h1,
+  // h2,
+  // h3,
+  // h4,
+  // p,
   ul[class],
   ol[class],
   li,
@@ -145,19 +144,6 @@ export const GlobalStyleReset = createGlobalStyle`
   /*
   * SELF DEFAULTS
   */
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 0.5em 0;
-  }
-
-  p {
-    margin-bottom: 0.5em;
-  }
 
   button {
     cursor: pointer;

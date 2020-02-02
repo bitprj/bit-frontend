@@ -6,10 +6,3 @@ export const setViewStudent = viewName => {
     viewName
   };
 };
-
-export const setViewLearn = viewIndex => {
-  return {
-    type: actionTypes.SET_VIEW_LEARN,
-    viewIndex
-  }
-}

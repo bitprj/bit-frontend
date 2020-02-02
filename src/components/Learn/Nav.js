@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import ImgAndContent from '../shared/gadgets/ImgAndContent'
 
-import { setViewLearn } from '../../redux/actions/viewManager'
+import { setCurrentCardByIndex } from '../../redux/actions/learnData'
 
 const Container = styled.div`
 	overflow-y: auto;
@@ -16,53 +16,74 @@ const ActiveWrapper = styled.div`
 	}
 `
 
-const Nav = props => {
+const Card = styled(ImgAndContent)`
+	margin: 0;
+	padding: 0.5em 2em 0.5em 0;
+	${props => props.locked && 'color: #aaa;'}
+`
+
+const Nav = ({
+	containerRef,
+	cards,
+	currentCardIndex,
+	lastCardCompletedIndex,
+	onSetCurrentCardByIndex
+}) => {
+	const handleSelectCard = index => {
+		if (index <= lastCardCompletedIndex)
+			onSetCurrentCardByIndex(index)
+	}
+
+	console.log(lastCardCompletedIndex)
 	const renderedSteps =
-		props.cards &&
-		props.cards.map((step, index) => {
+		cards &&
+		cards.map((step, index) => {
 			step = step.fields
 
 			const className =
-				props.currentViewLearn === index
+				currentCardIndex === index
 					? 'active lift transition-medium'
 					: 'transition-medium'
 			return (
 				<ActiveWrapper
 					key={`learn-nav-${index}`}
 					className={className}
-					onClick={() => props.onSetViewLearn(index)}
+					onClick={() => handleSelectCard(index)}
 				>
-					<ImgAndContent
-						margin="0"
-						padding="0.5em 2em 0.5em 0"
+					<Card
 						imgWidthEms="3"
 						imgText={index + 1}
 						title={step.name}
 						time={'15 min'}
+						locked={index > lastCardCompletedIndex}
 					/>
 				</ActiveWrapper>
 			)
 		})
 
-	return <Container ref={props.containerRef} className="no-scrollbar">{renderedSteps}</Container>
+	return (
+		<Container ref={containerRef} className="no-scrollbar">
+			{renderedSteps}
+		</Container>
+	)
 }
 
 const mapStateToProps = state => {
 	const {
-		viewManager: { current_view_learn },
-		learnData: { cards }
+		learnData: { cards, currentCardIndex, lastCardCompletedIndex }
 	} = state
 
 	return {
 		cards,
-		currentViewLearn: current_view_learn
+		currentCardIndex,
+		lastCardCompletedIndex
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onSetViewLearn: viewIndex => {
-			dispatch(setViewLearn(viewIndex))
+		onSetCurrentCardByIndex: cardIndex => {
+			dispatch(setCurrentCardByIndex(cardIndex))
 		}
 	}
 }

@@ -15,10 +15,10 @@ class Student extends Component {
   componentDidUpdate() {
     console.log("[Student Updated]");
     if (this.props.is_student_data_loaded) {
-      if (!this.props.suggested_activity)
-        this.props.onInitSuggestedActivity(this.props.current_activities[0].id);
-      if (!this.props.current_topic)
-        this.props.onInitCurrentTopic(this.props.current_topic_id);
+      // if (!this.props.suggested_activity)
+        // this.props.onInitSuggestedActivity(this.props.current_activities[0].id);
+      // if (!this.props.current_topic)
+        // this.props.onInitCurrentTopic(this.props.current_topic_id);
     }
   }
 

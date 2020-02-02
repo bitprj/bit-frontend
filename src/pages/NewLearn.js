@@ -6,7 +6,7 @@ import Toolbar from '../components/Learn/Toolbar'
 import Sidebar from '../components/Learn/Sidebar'
 import Content from '../components/Learn/Content'
 
-import { initLearnData } from '../redux/actions/learnData'
+import { init } from '../redux/actions/learnData'
 
 // import {} from '../services/LearnService'
 
@@ -23,7 +23,7 @@ const Container = styled.div`
 
 const Learn = props => {
 	useEffect(() => {
-		props.onInitLearnData('18mFbdi3UGiMZJSUXU7dxI')
+		props.onInit()
 	}, [])
 
 	return (
@@ -37,7 +37,7 @@ const Learn = props => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onInitLearnData: activityID => dispatch(initLearnData(activityID)),
+		onInit: () => dispatch(init()),
 	}
 }
 

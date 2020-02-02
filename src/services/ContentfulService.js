@@ -9,8 +9,10 @@ const client = createClient({
  * Generic Fetch
  * @param {*} objectID
  */
-export const genFetch = objectID => {
-	return client.getEntry(objectID).then(response => response.fields)
+export const genFetch = (objectID, depth) => {
+	return client
+		.getEntry(objectID, { include: depth || 1 })
+		.then(response => response.fields)
 }
 
 export const genFetchDetails = objectID => {

@@ -1,26 +1,26 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import style from "react-syntax-highlighter/dist/esm/styles/prism/darcula";
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import style from 'react-syntax-highlighter/dist/esm/styles/prism/darcula'
 
 class CodeBlock extends PureComponent {
-    static propTypes = {
-        value: PropTypes.string.isRequired,
-        language: PropTypes.string
-    };
+	static propTypes = {
+		value: PropTypes.string.isRequired,
+		language: PropTypes.string
+	}
 
-    static defaultProps = {
-        language: null
-    };
+	static defaultProps = {
+		language: null
+	}
 
-    render() {
-        const { language, value } = this.props;
-        return (
-            <SyntaxHighlighter language={language} style={style}>
-                {value}
-            </SyntaxHighlighter>
-        );
-    }
+	render() {
+		const { language, value } = this.props
+		return (
+			<SyntaxHighlighter language={language} style={style}>
+				{value}
+			</SyntaxHighlighter>
+		)
+	}
 }
 
-export default CodeBlock;
+export default CodeBlock

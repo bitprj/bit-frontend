@@ -38,7 +38,7 @@ const Description = styled.div`
  *
  * @param {*} props
  */
-const Project = props => {
+const ImgAndContent = props => {
 	const showAppropriateImg = (
 		<>
 			{props.imgURL && (
@@ -62,7 +62,7 @@ const Project = props => {
 			style={props.style}
 			imgWidthEms={props.imgWidthEms}
 			className={
-				props.className || props.classes + ' hover-lift transition-short'
+				props.className + ' hover-lift transition-short'
 			}
 			onClick={props.clicked}
 		>
@@ -94,4 +94,4 @@ const Project = props => {
 	)
 }
 
-export default Project
+export default ImgAndContent

@@ -33,7 +33,7 @@ const HeaderShadow = ({ containerRef }) => {
 		handleShadow()
 		containerRef.current.addEventListener('scroll', handleShadow)
 		return () => {
-			containerRef.current.removeEventListener('scroll', handleShadow)
+			// containerRef.current.removeEventListener('scroll', handleShadow)
 		}
 	}, [])
 

@@ -22,6 +22,7 @@ const renderingOptions = {
 	renderNode: {
 		[BLOCKS.EMBEDDED_ENTRY]: (node, key, next, options) => (
 			<ReactMarkdown
+        key={key}
 				source={node.data.target.fields.markdown}
 				renderers={{ code: CodeBlock }}
 			/>
@@ -31,23 +32,27 @@ const renderingOptions = {
 				{next(node.content, key, next)}
 			</Heading>
 		),
-		'embedded-asset-block': node => (
+		'embedded-asset-block': (node, key) => (
 			<img
+        key={key}
 				alt={node.data.target.fields.title}
 				style={img_style}
 				src={node.data.target.fields.file.url}
 			/>
 		),
-		// 'embedded-entry-block': (node) => (
-		//     <ReactMarkdown source={node.data.target.fields.markdown} renderers={{ code: CodeBlock }} />
-		// )
+		'embedded-entry-block': (node, key) => (
+			<ReactMarkdown
+        key={key}
+				source={node.data.target.fields.markdown}
+				renderers={{ code: CodeBlock }}
+			/>
+		)
 	}
 }
 
 export default props => (
 	<RichTextToReact
-		key={props.uniqueKey}
-		document={props.content}
+		document={props.document}
 		options={renderingOptions}
 	/>
 )
