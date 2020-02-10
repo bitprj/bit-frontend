@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import ImgAndContent from '../shared/gadgets/ImgAndContent'
+import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 
-import { setCurrentCardByIndex } from '../../redux/actions/learnData'
+import { setCurrentCardByIndex } from '../../../redux/actions/learnData'
 
 const Container = styled.div`
 	overflow-y: auto;
@@ -16,32 +16,31 @@ const ActiveWrapper = styled.div`
 	}
 `
 
-const Card = styled(ImgAndContent)`
+const NavItem = styled(ImgAndContent)`
 	margin: 0;
 	padding: 0.5em 2em 0.5em 0;
-	${props => props.locked && 'color: #aaa;'}
+	${props =>
+		props.locked &&
+		`color: #aaa;
+    cursor: auto;`}
 `
 
 const Nav = ({
 	containerRef,
 	cards,
 	currentCardIndex,
-	lastCardCompletedIndex,
+	lastCardUnlockedIndex,
 	onSetCurrentCardByIndex
 }) => {
 	const handleSelectCard = index => {
-		if (index <= lastCardCompletedIndex)
-			onSetCurrentCardByIndex(index)
+		if (index <= lastCardUnlockedIndex) onSetCurrentCardByIndex(index)
 	}
 
-	console.log(lastCardCompletedIndex)
-	const renderedSteps =
+  const renderedSteps =
 		cards &&
-		cards.map((step, index) => {
-			step = step.fields
-
+		cards.map((card, index) => {
 			const className =
-				currentCardIndex === index
+      currentCardIndex === index
 					? 'active lift transition-medium'
 					: 'transition-medium'
 			return (
@@ -50,12 +49,14 @@ const Nav = ({
 					className={className}
 					onClick={() => handleSelectCard(index)}
 				>
-					<Card
+					<NavItem
+						hover
 						imgWidthEms="3"
 						imgText={index + 1}
-						title={step.name}
+						title={card && card.name}
+						gap="0"
 						time={'15 min'}
-						locked={index > lastCardCompletedIndex}
+						locked={index > lastCardUnlockedIndex}
 					/>
 				</ActiveWrapper>
 			)
@@ -70,13 +71,13 @@ const Nav = ({
 
 const mapStateToProps = state => {
 	const {
-		learnData: { cards, currentCardIndex, lastCardCompletedIndex }
-	} = state
-
+		learnData: { cards, currentCardIndex, lastCardUnlockedIndex }
+  } = state
+  
 	return {
 		cards,
 		currentCardIndex,
-		lastCardCompletedIndex
+		lastCardUnlockedIndex
 	}
 }
 

@@ -1,22 +1,42 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
+import invariant from 'redux-immutable-state-invariant'
 
-import rootReducer from './rootReducer';
+import rootReducer from './rootReducer'
 
-// const logger = store => {
-//     return next => {
-//         return action => {
-//             console.log('[Middleware] Dispatching', action)
-//             const result = next(action)
-//             console.log('[Middleware] next state', store.getState())
-//             return result
-//         }
-//     }
-// }
+import * as accountActions from './actions/account'
+import * as learnDataActions from './actions/learnData'
+import * as studentDataActions from './actions/studentData'
+import * as themeActions from './actions/theme'
+import * as viewManagerActions from './actions/viewManager'
+const actionCreators = {
+	...accountActions,
+	...learnDataActions,
+	...studentDataActions,
+	...themeActions,
+	...viewManagerActions
+}
 
-export default function store() {
-    return createStore(
-        rootReducer,
-        applyMiddleware(thunk)
-    );
+export default function configureStore(initialState) {
+	const composeEnhancers = composeWithDevTools({
+		actionCreators,
+		trace: true,
+		traceLimit: 25
+	})
+
+	const store = createStore(
+		rootReducer,
+		initialState,
+		composeEnhancers(applyMiddleware(invariant(), thunk))
+	)
+
+	// Enable Webpack hot module replacement for reducers
+	// if (module.hot) {
+	// 	module.hot.accept('./reducers', () =>
+	// 		store.replaceReducer(require('./reducers'))
+	// 	)
+	// }
+
+	return store
 }

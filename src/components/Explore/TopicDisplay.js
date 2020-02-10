@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import IconLine from "../shared/gadgets/IconLine";
-import AppIcon from "../shared/gadgets/AppIcon";
+import Icon from "../shared/gadgets/Icon";
 
 const Container = styled.div``;
 
@@ -18,7 +18,7 @@ const RenderedActivity = styled.div`
 const Activity = props => {
   return (
     <RenderedActivity className="hover-lift transition-short">
-      <AppIcon borderRadius="1.4em" marginRight="1.6em" />
+      <Icon borderRadius="1.4em" marginRight="1.6em" />
       <div>
         <h3 style={{ margin: 0 }}>{props.name}</h3>
         <IconLine icon={<AccessTimeIcon />}>{props.time}</IconLine>

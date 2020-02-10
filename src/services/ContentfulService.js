@@ -1,39 +1,48 @@
 import { createClient } from 'contentful'
+import { normalizeContentful } from '../utils/deepObjUtils'
 
 const client = createClient({
 	space: process.env.REACT_APP_CONTENTFUL_SPACE,
 	accessToken: process.env.REACT_APP_CONTENTFUL_TOKEN
 })
 
-/**
- * Generic Fetch
- * @param {*} objectID
- */
-export const genFetch = (objectID, depth) => {
-	return client
-		.getEntry(objectID, { include: depth || 1 })
-		.then(response => response.fields)
+const fetch = (id, query) => {
+	return client.getEntry(id, query)
+	.then(response => normalizeContentful(response))
 }
 
-export const genFetchDetails = objectID => {
-	return client.getEntry(objectID)
+/**
+ * Generic Fetch
+ * @param {*} objectId
+ */
+export const genFetch = (objectId, depth) => {
+	if (!objectId) return undefined
+
+	if (!depth === 0 && !depth) {
+		depth = 1
+	}
+	return fetch(objectId, { include: depth }).then(response => response.fields)
+}
+
+export const genFetchDetails = objectId => {
+	return fetch(objectId)
 }
 
 // @unused
 export const getAllCards = cardArray => {
 	return cardArray.map(card => {
-		return getCard(card.cardID)
+		return getCard(card.cardId)
 	})
 }
 
-export const getConcept = conceptID => {
-	return client.getEntry(conceptID).then(response => {
+export const getConcept = conceptId => {
+	return fetch(conceptId).then(response => {
 		return getAllSteps(response.fields.steps).then(slides => slides)
 	})
 }
 
-export const getHint = async hintID => {
-	const hint = await genFetch(hintID)
+export const getHint = async hintId => {
+	const hint = await genFetch(hintId)
 	const steps = await getAllSteps(hint.steps)
 	return {
 		title: hint.name,
@@ -53,7 +62,7 @@ export const getHint = async hintID => {
 // }
 
 // async fetchTrack(trackID) {
-//     return client.getEntry(trackID).then(response => response.fields)
+//     return fetch(trackID).then(response => response.fields)
 // }
 
 /**
@@ -62,7 +71,7 @@ export const getHint = async hintID => {
 
 // @unused
 export const getCard = cardID => {
-	return client.getEntry(cardID).then(response => response.fields)
+	return fetch(cardID).then(response => response.fields)
 }
 
 const getAllSteps = steps => {
@@ -85,5 +94,5 @@ const getAllSteps = steps => {
 }
 
 const getEachStep = stepID => {
-	return client.getEntry(stepID).then(response => response.fields)
+	return fetch(stepID).then(response => response.fields)
 }

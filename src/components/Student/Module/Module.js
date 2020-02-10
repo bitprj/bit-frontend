@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import StudentHero from "../Hero/StudentHero";
 import ProgressCircle from "../../shared/gadgets/ProgressCircle";
-import Circle from "../../../assets/icons/circle";
+import Circle from "../../../assets/icons/unused/circle";
 import ActivityModal from "./ActivityModal";
 import ProjectModal from "./ProjectModal";
 

@@ -6,7 +6,8 @@ const ShadowWrapper = styled.div`
 	position: absolute;
 	left: 0;
 	right: 0;
-	overflow: hidden;
+  overflow: hidden;
+  pointer-events: none;
 `
 const Shadow = styled.div`
 	display: block;
@@ -22,23 +23,23 @@ const Shadow = styled.div`
  * Needs the scroll container for reference
  * make sure this shadow is in the header container
  * the header container must have a position property
- * 
+ *
  * see content.js under learn for more info
- * @param {*} param0 
  */
 const HeaderShadow = ({ containerRef }) => {
 	const shadowRef = useRef(null)
 
 	useEffect(() => {
+    const container = containerRef.current;
 		handleShadow()
-		containerRef.current.addEventListener('scroll', handleShadow)
+		container.addEventListener('scroll', handleShadow)
 		return () => {
-			// containerRef.current.removeEventListener('scroll', handleShadow)
+			container.removeEventListener('scroll', handleShadow)
 		}
-	}, [])
+	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 	const handleShadow = () => {
-    let scrollTop = containerRef.current.scrollTop / 15
+		let scrollTop = containerRef.current.scrollTop / 15
 		shadowRef.current.style.opacity = scrollTop > 1 ? 1 : scrollTop
 	}
 

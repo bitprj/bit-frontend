@@ -4,11 +4,11 @@ import * as actionTypes from "../utils/actionTypes";
 
 const authService = new AuthService();
 
-const addLoginTrace = () => {
-  return {
-    type: actionTypes.LOGIN
-  };
-};
+// const addLoginTrace = () => {
+//   return {
+//     type: actionTypes.LOGIN
+//   };
+// };
 
 export const initLogin = (user, pass, callback) => {
   console.log(user, pass, callback)

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import BrickWall from "../../../assets/icons/brickwall";
+import BrickWall from "../../../assets/icons/unused/brickwall";
 import GitHub from "../../../assets/icons/github";
 
 import StatusIcon from "../../shared/gadgets/StatusIcon";

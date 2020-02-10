@@ -1,8 +1,8 @@
 import React, { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import CheckIcon from '../../../assets/icons/check';
-import GemBox from '../../shared/GemBox';
+import CheckIcon from '../../../../assets/icons/check';
+import GemBox from '../../../shared/GemBox';
 import NavDropdown from './NavDropdown';
 
 const Course = styled.div`

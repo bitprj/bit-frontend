@@ -5,8 +5,8 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 
-import Button from '../../shared/Button';
-import GemBox from '../../shared/GemBox';
+import Button from '../../../shared/Button';
+import GemBox from '../../../shared/GemBox';
 
 const ModalCard = styled.div`
     padding: .3rem;

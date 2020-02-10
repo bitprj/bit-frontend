@@ -23,7 +23,7 @@ const renderingOptions = {
 		[BLOCKS.EMBEDDED_ENTRY]: (node, key, next, options) => (
 			<ReactMarkdown
         key={key}
-				source={node.data.target.fields.markdown}
+				source={node.data.target.markdown}
 				renderers={{ code: CodeBlock }}
 			/>
 		),
@@ -35,15 +35,15 @@ const renderingOptions = {
 		'embedded-asset-block': (node, key) => (
 			<img
         key={key}
-				alt={node.data.target.fields.title}
+				alt={node.data.target.title}
 				style={img_style}
-				src={node.data.target.fields.file.url}
+				src={node.data.target.file.url}
 			/>
 		),
 		'embedded-entry-block': (node, key) => (
 			<ReactMarkdown
         key={key}
-				source={node.data.target.fields.markdown}
+				source={node.data.target.markdown}
 				renderers={{ code: CodeBlock }}
 			/>
 		)

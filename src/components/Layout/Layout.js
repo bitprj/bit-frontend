@@ -12,7 +12,7 @@ const Main = styled.main`
 const Layout = props => (
 	<>
 		<Switch>
-			<Route path="/new-learn" exact />
+			<Route path="/learn" exact />
 			<Route path="/" component={NavBar} />
 		</Switch>
 		<Main>{props.children}</Main>

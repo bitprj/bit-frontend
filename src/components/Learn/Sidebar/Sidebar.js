@@ -2,9 +2,9 @@ import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import HeaderShadow from '../shared/utils/HeaderShadow'
-import DotRating from '../shared/gadgets/DotRating'
-import Nav from './Nav'
+import HeaderShadow from '../../shared/utils/HeaderShadow'
+import DotRating from '../../shared/gadgets/DotRating'
+import Nav from './SidebarNav'
 
 const Container = styled.div`
 	flex: 1;

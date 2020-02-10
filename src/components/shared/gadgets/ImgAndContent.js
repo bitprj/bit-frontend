@@ -2,13 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 import ClampedText from '../utils/ClampedText'
-import AppIcon from './AppIcon'
+import Icon from './Icon'
 import IconLine from './IconLine'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
 
 const Container = styled.div`
-	margin: ${props => props.margin || `${props.imgWidthEms / 10}em 0`};
-	padding: ${props => props.padding || `${props.imgWidthEms / 5}em`};
+	margin: ${props => `${props.imgWidthEms / 10}em 0`};
+	padding: ${props => `${props.imgWidthEms / 5}em`};
 	display: flex;
 	align-items: center;
 	cursor: pointer;
@@ -17,78 +17,87 @@ const Container = styled.div`
 `
 
 const Wrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
 	width: ${props => props.width};
 	height: ${props => props.width};
-	line-height: ${props => props.width};
-	text-align: center;
+
 	font-weight: bold;
 	font-size: 200%;
 	flex-shrink: 0;
 `
 
 const Description = styled.div`
-	margin-left: ${props => props.gap || `${props.imgWidthEms / 14}em`};
+	margin-left: ${props => props.gap || `1.5em`};
 	display: flex;
 	flex-direction: ${props => (props.reverse ? 'column-reverse' : 'column')};
+	${props => props.contentSize && `font-size: ${props.contentSize}`}
 `
 
 /**
  * To use this component, it is pivotal that the props `imgWidthEms` is provided to create
  * the size context for the component.
- *
- * @param {*} props
  */
-const ImgAndContent = props => {
-	const showAppropriateImg = (
-		<>
-			{props.imgURL && (
-				<AppIcon
-					width={`${props.imgWidthEms}em`}
-					url={props.imgURL}
-					noShadow={props.noShadow}
-				/>
-			)}
+const ImgAndContent = ({
+	className,
+	clicked,
+	style,
+	innerRef,
 
-			{props.imgText && (
-				<Wrapper width={`${props.imgWidthEms}em`}>{props.imgText}</Wrapper>
-			)}
-		</>
-	)
+	imgWidthEms,
+	imgURL,
+	imgText,
+	noShadow,
+	reverse,
+	gap,
+	contentSize,
+
+	title,
+	description,
+	time,
+	hover,
+	children
+}) => {
+	const showAppropriateImg =
+		(imgURL && (
+			<Icon width={`${imgWidthEms}em`} src={imgURL} noShadow={noShadow} />
+		)) ||
+		(imgText && <Wrapper width={`${imgWidthEms}em`}>{imgText}</Wrapper>)
 
 	return (
 		<Container
-			margin={props.margin}
-			padding={props.padding}
-			style={props.style}
-			imgWidthEms={props.imgWidthEms}
-			className={
-				props.className + ' hover-lift transition-short'
-			}
-			onClick={props.clicked}
+			ref={innerRef}
+			style={style}
+			imgWidthEms={imgWidthEms}
+			className={className + (hover ? ' hover-lift transition-short' : '')}
+			onClick={clicked}
 		>
 			{showAppropriateImg}
 
 			<Description
-				imgWidthEms={props.imgWidthEms}
-				reverse={props.reverse}
-				gap={props.gap}
+				imgWidthEms={imgWidthEms}
+				reverse={reverse}
+				gap={gap}
+				contentSize={contentSize}
 			>
 				{/* If there is no description, make title smaller */}
-				{props.description ? (
-					<h2 style={{ margin: 0 }}>{props.title}</h2>
+				{description ? (
+					<h2 style={{ margin: 0 }}>{title}</h2>
 				) : (
-					<h3 style={{ margin: 0 }}>{props.title}</h3>
+					<h3 style={{ margin: 0 }}>{title}</h3>
 				)}
 
-				<ClampedText style={{ margin: `${props.imgWidthEms / 14}em 0` }}>
-					{props.description}
-				</ClampedText>
+				{description && (
+					<ClampedText style={{ margin: `${imgWidthEms / 14}em 0` }}>
+						{description}
+					</ClampedText>
+				)}
 
-				{props.time ? (
-					<IconLine icon={<AccessTimeIcon />}>{props.time}</IconLine>
-				) : null}
+				{time ? <IconLine icon={<AccessTimeIcon />}>{time}</IconLine> : null}
 
-				{props.children}
+				{children}
 			</Description>
 		</Container>
 	)

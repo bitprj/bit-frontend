@@ -1,5 +1,36 @@
 import { backend, grader } from './AxiosInstances'
 
+export const fetchActivityProgress = activityId => {
+	const endpoint = `/activities/${activityId}/progress`
+	return backend.get(endpoint)
+}
+
+export const fetchActivity = activityId => {
+	const endpoint = `/activities/${activityId}`
+	return backend.get(endpoint)
+}
+
+export const fetchCardStatus = (activityId, cardId) => {
+  const endpoint = `/activities/${activityId}/cards/${cardId}`
+  return backend.get(endpoint)
+}
+
+export const unlockCard = (activityId, cardId) => {
+  const endpoint = `/activities/${activityId}/cards/${cardId}`
+  return backend.put(endpoint)
+}
+
+export const unlockHint = (activityId, hintId) => {
+  const endpoint = `/activities/${activityId}/hints/${hintId}`
+  return backend.put(endpoint)
+}
+
+
+
+
+
+
+
 export const getHintStatus = (labID, cardID) => {
 	const endpoint = `/lab/${labID}/card/${cardID}/fetch`
 	return backend.get(endpoint)

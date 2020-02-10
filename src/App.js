@@ -4,8 +4,8 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 
 // import Home from "./pages/Home";
-import Learn from './pages/Learn';
-import NewLearn from './pages/NewLearn';
+import Learn from './components/Learn/unused/OldLearn';
+import NewLearn from './pages/Learn';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Student from './pages/Student';
@@ -26,8 +26,8 @@ const App = props => {
           <Switch>
             <Route path="/" exact component={Student} />
             <Route path="/explore" exact component={Explore} />
-            <Route path="/new-learn" exact component={NewLearn} />
-            <Route path="/learn" exact component={Learn} />
+            <Route path="/learn" exact component={NewLearn} />
+            <Route path="/old-learn" exact component={Learn} />
 
             <Route path="/login" exact component={Login} />
 

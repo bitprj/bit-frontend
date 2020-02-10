@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import media from "../../../assets/styles/media";
-import Button from "../../shared/Button";
-import StepAsset from "../../shared/StepAsset";
-import RenderedContent from "../../shared/ParsedContent";
+import media from "../../../../assets/styles/media";
+import Button from "../../../shared/Button";
+import StepAsset from "../../../shared/StepAsset";
+import RenderedContent from "../../../shared/ParsedContent";
 
-import { getConcept } from "../../../services/ContentfulService";
+import { getConcept } from "../../../../services/ContentfulService";
 
 const Window = styled.div`
   padding: 0px;
