@@ -20,7 +20,6 @@ const Hint = ({
 	onInitUnlockHint
 }) => {
 	const unlockHint = () => {
-    // if (!id) return alert('Wait a moment, try again')
 		onInitUnlockHint(activityId, id, contentfulId)
 	}
 

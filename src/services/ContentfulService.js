@@ -1,4 +1,5 @@
 import { createClient } from 'contentful'
+import camelCase from 'camelcase-keys-deep'
 import { normalizeContentful } from '../utils/deepObjUtils'
 
 const client = createClient({
@@ -8,7 +9,7 @@ const client = createClient({
 
 const fetch = (id, query) => {
 	return client.getEntry(id, query)
-	.then(response => normalizeContentful(response))
+	.then(response => normalizeContentful(camelCase(response)))
 }
 
 /**

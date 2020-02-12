@@ -5,8 +5,8 @@ import { cloneDeep } from 'lodash'
  * @param {*} root
  */
 export const normalizeContentful = root => {
-	const clone = cloneDeep(root)
-	return iterate(clone, node => {
+	const clone = cloneDeep(root) // necessary to override non-extensible. it hurts inside
+	return iterateNodes(clone, node => {
 		if (node.sys) {
 			node.contentfulId = node.sys.id
 			delete node.sys
@@ -24,10 +24,17 @@ export const objArrayClone = objArray => {
 	})
 }
 
-export const modifyNodeByContentfulId = (root, id, modification, options = {}) => {
+// export const findNodeById
+
+export const modifyNodeByContentfulId = (
+	root,
+	id,
+	modification,
+	options = {}
+) => {
 	if (!id) throw new Error('id not specified')
 
-	return iterate(root, node => {
+	return iterateNodes(root, node => {
 		if (node.contentfulId === id) {
 			if (options.overwrite)
 				Object.getOwnPropertyNames(node).forEach(key => delete node[key])
@@ -36,24 +43,23 @@ export const modifyNodeByContentfulId = (root, id, modification, options = {}) =
 	})
 }
 
-const iterate = (obj, callback) => {
+export const iterateNodes = (obj, callback) => {
 	if (!obj) return undefined
 
-	const clone = { ...obj }
-	for (let property in clone) {
-		if (clone.hasOwnProperty(property) && clone[property] != null) {
-			if (clone[property].constructor === Object) {
-				iterate(clone[property], callback)
-				callback(clone[property])
-			} else if (clone[property].constructor === Array) {
-				for (let i = 0; i < clone[property].length; i++) {
-					iterate(clone[property][i], callback)
-					callback(clone[property][i])
+	for (let property in obj) {
+		if (obj.hasOwnProperty(property) && obj[property] != null) {
+			if (obj[property].constructor === Object) {
+				iterateNodes(obj[property], callback)
+				callback(obj[property])
+			} else if (obj[property].constructor === Array) {
+				for (let i = 0; i < obj[property].length; i++) {
+					iterateNodes(obj[property][i], callback)
+					callback(obj[property][i])
 				}
 			} else {
-				// console.log(clone[property])
+				// console.log(obj[property])
 			}
 		}
 	}
-	return clone
+	return obj
 }

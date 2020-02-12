@@ -17,7 +17,11 @@ export const fetchCardStatus = (activityId, cardId) => {
 
 export const unlockCard = (activityId, cardId) => {
   const endpoint = `/activities/${activityId}/cards/${cardId}`
-  return backend.put(endpoint)
+  return backend.put(endpoint, {}, {
+    headers: {
+      'X-CSRF-TOKEN': document.cookie.csrf_access_token
+    }
+  })
 }
 
 export const unlockHint = (activityId, hintId) => {

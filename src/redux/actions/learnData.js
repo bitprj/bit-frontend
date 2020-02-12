@@ -1,16 +1,19 @@
-import { cloneDeep } from 'lodash'
+import { cloneDeep, get } from 'lodash'
+import { iterateNodes } from '../../utils/deepObjUtils'
 import { getHint, genFetch } from '../../services/ContentfulService'
 import {
 	fetchActivity,
 	fetchActivityProgress,
-  unlockCard,
-  unlockHint
+	fetchCardStatus,
+	unlockCard,
+	unlockHint
 } from '../../services/LearnService'
 
 import {
 	SET_ACTIVITY,
 	SET_ACTIVITY_PROGRESS,
 	SET_UNLOCKED_CARDS,
+	SET_CARD_STATUSES,
 	SET_CARD,
 	SET_HINT,
 	SET_CURRENT_CARD_BY_INDEX,
@@ -29,8 +32,8 @@ export const init = activityId => {
 	return async dispatch => {
 		// Concurrently FetchActivity and FetchActivityProgress
 		let [activityBase, activityProgress] = await Promise.all([
-			fetchActivity(activityId)
-			// fetchActivityProgress(activityId)
+			fetchActivity(activityId),
+			fetchActivityProgress(activityId)
 		])
 
 		activityBase.cards.sort((a, b) => a.order - b.order)
@@ -39,7 +42,7 @@ export const init = activityId => {
 		// Process activityProgress
 		const index = activityBase.cards.findIndex(
 			// card => card.contentfulId === activityProgress.cardContentfulId
-			card => card.contentfulId === '1cTFdAuUMmpWOjAxohWJl0'
+			card => card.contentfulId === '4HgUxdMhu3ROtsRJeZzSLH'
 		)
 		activityProgress = {
 			currentCardIndex: index,
@@ -47,21 +50,54 @@ export const init = activityId => {
 		}
 		dispatch(setActivityProgress(activityProgress))
 
-		// Fetch Unlocked Cards By LastCardUnlockedIndex (from fetchActivityProgress)
-		const unlockedCards = await fetchUnlockedCards(
-			activityBase.cards.slice(0, index + 1)
-		)
+		const cardsProgressed = activityBase.cards.slice(0, index + 1)
+
+		// Fetch Unlocked Cards and their Statuses
+		// (from fetchActivityProgress, multiple fetchCardStatus)
+		const pendingUnlockedCards = fetchUnlockedCards(cardsProgressed)
+		const pendingCardStatuses = initCardStatuses(activityId, cardsProgressed)
+
+		// done this way because CDN will be guaranteed to be faster
+		// optimizations can be made later
+		const unlockedCards = await pendingUnlockedCards
 		dispatch(setUnlockedCards(unlockedCards))
+
+		const cardStatuses = await pendingCardStatuses
+		dispatch(setCardStatuses(cardStatuses))
 	}
 }
 
-const fetchUnlockedCards = cardArray => {
-	const newCards = Promise.all(
-		cardArray.map(card => {
+const fetchUnlockedCards = cardsProgressed => {
+	return Promise.all(
+		cardsProgressed.map(card => {
 			return genFetch(card.contentfulId)
 		})
 	)
-	return newCards
+}
+
+const initCardStatuses = (activityId, cardsProgressed) => {
+	return Promise.all(
+		cardsProgressed.map(card => {
+			if (get(card, 'hints.length') === 0) return []
+			return fetchAndProcessCardStatus(activityId, card.id)
+		})
+	)
+}
+
+const fetchAndProcessCardStatus = async (activityId, id) => {
+	const cardStatus = await fetchCardStatus(activityId, id)
+	return iterateNodes(cardStatus, node => { // processing
+		if (node.hint) {
+			Object.assign(node, { ...node.hint })
+			delete node.hint
+		}
+		// TEMP - RENAMING
+		if (node.hintChildren) {
+			node.hints = node.hintChildren
+			delete node.hintChildren
+		}
+		// END TEMP
+	})
 }
 
 const setActivity = activity => {
@@ -85,6 +121,13 @@ const setUnlockedCards = unlockedCards => {
 	}
 }
 
+const setCardStatuses = cardStatuses => {
+	return {
+		type: SET_CARD_STATUSES,
+		cardStatuses
+	}
+}
+
 // ===== RUNTIME
 
 export const initUnlockCard = (activityId, id, contentId) => {
@@ -99,7 +142,7 @@ export const initUnlockCard = (activityId, id, contentId) => {
 
 export const initUnlockHint = (activityId, id, contentId) => {
 	return async dispatch => {
-    const hint = await genFetch(contentId)
+		const hint = await genFetch(contentId)
 		dispatch(setHint(contentId, hint))
 
 		const message = await unlockHint(activityId, id)

@@ -45,7 +45,7 @@ const Header = styled(ImgAndContent)`
 
 const ContentArea = styled.div`
 	padding: 0.2em 2em 3em;
-	font-size: 84%; 
+	font-size: 84%;
 `
 
 const StyledNextButton = styled(NextButton)`
@@ -70,6 +70,7 @@ const Content = ({
 	currentCardIndex,
 	lastCardUnlockedIndex,
 	onInitUnlockCard,
+	onInitCardStatus,
 	onIncrementCurrentCardIndex,
 	onIncrementLastCardUnlockedIndex
 }) => {
@@ -87,7 +88,9 @@ const Content = ({
 
 	useConditionalDidUpdateEffect(
 		activityId,
-		() => onInitUnlockCard(activityId, id, contentfulId),
+		() => {
+			onInitUnlockCard(activityId, id, contentfulId)
+		},
 		[lastCardUnlockedIndex]
 	)
 

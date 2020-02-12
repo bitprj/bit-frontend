@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import camelCase from 'camelcase-keys'
+import camelCase from 'camelcase-keys-deep'
 
 export const backend = axios.create({
 	baseURL: 'https://darlene-backend.herokuapp.com/',
