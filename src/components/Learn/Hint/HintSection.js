@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
@@ -11,10 +11,9 @@ const Container = styled.div`
 	display: block;
 `
 
-const HintSection = ({ activityId, hints, unlockedHints, lockedHints }) => {
-	const renderedUnlockedHints = unlockedHints => {
+const HintSection = ({ activityId, hints, unlockedHints }) => {
+	const renderedUnlockedHintsRecursive = unlockedHints => {
 		if (!unlockedHints) return
-		console.log('made_it', unlockedHints)
 
 		return unlockedHints.map(hint => {
 			const { id, name, steps } = hint
@@ -32,18 +31,18 @@ const HintSection = ({ activityId, hints, unlockedHints, lockedHints }) => {
 				<div key={`hint-${id}`}>
 					<h2>{name}</h2>
 					{renderSteps}
-					{renderedUnlockedHints(hint.unlockedHints)}
+					{renderedUnlockedHintsRecursive(hint.unlockedHints)}
 				</div>
 			)
 		})
 	}
 
-	const renderedLockedHints = hints => {
+	const renderedLockedHintsRecursive = hints => {
 		if (!hints) return
 
 		return hints.map(hint => {
 			if (hint.isUnlocked) {
-				return renderedLockedHints(hint.hints)
+				return renderedLockedHintsRecursive(hint.hints)
 			} else {
 				const { id, contentfulId, name, difficulty, gems } = hint
 				return (
@@ -61,10 +60,19 @@ const HintSection = ({ activityId, hints, unlockedHints, lockedHints }) => {
 		})
 	}
 
+	const renderedUnlockedHints = useMemo(
+		() => renderedUnlockedHintsRecursive(unlockedHints),
+		[unlockedHints]
+	)
+	const renderedLockedHints = useMemo(
+		() => renderedLockedHintsRecursive(hints),
+		[hints]
+	)
+
 	return (
 		<Container>
-			<>{renderedUnlockedHints(unlockedHints)}</>
-			<>{renderedLockedHints(hints)}</>
+			<>{renderedUnlockedHints}</>
+			<>{renderedLockedHints}</>
 		</Container>
 	)
 }
@@ -76,13 +84,11 @@ const mapStateToProps = state => {
 
 	const hints = cards && get(cards[currentCardIndex], 'hints')
 	const unlockedHints = cards && get(cards[currentCardIndex], 'unlockedHints')
-	const lockedHints = cards && get(cards[currentCardIndex], 'lockedHints')
 
 	return {
 		activityId,
 		hints,
-		unlockedHints,
-		lockedHints
+		unlockedHints
 	}
 }
 

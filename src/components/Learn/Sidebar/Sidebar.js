@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import HeaderShadow from '../../shared/utils/HeaderShadow'
 import DotRating from '../../shared/gadgets/DotRating'
-import Nav from './SidebarNav'
+import SidebarNav from './SidebarNav'
 
 const Container = styled.div`
 	flex: 1;
@@ -44,7 +44,7 @@ const Sidebar = props => {
 	return (
 		<Container>
 			{header}
-			<Nav containerRef={containerRef} />
+			<SidebarNav containerRef={containerRef} />
 		</Container>
 	)
 }
