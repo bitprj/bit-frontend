@@ -83,16 +83,16 @@ const reducer = (state = initialState, action) => {
 			const card = cards[currentCardIndex]
 
 			const hintUnlockMovement = node => {
-				if (!node.hints) return
-
+				if (!node.hints || !node.unlockedHints || !node.lockedHints) return // TODO make a notification: wait a bit nicer
+ 
 				node.hints.some(hint => {
-          // find hint
+					// find hint
 					if (hint.contentfulId === contentId) {
 						nextHint.isUnlocked = true
 						mergeDeep(hint, nextHint)
-            node.unlockedHints.push(hint)
-            
-            // remove it from locked hints
+						node.unlockedHints.push(hint)
+
+						// remove it from locked hints
 						node.lockedHints.some((hint, i) => {
 							if (hint.contentfulId === contentId) {
 								node.lockedHints.splice(i, 1)
