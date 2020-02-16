@@ -3,14 +3,29 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import { initUnlockHint } from '../../../redux/actions/learnData'
+import ParsedContent from '../../shared/ParsedContent'
+import ClampedText from '../../shared/utils/ClampedText'
 
 const Container = styled.div`
-	margin: 1em;
+	margin: 1em 0.5em;
 	padding: 1em;
 	cursor: pointer;
+	position: relative;
+	border-radius: 0.8em;
 `
 
-const Hint = ({
+const Name = styled(ClampedText)`
+	margin: 0.5em;
+	font-weight: bold;
+`
+
+const TopRight = styled.div`
+	position: absolute;
+	top: 1em;
+	right: 1.5em;
+`
+
+const LockedHint = ({
 	activityId,
 	id,
 	contentfulId,
@@ -26,8 +41,8 @@ const Hint = ({
 	return (
 		<Container className="hover-raise transition-medium" onClick={unlockHint}>
 			<span>💎 {gems}</span>
-			<h3>{name}</h3>
-			<p>{difficulty}</p>
+			<TopRight>{difficulty}</TopRight>
+			<Name clamp={1}>{name}</Name>
 		</Container>
 	)
 }
@@ -39,4 +54,4 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(Hint)
+export default connect(null, mapDispatchToProps)(LockedHint)

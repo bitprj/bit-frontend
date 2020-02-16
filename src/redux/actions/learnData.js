@@ -15,7 +15,8 @@ import {
 	SET_UNLOCKED_CARDS,
 	SET_CARD_STATUSES,
 	SET_CARD,
-	SET_HINT,
+  SET_HINT,
+  SET_CURRENT_CARD_UNNESTED_UNLOCKED_HINT_REFS,
 	SET_CURRENT_CARD_BY_INDEX,
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
@@ -150,6 +151,13 @@ export const initUnlockHint = (activityId, id, contentId) => {
 	}
 }
 
+export const setCurrentCardUnnestedUnlockedHintRefs = array => {
+	return {
+		type: SET_CURRENT_CARD_UNNESTED_UNLOCKED_HINT_REFS,
+		array
+	}
+}
+
 export const setCurrentCardByIndex = cardIndex => {
 	return {
 		type: SET_CURRENT_CARD_BY_INDEX,
@@ -187,28 +195,4 @@ const setHint = (contentId, hint) => {
 		contentId,
 		hint
 	}
-}
-
-/**
- * LEGACY CODE THAT I DON'T WANT TO DELETE
- *
- * @param {*} activity
- */
-const initAllHints = activity => {
-	const newActivity = cloneDeep(activity)
-	newActivity.cards.map(card => {
-		let { hints } = card.fields
-		hints && initEachHint(hints)
-		return card
-	})
-	return newActivity
-}
-const initEachHint = hints => {
-	// return Promise.all(
-	hints.map(hintObj => {
-		const { id: hintId } = hintObj.sys
-		hintObj.content = getHint(hintId)
-		return hintObj
-	})
-	// )
 }

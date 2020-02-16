@@ -17,6 +17,19 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Source Code Pro';
   }
 
+  code {
+    border-radius: 0.2em;
+    padding: 0 0.2em;
+    background: #e2e2e280;
+  }
+
+  pre > code {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+  }
+
   /**
    * HIDE SCROLLBAR
    */
@@ -27,6 +40,40 @@ export const GlobalStyle = createGlobalStyle`
     } 
   }
   
+  /**
+   * LOW PROFILE SCROLLBAR
+   * - with only-hover, fat
+   */
+  .low-profile-scrollbar.only-hover {
+    overflow: overlay;
+  }
+  .low-profile-scrollbar.only-hover::-webkit-scrollbar {
+    width: 0;
+  }
+  .low-profile-scrollbar::-webkit-scrollbar,
+  .low-profile-scrollbar.only-hover:hover::-webkit-scrollbar {
+    width: 0.5em;
+  }
+  .low-profile-scrollbar.fat::-webkit-scrollbar {
+    width: 1em;
+  }
+  .low-profile-scrollbar.fat::-webkit-scrollbar-track {
+    background: #0001;
+  }
+  .low-profile-scrollbar::-webkit-scrollbar-track {
+    background: #0000; // not working
+  }
+  .low-profile-scrollbar::-webkit-scrollbar-thumb {
+    background: #0002;
+    border-radius: 0.5em;
+  }
+  .low-profile-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #0003;
+  }
+  .low-profile-scrollbar::-webkit-scrollbar-thumb:active {
+    background: #0004;
+  }
+
   /**
    * TRANSITIONS 
    */
@@ -148,10 +195,6 @@ export const GlobalStyleReset = createGlobalStyle`
   button {
     cursor: pointer;
   } 
-
-  html {
-    scroll-behavior: smooth;
-  }
 
   /* FONT-SIZE */
   body {

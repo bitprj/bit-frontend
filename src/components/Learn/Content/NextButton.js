@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
 
 const Container = styled.div.attrs(props => ({
-	width: props.width || '3.6em'
+	width: props.width || '4em'
 }))`
   display: flex;
   justify-content: center;

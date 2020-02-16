@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import styled from 'styled-components'
 
 import ClampedText from '../utils/ClampedText'
@@ -40,11 +40,10 @@ const Description = styled.div`
  * To use this component, it is pivotal that the props `imgWidthEms` is provided to create
  * the size context for the component.
  */
-const ImgAndContent = ({
+const ImgAndContent = forwardRef(({
 	className,
 	clicked,
 	style,
-	innerRef,
 
 	imgWidthEms,
 	imgURL,
@@ -59,7 +58,7 @@ const ImgAndContent = ({
 	time,
 	hover,
 	children
-}) => {
+}, ref) => {
 	const showAppropriateImg =
 		(imgURL && (
 			<Icon width={`${imgWidthEms}em`} src={imgURL} noShadow={noShadow} />
@@ -68,7 +67,7 @@ const ImgAndContent = ({
 
 	return (
 		<Container
-			ref={innerRef}
+			ref={ref}
 			style={style}
 			imgWidthEms={imgWidthEms}
 			className={className + (hover ? ' hover-lift transition-short' : '')}
@@ -101,6 +100,6 @@ const ImgAndContent = ({
 			</Description>
 		</Container>
 	)
-}
+})
 
 export default ImgAndContent

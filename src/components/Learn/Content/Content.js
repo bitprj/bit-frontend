@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { get } from 'lodash'
 import { useConditionalDidUpdateEffect } from '../../../utils/customHooks'
 
-import HintSection from '../Hint/HintSection'
+import UnlockedHintSection from '../Hint/UnlockedHintSection'
+import LockedHintSection from '../Hint/LockedHintSection'
 import NextButton from './NextButton'
 import HeaderShadow from '../../shared/utils/HeaderShadow'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
@@ -45,13 +46,18 @@ const Header = styled(ImgAndContent)`
 
 const ContentArea = styled.div`
 	padding: 0.2em 2em 3em;
-	font-size: 84%;
+  font-size: 84%;
+  
+  @media screen and (orientation: landscape) {
+    padding-left: 3.5em;
+    padding-right: 3.5em;
+  }
 `
 
 const StyledNextButton = styled(NextButton)`
 	position: fixed;
-	right: 4em;
-	bottom: 3em;
+	right: 5.2em;
+	bottom: 4em;
 
 	&:hover {
 		transform: translateY(-0.3em);
@@ -70,7 +76,6 @@ const Content = ({
 	currentCardIndex,
 	lastCardUnlockedIndex,
 	onInitUnlockCard,
-	onInitCardStatus,
 	onIncrementCurrentCardIndex,
 	onIncrementLastCardUnlockedIndex
 }) => {
@@ -121,34 +126,41 @@ const Content = ({
 	}
 
 	return (
-		<Container ref={containerRef}>
-			<HeaderWrapper>
-				<Header
-					innerRef={headerRef}
-					className="minimized transition-medium"
-					imgURL={require('../../../assets/icons/document.svg')}
-					imgWidthEms="4"
-					gap="2em"
-					noShadow
-					reverse
-					contentSize={'150%'}
-					title={cardName}
-				>
-					<code style={{ fontSize: '50%' }}>INTRODUCTION TO GITHUB</code>
-				</Header>
-				<HeaderShadow containerRef={containerRef} />
-			</HeaderWrapper>
+		<Container ref={containerRef} className="low-profile-scrollbar fat">
+			{cardName && (
+				<HeaderWrapper>
+					<Header
+						ref={headerRef}
+						className="minimized transition-medium"
+						imgURL={require('../../../assets/icons/document.svg')}
+						imgWidthEms="4"
+						gap="2em"
+						noShadow
+						reverse
+						contentSize={'150%'}
+						title={cardName}
+					>
+						<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
+							INTRODUCTION TO GITHUB
+						</code>
+					</Header>
+					<HeaderShadow containerRef={containerRef} />
+				</HeaderWrapper>
+			)}
 
 			<ContentArea>
-				<ParsedContent id="learn-content" document={content} />
+				{content && <ParsedContent id="learn-content" document={content} />}
+
+				<UnlockedHintSection />
+				{hints && hints.length && <LockedHintSection />}
 			</ContentArea>
 
-			<HintSection />
-
-			<StyledNextButton
-				className="transition-medium"
-				clicked={handleClickNext}
-			/>
+			{activityId && (
+				<StyledNextButton
+					className="transition-medium"
+					clicked={handleClickNext}
+				/>
+			)}
 		</Container>
 	)
 }

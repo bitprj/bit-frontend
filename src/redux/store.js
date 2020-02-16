@@ -25,10 +25,17 @@ export default function configureStore(initialState) {
 		traceLimit: 25
 	})
 
+	const middleware = [thunk]
+
+	process.env.NODE_ENV !== 'production' &&
+		middleware.unshift(
+			invariant({ ignore: ['learnData.currentCardUnnestedUnlockedHintRefs'] })
+		)
+
 	const store = createStore(
 		rootReducer,
 		initialState,
-		composeEnhancers(applyMiddleware(invariant(), thunk))
+		composeEnhancers(applyMiddleware(...middleware))
 	)
 
 	// Enable Webpack hot module replacement for reducers

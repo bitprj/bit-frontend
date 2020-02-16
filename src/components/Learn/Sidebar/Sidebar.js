@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
@@ -11,9 +11,10 @@ const Container = styled.div`
 	background: #fafafa;
 	display: flex;
 	flex-direction: column;
+	position: relative;
 
 	@media screen and (orientation: landscape) {
-		flex: 0.75;
+		flex: 0.55;
 		font-size: 85%;
 	}
 `
@@ -22,14 +23,14 @@ const Header = styled.div`
 	padding: 2em;
 `
 
-const Sidebar = props => {
-	const containerRef = useRef(null)
-
-	const header = (
+const Sidebar = ({ name, hintsScrollRefsState, hintsScrollRefs }) => {
+	const header = name && (
 		<div style={{ position: 'relative' }}>
 			<Header>
-				<code>INTRODUCTION TO GITHUB</code>
-				<h2>{props.name}</h2>
+				<code style={{ backgroundColor: 'transparent', fontSize: '85%' }}>
+					INTRODUCTION TO GITHUB
+				</code>
+				<h2 style={{ marginTop: '0.1em', marginBottom: '0.5em' }}>{name}</h2>
 				<DotRating
 					style={{ fontSize: '150%' }}
 					type="RECT"
@@ -37,14 +38,15 @@ const Sidebar = props => {
 					outOf={8}
 				/>
 			</Header>
-			<HeaderShadow containerRef={containerRef} />
 		</div>
 	)
 
 	return (
 		<Container>
 			{header}
-			<SidebarNav containerRef={containerRef} />
+			<SidebarNav
+				hintsScrollRefs={hintsScrollRefs}
+			/>
 		</Container>
 	)
 }

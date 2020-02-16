@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { useCallbackRef } from 'use-callback-ref'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
@@ -8,8 +9,6 @@ import Content from '../components/Learn/Content/Content'
 
 import { init } from '../redux/actions/learnData'
 
-// import {} from '../services/LearnService'
-
 const Container = styled.div`
 	display: flex;
 	position: relative;
@@ -18,6 +17,10 @@ const Container = styled.div`
 	> :nth-child(2),
 	> :nth-child(3) {
 		height: 100vh;
+	}
+
+	@media only screen and (orientation: landscape) {
+		font-size: 80%;
 	}
 `
 
