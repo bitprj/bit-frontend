@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useCallbackRef } from 'use-callback-ref'
-import styled from 'styled-components'
+import React, { useEffect, useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 import { connect } from 'react-redux'
+import { get } from 'lodash'
+import Spinner from 'react-spinkit'
 
 import Toolbar from '../components/Learn/Toolbar/Toolbar'
 import Sidebar from '../components/Learn/Sidebar/Sidebar'
@@ -24,7 +25,30 @@ const Container = styled.div`
 	}
 `
 
-const Learn = ({ onInit }) => {
+const SpinnerWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 999;
+
+  background-color: ${props => props.theme.bgPage}33;
+  pointer-events: none;
+
+	.page-spinner {
+		width: 10em;
+		height: 10em;
+	}
+`
+
+const Learn = ({ isReady, onInit }) => {
+	const themeContext = useContext(ThemeContext)
+
 	useEffect(() => {
 		onInit(12)
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -34,8 +58,25 @@ const Learn = ({ onInit }) => {
 			<Toolbar />
 			<Sidebar />
 			<Content />
+
+			{!isReady && (
+				<SpinnerWrapper>
+					<Spinner
+						name="circle"
+						className="page-spinner"
+						fadeIn="quarter"
+						color={`${themeContext.accent}77`}
+					/>
+				</SpinnerWrapper>
+			)}
 		</Container>
 	)
+}
+
+const mapStateToProps = state => {
+	return {
+		isReady: get(state, 'learnData.cards[0]')
+	}
 }
 
 const mapDispatchToProps = dispatch => {
@@ -44,4 +85,4 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(Learn)
+export default connect(mapStateToProps, mapDispatchToProps)(Learn)

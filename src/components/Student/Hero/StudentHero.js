@@ -74,10 +74,6 @@ const Back = styled.p`
 `;
 
 const StudentHero = props => {
-  const resumeClickedHandler = () => {
-    // go to current lab
-  };
-
   return (
     <>
       <HeroBackground />

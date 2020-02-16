@@ -1,6 +1,6 @@
-import { cloneDeep, get } from 'lodash'
+import { get } from 'lodash'
 import { iterateNodes } from '../../utils/deepObjUtils'
-import { getHint, genFetch } from '../../services/ContentfulService'
+import { genFetch } from '../../services/ContentfulService'
 import {
 	fetchActivity,
 	fetchActivityProgress,
@@ -15,8 +15,7 @@ import {
 	SET_UNLOCKED_CARDS,
 	SET_CARD_STATUSES,
 	SET_CARD,
-  SET_HINT,
-  SET_CURRENT_CARD_UNNESTED_UNLOCKED_HINT_REFS,
+	SET_HINT,
 	SET_CURRENT_CARD_BY_INDEX,
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
@@ -87,7 +86,8 @@ const initCardStatuses = (activityId, cardsProgressed) => {
 
 const fetchAndProcessCardStatus = async (activityId, id) => {
 	const cardStatus = await fetchCardStatus(activityId, id)
-	return iterateNodes(cardStatus, node => { // processing
+	return iterateNodes(cardStatus, node => {
+		// processing
 		if (node.hint) {
 			Object.assign(node, { ...node.hint })
 			delete node.hint
@@ -148,13 +148,6 @@ export const initUnlockHint = (activityId, id, contentId) => {
 
 		const message = await unlockHint(activityId, id)
 		// console.log(message)
-	}
-}
-
-export const setCurrentCardUnnestedUnlockedHintRefs = array => {
-	return {
-		type: SET_CURRENT_CARD_UNNESTED_UNLOCKED_HINT_REFS,
-		array
 	}
 }
 

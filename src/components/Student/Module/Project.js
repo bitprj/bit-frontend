@@ -28,6 +28,7 @@ const Project = props => {
       description={props.description}
       time={props.time}
       hover
+      shadow
       clicked={props.clicked}
     >
       <Sparkles>

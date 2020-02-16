@@ -7,7 +7,6 @@ import {
 	SET_CARD_STATUSES,
 	SET_CARD,
 	SET_HINT,
-	SET_CURRENT_CARD_UNNESTED_UNLOCKED_HINT_REFS,
 	SET_CURRENT_CARD_BY_INDEX,
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
@@ -17,7 +16,6 @@ import {
 const initialState = {
 	currentCardIndex: 0,
 	lastCardUnlockedIndex: 0,
-	// currentCardUnnestedUnlockedHintRefs: [],
 	cards: []
 }
 
@@ -84,21 +82,13 @@ const reducer = (state = initialState, action) => {
 						node.unlockedHints.push(hint)
 						return true
 					}
-					hintUnlockMovement(hint)
+					return hintUnlockMovement(hint)
 				})
 			}
 
 			hintUnlockMovement(card)
 
 			return nextState
-		}
-
-		case SET_CURRENT_CARD_UNNESTED_UNLOCKED_HINT_REFS: {
-      console.log('[learnData]:', cloneDeep(action.array))
-			return {
-				...state,
-				currentCardUnnestedUnlockedHintRefs: cloneDeep(action.array)
-			}
 		}
 
 		case SET_CURRENT_CARD_BY_INDEX: {
@@ -140,7 +130,11 @@ const hintStatusSeparation = node => {
 	if (!node.hints) return
 
 	node.unlockedHints = node.hints.filter(hint => {
-		hintStatusSeparation(hint)
 		return hint.isUnlocked
+	})
+
+	node.lockedHints = node.hints.filter(hint => {
+		hintStatusSeparation(hint)
+		return !hint.isUnlocked
 	})
 }

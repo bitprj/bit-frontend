@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
+import { scroller } from 'react-scroll'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import ReactMarkdown from 'react-markdown'
 import { get } from 'lodash'
-import { useDidUpdateEffect } from '../../../utils/customHooks'
 
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 import ClampedText from '../../shared/utils/ClampedText'
 import HeaderShadow from '../../shared/utils/HeaderShadow'
 
-import {
-	setCurrentCardByIndex,
-	setCurrentCardUnnestedUnlockedHintRefs
-} from '../../../redux/actions/learnData'
+import { setCurrentCardByIndex } from '../../../redux/actions/learnData'
 
 const Container = styled.div`
 	overflow-y: auto;
@@ -59,43 +57,40 @@ const SidebarNav = ({
 	unlockedHints,
 	currentCardIndex,
 	lastCardUnlockedIndex,
-	currentCardUnnestedUnlockedHintRefs,
-	onSetCurrentCardByIndex,
-	onSetCurrentCardUnnestedUnlockedHintRefs
+	onSetCurrentCardByIndex
 }) => {
 	const containerRef = useRef(null)
 
 	// basically, if hints are unlocked for current card
 	const [hasSubitems, setHasSubitems] = useState(false)
 
-	// #TODO WARN BAD TEMP may be source of error super hacky FLAG FLAG
-	// this is related to getting hintsScrollRefs
-	// useAntiAlternatingUpdateEffect(() => {
-  // }, [currentCardUnnestedUnlockedHintRefs])
-  useEffect(() => {
-    console.log(currentCardUnnestedUnlockedHintRefs)
-  }, [currentCardUnnestedUnlockedHintRefs])
-
-	useDidUpdateEffect(() => {
-    console.log('dispatching emptying')
-		onSetCurrentCardUnnestedUnlockedHintRefs([])
-	}, [currentCardIndex])
+	let mapHintIndex = 0
 
 	const renderedHintsRecursive = (unlockedHints, nestLevel = 0) => {
 		if (!unlockedHints) return
 
 		return unlockedHints.map(hint => {
 			const { id, name } = hint
+			const index = mapHintIndex++
 			if (!hasSubitems) setHasSubitems(true)
 			return (
 				<React.Fragment key={`sidebar-hint-${id}`}>
 					<NavSubWrapper
 						className="hover-lift transition-short"
 						nestLevel={nestLevel}
+						onClick={() => {
+							scroller.scrollTo(`unlocked-hint-${index}`, {
+								duration: 500,
+								smooth: true,
+								containerId: 'content',
+								offset:
+									-document.getElementById('content-header').clientHeight + 1
+							})
+						}}
 					>
 						<NavSubitemImg>&bull;</NavSubitemImg>
-						<NavSubitem type={'other'} clamp={1}>
-							{name}
+						<NavSubitem clamp={1}>
+							<ReactMarkdown className="markdown-header" source={name} />
 						</NavSubitem>
 					</NavSubWrapper>
 					{renderedHintsRecursive(hint.unlockedHints, nestLevel + 1)}
@@ -106,9 +101,9 @@ const SidebarNav = ({
 
 	// prettier-ignore
 	const renderedHints = useMemo(
-		() => renderedHintsRecursive(unlockedHints),
-		[unlockedHints]
-	)
+    () => renderedHintsRecursive(unlockedHints), [
+		unlockedHints
+	])
 
 	const renderedCards =
 		cards &&
@@ -151,12 +146,7 @@ const SidebarNav = ({
 
 const mapStateToProps = state => {
 	const {
-		learnData: {
-			cards,
-			currentCardIndex,
-			lastCardUnlockedIndex,
-			currentCardUnnestedUnlockedHintRefs
-		}
+		learnData: { cards, currentCardIndex, lastCardUnlockedIndex }
 	} = state
 
 	const unlockedHints = cards && get(cards[currentCardIndex], 'unlockedHints')
@@ -165,17 +155,14 @@ const mapStateToProps = state => {
 		cards,
 		unlockedHints,
 		currentCardIndex,
-		lastCardUnlockedIndex,
-		currentCardUnnestedUnlockedHintRefs
+		lastCardUnlockedIndex
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
 		onSetCurrentCardByIndex: cardIndex =>
-			dispatch(setCurrentCardByIndex(cardIndex)),
-		onSetCurrentCardUnnestedUnlockedHintRefs: array =>
-			dispatch(setCurrentCardUnnestedUnlockedHintRefs(array))
+			dispatch(setCurrentCardByIndex(cardIndex))
 	}
 }
 

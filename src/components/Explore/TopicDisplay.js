@@ -15,10 +15,14 @@ const RenderedActivity = styled.div`
   cursor: pointer;
 `;
 
+const AppIcon = styled(Icon)`
+  margin-right: 1.6em;
+` 
+
 const Activity = props => {
   return (
     <RenderedActivity className="hover-lift transition-short">
-      <Icon borderRadius="1.4em" marginRight="1.6em" />
+      <AppIcon shadow borderRadius="1.4em" />
       <div>
         <h3 style={{ margin: 0 }}>{props.name}</h3>
         <IconLine icon={<AccessTimeIcon />}>{props.time}</IconLine>

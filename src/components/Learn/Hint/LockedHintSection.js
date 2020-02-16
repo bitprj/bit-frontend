@@ -5,6 +5,7 @@ import { get } from 'lodash'
 
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import Icon from '../../shared/gadgets/Icon'
+import IconLine from '../../shared/gadgets/IconLine'
 import HeaderShadow from '../../shared/utils/HeaderShadow'
 
 import LockedHint from './LockedHint'
@@ -36,6 +37,15 @@ const HelpInfo = styled.div`
 	margin-left: 0;
 	width: 40%;
 	color: #00498c;
+`
+
+const AnimatingIconLine = styled(IconLine)`
+	cursor: pointer;
+
+	:hover img,
+	:hover svg {
+		transform: translateX(0.2em);
+	}
 `
 
 const LockedHintSection = ({ activityId, hints }) => {
@@ -96,7 +106,9 @@ const LockedHintSection = ({ activityId, hints }) => {
 						hints.
 					</p>
 					<h3>
-						How it works <ArrowForwardIcon fontSize="inherit" />
+						<AnimatingIconLine icon={<ArrowForwardIcon fontSize="inherit" />}>
+							How it works
+						</AnimatingIconLine>
 					</h3>
 				</HelpInfo>
 			)}

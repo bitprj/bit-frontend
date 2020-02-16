@@ -5,7 +5,7 @@ import BrickWall from "../../../assets/icons/unused/brickwall";
 import GitHub from "../../../assets/icons/github";
 
 import StatusIcon from "../../shared/gadgets/StatusIcon";
-import Button from "../../shared/gadgets/NewButton";
+import Button from "../../shared/gadgets/Button";
 
 const RenderedCard = styled.div`
   background-color: ${props => props.theme.bgVariant};

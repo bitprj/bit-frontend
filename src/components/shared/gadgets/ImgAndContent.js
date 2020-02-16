@@ -48,7 +48,7 @@ const ImgAndContent = forwardRef(({
 	imgWidthEms,
 	imgURL,
 	imgText,
-	noShadow,
+	shadow,
 	reverse,
 	gap,
 	contentSize,
@@ -61,7 +61,7 @@ const ImgAndContent = forwardRef(({
 }, ref) => {
 	const showAppropriateImg =
 		(imgURL && (
-			<Icon width={`${imgWidthEms}em`} src={imgURL} noShadow={noShadow} />
+			<Icon width={`${imgWidthEms}em`} src={imgURL} shadow={shadow} />
 		)) ||
 		(imgText && <Wrapper width={`${imgWidthEms}em`}>{imgText}</Wrapper>)
 

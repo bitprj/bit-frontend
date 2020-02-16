@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import HeaderShadow from '../../shared/utils/HeaderShadow'
 import DotRating from '../../shared/gadgets/DotRating'
 import SidebarNav from './SidebarNav'
 
@@ -23,7 +22,7 @@ const Header = styled.div`
 	padding: 2em;
 `
 
-const Sidebar = ({ name, hintsScrollRefsState, hintsScrollRefs }) => {
+const Sidebar = ({ name, hintsScrollRefs }) => {
 	const header = name && (
 		<div style={{ position: 'relative' }}>
 			<Header>

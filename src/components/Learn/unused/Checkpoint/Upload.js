@@ -8,7 +8,7 @@ import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
-import Button from '../../../shared/Button';
+import Button from '../../../shared/unused/Button';
 
 import { uploadFiles, processResult } from '../../../../services/LearnService';
 

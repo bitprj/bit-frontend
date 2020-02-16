@@ -21,6 +21,12 @@ export const GlobalStyle = createGlobalStyle`
     border-radius: 0.2em;
     padding: 0 0.2em;
     background: #e2e2e280;
+    font-style: normal;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    font-family: inherit;
   }
 
   pre > code {
@@ -103,6 +109,16 @@ export const GlobalStyle = createGlobalStyle`
   }
   .hover-raise:hover {
     box-shadow: 0px 0.75em 1.5em rgba(38, 38, 38, 0.125);
+  }
+
+  /**
+   * Normalize Markdown For Headers
+   */
+  .markdown-header,
+  .markdown-header span,
+  .markdown-header p {
+    margin: 0;
+    font-family: 'Source Sans Pro';
   }
 `
 

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
-import { useConditionalDidUpdateEffect } from '../../../utils/customHooks'
+import { useInitialConditionalDidUpdateEffect } from '../../../utils/customHooks'
 
 import UnlockedHintSection from '../Hint/UnlockedHintSection'
 import LockedHintSection from '../Hint/LockedHintSection'
@@ -46,12 +46,12 @@ const Header = styled(ImgAndContent)`
 
 const ContentArea = styled.div`
 	padding: 0.2em 2em 3em;
-  font-size: 84%;
-  
-  @media screen and (orientation: landscape) {
-    padding-left: 3.5em;
-    padding-right: 3.5em;
-  }
+	font-size: 84%;
+
+	@media screen and (orientation: landscape) {
+		padding-left: 3.5em;
+		padding-right: 3.5em;
+	}
 `
 
 const StyledNextButton = styled(NextButton)`
@@ -91,7 +91,7 @@ const Content = ({
 			containerRef.current.scrollTo(0, 0) // TODO keep track of all current scroll for each page
 	}, [currentCardIndex])
 
-	useConditionalDidUpdateEffect(
+	useInitialConditionalDidUpdateEffect(
 		activityId,
 		() => {
 			onInitUnlockCard(activityId, id, contentfulId)
@@ -126,16 +126,19 @@ const Content = ({
 	}
 
 	return (
-		<Container ref={containerRef} className="low-profile-scrollbar fat">
+		<Container
+			id="content"
+			ref={containerRef}
+			className="low-profile-scrollbar fat"
+		>
 			{cardName && (
-				<HeaderWrapper>
+				<HeaderWrapper id="content-header">
 					<Header
 						ref={headerRef}
 						className="minimized transition-medium"
 						imgURL={require('../../../assets/icons/document.svg')}
 						imgWidthEms="4"
 						gap="2em"
-						noShadow
 						reverse
 						contentSize={'150%'}
 						title={cardName}
@@ -152,7 +155,7 @@ const Content = ({
 				{content && <ParsedContent id="learn-content" document={content} />}
 
 				<UnlockedHintSection />
-				{hints && hints.length && <LockedHintSection />}
+				{hints && hints.length ? <LockedHintSection /> : null}
 			</ContentArea>
 
 			{activityId && (

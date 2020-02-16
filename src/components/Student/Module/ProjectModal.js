@@ -7,7 +7,7 @@ import { sizes } from "../../../assets/styles/media";
 import Project from "./Project";
 
 import DotRating from "../../shared/gadgets/DotRating";
-import Button from "../../shared/gadgets/NewButton";
+import Button from "../../shared/gadgets/Button";
 
 // const Sparkles2 = styled.div
 //   box-shadow: 0 0 7px 7px #f2f2f2;

@@ -10,7 +10,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
-import Button from '../shared/gadgets/NewButton'
+import Button from '../shared/gadgets/Button'
 import Icon from '../shared/gadgets/Icon'
 
 const contentHeight = '2.5em'

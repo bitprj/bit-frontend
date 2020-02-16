@@ -5,7 +5,7 @@ const RenderedButton = styled.button.attrs(props => ({
 	accent: props.theme.accent,
 	margin: props.margin || (props.fullWidth ? '' : '0.5em'),
 	padding: props.padding || '0.75em 1.5em',
-	dark: props.dark || props.theme.accent,
+	dark: props.dark || props.theme.accent
 }))`
   display: inline-block; 
   margin: ${props => props.margin};
@@ -39,11 +39,7 @@ const RenderedButton = styled.button.attrs(props => ({
 			props.invert
 				? 'filter: brightness(110%);'
 				: `box-shadow: inset 0 0 100em 100em ${
-						props.dark
-							? props.dark.length === 4
-								? props.dark + '1'
-								: props.dark + '16'
-							: props.accent + '16'
+						props.dark ? props.dark + '16' : props.accent + '16'
 				  }`}
   }
 
@@ -52,11 +48,7 @@ const RenderedButton = styled.button.attrs(props => ({
 			props.invert
 				? 'filter: brightness(120%);'
 				: `box-shadow: inset 0 0 100em 100em ${
-						props.dark
-							? props.dark.length === 4
-								? props.dark + '3'
-								: props.dark + '32'
-							: props.accent + '32'
+						props.dark ? props.dark + '32' : props.accent + '32'
 				  }`}
   }
 `
@@ -70,6 +62,7 @@ const RenderedButton = styled.button.attrs(props => ({
 const Button = props => {
 	return (
 		<RenderedButton
+			className={props.className}
 			dark={props.dark}
 			light={props.light}
 			invert={props.invert}

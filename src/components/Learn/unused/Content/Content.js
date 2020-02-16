@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import ParsedContent from '../../../shared/ParsedContent'
 import { getCard } from '../../../../services/ContentfulService'
 
-import Button from '../../../shared/Button'
+import Button from '../../../shared/unused/Button'
 import ConceptModal from '../Concept/ConceptModal'
 import CheckpointModal from '../Checkpoint/CheckpointModal'
 

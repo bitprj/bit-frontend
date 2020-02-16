@@ -21,12 +21,12 @@ const Icon = ({
 	height,
 	sharp,
 	borderRadius,
-	noShadow
+	shadow
 }) => {
 	return (
 		<RenderedIcon
 			// alt="Icon"
-			className={className + (noShadow ? '' : 'lift transition-medium')}
+			className={`${className} ${shadow && 'lift transition-medium'}`}
 			width={width}
 			height={height}
 			sharp={sharp}

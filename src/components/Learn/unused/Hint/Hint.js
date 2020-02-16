@@ -5,7 +5,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 
 import RenderedContent from '../../../shared/ParsedContent'
 
-import Button from '../../../shared/Button'
+import Button from '../../../shared/unused/Button'
 import HintModal from './HintModal'
 import StepAsset from '../../../shared/StepAsset'
 

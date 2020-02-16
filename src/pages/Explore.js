@@ -54,7 +54,7 @@ const views = [
   }
 ];
 
-const Explore = props => {
+const Explore = () => {
   const [activeName, setActiveName] = useState(views[0].name);
 
   return (

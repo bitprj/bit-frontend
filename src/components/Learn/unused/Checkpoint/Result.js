@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import CodeIcon from '@material-ui/icons/Code';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
-import Button from '../../../shared/Button';
+import Button from '../../../shared/unused/Button';
 
 const Window = styled.div`
     padding: 20px;
