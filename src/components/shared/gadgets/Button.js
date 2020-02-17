@@ -11,11 +11,11 @@ const RenderedButton = styled.button.attrs(props => ({
   margin: ${props => props.margin};
   padding: ${props => props.padding};
 
-  ${props => props.width && `width: ${props.width};`}
-  ${props => props.fullWidth && 'width: 100%;'}
+  ${props => (props.width ? `width: ${props.width};` : '')}
+  ${props => (props.fullWidth ? 'width: 100%;' : '')}
   ${props =>
 		props.rounder ? 'border-radius: 0.5em;' : 'border-radius: 0.25em;'}
-  ${props => props.sharp && 'border-radius: 0;'}
+  ${props => (props.sharp ? 'border-radius: 0;' : '')}
 
   border: ${props => props.dark} solid 0.1em;
   ${props =>

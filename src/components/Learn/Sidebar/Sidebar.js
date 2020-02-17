@@ -2,15 +2,16 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
+import { useDidUpdateEffect } from '../../../utils/customHooks'
 import DotRating from '../../shared/gadgets/DotRating'
 import SidebarNav from './SidebarNav'
+import { slideIn, fadeIn } from '../../../assets/styles/StatusAnime'
 
 const Container = styled.div`
 	flex: 1;
 	background: #fafafa;
 	display: flex;
 	flex-direction: column;
-	position: relative;
 
 	@media screen and (orientation: landscape) {
 		flex: 0.55;
@@ -22,8 +23,13 @@ const Header = styled.div`
 	padding: 2em;
 `
 
-const Sidebar = ({ name, hintsScrollRefs }) => {
-	const header = name && (
+const Sidebar = ({ name }) => {
+	useDidUpdateEffect(() => {
+		fadeIn('.learn-i-sidebar')
+		slideIn('.learn-i-sidebar')
+	}, [name])
+
+	const header = (
 		<div style={{ position: 'relative' }}>
 			<Header>
 				<code style={{ backgroundColor: 'transparent', fontSize: '85%' }}>
@@ -41,11 +47,13 @@ const Sidebar = ({ name, hintsScrollRefs }) => {
 	)
 
 	return (
-		<Container>
-			{header}
-			<SidebarNav
-				hintsScrollRefs={hintsScrollRefs}
-			/>
+		<Container className="learn-i-sidebar">
+			{name && (
+				<>
+					{header}
+					<SidebarNav />
+				</>
+			)}
 		</Container>
 	)
 }

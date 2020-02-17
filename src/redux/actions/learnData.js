@@ -19,7 +19,9 @@ import {
 	SET_CURRENT_CARD_BY_INDEX,
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
-	INCREMENT_LAST_CARD_UNLOCKED_INDEX
+  INCREMENT_LAST_CARD_UNLOCKED_INDEX,
+  INCREMENT_CURRENT_HINT_STEP,
+  RESET_BUTTON_STATE_AND_HINT_STEP
 } from '../utils/actionTypes'
 
 /* ===== INITIALIZATION */
@@ -144,7 +146,7 @@ export const initUnlockCard = (activityId, id, contentId) => {
 export const initUnlockHint = (activityId, id, contentId) => {
 	return async dispatch => {
 		const hint = await genFetch(contentId)
-		dispatch(setHint(contentId, hint))
+		dispatch(setHint(id, contentId, hint))
 
 		const message = await unlockHint(activityId, id)
 		// console.log(message)
@@ -175,6 +177,18 @@ export const incrementLastCardUnlockedIndex = () => {
 	}
 }
 
+export const incrementCurrentHintStep = () => {
+  return {
+    type: INCREMENT_CURRENT_HINT_STEP
+  }
+}
+
+export const resetButtonStateAndHintStep = () => {
+  return {
+    type: RESET_BUTTON_STATE_AND_HINT_STEP
+  }
+}
+
 const setCard = card => {
 	return {
 		type: SET_CARD,
@@ -182,9 +196,10 @@ const setCard = card => {
 	}
 }
 
-const setHint = (contentId, hint) => {
+const setHint = (id, contentId, hint) => {
 	return {
 		type: SET_HINT,
+		id,
 		contentId,
 		hint
 	}

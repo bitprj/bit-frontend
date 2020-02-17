@@ -11,16 +11,11 @@ import HeaderShadow from '../../shared/utils/HeaderShadow'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 import ParsedContent from '../../shared/ParsedContent'
 
+import { fadeIn } from '../../../assets/styles/StatusAnime'
 import { initUnlockCard } from '../../../redux/actions/learnData'
-
-import {
-	incrementCurrentCardIndex,
-	incrementLastCardUnlockedIndex
-} from '../../../redux/actions/learnData'
 
 const Container = styled.div`
 	flex: 2;
-	position: relative;
 	background-color: #fff;
 	overflow-y: auto;
 `
@@ -29,6 +24,7 @@ const HeaderWrapper = styled.div`
 	position: sticky;
 	top: 0;
 	z-index: 99;
+	opacity: 0;
 `
 
 const Header = styled(ImgAndContent)`
@@ -47,6 +43,7 @@ const Header = styled(ImgAndContent)`
 const ContentArea = styled.div`
 	padding: 0.2em 2em 3em;
 	font-size: 84%;
+	opacity: 0;
 
 	@media screen and (orientation: landscape) {
 		padding-left: 3.5em;
@@ -58,6 +55,7 @@ const StyledNextButton = styled(NextButton)`
 	position: fixed;
 	right: 5.2em;
 	bottom: 4em;
+	opacity: 0;
 
 	&:hover {
 		transform: translateY(-0.3em);
@@ -65,19 +63,16 @@ const StyledNextButton = styled(NextButton)`
 `
 
 const Content = ({
+	isReady,
 	activityId,
 	id,
 	contentfulId,
 	order,
-	hints,
 	content,
 	cardName,
-	isLast,
 	currentCardIndex,
 	lastCardUnlockedIndex,
-	onInitUnlockCard,
-	onIncrementCurrentCardIndex,
-	onIncrementLastCardUnlockedIndex
+	onInitUnlockCard
 }) => {
 	const containerRef = useRef(null)
 	const headerRef = useRef(null)
@@ -85,6 +80,10 @@ const Content = ({
 	useEffect(() => {
 		// containerRef.current.addEventListener('scroll', handleHeaderSize)
 	}, [])
+
+	useEffect(() => {
+		fadeIn('.learn-i-contentheader, .learn-i-contentarea, .learn-i-nextbutton')
+	}, [isReady])
 
 	useEffect(() => {
 		if (containerRef.current.scrollTop !== 0)
@@ -98,15 +97,6 @@ const Content = ({
 		},
 		[lastCardUnlockedIndex]
 	)
-
-	const handleClickNext = () => {
-		if (!isLast) {
-			onIncrementCurrentCardIndex()
-			if (currentCardIndex === lastCardUnlockedIndex) {
-				onIncrementLastCardUnlockedIndex()
-			}
-		}
-	}
 
 	let prevScrollTop = 0
 	const handleHeaderSize = () => {
@@ -131,38 +121,35 @@ const Content = ({
 			ref={containerRef}
 			className="low-profile-scrollbar fat"
 		>
-			{cardName && (
-				<HeaderWrapper id="content-header">
-					<Header
-						ref={headerRef}
-						className="minimized transition-medium"
-						imgURL={require('../../../assets/icons/document.svg')}
-						imgWidthEms="4"
-						gap="2em"
-						reverse
-						contentSize={'150%'}
-						title={cardName}
-					>
-						<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
-							INTRODUCTION TO GITHUB
-						</code>
-					</Header>
-					<HeaderShadow containerRef={containerRef} />
-				</HeaderWrapper>
-			)}
+			{content && (
+				<>
+					<HeaderWrapper id="content-header" className="learn-i-contentheader">
+						<Header
+							ref={headerRef}
+							className="minimized transition-medium"
+							imgURL={require('../../../assets/icons/document.svg')}
+							imgWidthEms="4"
+							gap="2em"
+							reverse
+							contentSize={'150%'}
+							title={cardName}
+						>
+							<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
+								INTRODUCTION TO GITHUB
+							</code>
+						</Header>
+						<HeaderShadow containerRef={containerRef} />
+					</HeaderWrapper>
 
-			<ContentArea>
-				{content && <ParsedContent id="learn-content" document={content} />}
+					<ContentArea className="learn-i-contentarea">
+						<ParsedContent id="learn-content" document={content} />
 
-				<UnlockedHintSection />
-				{hints && hints.length ? <LockedHintSection /> : null}
-			</ContentArea>
+						<UnlockedHintSection />
+						<LockedHintSection />
+					</ContentArea>
 
-			{activityId && (
-				<StyledNextButton
-					className="transition-medium"
-					clicked={handleClickNext}
-				/>
+					<StyledNextButton className="learn-i-nextbutton transition-medium" />
+				</>
 			)}
 		</Container>
 	)
@@ -173,21 +160,19 @@ const mapStateToProps = state => {
 		learnData: {
 			id: activityId,
 			cards,
-			currentCardIndex,
-			lastCardUnlockedIndex
+			indicators: { currentCardIndex, lastCardUnlockedIndex }
 		}
 	} = state
 
 	const card = cards && cards[currentCardIndex]
 	return {
+		isReady: !!get(card, 'content'),
 		activityId,
 		id: get(card, 'id'),
 		contentfulId: get(card, 'contentfulId'),
 		order: get(card, 'order'),
 		cardName: get(card, 'name'),
 		content: get(card, 'content'),
-		hints: get(card, 'hints'),
-		isLast: cards && currentCardIndex === cards.length - 1,
 		currentCardIndex,
 		lastCardUnlockedIndex
 	}
@@ -196,10 +181,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		onInitUnlockCard: (activityId, id, contentfulId) =>
-			dispatch(initUnlockCard(activityId, id, contentfulId)),
-		onIncrementCurrentCardIndex: () => dispatch(incrementCurrentCardIndex()),
-		onIncrementLastCardUnlockedIndex: () =>
-			dispatch(incrementLastCardUnlockedIndex())
+			dispatch(initUnlockCard(activityId, id, contentfulId))
 	}
 }
 

@@ -83,13 +83,16 @@ export const GlobalStyle = createGlobalStyle`
   /**
    * TRANSITIONS 
    */
-  .transition-short {
+  .transition-short,
+  .transition-short-children > * {
     transition: 0.1s ease all;
   }
-  .transition-medium {
+  .transition-medium,
+  .transition-medium-children > * {
     transition: 0.2s ease all;
   }
-  .transition-long {
+  .transition-long,
+  .transition-long-children > * {
     transition: 0.4s ease all;
   }
   .lift,

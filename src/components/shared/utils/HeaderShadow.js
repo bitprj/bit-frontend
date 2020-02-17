@@ -11,11 +11,20 @@ const ShadowWrapper = styled.div`
 	overflow: hidden;
 	text-align: center;
 	pointer-events: none;
+
 	${props =>
 		props.reverse &&
 		`transform: scaleY(-1);
     bottom: 0;
   `}
+
+	${props =>
+		props.onClick
+			? `
+      pointer-events: auto;
+      :hover { background-color: #0001 }
+      `
+			: ''}
 `
 const Shadow = styled.div`
 	display: block;
@@ -25,12 +34,20 @@ const Shadow = styled.div`
 	border-radius: 8em / 1em;
 	box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.2);
 	opacity: 0;
+	pointer-events: none;
 `
 
 const UpArrow = styled(KeyboardArrowUpRoundedIcon)`
 	font-size: 333% !important;
 	transition: 0.1s ease all !important;
 	color: #999;
+
+	${props =>
+		props.onClick
+			? `
+      pointer-events: auto;
+      :hover { transform: scale(1.2) }`
+			: ''}
 `
 
 /**
@@ -40,7 +57,13 @@ const UpArrow = styled(KeyboardArrowUpRoundedIcon)`
  *
  * see content.js under learn for an example
  */
-const HeaderShadow = ({ containerRef, type, reverse }) => {
+const HeaderShadow = ({
+	containerRef,
+	type,
+	reverse,
+	onClick,
+	innerOnClick
+}) => {
 	const shadowRef = useRef(null)
 
 	useEffect(() => {
@@ -83,7 +106,13 @@ const HeaderShadow = ({ containerRef, type, reverse }) => {
 	const selectHeaderShadow = () => {
 		switch (type) {
 			case 'arrow':
-				return <UpArrow ref={shadowRef} className="transition-short" />
+				return (
+					<UpArrow
+						ref={shadowRef}
+						className="transition-short"
+						onClick={innerOnClick}
+					/>
+				)
 
 			default:
 				return <Shadow ref={shadowRef} className="transition-short" />
@@ -92,7 +121,9 @@ const HeaderShadow = ({ containerRef, type, reverse }) => {
 
 	return (
 		<>
-			<ShadowWrapper reverse={reverse}>{selectHeaderShadow()}</ShadowWrapper>
+			<ShadowWrapper reverse={reverse} onClick={onClick}>
+				{selectHeaderShadow()}
+			</ShadowWrapper>
 		</>
 	)
 }

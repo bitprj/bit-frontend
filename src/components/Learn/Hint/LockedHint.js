@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
 import { connect } from 'react-redux'
+import { scroller } from 'react-scroll'
 
 import { initUnlockHint } from '../../../redux/actions/learnData'
 import DynamicModal from '../../shared/containers/DynamicModal'
@@ -57,7 +58,19 @@ const LockedHint = ({
 	let clickOnce = false
 	const [openConfirmHint, setOpenConfirmHint] = useState(false)
 
+	// const handleScrollTo = hintId => {
+	// 	scroller.scrollTo(`unlocked-hint-${hintId}`, {
+	// 		duration: 500,
+	// 		smooth: true,
+	// 		containerId: 'content',
+	// 		offset: -document.getElementById('content-header').clientHeight + 1
+	// 	})
+	// }
+	// handleScrollTo(id)
+
 	const unlockHint = () => {
+		setOpenConfirmHint(false)
+
 		if (!clickOnce) {
 			onInitUnlockHint(activityId, id, contentfulId)
 			clickOnce = true

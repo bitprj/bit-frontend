@@ -50,11 +50,13 @@ const AnimatingIconLine = styled(IconLine)`
 
 const LockedHintSection = ({ activityId, hints }) => {
 	const containerRef = useRef(null)
+	let hintIndexCounter = 0
 
 	const renderedLockedHintsRecursive = hints => {
 		if (!hints) return
 
 		return hints.map(hint => {
+			hintIndexCounter++
 			if (hint.isUnlocked) {
 				return renderedLockedHintsRecursive(hint.hints)
 			} else {
@@ -81,36 +83,41 @@ const LockedHintSection = ({ activityId, hints }) => {
 
 	return (
 		<Container>
-			<LockedHintsContainer>
-				<HeaderShadow containerRef={containerRef} />
-				<LockedHints
-					className="low-profile-scrollbar only-hover"
-					ref={containerRef}
-				>
-					{renderedLockedHints}
-				</LockedHints>
-				<HeaderShadow reverse containerRef={containerRef} />
-			</LockedHintsContainer>
+			{hintIndexCounter !== 0 && (
+				<>
+					<LockedHintsContainer>
+						<HeaderShadow containerRef={containerRef} />
+						<LockedHints
+							className="low-profile-scrollbar only-hover"
+							ref={containerRef}
+						>
+							{renderedLockedHints}
+						</LockedHints>
+						<HeaderShadow reverse containerRef={containerRef} />
+					</LockedHintsContainer>
 
-			{hints && (
-				<HelpInfo>
-					<Icon src={require('../../../assets/icons/admin-mentoring.svg')} />
-					<h1 style={{ margin: 0 }}>Are You Stuck?</h1>
-					<p>
-						We all get stuck sometimes and need help. These are the most
-						commonly asked questions from the community.
-					</p>
-					<p>
-						However, like the real world, hints don't come free. You can spend
-						Gems that you earn for completing each card on unlocking valuable
-						hints.
-					</p>
-					<h3>
-						<AnimatingIconLine icon={<ArrowForwardIcon fontSize="inherit" />}>
-							How it works
-						</AnimatingIconLine>
-					</h3>
-				</HelpInfo>
+					<HelpInfo>
+						<Icon src={require('../../../assets/icons/admin-mentoring.svg')} />
+						<h1 style={{ margin: 0 }}>Are You Stuck?</h1>
+						<p>
+							We all get stuck sometimes and need help. These are the most
+							commonly asked questions from the community.
+						</p>
+						<p>
+							However, like the real world, hints don't come free. You can spend
+							Gems that you earn for completing each card on unlocking valuable
+							hints.
+						</p>
+						<h3>
+							<AnimatingIconLine
+								reverse
+								icon={<ArrowForwardIcon fontSize="inherit" />}
+							>
+								How it works
+							</AnimatingIconLine>
+						</h3>
+					</HelpInfo>
+				</>
 			)}
 		</Container>
 	)
@@ -118,14 +125,16 @@ const LockedHintSection = ({ activityId, hints }) => {
 
 const mapStateToProps = state => {
 	const {
-		learnData: { id: activityId, cards, currentCardIndex }
+		learnData: {
+			id: activityId,
+			cards,
+			indicators: { currentCardIndex }
+		}
 	} = state
-
-	const hints = cards && get(cards[currentCardIndex], 'hints')
 
 	return {
 		activityId,
-		hints
+		hints: cards && get(cards[currentCardIndex], 'hints')
 	}
 }
 

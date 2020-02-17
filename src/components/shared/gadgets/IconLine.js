@@ -9,9 +9,9 @@ const IconWrapper = styled.div`
 	${props =>
 		props.reverse
 			? `
-      margin-right: ${props.marginRight || '0.2em'};`
+      margin-left: ${props.marginRight || '0.2em'};`
 			: `
-      margin-left: ${props.marginRight || '0.2em'};`}
+      margin-right: ${props.marginRight || '0.2em'};`}
 
 	display: inline-flex;
 	align-self: center;
@@ -22,8 +22,8 @@ const IconWrapper = styled.div`
 		height: 1em;
 		top: 0.125em;
 		position: relative;
-    font-size: inherit;
-    transition: 0.2s ease all;
+		font-size: inherit;
+		transition: 0.1s ease all;
 	}
 `
 
@@ -32,13 +32,17 @@ const IconLine = ({ className, children, icon, marginRight, reverse }) => {
 		<Container className={className}>
 			{reverse ? (
 				<>
-					<IconWrapper marginRight={marginRight}>{icon}</IconWrapper>
 					<span>{children}</span>
+					<IconWrapper reverse={reverse} marginRight={marginRight}>
+						{icon}
+					</IconWrapper>
 				</>
 			) : (
 				<>
+					<IconWrapper reverse={reverse} marginRight={marginRight}>
+						{icon}
+					</IconWrapper>
 					<span>{children}</span>
-					<IconWrapper marginRight={marginRight}>{icon}</IconWrapper>
 				</>
 			)}
 		</Container>

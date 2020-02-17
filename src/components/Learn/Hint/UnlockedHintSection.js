@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Element as ScrollElement } from 'react-scroll'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
@@ -11,7 +11,7 @@ const Container = styled.div`
 `
 
 const UnlockedHintSection = ({ unlockedHints }) => {
-  let hintIndexMapper = 0
+	let hintIndexMapper = 0
 
 	const renderedUnlockedHintsRecursive = unlockedHints => {
 		if (!unlockedHints) return
@@ -22,7 +22,7 @@ const UnlockedHintSection = ({ unlockedHints }) => {
 			const index = hintIndexMapper++
 			return (
 				<React.Fragment key={`hint-${id}`}>
-					<ScrollElement name={`unlocked-hint-${index}`}>
+					<ScrollElement name={`unlocked-hint-${id}`}>
 						<UnlockedHint id={id} name={name} steps={steps} />
 					</ScrollElement>
 					{renderedUnlockedHintsRecursive(hint.unlockedHints)}
@@ -41,12 +41,14 @@ const UnlockedHintSection = ({ unlockedHints }) => {
 
 const mapStateToProps = state => {
 	const {
-		learnData: { cards, currentCardIndex }
+		learnData: {
+			cards,
+			indicators: { currentCardIndex }
+		}
 	} = state
 
 	return {
-		unlockedHints: cards && get(cards[currentCardIndex], 'unlockedHints'),
-		currentCardIndex
+		unlockedHints: cards && get(cards[currentCardIndex], 'unlockedHints')
 	}
 }
 

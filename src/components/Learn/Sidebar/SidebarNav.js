@@ -1,12 +1,10 @@
-import React, { useState, useRef, useMemo } from 'react'
-import { scroller } from 'react-scroll'
+import React, { useState, useRef } from 'react'
+import { animateScroll } from 'react-scroll'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import ReactMarkdown from 'react-markdown'
-import { get } from 'lodash'
 
+import CardHints from './CardHints'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
-import ClampedText from '../../shared/utils/ClampedText'
 import HeaderShadow from '../../shared/utils/HeaderShadow'
 
 import { setCurrentCardByIndex } from '../../../redux/actions/learnData'
@@ -24,37 +22,14 @@ const ActiveWrapper = styled.div`
 const NavItem = styled(ImgAndContent)`
 	margin: 0;
 	padding: 0.5em 2em 0.5em 0;
+	color: #aaa;
+	cursor: default;
 	${props => props.hasSubitems && `border-bottom: 0.5px #e9e9e9 solid;`}
-	${props =>
-		props.locked &&
-		`color: #aaa;
-    cursor: default;`}
-`
-
-const NavSubWrapper = styled.div`
-	padding: 0.75em;
-	padding-left: ${props => 1.2 * props.nestLevel}em;
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-`
-
-const NavSubitem = styled(ClampedText)`
-	font-size: 80%;
-	font-style: italic;
-`
-
-const NavSubitemImg = styled.div`
-	width: 4.8em;
-	text-align: center;
-	font-style: normal;
-	color: ${props => props.theme.accent};
-	flex-shrink: 0;
+	${props => props.unlocked && `color: #000; cursor: pointer;`}
 `
 
 const SidebarNav = ({
 	cards,
-	unlockedHints,
 	currentCardIndex,
 	lastCardUnlockedIndex,
 	onSetCurrentCardByIndex
@@ -64,46 +39,17 @@ const SidebarNav = ({
 	// basically, if hints are unlocked for current card
 	const [hasSubitems, setHasSubitems] = useState(false)
 
-	let mapHintIndex = 0
-
-	const renderedHintsRecursive = (unlockedHints, nestLevel = 0) => {
-		if (!unlockedHints) return
-
-		return unlockedHints.map(hint => {
-			const { id, name } = hint
-			const index = mapHintIndex++
-			if (!hasSubitems) setHasSubitems(true)
-			return (
-				<React.Fragment key={`sidebar-hint-${id}`}>
-					<NavSubWrapper
-						className="hover-lift transition-short"
-						nestLevel={nestLevel}
-						onClick={() => {
-							scroller.scrollTo(`unlocked-hint-${index}`, {
-								duration: 500,
-								smooth: true,
-								containerId: 'content',
-								offset:
-									-document.getElementById('content-header').clientHeight + 1
-							})
-						}}
-					>
-						<NavSubitemImg>&bull;</NavSubitemImg>
-						<NavSubitem clamp={1}>
-							<ReactMarkdown className="markdown-header" source={name} />
-						</NavSubitem>
-					</NavSubWrapper>
-					{renderedHintsRecursive(hint.unlockedHints, nestLevel + 1)}
-				</React.Fragment>
-			)
-		})
+	const scrollOptions = container => ({
+		duration: 500,
+		smooth: true,
+		containerId: container
+	})
+	const handleScrollToTop = container => {
+		animateScroll.scrollToTop(scrollOptions(container))
 	}
-
-	// prettier-ignore
-	const renderedHints = useMemo(
-    () => renderedHintsRecursive(unlockedHints), [
-		unlockedHints
-	])
+	const handleScrollToBottom = container => {
+		animateScroll.scrollToBottom(scrollOptions(container))
+	}
 
 	const renderedCards =
 		cards &&
@@ -116,44 +62,58 @@ const SidebarNav = ({
 				<ActiveWrapper
 					key={`learn-nav-${index}`}
 					className={className}
-					onClick={() =>
+					onClick={() => {
 						index <= lastCardUnlockedIndex && onSetCurrentCardByIndex(index)
-					}
+					}}
 				>
 					<NavItem
-						hover
 						imgWidthEms="3"
+						hover
 						imgText={index + 1}
 						title={card && card.name}
 						gap="0"
 						time={'15 min'}
 						hasSubitems={isCurrentCard && hasSubitems}
-						locked={index > lastCardUnlockedIndex}
+						unlocked={index <= lastCardUnlockedIndex}
+						onClick={() =>
+							isCurrentCard && hasSubitems && handleScrollToTop('content')
+						}
 					/>
-					{isCurrentCard && renderedHints}
+					{isCurrentCard && <CardHints setHasSubitems={setHasSubitems} />}
 				</ActiveWrapper>
 			)
 		})
 
 	return (
-		<Container ref={containerRef} className="low-profile-scrollbar only-hover">
+		<Container
+			id="sidebar-nav"
+			ref={containerRef}
+			className="low-profile-scrollbar only-hover fade-in"
+		>
 			<HeaderShadow containerRef={containerRef} />
 			{renderedCards}
-			<HeaderShadow containerRef={containerRef} reverse type="arrow" />
+			<HeaderShadow
+				containerRef={containerRef}
+				reverse
+				type="arrow"
+				innerOnClick={() => handleScrollToBottom('sidebar-nav')}
+			/>
 		</Container>
 	)
 }
 
 const mapStateToProps = state => {
 	const {
-		learnData: { cards, currentCardIndex, lastCardUnlockedIndex }
+		learnData: {
+			cards,
+			indicators: { currentCardIndex, lastCardUnlockedIndex }
+		}
 	} = state
 
-	const unlockedHints = cards && get(cards[currentCardIndex], 'unlockedHints')
+	// TODO fix unnecessary rerenders: split cards into cards up to layer 1 and currentCard
 
 	return {
 		cards,
-		unlockedHints,
 		currentCardIndex,
 		lastCardUnlockedIndex
 	}

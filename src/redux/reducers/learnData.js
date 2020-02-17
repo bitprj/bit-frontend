@@ -1,4 +1,8 @@
 import { cloneDeep, merge as mergeDeep, get } from 'lodash'
+import {
+	STATE_CARD,
+	STATE_HINT
+} from '../../components/Learn/Content/NextButton'
 // import { iterateNodes } from '../../utils/deepObjUtils'
 import {
 	SET_ACTIVITY,
@@ -10,12 +14,19 @@ import {
 	SET_CURRENT_CARD_BY_INDEX,
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
-	INCREMENT_LAST_CARD_UNLOCKED_INDEX
+	INCREMENT_LAST_CARD_UNLOCKED_INDEX,
+	INCREMENT_CURRENT_HINT_STEP,
+	RESET_BUTTON_STATE_AND_HINT_STEP
 } from '../utils/actionTypes'
 
 const initialState = {
-	currentCardIndex: 0,
-	lastCardUnlockedIndex: 0,
+	indicators: {
+		currentCardIndex: undefined,
+		lastCardUnlockedIndex: undefined,
+		lastHintUnlockedId: undefined,
+		currentButtonState: STATE_CARD,
+		currentHintStep: 0
+	},
 	cards: []
 }
 
@@ -26,7 +37,10 @@ const reducer = (state = initialState, action) => {
 		}
 
 		case SET_ACTIVITY_PROGRESS: {
-			return { ...state, ...action.activityProgress }
+			return {
+				...state,
+				indicators: { ...state.indicators, ...action.activityProgress }
+			}
 		}
 
 		case SET_UNLOCKED_CARDS: {
@@ -56,7 +70,10 @@ const reducer = (state = initialState, action) => {
 				...state,
 				cards: cloneDeep(state.cards)
 			}
-			const { cards, lastCardUnlockedIndex } = nextState
+			const {
+				cards,
+				indicators: { lastCardUnlockedIndex }
+			} = nextState
 			hintStatusSeparation(action.card)
 			mergeDeep(cards[lastCardUnlockedIndex], action.card)
 			return nextState
@@ -64,10 +81,16 @@ const reducer = (state = initialState, action) => {
 
 		case SET_HINT: {
 			// use hints not lockedhints instead because lockedhints removes lower stuff
-			const { contentId, hint: nextHint } = action
+			const { id, contentId, hint: nextHint } = action
 			const nextState = cloneDeep(state)
-			const { cards, currentCardIndex } = nextState
+			const {
+				cards,
+				indicators: { currentCardIndex }
+			} = nextState
 			const card = cards[currentCardIndex]
+
+			nextState.indicators.lastHintUnlockedId = id
+			nextState.indicators.currentButtonState = STATE_HINT
 
 			const hintUnlockMovement = node => {
 				if (!node.hints) return
@@ -94,26 +117,58 @@ const reducer = (state = initialState, action) => {
 		case SET_CURRENT_CARD_BY_INDEX: {
 			return {
 				...state,
-				currentCardIndex: action.cardIndex
+				indicators: {
+					...state.indicators,
+					currentCardIndex: action.cardIndex
+				}
 			}
 		}
 		case INCREMENT_CURRENT_CARD_INDEX: {
 			return {
 				...state,
-				currentCardIndex: state.currentCardIndex + 1
+				indicators: {
+					...state.indicators,
+					currentCardIndex: state.indicators.currentCardIndex + 1
+				}
 			}
 		}
 
 		case SET_LAST_CARD_UNLOCKED_INDEX_BY_ID: {
 			return {
 				...state,
-				lastCardUnlockedIndex: action.cardIndex
+				indicators: {
+					...state.indicators,
+					lastCardUnlockedIndex: action.cardIndex
+				}
 			}
 		}
 		case INCREMENT_LAST_CARD_UNLOCKED_INDEX: {
 			return {
 				...state,
-				lastCardUnlockedIndex: state.lastCardUnlockedIndex + 1
+				indicators: {
+					...state.indicators,
+					lastCardUnlockedIndex: state.indicators.lastCardUnlockedIndex + 1
+				}
+			}
+		}
+
+		case INCREMENT_CURRENT_HINT_STEP: {
+			return {
+				...state,
+				indicators: {
+					...state.indicators,
+					currentHintStep: state.indicators.currentHintStep + 1
+				}
+			}
+		}
+		case RESET_BUTTON_STATE_AND_HINT_STEP: {
+			return {
+				...state,
+				indicators: {
+					...state.indicators,
+					currentButtonState: STATE_CARD,
+					currentHintStep: 0
+				}
 			}
 		}
 

@@ -40,66 +40,72 @@ const Description = styled.div`
  * To use this component, it is pivotal that the props `imgWidthEms` is provided to create
  * the size context for the component.
  */
-const ImgAndContent = forwardRef(({
-	className,
-	clicked,
-	style,
+const ImgAndContent = forwardRef(
+	(
+		{
+			className,
+			clicked,
+			onClick,
+			style,
 
-	imgWidthEms,
-	imgURL,
-	imgText,
-	shadow,
-	reverse,
-	gap,
-	contentSize,
+			imgWidthEms,
+			imgURL,
+			imgText,
+			shadow,
+			reverse,
+			gap,
+			contentSize,
 
-	title,
-	description,
-	time,
-	hover,
-	children
-}, ref) => {
-	const showAppropriateImg =
-		(imgURL && (
-			<Icon width={`${imgWidthEms}em`} src={imgURL} shadow={shadow} />
-		)) ||
-		(imgText && <Wrapper width={`${imgWidthEms}em`}>{imgText}</Wrapper>)
+			title,
+			description,
+			time,
+			hover,
+			children
+		},
+		ref
+	) => {
+		const showAppropriateImg =
+			(imgURL && (
+				<Icon width={`${imgWidthEms}em`} src={imgURL} shadow={shadow} />
+			)) ||
+			(imgText && <Wrapper width={`${imgWidthEms}em`}>{imgText}</Wrapper>)
 
-	return (
-		<Container
-			ref={ref}
-			style={style}
-			imgWidthEms={imgWidthEms}
-			className={className + (hover ? ' hover-lift transition-short' : '')}
-			onClick={clicked}
-		>
-			{showAppropriateImg}
-
-			<Description
+		return (
+			<Container
+				ref={ref}
+				style={style}
 				imgWidthEms={imgWidthEms}
-				reverse={reverse}
-				gap={gap}
-				contentSize={contentSize}
+				className={`${className} transition-short ${hover ? 'hover-lift' : ''}`}
+				onClick={clicked || onClick}
 			>
-				{/* If there is no description, make title smaller */}
-				{description ? (
-					<h2 style={{ margin: 0 }}>{title}</h2>
-				) : (
-					<h3 style={{ margin: 0 }}>{title}</h3>
-				)}
+				{showAppropriateImg}
 
-				{description && (
-					<ClampedText style={{ margin: `${imgWidthEms / 14}em 0` }}>
-						{description}
-					</ClampedText>
-				)}
+				<Description
+					imgWidthEms={imgWidthEms}
+					reverse={reverse}
+					gap={gap}
+					contentSize={contentSize}
+				>
+					{/* If there is no description, make title smaller */}
+					{description ? (
+						<h2 style={{ margin: 0 }}>{title}</h2>
+					) : (
+						<h3 style={{ margin: 0 }}>{title}</h3>
+					)}
 
-				{time ? <IconLine icon={<AccessTimeIcon />}>{time}</IconLine> : null}
+					{description && (
+						<ClampedText style={{ margin: `${imgWidthEms / 14}em 0` }}>
+							{description}
+						</ClampedText>
+					)}
 
-				{children}
-			</Description>
-		</Container>
-	)
-})
+					{time ? <IconLine icon={<AccessTimeIcon />}>{time}</IconLine> : null}
+
+					{children}
+				</Description>
+			</Container>
+		)
+	}
+)
 
 export default ImgAndContent
