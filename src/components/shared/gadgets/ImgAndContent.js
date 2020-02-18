@@ -60,6 +60,7 @@ const ImgAndContent = forwardRef(
 			description,
 			time,
 			hover,
+			strongHover,
 			children
 		},
 		ref
@@ -69,13 +70,14 @@ const ImgAndContent = forwardRef(
 				<Icon width={`${imgWidthEms}em`} src={imgURL} shadow={shadow} />
 			)) ||
 			(imgText && <Wrapper width={`${imgWidthEms}em`}>{imgText}</Wrapper>)
-
 		return (
 			<Container
 				ref={ref}
 				style={style}
 				imgWidthEms={imgWidthEms}
-				className={`${className} transition-short ${hover ? 'hover-lift' : ''}`}
+				className={`${className} transition-medium ${
+					hover ? 'hover-lift' : ''
+				} ${strongHover ? 'hover-strong-lift' : ''}`}
 				onClick={clicked || onClick}
 			>
 				{showAppropriateImg}

@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
-import { useInitialConditionalDidUpdateEffect } from '../../../utils/customHooks'
 
 import UnlockedHintSection from '../Hint/UnlockedHintSection'
 import LockedHintSection from '../Hint/LockedHintSection'
@@ -11,8 +10,9 @@ import HeaderShadow from '../../shared/utils/HeaderShadow'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 import ParsedContent from '../../shared/ParsedContent'
 
-import { fadeIn } from '../../../assets/styles/StatusAnime'
+import { fadeIn } from '../../../assets/styles/GlobalAnime'
 import { initUnlockCard } from '../../../redux/actions/learnData'
+import { incrementGemsBy } from '../../../redux/actions/studentData'
 
 const Container = styled.div`
 	flex: 2;
@@ -55,7 +55,7 @@ const StyledNextButton = styled(NextButton)`
 	position: fixed;
 	right: 5.2em;
 	bottom: 4em;
-	opacity: 0;
+	opacity: 0.3;
 
 	&:hover {
 		transform: translateY(-0.3em);
@@ -67,12 +67,13 @@ const Content = ({
 	activityId,
 	id,
 	contentfulId,
-	order,
 	content,
-	cardName,
+	gems,
+	name,
 	currentCardIndex,
 	lastCardUnlockedIndex,
-	onInitUnlockCard
+	onInitUnlockCard,
+	onIncrementGemsBy
 }) => {
 	const containerRef = useRef(null)
 	const headerRef = useRef(null)
@@ -81,22 +82,57 @@ const Content = ({
 		// containerRef.current.addEventListener('scroll', handleHeaderSize)
 	}, [])
 
+	/**
+	 * Purpose: animation loading
+	 */
 	useEffect(() => {
-		fadeIn('.learn-i-contentheader, .learn-i-contentarea, .learn-i-nextbutton')
+		fadeIn('.learn-i-nextbutton', { opacity: [0.3, 1] })
+		fadeIn('.learn-i-contentheader, .learn-i-contentarea')
 	}, [isReady])
 
+	/**
+	 * Purpose: determine if card was just unlocked
+	 *  - without this there's no way of telling if render occurred
+   *    because card was unlocked
+	 */
+	const isCardUnlocked = useRef(undefined)
+	useEffect(() => {
+		if (isCardUnlocked.current === undefined && lastCardUnlockedIndex) {
+			isCardUnlocked.current = false
+		} else if (isCardUnlocked.current === false && lastCardUnlockedIndex) {
+			isCardUnlocked.current = true
+		}
+	}, [lastCardUnlockedIndex])
+
+	/**
+	 * Purpose: scroll to top each card change so that
+	 * unlocking a new card won't leave you at the bottom of the page
+	 *  - TODO keep track of all current scroll for each page
+	 */
 	useEffect(() => {
 		if (containerRef.current.scrollTop !== 0)
-			containerRef.current.scrollTo(0, 0) // TODO keep track of all current scroll for each page
+			containerRef.current.scrollTo(0, 0)
+		//
 	}, [currentCardIndex])
 
-	useInitialConditionalDidUpdateEffect(
-		activityId,
-		() => {
+	/**
+	 * Purpose: unlock card whenever this card is just unlocked
+	 */
+	useEffect(() => {
+		if (isCardUnlocked.current && activityId) {
 			onInitUnlockCard(activityId, id, contentfulId)
-		},
-		[lastCardUnlockedIndex]
-	)
+		}
+	}, [lastCardUnlockedIndex])
+
+	/**
+	 * Purpose: add gems to student's total
+	 * - Gem only gets changed during initialization of each card
+	 */
+	useEffect(() => {
+		if (isCardUnlocked.current && gems) {
+			onIncrementGemsBy(gems)
+		}
+	}, [gems])
 
 	let prevScrollTop = 0
 	const handleHeaderSize = () => {
@@ -132,7 +168,7 @@ const Content = ({
 							gap="2em"
 							reverse
 							contentSize={'150%'}
-							title={cardName}
+							title={name}
 						>
 							<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
 								INTRODUCTION TO GITHUB
@@ -170,9 +206,9 @@ const mapStateToProps = state => {
 		activityId,
 		id: get(card, 'id'),
 		contentfulId: get(card, 'contentfulId'),
-		order: get(card, 'order'),
-		cardName: get(card, 'name'),
+		name: get(card, 'name'),
 		content: get(card, 'content'),
+		gems: get(card, 'gems'),
 		currentCardIndex,
 		lastCardUnlockedIndex
 	}
@@ -181,7 +217,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		onInitUnlockCard: (activityId, id, contentfulId) =>
-			dispatch(initUnlockCard(activityId, id, contentfulId))
+			dispatch(initUnlockCard(activityId, id, contentfulId)),
+		onIncrementGemsBy: gemAmount => dispatch(incrementGemsBy(gemAmount))
 	}
 }
 

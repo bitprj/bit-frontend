@@ -100,6 +100,10 @@ export const GlobalStyle = createGlobalStyle`
   .hover-lift:hover {
     box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.075);
   }
+  .strong-lift,
+  .hover-strong-lift:hover {
+    box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.1);
+  }
   .big-lift {
     box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.15);
   }

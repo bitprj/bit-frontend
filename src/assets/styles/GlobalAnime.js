@@ -22,7 +22,7 @@ export const slideIn = (targets, options) => {
 
 /**
  * STATUS-BASED ANIMATIONS
- * - works closely with react-transitio-group
+ * - works closely with react-transition-group
  */
 
 export const statusFadeOut = (status, targets, duration = 750) => {

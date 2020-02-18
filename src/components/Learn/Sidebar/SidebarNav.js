@@ -55,24 +55,22 @@ const SidebarNav = ({
 		cards &&
 		cards.map((card, index) => {
 			const isCurrentCard = currentCardIndex === index
-			const className = isCurrentCard
-				? 'active lift transition-medium'
-				: 'transition-medium'
+			const className = isCurrentCard ? 'active strong-lift' : ''
 			return (
 				<ActiveWrapper
 					key={`learn-nav-${index}`}
-					className={className}
+					className={`${className} transition-medium`}
 					onClick={() => {
 						index <= lastCardUnlockedIndex && onSetCurrentCardByIndex(index)
 					}}
 				>
 					<NavItem
 						imgWidthEms="3"
-						hover
+						strongHover
 						imgText={index + 1}
 						title={card && card.name}
 						gap="0"
-						time={'15 min'}
+						// time={'15 min'}
 						hasSubitems={isCurrentCard && hasSubitems}
 						unlocked={index <= lastCardUnlockedIndex}
 						onClick={() =>

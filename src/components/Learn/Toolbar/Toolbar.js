@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import Icon from '../../shared/gadgets/Icon'
@@ -11,6 +12,7 @@ const Container = styled.div`
 	padding: 0.5em;
 
 	background-color: ${props => props.theme.bg};
+	text-align: center;
 
 	@media screen and (orientation: landscape) {
 		padding: 0.42em;
@@ -31,14 +33,22 @@ const Elem = styled(Link)`
 	}
 `
 
-const Toolbar = props => {
+const Toolbar = ({ gems }) => {
 	return (
 		<Container>
 			<Elem to="/">
 				<Icon src={require('../../../assets/icons/logo.svg')} width={'100%'} />
 			</Elem>
+			<div style={{ color: '#fff' }}>{gems}</div>
 		</Container>
 	)
 }
 
-export default Toolbar
+const mapStateToProps = state => {
+	const {
+		studentData: { gems }
+	} = state
+	return { gems }
+}
+
+export default connect(mapStateToProps)(Toolbar)

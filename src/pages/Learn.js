@@ -9,7 +9,7 @@ import Toolbar from '../components/Learn/Toolbar/Toolbar'
 import Sidebar from '../components/Learn/Sidebar/Sidebar'
 import Content from '../components/Learn/Content/Content'
 
-import { fadeIn, statusFadeOut } from '../assets/styles/StatusAnime'
+import { fadeIn, statusFadeOut } from '../assets/styles/GlobalAnime'
 import { init } from '../redux/actions/learnData'
 
 const Container = styled.div`

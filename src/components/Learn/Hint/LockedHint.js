@@ -4,11 +4,13 @@ import ReactMarkdown from 'react-markdown'
 import { connect } from 'react-redux'
 import { scroller } from 'react-scroll'
 
-import { initUnlockHint } from '../../../redux/actions/learnData'
 import DynamicModal from '../../shared/containers/DynamicModal'
 import ClampedText from '../../shared/utils/ClampedText'
 import Button from '../../shared/gadgets/Button'
 import Icon from '../../shared/gadgets/Icon'
+
+import { initUnlockHint } from '../../../redux/actions/learnData'
+import { incrementGemsBy } from '../../../redux/actions/studentData'
 
 const Container = styled.div`
 	margin: 1em 0.5em;
@@ -53,7 +55,9 @@ const LockedHint = ({
 	name,
 	difficulty,
 	gems,
-	onInitUnlockHint
+	studentGems,
+	onInitUnlockHint,
+	onIncrementGemsBy
 }) => {
 	let clickOnce = false
 	const [openConfirmHint, setOpenConfirmHint] = useState(false)
@@ -72,7 +76,10 @@ const LockedHint = ({
 		setOpenConfirmHint(false)
 
 		if (!clickOnce) {
+			if (studentGems < gems) return alert('Not enough gems')
+
 			onInitUnlockHint(activityId, id, contentfulId)
+			onIncrementGemsBy(-gems)
 			clickOnce = true
 		}
 	}
@@ -122,11 +129,14 @@ const LockedHint = ({
 	)
 }
 
+const mapStateToProps = state => ({ studentGems: state.studentData.gems })
+
 const mapDispatchToProps = dispatch => {
 	return {
 		onInitUnlockHint: (activityId, id, contentId) =>
-			dispatch(initUnlockHint(activityId, id, contentId))
+			dispatch(initUnlockHint(activityId, id, contentId)),
+		onIncrementGemsBy: gemAmount => dispatch(incrementGemsBy(gemAmount))
 	}
 }
 
-export default connect(null, mapDispatchToProps)(LockedHint)
+export default connect(mapStateToProps, mapDispatchToProps)(LockedHint)

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { useDidUpdateEffect } from '../../../utils/customHooks'
 import DotRating from '../../shared/gadgets/DotRating'
 import SidebarNav from './SidebarNav'
-import { slideIn, fadeIn } from '../../../assets/styles/StatusAnime'
+import { slideIn, fadeIn } from '../../../assets/styles/GlobalAnime'
 
 const Container = styled.div`
 	flex: 1;

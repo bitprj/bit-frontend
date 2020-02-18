@@ -1,13 +1,19 @@
-import { getStudentInfo, getTrack, getTopic, getActivity } from '../../services/StudentService'
+import {
+	getStudentInfo,
+	getTrack,
+	getTopic,
+	getActivity
+} from '../../services/StudentService'
 
-import * as actionTypes from '../utils/actionTypes'
+import {
+	SET_STUDENT_DATA,
+	SET_CURRENT_TRACK,
+	SET_CURRENT_TOPIC,
+	SET_SUGGESTED_ACTIVITY,
+	INCREMENT_GEMS_BY
+} from '../utils/actionTypes'
 
-export const setStudentData = studentData => {
-	return {
-		type: actionTypes.SET_STUDENT_DATA,
-		studentData
-	}
-}
+/* ===== INITIALIZATION */
 
 export const initStudentData = () => {
 	return dispatch => {
@@ -15,13 +21,6 @@ export const initStudentData = () => {
 			const studentData = { ...fetchedStudentData }
 			dispatch(setStudentData(studentData))
 		})
-	}
-}
-
-export const setCurrentTrack = currentTrack => {
-	return {
-		type: actionTypes.SET_CURRENT_TRACK,
-		currentTrack
 	}
 }
 
@@ -35,13 +34,6 @@ export const initCurrentTrack = currentTrackID => {
 			// });
 			dispatch(setCurrentTrack(currentTrack))
 		})
-	}
-}
-
-export const setCurrentTopic = currentTopic => {
-	return {
-		type: actionTypes.SET_CURRENT_TOPIC,
-		currentTopic
 	}
 }
 
@@ -63,13 +55,6 @@ export const initCurrentTopic = currentTopicID => {
 	}
 }
 
-export const setSuggestedActivity = suggestedActivity => {
-	return {
-		type: actionTypes.SET_SUGGESTED_ACTIVITY,
-		suggestedActivity
-	}
-}
-
 export const initSuggestedActivity = suggestedActivityID => {
 	return dispatch => {
 		let suggestedActivity = {}
@@ -77,5 +62,42 @@ export const initSuggestedActivity = suggestedActivityID => {
 			suggestedActivity = { ...activityData }
 			dispatch(setSuggestedActivity(suggestedActivity))
 		})
+	}
+}
+
+const setStudentData = studentData => {
+	return {
+		type: SET_STUDENT_DATA,
+		studentData
+	}
+}
+
+const setCurrentTrack = currentTrack => {
+	return {
+		type: SET_CURRENT_TRACK,
+		currentTrack
+	}
+}
+
+const setCurrentTopic = currentTopic => {
+	return {
+		type: SET_CURRENT_TOPIC,
+		currentTopic
+	}
+}
+
+const setSuggestedActivity = suggestedActivity => {
+	return {
+		type: SET_SUGGESTED_ACTIVITY,
+		suggestedActivity
+	}
+}
+
+// ===== RUNTIME
+
+export const incrementGemsBy = gemAmount => {
+	return {
+		type: INCREMENT_GEMS_BY,
+		gemAmount
 	}
 }

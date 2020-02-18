@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import ParsedContent from '../../shared/ParsedContent'
 
-import { fadeIn, slideIn } from '../../../assets/styles/StatusAnime'
+import { fadeIn, slideIn } from '../../../assets/styles/GlobalAnime'
 import { STATE_HINT } from '../Content/NextButton'
 import { resetButtonStateAndHintStep } from '../../../redux/actions/learnData'
 

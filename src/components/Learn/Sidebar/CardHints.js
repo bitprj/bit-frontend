@@ -34,8 +34,6 @@ const NavSubitemImg = styled.div`
 `
 
 const CardHints = ({ setHasSubitems, unlockedHints }) => {
-	let mapHintIndex = 0
-
 	const handleScrollTo = hintId => {
 		scroller.scrollTo(`unlocked-hint-${hintId}`, {
 			duration: 500,
@@ -50,7 +48,6 @@ const CardHints = ({ setHasSubitems, unlockedHints }) => {
 
 		return unlockedHints.map(hint => {
 			const { id, name } = hint
-			const index = mapHintIndex++
 			setHasSubitems(true)
 			return (
 				<React.Fragment key={`sidebar-hint-${id}`}>
