@@ -1,5 +1,4 @@
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import invariant from 'redux-immutable-state-invariant'
 
@@ -19,11 +18,14 @@ const actionCreators = {
 }
 
 export default function configureStore(initialState) {
-	const composeEnhancers = composeWithDevTools({
-		actionCreators,
-		trace: true,
-		traceLimit: 25
-	})
+	const composeEnhancers =
+		typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+			? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+					actionCreators,
+					trace: true,
+					traceLimit: 25
+			  })
+			: compose
 
 	const middleware = [thunk]
 
