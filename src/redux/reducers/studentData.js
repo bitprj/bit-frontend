@@ -7,7 +7,7 @@ import {
 } from '../utils/actionTypes'
 
 const initialState = {
-	gems: 20
+	gems: 150
 }
 
 const reducer = (state = initialState, action) => {

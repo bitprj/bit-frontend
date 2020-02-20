@@ -11,6 +11,7 @@ import { setCurrentCardByIndex } from '../../../redux/actions/learnData'
 
 const Container = styled.div`
 	overflow-y: auto;
+	flex-grow: 1;
 `
 
 const ActiveWrapper = styled.div`
@@ -22,10 +23,10 @@ const ActiveWrapper = styled.div`
 const NavItem = styled(ImgAndContent)`
 	margin: 0;
 	padding: 0.5em 2em 0.5em 0;
-	color: #aaa;
+	color: #bbb;
 	cursor: default;
-	${props => props.hasSubitems && `border-bottom: 0.5px #e9e9e9 solid;`}
-	${props => props.unlocked && `color: #000; cursor: pointer;`}
+	${props => (props.hasSubitems ? `border-bottom: 0.5px #e9e9e9 solid;` : '')}
+	${props => (props.unlocked ? `color: #000; cursor: pointer;` : '')}
 `
 
 const SidebarNav = ({
@@ -55,7 +56,7 @@ const SidebarNav = ({
 		cards &&
 		cards.map((card, index) => {
 			const isCurrentCard = currentCardIndex === index
-			const className = isCurrentCard ? 'active strong-lift' : ''
+			const className = isCurrentCard ? 'strong-lift' : ''
 			return (
 				<ActiveWrapper
 					key={`learn-nav-${index}`}
@@ -86,7 +87,7 @@ const SidebarNav = ({
 		<Container
 			id="sidebar-nav"
 			ref={containerRef}
-			className="low-profile-scrollbar only-hover fade-in"
+			className="low-profile-scrollbar only-hover"
 		>
 			<HeaderShadow containerRef={containerRef} />
 			{renderedCards}

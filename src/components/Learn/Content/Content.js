@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 
+// import ConceptModal from ''
+// import CheckpointModal from
 import UnlockedHintSection from '../Hint/UnlockedHintSection'
 import LockedHintSection from '../Hint/LockedHintSection'
 import NextButton from './NextButton'
@@ -32,7 +34,9 @@ const Header = styled(ImgAndContent)`
 	padding: 2em 1em 1.5em;
 	padding-left: 3em;
 	cursor: auto;
-	background-color: #fff;
+  background-color: #fff;
+
+  transition: 0.2s ease padding;
 
 	&.minimized {
 		padding-top: 1em;
@@ -55,11 +59,9 @@ const StyledNextButton = styled(NextButton)`
 	position: fixed;
 	right: 5.2em;
 	bottom: 4em;
-	opacity: 0.3;
+  opacity: 0.3;
 
-	&:hover {
-		transform: translateY(-0.3em);
-	}
+  transition: 0.2s ease transform;
 `
 
 const Content = ({
@@ -78,12 +80,8 @@ const Content = ({
 	const containerRef = useRef(null)
 	const headerRef = useRef(null)
 
-	useEffect(() => {
-		// containerRef.current.addEventListener('scroll', handleHeaderSize)
-	}, [])
-
 	/**
-	 * Purpose: animation loading
+	 * animation loading
 	 */
 	useEffect(() => {
 		fadeIn('.learn-i-nextbutton', { opacity: [0.3, 1] })
@@ -91,32 +89,37 @@ const Content = ({
 	}, [isReady])
 
 	/**
-	 * Purpose: determine if card was just unlocked
-	 *  - without this there's no way of telling if render occurred
-   *    because card was unlocked
+	 * determine if card was just unlocked
+	 *  - without this there's no way of telling if render
+   *    occurred because card was unlocked
 	 */
 	const isCardUnlocked = useRef(undefined)
 	useEffect(() => {
-		if (isCardUnlocked.current === undefined && lastCardUnlockedIndex) {
+		if (
+			isCardUnlocked.current === undefined &&
+			lastCardUnlockedIndex !== undefined
+		) {
 			isCardUnlocked.current = false
-		} else if (isCardUnlocked.current === false && lastCardUnlockedIndex) {
+		} else if (
+			isCardUnlocked.current === false &&
+			lastCardUnlockedIndex !== undefined
+		) {
 			isCardUnlocked.current = true
 		}
 	}, [lastCardUnlockedIndex])
 
 	/**
-	 * Purpose: scroll to top each card change so that
-	 * unlocking a new card won't leave you at the bottom of the page
+	 * scroll to top each card change so that unlocking a new
+	 * card won't leave you at the bottom of the page
 	 *  - TODO keep track of all current scroll for each page
 	 */
 	useEffect(() => {
 		if (containerRef.current.scrollTop !== 0)
 			containerRef.current.scrollTo(0, 0)
-		//
 	}, [currentCardIndex])
 
 	/**
-	 * Purpose: unlock card whenever this card is just unlocked
+	 * unlock card whenever this card is just unlocked
 	 */
 	useEffect(() => {
 		if (isCardUnlocked.current && activityId) {
@@ -125,7 +128,7 @@ const Content = ({
 	}, [lastCardUnlockedIndex])
 
 	/**
-	 * Purpose: add gems to student's total
+	 * add gems to student's total
 	 * - Gem only gets changed during initialization of each card
 	 */
 	useEffect(() => {
@@ -134,22 +137,26 @@ const Content = ({
 		}
 	}, [gems])
 
-	let prevScrollTop = 0
-	const handleHeaderSize = () => {
-		let scrollTop = containerRef.current.scrollTop
-		console.log(scrollTop, prevScrollTop)
+	// useEffect(() => {
+	// 	// containerRef.current.addEventListener('scroll', handleHeaderSize)
+	// }, [])
 
-		const isMinimized = headerRef.current.classList.contains('minimized')
-		if (!isMinimized && scrollTop > prevScrollTop) {
-			headerRef.current.classList.add('minimized')
-			prevScrollTop = scrollTop + 21.1
-		} else if (isMinimized && scrollTop <= prevScrollTop) {
-			headerRef.current.classList.remove('minimized')
-			prevScrollTop = scrollTop - 21.1
-		} else {
-			prevScrollTop = scrollTop
-		}
-	}
+	// let prevScrollTop = 0
+	// const handleHeaderSize = () => {
+	// 	let scrollTop = containerRef.current.scrollTop
+	// 	console.log(scrollTop, prevScrollTop)
+
+	// 	const isMinimized = headerRef.current.classList.contains('minimized')
+	// 	if (!isMinimized && scrollTop > prevScrollTop) {
+	// 		headerRef.current.classList.add('minimized')
+	// 		prevScrollTop = scrollTop + 21.1
+	// 	} else if (isMinimized && scrollTop <= prevScrollTop) {
+	// 		headerRef.current.classList.remove('minimized')
+	// 		prevScrollTop = scrollTop - 21.1
+	// 	} else {
+	// 		prevScrollTop = scrollTop
+	// 	}
+	// }
 
 	return (
 		<Container
@@ -162,7 +169,7 @@ const Content = ({
 					<HeaderWrapper id="content-header" className="learn-i-contentheader">
 						<Header
 							ref={headerRef}
-							className="minimized transition-medium"
+							className="minimized"
 							imgURL={require('../../../assets/icons/document.svg')}
 							imgWidthEms="4"
 							gap="2em"
@@ -184,7 +191,7 @@ const Content = ({
 						<LockedHintSection />
 					</ContentArea>
 
-					<StyledNextButton className="learn-i-nextbutton transition-medium" />
+					<StyledNextButton className="learn-i-nextbutton" />
 				</>
 			)}
 		</Container>

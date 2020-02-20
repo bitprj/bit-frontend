@@ -19,9 +19,8 @@ import {
 	SET_CURRENT_CARD_BY_INDEX,
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
-  INCREMENT_LAST_CARD_UNLOCKED_INDEX,
-  INCREMENT_CURRENT_HINT_STEP,
-  RESET_BUTTON_STATE_AND_HINT_STEP
+	INCREMENT_LAST_CARD_UNLOCKED_INDEX,
+	REMOVE_BUTTON_STATE
 } from '../utils/actionTypes'
 
 /* ===== INITIALIZATION */
@@ -42,10 +41,11 @@ export const init = activityId => {
 		dispatch(setActivity(activityBase))
 
 		// Process activityProgress
-		const index = activityBase.cards.findIndex(
+		let index = activityBase.cards.findIndex(
 			// card => card.contentfulId === activityProgress.cardContentfulId
 			card => card.contentfulId === '4HgUxdMhu3ROtsRJeZzSLH'
 		)
+		index = index >= 0 ? index : 0
 		activityProgress = {
 			currentCardIndex: index,
 			lastCardUnlockedIndex: index
@@ -138,8 +138,11 @@ export const initUnlockCard = (activityId, id, contentId) => {
 		const card = await genFetch(contentId)
 		dispatch(setCard(card))
 
-		const message = await unlockCard(activityId, id)
-		// console.log(message)
+		try {
+			await unlockCard(activityId, id)
+		} catch (e) {
+			// alert('[ERROR]: ' + e)
+		}
 	}
 }
 
@@ -148,8 +151,11 @@ export const initUnlockHint = (activityId, id, contentId) => {
 		const hint = await genFetch(contentId)
 		dispatch(setHint(id, contentId, hint))
 
-		const message = await unlockHint(activityId, id)
-		// console.log(message)
+		try {
+			await unlockHint(activityId, id)
+		} catch (e) {
+			// alert('[ERROR]: ' + e)
+		}
 	}
 }
 
@@ -177,16 +183,11 @@ export const incrementLastCardUnlockedIndex = () => {
 	}
 }
 
-export const incrementCurrentHintStep = () => {
-  return {
-    type: INCREMENT_CURRENT_HINT_STEP
-  }
-}
-
-export const resetButtonStateAndHintStep = () => {
-  return {
-    type: RESET_BUTTON_STATE_AND_HINT_STEP
-  }
+export const removeButtonState = buttonState => {
+	return {
+		type: REMOVE_BUTTON_STATE,
+		buttonState
+	}
 }
 
 const setCard = card => {

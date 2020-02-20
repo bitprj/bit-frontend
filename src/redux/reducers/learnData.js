@@ -1,9 +1,13 @@
 import { cloneDeep, merge as mergeDeep, get } from 'lodash'
+import SafeStack from '../../utils/SafeStack'
+
 import {
 	STATE_CARD,
+	STATE_CONCEPT,
+	STATE_CHECKPOINT,
 	STATE_HINT
 } from '../../components/Learn/Content/NextButton'
-// import { iterateNodes } from '../../utils/deepObjUtils'
+
 import {
 	SET_ACTIVITY,
 	SET_ACTIVITY_PROGRESS,
@@ -15,17 +19,16 @@ import {
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
 	INCREMENT_LAST_CARD_UNLOCKED_INDEX,
-	INCREMENT_CURRENT_HINT_STEP,
-	RESET_BUTTON_STATE_AND_HINT_STEP
+	REMOVE_BUTTON_STATE
 } from '../utils/actionTypes'
 
 const initialState = {
 	indicators: {
 		currentCardIndex: undefined,
-		lastCardUnlockedIndex: undefined,
+		lastCardUnlockedIndex: undefined, // must be undefined
 		lastHintUnlockedId: undefined,
-		currentButtonState: STATE_CARD,
-		currentHintStep: 0
+		buttonStateStack: new SafeStack([STATE_CARD, STATE_CHECKPOINT]),
+		buttonFinishedTask: []
 	},
 	cards: []
 }
@@ -82,15 +85,19 @@ const reducer = (state = initialState, action) => {
 		case SET_HINT: {
 			// use hints not lockedhints instead because lockedhints removes lower stuff
 			const { id, contentId, hint: nextHint } = action
-			const nextState = cloneDeep(state)
-			const {
-				cards,
-				indicators: { currentCardIndex }
-			} = nextState
-			const card = cards[currentCardIndex]
+			const nextState = {
+				...state,
+				indicators: {
+					...state.indicators,
+					lastHintUnlockedId: id,
+					buttonStateStack: cloneDeep(state.indicators.buttonStateStack).push(
+						STATE_HINT
+					)
+				},
+				cards: cloneDeep(state.cards)
+			}
 
-			nextState.indicators.lastHintUnlockedId = id
-			nextState.indicators.currentButtonState = STATE_HINT
+			const card = nextState.cards[nextState.indicators.currentCardIndex]
 
 			const hintUnlockMovement = node => {
 				if (!node.hints) return
@@ -152,22 +159,25 @@ const reducer = (state = initialState, action) => {
 			}
 		}
 
-		case INCREMENT_CURRENT_HINT_STEP: {
+		// case ADD_BUTTON_STATE: {
+		// 	return {
+		// 		...state,
+		// 		indicators: {
+		// 			...state.indicators,
+		// 			buttonStateStack: cloneDeep(state.indicators.buttonStateStack).push(
+		// 				action.buttonState
+		// 			)
+		// 		}
+		// 	}
+		// }
+		case REMOVE_BUTTON_STATE: {
 			return {
 				...state,
 				indicators: {
 					...state.indicators,
-					currentHintStep: state.indicators.currentHintStep + 1
-				}
-			}
-		}
-		case RESET_BUTTON_STATE_AND_HINT_STEP: {
-			return {
-				...state,
-				indicators: {
-					...state.indicators,
-					currentButtonState: STATE_CARD,
-					currentHintStep: 0
+					buttonStateStack: cloneDeep(state.indicators.buttonStateStack).pop(
+						action.buttonState
+					)
 				}
 			}
 		}

@@ -83,6 +83,10 @@ export const GlobalStyle = createGlobalStyle`
   /**
    * TRANSITIONS 
    */
+  .transition-none,
+  .transition-none-children > * {
+    transition: none;
+  }
   .transition-short,
   .transition-short-children > * {
     transition: 0.1s ease all;

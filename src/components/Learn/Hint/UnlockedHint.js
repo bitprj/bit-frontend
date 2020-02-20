@@ -7,62 +7,24 @@ import ParsedContent from '../../shared/ParsedContent'
 
 import { fadeIn, slideIn } from '../../../assets/styles/GlobalAnime'
 import { STATE_HINT } from '../Content/NextButton'
-import { resetButtonStateAndHintStep } from '../../../redux/actions/learnData'
 
 const UnlockedHint = forwardRef(
-	(
-		{
-			id,
-			steps,
-			name,
-			lastHintUnlockedId,
-			currentButtonState,
-			currentHintStep,
-			onResetButtonStateAndHintStep
-		},
-		ref
-	) => {
+	({ id, steps, name, lastHintUnlockedId, currentButtonState }, ref) => {
 		useEffect(() => {
 			if (currentButtonState === STATE_HINT) {
+				console.log('i was here', lastHintUnlockedId)
 				const options = { delay: 250 }
 				fadeIn(`.learn-i-hintheader-${lastHintUnlockedId}`)
 				slideIn(`.learn-i-hintheader-${lastHintUnlockedId}`)
-				fadeIn(
-					`.learn-i-hintstep-${lastHintUnlockedId}-${currentHintStep}`,
-					options
-				)
-				slideIn(
-					`.learn-i-hintstep-${lastHintUnlockedId}-${currentHintStep}`,
-					options
-				)
+				fadeIn(`.learn-i-hintsteps-${lastHintUnlockedId}`, options)
+				slideIn(`.learn-i-hintsteps-${lastHintUnlockedId}`, options)
 			}
 		}, [lastHintUnlockedId])
 
-		useEffect(() => {
-			if (currentButtonState === STATE_HINT && currentHintStep !== 0) {
-				fadeIn(`.learn-i-hintstep-${lastHintUnlockedId}-${currentHintStep}`)
-				slideIn(`.learn-i-hintstep-${lastHintUnlockedId}-${currentHintStep}`)
-			}
-		}, [currentHintStep])
-
 		const renderSteps = () => {
-			const stepsLen = steps.length // necessary bc steps ref
-			let moddedSteps = steps
-
-			if (currentButtonState === STATE_HINT && id === lastHintUnlockedId) {
-				moddedSteps = steps.filter((step, i) => {
-					return i <= currentHintStep
-				})
-				if (currentHintStep >= stepsLen - 1) {
-					onResetButtonStateAndHintStep()
-				}
-			}
-			return moddedSteps.map((step, i) => {
+			return steps.map((step, i) => {
 				return (
-					<div
-						className={`learn-i-hintstep-${id}-${i}`}
-						key={`step-${id}-${i}`}
-					>
+					<div className={`learn-i-hintsteps-${id}`} key={`step-${id}-${i}`}>
 						{steps.length === 1 && name !== step.heading && (
 							<h3>
 								<ReactMarkdown
@@ -93,17 +55,11 @@ const UnlockedHint = forwardRef(
 const mapStateToProps = state => {
 	const {
 		learnData: {
-			indicators: { lastHintUnlockedId, currentButtonState, currentHintStep }
+			indicators: { lastHintUnlockedId, buttonStateStack }
 		}
 	} = state
 
-	return { lastHintUnlockedId, currentButtonState, currentHintStep }
+	return { lastHintUnlockedId, currentButtonState: buttonStateStack.peek() }
 }
 
-const mapDispatchToProps = dispatch => {
-	return {
-		onResetButtonStateAndHintStep: () => dispatch(resetButtonStateAndHintStep())
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UnlockedHint)
+export default connect(mapStateToProps)(UnlockedHint)

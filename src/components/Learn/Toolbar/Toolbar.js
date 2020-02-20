@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import anime from 'animejs'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -34,12 +35,21 @@ const Elem = styled(Link)`
 `
 
 const Toolbar = ({ gems }) => {
+	useEffect(() => {
+		anime({
+			targets: '.learn-r-gems',
+			innerText: gems,
+			easing: 'easeOutQuad',
+			round: 1
+		})
+	}, [gems])
+
 	return (
 		<Container>
 			<Elem to="/">
 				<Icon src={require('../../../assets/icons/logo.svg')} width={'100%'} />
 			</Elem>
-			<div style={{ color: '#fff' }}>{gems}</div>
+			<div className="learn-r-gems" style={{ color: '#fff' }}></div>
 		</Container>
 	)
 }

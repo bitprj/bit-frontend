@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import anime from 'animejs'
+import { scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 
 import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
@@ -7,10 +9,12 @@ import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
 import {
 	incrementCurrentCardIndex,
 	incrementLastCardUnlockedIndex,
-	incrementCurrentHintStep
+	removeButtonState
 } from '../../../redux/actions/learnData'
 
 export const STATE_CARD = 'STATE_CARD'
+export const STATE_CONCEPT = 'STATE_CONCEPT'
+export const STATE_CHECKPOINT = 'STATE_CHECKPOINT'
 export const STATE_HINT = 'STATE_HINT'
 
 const Container = styled.div.attrs(props => ({
@@ -26,28 +30,102 @@ const Container = styled.div.attrs(props => ({
 
 	border-radius: 50%;
 	background-color: ${props =>
-		props.currentState === STATE_HINT ? '#000' : props.theme.accent};
-	box-shadow: 0 4px 14px 0 ${props => props.theme.accent}77;
+		props.currentButtonState === STATE_HINT
+			? props.theme.bgVariant
+			: props.theme.accent};
+	box-shadow: 0 4px 14px 0
+		${props =>
+			props.currentButtonState === STATE_HINT
+				? props.theme.bgVariant
+				: props.theme.accent}77;
 	cursor: pointer;
+
+	&:hover {
+		transform: translateY(-0.3em);
+	}
 `
 
 const NextButton = ({
 	className,
 	width,
-	currentState,
+	currentButtonState,
 	isLast,
 	currentCardIndex,
 	lastCardUnlockedIndex,
+	lastHintUnlockedId,
 	onIncrementCurrentCardIndex,
 	onIncrementLastCardUnlockedIndex,
-	onIncrementCurrentHintStep
+	onRemoveButtonState
 }) => {
+	/**
+	 * Removes hint state when student changes card
+	 *  - If a student changes the card, the scrolling feature is no
+	 *    longer applicable to that new page. A future feature could
+	 *    be to save the scroll for the current card
+	 */
 	useEffect(() => {
-		console.log(currentState)
-	}, [currentState])
+		onRemoveButtonState(STATE_HINT)
+	}, [currentCardIndex])
+
+	/**
+	 * Reflect changes to the button state here
+	 */
+	useEffect(() => {
+		// reset
+		const targets = '.learn-r-nextbutton, .learn-r-nextarrow'
+		anime.remove(targets)
+		document.querySelectorAll(targets).forEach(target => {
+			target.classList.remove('transition-none')
+			target.style.transform = '' // remove transform style
+		})
+		switch (currentButtonState) {
+			case STATE_CARD: {
+				break
+			}
+
+			case STATE_HINT: {
+				document
+					.querySelectorAll('.learn-r-nextbutton, .learn-r-nextarrow')
+					.forEach(target => target.classList.add('transition-none'))
+
+				const options = {
+					duration: 500,
+					direction: 'alternate',
+					loop: true
+				}
+				// bounce
+				anime({
+					targets: '.learn-r-nextbutton',
+					translateY: '-1em',
+					translateZ: 0,
+					easing: 'easeOutQuad',
+					...options
+				})
+				// rotate
+				anime({
+					targets: '.learn-r-nextarrow',
+					rotate: '90deg',
+					easing: 'easeOutElastic()',
+					...options
+				})
+				// scale
+				// anime({
+				// 	targets: '.learn-r-nextbutton, .learn-r-nextarrow',
+				// 	scale: 1.5,
+				// 	duration: 1000,
+				// 	easing: 'easeOutQuad'
+				// })
+
+				break
+			}
+
+			default:
+				break
+		}
+	}, [currentButtonState])
 
 	const handleClickNext = () => {
-		switch (currentState) {
+		switch (currentButtonState) {
 			case STATE_CARD: {
 				if (!isLast) {
 					onIncrementCurrentCardIndex()
@@ -59,7 +137,13 @@ const NextButton = ({
 			}
 
 			case STATE_HINT: {
-				onIncrementCurrentHintStep()
+				scroller.scrollTo(`unlocked-hint-${lastHintUnlockedId}`, {
+					duration: 500,
+					smooth: true,
+					containerId: 'content',
+					offset: -document.getElementById('content-header').clientHeight + 1
+				})
+				onRemoveButtonState(STATE_HINT)
 				break
 			}
 
@@ -71,12 +155,16 @@ const NextButton = ({
 
 	return (
 		<Container
-			className={className}
+			className={`${className} learn-r-nextbutton`}
 			width={width}
 			onClick={handleClickNext}
-			currentState={currentState}
+			currentButtonState={currentButtonState}
 		>
-			<RightArrow style={{ fontSize: '1.6em' }} htmlColor="#fff" />
+			<RightArrow
+				className="learn-r-nextarrow"
+				style={{ fontSize: '1.6em' }}
+				htmlColor="#fff"
+			/>
 		</Container>
 	)
 }
@@ -89,15 +177,18 @@ const mapStateToProps = state => {
 			indicators: {
 				currentCardIndex,
 				lastCardUnlockedIndex,
-				currentButtonState
+				buttonStateStack,
+				lastHintUnlockedId
 			}
 		}
 	} = state
+
 	return {
 		isLast: cards && currentCardIndex === cards.length - 1,
-		currentState: currentButtonState,
+		currentButtonState: buttonStateStack.peek(),
 		currentCardIndex,
-		lastCardUnlockedIndex
+		lastCardUnlockedIndex,
+		lastHintUnlockedId
 	}
 }
 
@@ -106,7 +197,7 @@ const mapDispatchToProps = dispatch => {
 		onIncrementCurrentCardIndex: () => dispatch(incrementCurrentCardIndex()),
 		onIncrementLastCardUnlockedIndex: () =>
 			dispatch(incrementLastCardUnlockedIndex()),
-		onIncrementCurrentHintStep: () => dispatch(incrementCurrentHintStep())
+		onRemoveButtonState: buttonState => dispatch(removeButtonState(buttonState))
 	}
 }
 

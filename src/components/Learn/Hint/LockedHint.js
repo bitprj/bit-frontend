@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
 import { connect } from 'react-redux'
-import { scroller } from 'react-scroll'
 
 import DynamicModal from '../../shared/containers/DynamicModal'
 import ClampedText from '../../shared/utils/ClampedText'
@@ -62,16 +61,6 @@ const LockedHint = ({
 	let clickOnce = false
 	const [openConfirmHint, setOpenConfirmHint] = useState(false)
 
-	// const handleScrollTo = hintId => {
-	// 	scroller.scrollTo(`unlocked-hint-${hintId}`, {
-	// 		duration: 500,
-	// 		smooth: true,
-	// 		containerId: 'content',
-	// 		offset: -document.getElementById('content-header').clientHeight + 1
-	// 	})
-	// }
-	// handleScrollTo(id)
-
 	const unlockHint = () => {
 		setOpenConfirmHint(false)
 
@@ -116,7 +105,7 @@ const LockedHint = ({
 					<ButtonArea>
 						<Button invert rounder clicked={unlockHint}>
 							<span style={{ lineHeight: '1em' }}>
-								💎 <h3 style={{ display: 'inline' }}>50</h3>
+								💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
 							</span>
 						</Button>
 						<Button rounder clicked={() => setOpenConfirmHint(false)}>

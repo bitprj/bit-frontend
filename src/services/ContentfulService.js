@@ -30,12 +30,6 @@ export const genFetchDetails = objectId => {
 }
 
 // @unused
-export const getAllCards = cardArray => {
-	return cardArray.map(card => {
-		return getCard(card.cardId)
-	})
-}
-
 export const getConcept = conceptId => {
 	return fetch(conceptId).then(response => {
 		return getAllSteps(response.fields.steps).then(slides => slides)
@@ -50,21 +44,6 @@ export const getHint = async hintId => {
 		steps
 	}
 }
-
-// export const getHint2 = hintID => {
-// 	return genFetch(hintID).then(hint => {
-// 		return getAllSteps(hint.steps).then(steps => {
-// 			return {
-// 				title: hint.name,
-// 				steps
-// 			}
-// 		})
-// 	})
-// }
-
-// async fetchTrack(trackID) {
-//     return fetch(trackID).then(response => response.fields)
-// }
 
 /**
  * HELPERS

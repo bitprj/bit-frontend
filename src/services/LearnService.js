@@ -32,34 +32,6 @@ export const unlockHint = (activityId, hintId) => {
 
 
 
-
-
-
-export const getHintStatus = (labID, cardID) => {
-	const endpoint = `/lab/${labID}/card/${cardID}/fetch`
-	return backend.get(endpoint)
-}
-
-export const processHintStatus = rawData => {
-	const hints = rawData.map(hint => {
-		const children = hint.hint_children.map(child => {
-			return {
-				dbID: child.hint.id,
-				id: child.hint.contentful_id,
-				isLocked: !child.is_unlocked
-			}
-		})
-		return {
-			dbID: hint.hint.id,
-			id: hint.hint.contentful_id,
-			isLocked: !hint.is_unlocked,
-			children: children
-		}
-	})
-
-	return hints
-}
-
 export const uploadFiles = fileItems => {
 	let srcFile = null
 	let testsFile = null
@@ -106,4 +78,31 @@ export const processResult = rawData => {
 	}
 
 	return result
+}
+
+// @unused
+
+export const getHintStatus = (labID, cardID) => {
+	const endpoint = `/lab/${labID}/card/${cardID}/fetch`
+	return backend.get(endpoint)
+}
+
+export const processHintStatus = rawData => {
+	const hints = rawData.map(hint => {
+		const children = hint.hint_children.map(child => {
+			return {
+				dbID: child.hint.id,
+				id: child.hint.contentful_id,
+				isLocked: !child.is_unlocked
+			}
+		})
+		return {
+			dbID: hint.hint.id,
+			id: hint.hint.contentful_id,
+			isLocked: !hint.is_unlocked,
+			children: children
+		}
+	})
+
+	return hints
 }
