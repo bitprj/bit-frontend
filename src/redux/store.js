@@ -28,7 +28,8 @@ export default function configureStore(initialState) {
 
 	const middleware = [thunk]
 
-	process.env.NODE_ENV !== 'production' &&
+  console.log(process.env.NODE_ENV)
+	if (process.env.NODE_ENV !== 'production')
 		middleware.unshift(
 			require('redux-immutable-state-invariant').default({
 				ignore: ['learnData.currentCardUnnestedUnlockedHintRefs']
