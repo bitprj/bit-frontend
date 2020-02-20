@@ -139,7 +139,7 @@ export const initUnlockCard = (activityId, id, contentId) => {
 		dispatch(setCard(card))
 
 		try {
-			await unlockCard(activityId, id)
+			// await unlockCard(activityId, id)
 		} catch (e) {
 			// alert('[ERROR]: ' + e)
 		}
@@ -152,7 +152,7 @@ export const initUnlockHint = (activityId, id, contentId) => {
 		dispatch(setHint(id, contentId, hint))
 
 		try {
-			await unlockHint(activityId, id)
+			// await unlockHint(activityId, id)
 		} catch (e) {
 			// alert('[ERROR]: ' + e)
 		}

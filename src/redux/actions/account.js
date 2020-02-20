@@ -1,8 +1,8 @@
-import AuthService from "../../services/AuthService";
+import AuthService from '../../services/AuthService'
 
-import * as actionTypes from "../utils/actionTypes";
+import * as actionTypes from '../utils/actionTypes'
 
-const authService = new AuthService();
+const authService = new AuthService()
 
 // const addLoginTrace = () => {
 //   return {
@@ -11,25 +11,25 @@ const authService = new AuthService();
 // };
 
 export const initLogin = (user, pass, callback) => {
-  console.log(user, pass, callback)
-  return dispatch => {
-    authService
-      .postLogin(user, pass)
-      .then(response => {
-        console.log(response);
-        callback();
-      })
-      .catch(error => {
-        console.log(error);
-        callback();
-      });
-  };
-};
+	console.log(user, pass, callback)
+	return dispatch => {
+		authService
+			.postLogin(user, pass)
+			.then(response => {
+				alert('successful! now go redirect yourself')
+				callback()
+			})
+			.catch(error => {
+				alert('try again.', error)
+				callback()
+			})
+	}
+}
 // remove logintrace
 export const logout = () => {
-  return {
-    type: actionTypes.LOGOUT
-  };
-};
+	return {
+		type: actionTypes.LOGOUT
+	}
+}
 
-export const initLogout = () => {};
+export const initLogout = () => {}
