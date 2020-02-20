@@ -31,26 +31,30 @@ import {
  */
 export const init = activityId => {
 	return async dispatch => {
-		// Concurrently FetchActivity and FetchActivityProgress
-		let [activityBase, activityProgress] = await Promise.all([
-			fetchActivity(activityId),
-			fetchActivityProgress(activityId)
-		])
+		try {
+			// Concurrently FetchActivity and FetchActivityProgress
+			let [activityBase, activityProgress] = await Promise.all([
+				fetchActivity(activityId),
+				fetchActivityProgress(activityId)
+			])
 
-		activityBase.cards.sort((a, b) => a.order - b.order)
-		dispatch(setActivity(activityBase))
+			activityBase.cards.sort((a, b) => a.order - b.order)
+			dispatch(setActivity(activityBase))
 
-		// Process activityProgress
-		let index = activityBase.cards.findIndex(
-			// card => card.contentfulId === activityProgress.cardContentfulId
-			card => card.contentfulId === '4HgUxdMhu3ROtsRJeZzSLH'
-		)
-		index = index >= 0 ? index : 0
-		activityProgress = {
-			currentCardIndex: index,
-			lastCardUnlockedIndex: index
+			// Process activityProgress
+			let index = activityBase.cards.findIndex(
+				// card => card.contentfulId === activityProgress.cardContentfulId
+				card => card.contentfulId === '4HgUxdMhu3ROtsRJeZzSLH'
+			)
+			index = index >= 0 ? index : 0
+			activityProgress = {
+				currentCardIndex: index,
+				lastCardUnlockedIndex: index
+			}
+			dispatch(setActivityProgress(activityProgress))
+		} catch (e) {
+			alert('try logging in')
 		}
-		dispatch(setActivityProgress(activityProgress))
 
 		const cardsProgressed = activityBase.cards.slice(0, index + 1)
 
