@@ -68,7 +68,7 @@ const Learn = ({ isReady, onInit }) => {
 
 	useEffect(() => {
 		fadeIn('.learn-i-spin')
-		onInit(12)
+		onInit(15)
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 	const spinner = useMemo(() => {
