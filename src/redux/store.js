@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import invariant from 'redux-immutable-state-invariant'
 
 import rootReducer from './rootReducer'
 
@@ -31,7 +30,9 @@ export default function configureStore(initialState) {
 
 	process.env.NODE_ENV !== 'production' &&
 		middleware.unshift(
-			invariant({ ignore: ['learnData.currentCardUnnestedUnlockedHintRefs'] })
+			require('redux-immutable-state-invariant').default({
+				ignore: ['learnData.currentCardUnnestedUnlockedHintRefs']
+			})
 		)
 
 	const store = createStore(
