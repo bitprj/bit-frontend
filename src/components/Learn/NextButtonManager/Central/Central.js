@@ -4,20 +4,23 @@ import anime from 'animejs'
 import { scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 
+import CentralStyles from './SelectState/CentralStyles'
+
 import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
+import Flag from '@material-ui/icons/EmojiFlagsRounded'
 
 import {
 	incrementCurrentCardIndex,
 	incrementLastCardUnlockedIndex,
 	removeButtonState
-} from '../../../redux/actions/learnData'
+} from '../../../../redux/actions/learnData'
 
 export const STATE_CARD = 'STATE_CARD'
 export const STATE_CONCEPT = 'STATE_CONCEPT'
 export const STATE_CHECKPOINT = 'STATE_CHECKPOINT'
 export const STATE_HINT = 'STATE_HINT'
 
-const Container = styled.div.attrs(props => ({
+const Container = styled(CentralStyles).attrs(props => ({
 	width: props.width || '4em'
 }))`
 	display: flex;
@@ -29,15 +32,6 @@ const Container = styled.div.attrs(props => ({
 	padding: 1em;
 
 	border-radius: 50%;
-	background-color: ${props =>
-		props.currentButtonState === STATE_HINT
-			? props.theme.bgVariant
-			: props.theme.accent};
-	box-shadow: 0 4px 14px 0
-		${props =>
-			props.currentButtonState === STATE_HINT
-				? props.theme.bgVariant
-				: props.theme.accent}77;
 	cursor: pointer;
 
 	&:hover {
@@ -59,9 +53,9 @@ const NextButton = ({
 }) => {
 	/**
 	 * Removes hint state when student changes card
-	 *  - If a student changes the card, the scrolling feature is no
-	 *    longer applicable to that new page. A future feature could
-	 *    be to save the scroll for the current card
+	 *  - If a student changes the card, the scrolling feature
+	 *    is no longer applicable to that new page. A future
+	 *    feature could be to save the scroll for the current card
 	 */
 	useEffect(() => {
 		onRemoveButtonState(STATE_HINT)
@@ -78,8 +72,9 @@ const NextButton = ({
 			target.classList.remove('transition-none')
 			target.style.transform = '' // remove transform style
 		})
+
 		switch (currentButtonState) {
-			case STATE_CARD: {
+			case STATE_CHECKPOINT: {
 				break
 			}
 
@@ -109,13 +104,17 @@ const NextButton = ({
 					...options
 				})
 				// scale
-				// anime({
-				// 	targets: '.learn-r-nextbutton, .learn-r-nextarrow',
-				// 	scale: 1.5,
-				// 	duration: 1000,
-				// 	easing: 'easeOutQuad'
-				// })
+				anime({
+					targets: '.learn-r-nextbutton, .learn-r-nextarrow',
+					scale: 1.5,
+					duration: 1000,
+					easing: 'easeOutQuad'
+				})
 
+				break
+			}
+
+			case STATE_CARD: {
 				break
 			}
 
@@ -126,16 +125,6 @@ const NextButton = ({
 
 	const handleClickNext = () => {
 		switch (currentButtonState) {
-			case STATE_CARD: {
-				if (!isLast) {
-					onIncrementCurrentCardIndex()
-					if (currentCardIndex === lastCardUnlockedIndex) {
-						onIncrementLastCardUnlockedIndex()
-					}
-				}
-				break
-			}
-
 			case STATE_HINT: {
 				scroller.scrollTo(`unlocked-hint-${lastHintUnlockedId}`, {
 					duration: 500,
@@ -146,9 +135,18 @@ const NextButton = ({
 				onRemoveButtonState(STATE_HINT)
 				break
 			}
+			case STATE_CARD: {
+				if (!isLast) {
+					onIncrementCurrentCardIndex()
+					if (currentCardIndex === lastCardUnlockedIndex) {
+						onIncrementLastCardUnlockedIndex()
+					}
+				}
+				break
+			}
 
 			default:
-				console.log('error...')
+				console.log("error... we shouldn't be here")
 				break
 		}
 	}
@@ -173,7 +171,6 @@ const mapStateToProps = state => {
 	const {
 		learnData: {
 			cards,
-
 			indicators: {
 				currentCardIndex,
 				lastCardUnlockedIndex,

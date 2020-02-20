@@ -6,13 +6,12 @@ import styled from 'styled-components'
 import ParsedContent from '../../shared/ParsedContent'
 
 import { fadeIn, slideIn } from '../../../assets/styles/GlobalAnime'
-import { STATE_HINT } from '../Content/NextButton'
+import { STATE_HINT } from '../NextButtonManager/Central/Central'
 
 const UnlockedHint = forwardRef(
 	({ id, steps, name, lastHintUnlockedId, currentButtonState }, ref) => {
 		useEffect(() => {
 			if (currentButtonState === STATE_HINT) {
-				console.log('i was here', lastHintUnlockedId)
 				const options = { delay: 250 }
 				fadeIn(`.learn-i-hintheader-${lastHintUnlockedId}`)
 				slideIn(`.learn-i-hintheader-${lastHintUnlockedId}`)
@@ -59,7 +58,10 @@ const mapStateToProps = state => {
 		}
 	} = state
 
-	return { lastHintUnlockedId, currentButtonState: buttonStateStack.peek() }
+	return {
+		lastHintUnlockedId,
+		currentButtonState: buttonStateStack.peek()
+	}
 }
 
 export default connect(mapStateToProps)(UnlockedHint)

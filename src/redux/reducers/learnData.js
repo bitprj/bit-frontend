@@ -6,7 +6,7 @@ import {
 	STATE_CONCEPT,
 	STATE_CHECKPOINT,
 	STATE_HINT
-} from '../../components/Learn/Content/NextButton'
+} from '../../components/Learn/NextButtonManager/Central/Central'
 
 import {
 	SET_ACTIVITY,
@@ -27,10 +27,25 @@ const initialState = {
 		currentCardIndex: undefined,
 		lastCardUnlockedIndex: undefined, // must be undefined
 		lastHintUnlockedId: undefined,
-		buttonStateStack: new SafeStack([STATE_CARD, STATE_CHECKPOINT]),
+		buttonStateStack: new SafeStack([STATE_CARD]),
 		buttonFinishedTask: []
 	},
-	cards: []
+	cards: [
+		{
+			id: undefined,
+			contentfulId: undefined,
+			name: undefined,
+			order: undefined,
+			hints: [],
+			content: undefined,
+			gems: undefined,
+			unlockedHints: [],
+			lockedHints: [],
+			concepts: [],
+			checkpoint: undefined
+		}
+		// ... and more cards
+	]
 }
 
 const reducer = (state = initialState, action) => {

@@ -3,11 +3,9 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 
-// import ConceptModal from ''
-// import CheckpointModal from
 import UnlockedHintSection from '../Hint/UnlockedHintSection'
 import LockedHintSection from '../Hint/LockedHintSection'
-import NextButton from './NextButton'
+import NextButton from '../NextButtonManager/Central/Central'
 import HeaderShadow from '../../shared/utils/HeaderShadow'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 import ParsedContent from '../../shared/ParsedContent'
@@ -60,8 +58,6 @@ const StyledNextButton = styled(NextButton)`
 	right: 5.2em;
 	bottom: 4em;
   opacity: 0.3;
-
-  transition: 0.2s ease transform;
 `
 
 const Content = ({
@@ -191,7 +187,7 @@ const Content = ({
 						<LockedHintSection />
 					</ContentArea>
 
-					<StyledNextButton className="learn-i-nextbutton" />
+					<StyledNextButton className="learn-i-nextbutton transition-medium" />
 				</>
 			)}
 		</Container>
