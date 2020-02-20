@@ -32,9 +32,9 @@ const Header = styled(ImgAndContent)`
 	padding: 2em 1em 1.5em;
 	padding-left: 3em;
 	cursor: auto;
-  background-color: #fff;
+	background-color: #fff;
 
-  transition: 0.2s ease padding;
+	transition: 0.2s ease padding;
 
 	&.minimized {
 		padding-top: 1em;
@@ -57,7 +57,7 @@ const StyledNextButton = styled(NextButton)`
 	position: fixed;
 	right: 5.2em;
 	bottom: 4em;
-  opacity: 0.3;
+	opacity: 0.3;
 `
 
 const Content = ({
@@ -87,7 +87,7 @@ const Content = ({
 	/**
 	 * determine if card was just unlocked
 	 *  - without this there's no way of telling if render
-   *    occurred because card was unlocked
+	 *    occurred because card was unlocked
 	 */
 	const isCardUnlocked = useRef(undefined)
 	useEffect(() => {
@@ -126,10 +126,15 @@ const Content = ({
 	/**
 	 * add gems to student's total
 	 * - Gem only gets changed during initialization of each card
+   * - ref used to detect if new card was changed.
 	 */
+	const lastCardUnlockedIndexRef = useRef(undefined)
 	useEffect(() => {
 		if (isCardUnlocked.current && gems) {
-			onIncrementGemsBy(gems)
+			if (lastCardUnlockedIndex !== lastCardUnlockedIndexRef.current) {
+				onIncrementGemsBy(gems)
+				lastCardUnlockedIndexRef.current = lastCardUnlockedIndex
+			}
 		}
 	}, [gems])
 
