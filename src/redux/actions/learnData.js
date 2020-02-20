@@ -52,24 +52,24 @@ export const init = activityId => {
 				lastCardUnlockedIndex: index
 			}
 			dispatch(setActivityProgress(activityProgress))
+
+			const cardsProgressed = activityBase.cards.slice(0, index + 1)
+
+			// Fetch Unlocked Cards and their Statuses
+			// (from fetchActivityProgress, multiple fetchCardStatus)
+			const pendingUnlockedCards = fetchUnlockedCards(cardsProgressed)
+			const pendingCardStatuses = initCardStatuses(activityId, cardsProgressed)
+
+			// done this way because CDN will be guaranteed to be faster
+			// optimizations can be made later
+			const unlockedCards = await pendingUnlockedCards
+			dispatch(setUnlockedCards(unlockedCards))
+
+			const cardStatuses = await pendingCardStatuses
+			dispatch(setCardStatuses(cardStatuses))
 		} catch (e) {
 			alert('try logging in')
 		}
-
-		const cardsProgressed = activityBase.cards.slice(0, index + 1)
-
-		// Fetch Unlocked Cards and their Statuses
-		// (from fetchActivityProgress, multiple fetchCardStatus)
-		const pendingUnlockedCards = fetchUnlockedCards(cardsProgressed)
-		const pendingCardStatuses = initCardStatuses(activityId, cardsProgressed)
-
-		// done this way because CDN will be guaranteed to be faster
-		// optimizations can be made later
-		const unlockedCards = await pendingUnlockedCards
-		dispatch(setUnlockedCards(unlockedCards))
-
-		const cardStatuses = await pendingCardStatuses
-		dispatch(setCardStatuses(cardStatuses))
 	}
 }
 
