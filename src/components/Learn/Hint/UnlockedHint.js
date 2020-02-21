@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import ParsedContent from '../../shared/ParsedContent'
 
 import { fadeIn, slideIn } from '../../../assets/styles/GlobalAnime'
-import { STATE_HINT } from '../NextButtonManager/Central/Central'
+import { STATE_HINT } from '../NextButton/NextButton'
 
 const UnlockedHint = forwardRef(
 	({ id, steps, name, lastHintUnlockedId, currentButtonState }, ref) => {
@@ -18,7 +18,7 @@ const UnlockedHint = forwardRef(
 				fadeIn(`.learn-i-hintsteps-${lastHintUnlockedId}`, options)
 				slideIn(`.learn-i-hintsteps-${lastHintUnlockedId}`, options)
 			}
-		}, [lastHintUnlockedId])
+		}, [lastHintUnlockedId, currentButtonState])
 
 		const renderSteps = () => {
 			return steps.map((step, i) => {
@@ -54,13 +54,13 @@ const UnlockedHint = forwardRef(
 const mapStateToProps = state => {
 	const {
 		learnData: {
-			indicators: { lastHintUnlockedId, buttonStateStack }
+			indicators: { lastHintUnlockedId, currentButtonState }
 		}
 	} = state
 
 	return {
 		lastHintUnlockedId,
-		currentButtonState: buttonStateStack.peek()
+		currentButtonState
 	}
 }
 

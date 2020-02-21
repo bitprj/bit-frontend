@@ -5,7 +5,7 @@ import { get } from 'lodash'
 
 import UnlockedHintSection from '../Hint/UnlockedHintSection'
 import LockedHintSection from '../Hint/LockedHintSection'
-import NextButton from '../NextButtonManager/Central/Central'
+import NextButton from '../NextButton/NextButton'
 import HeaderShadow from '../../shared/utils/HeaderShadow'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 import ParsedContent from '../../shared/ParsedContent'
@@ -51,13 +51,6 @@ const ContentArea = styled.div`
 		padding-left: 3.5em;
 		padding-right: 3.5em;
 	}
-`
-
-const StyledNextButton = styled(NextButton)`
-	position: fixed;
-	right: 5.2em;
-	bottom: 4em;
-	opacity: 0.3;
 `
 
 const Content = ({
@@ -126,7 +119,7 @@ const Content = ({
 	/**
 	 * add gems to student's total
 	 * - Gem only gets changed during initialization of each card
-   * - ref used to detect if new card was changed.
+	 * - ref used to detect if new card was changed.
 	 */
 	const lastCardUnlockedIndexRef = useRef(undefined)
 	useEffect(() => {
@@ -192,7 +185,7 @@ const Content = ({
 						<LockedHintSection />
 					</ContentArea>
 
-					<StyledNextButton className="learn-i-nextbutton transition-medium" />
+					<NextButton className="learn-i-nextbutton" />
 				</>
 			)}
 		</Container>
@@ -222,12 +215,10 @@ const mapStateToProps = state => {
 	}
 }
 
-const mapDispatchToProps = dispatch => {
-	return {
-		onInitUnlockCard: (activityId, id, contentfulId) =>
-			dispatch(initUnlockCard(activityId, id, contentfulId)),
-		onIncrementGemsBy: gemAmount => dispatch(incrementGemsBy(gemAmount))
-	}
-}
+const mapDispatchToProps = dispatch => ({
+	onInitUnlockCard: (activityId, id, contentfulId) =>
+		dispatch(initUnlockCard(activityId, id, contentfulId)),
+	onIncrementGemsBy: gemAmount => dispatch(incrementGemsBy(gemAmount))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content)

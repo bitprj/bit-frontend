@@ -16,7 +16,7 @@ export const initLogin = (user, pass, callback) => {
 		authService
 			.postLogin(user, pass)
 			.then(response => {
-				alert('successful! now go redirect yourself')
+				alert('successful! now go redirect yourself\nGo to the `Community` Tab')
 				callback()
 			})
 			.catch(error => {

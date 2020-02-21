@@ -32,12 +32,13 @@ const TopRight = styled.div`
 
 const RenderedModal = styled.div`
 	padding: 3em 2.5em 2em;
+	width: 100%;
 	text-align: center;
 `
 
 const ModalIcon = styled(Icon)`
 	margin: 0 auto;
-	width: 10em;
+	width: 9.2em;
 	height: 10em;
 `
 
@@ -73,6 +74,40 @@ const LockedHint = ({
 		}
 	}
 
+	const unlockHintModal = (
+		<DynamicModal
+			open={openConfirmHint}
+			closed={() => setOpenConfirmHint(false)}
+			scale={0.5}
+			heightAuto
+		>
+			<RenderedModal>
+				<ModalIcon src="https://gamepedia.cursecdn.com/zelda_gamepedia_en/thumb/f/fb/Cielaph.png/302px-Cielaph.png" />
+				<br />
+				<ReactMarkdown
+					className="markdown-header"
+					source={`Unlock *${name}* ?`}
+				/>
+				<ButtonArea>
+					<Button invert rounder onClick={unlockHint}>
+						<span style={{ lineHeight: '1em' }}>
+							💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
+						</span>
+					</Button>
+					<Button
+						rounder
+						onClick={() => {
+							setOpenConfirmHint(false)
+							console.log('wtf')
+						}}
+					>
+						Cancel
+					</Button>
+				</ButtonArea>
+			</RenderedModal>
+		</DynamicModal>
+	)
+
 	return (
 		<>
 			<Container
@@ -88,32 +123,7 @@ const LockedHint = ({
 					<ReactMarkdown className="markdown-header" source={name} />
 				</Name>
 			</Container>
-
-			<DynamicModal
-				open={openConfirmHint}
-				closed={() => setOpenConfirmHint(false)}
-				scale={0.5}
-				heightAuto
-			>
-				<RenderedModal>
-					<ModalIcon src="https://gamepedia.cursecdn.com/zelda_gamepedia_en/thumb/f/fb/Cielaph.png/302px-Cielaph.png?version=11c2e049da27d8f6e1c0a758077857c3" />
-					<br />
-					<ReactMarkdown
-						className="markdown-header"
-						source={`Unlock *${name}* ?`}
-					/>
-					<ButtonArea>
-						<Button invert rounder clicked={unlockHint}>
-							<span style={{ lineHeight: '1em' }}>
-								💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
-							</span>
-						</Button>
-						<Button rounder clicked={() => setOpenConfirmHint(false)}>
-							Cancel
-						</Button>
-					</ButtonArea>
-				</RenderedModal>
-			</DynamicModal>
+			{unlockHintModal}
 		</>
 	)
 }

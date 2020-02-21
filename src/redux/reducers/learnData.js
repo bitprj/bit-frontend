@@ -1,12 +1,5 @@
 import { cloneDeep, merge as mergeDeep, get } from 'lodash'
-import SafeStack from '../../utils/SafeStack'
-
-import {
-	STATE_CARD,
-	STATE_CONCEPT,
-	STATE_CHECKPOINT,
-	STATE_HINT
-} from '../../components/Learn/NextButtonManager/Central/Central'
+import { SafeQueue } from '../../utils/DataStructures'
 
 import {
 	SET_ACTIVITY,
@@ -19,7 +12,9 @@ import {
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
 	INCREMENT_LAST_CARD_UNLOCKED_INDEX,
-	REMOVE_BUTTON_STATE
+	BROADCAST_BUTTON_STATE,
+	SCHEDULE_BUTTON_STATE,
+	RESET_BUTTON_STATE_SCHEDULE
 } from '../utils/actionTypes'
 
 const initialState = {
@@ -27,8 +22,9 @@ const initialState = {
 		currentCardIndex: undefined,
 		lastCardUnlockedIndex: undefined, // must be undefined
 		lastHintUnlockedId: undefined,
-		buttonStateStack: new SafeStack([STATE_CARD]),
-		buttonFinishedTask: []
+
+		currentButtonState: undefined,
+		buttonStateScheduleQueue: new SafeQueue([]) // must be initialized
 	},
 	cards: [
 		{
@@ -104,10 +100,7 @@ const reducer = (state = initialState, action) => {
 				...state,
 				indicators: {
 					...state.indicators,
-					lastHintUnlockedId: id,
-					buttonStateStack: cloneDeep(state.indicators.buttonStateStack).push(
-						STATE_HINT
-					)
+					lastHintUnlockedId: id
 				},
 				cards: cloneDeep(state.cards)
 			}
@@ -174,25 +167,32 @@ const reducer = (state = initialState, action) => {
 			}
 		}
 
-		// case ADD_BUTTON_STATE: {
-		// 	return {
-		// 		...state,
-		// 		indicators: {
-		// 			...state.indicators,
-		// 			buttonStateStack: cloneDeep(state.indicators.buttonStateStack).push(
-		// 				action.buttonState
-		// 			)
-		// 		}
-		// 	}
-		// }
-		case REMOVE_BUTTON_STATE: {
+		case BROADCAST_BUTTON_STATE: {
 			return {
 				...state,
 				indicators: {
 					...state.indicators,
-					buttonStateStack: cloneDeep(state.indicators.buttonStateStack).pop(
-						action.buttonState
-					)
+					currentButtonState: action.buttonState
+				}
+			}
+		}
+		case SCHEDULE_BUTTON_STATE: {
+			return {
+				...state,
+				indicators: {
+					...state.indicators,
+					buttonStateScheduleQueue: state.indicators.buttonStateScheduleQueue
+						.enqueue(action.buttonState)
+						.copy()
+				}
+			}
+		}
+		case RESET_BUTTON_STATE_SCHEDULE: {
+			return {
+				...state,
+				indicators: {
+					...state.indicators,
+					buttonStateScheduleQueue: new SafeQueue([])
 				}
 			}
 		}

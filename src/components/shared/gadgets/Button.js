@@ -72,7 +72,7 @@ const Button = props => {
 			width={props.width}
 			margin={props.margin}
 			padding={props.padding}
-			onClick={props.clicked}
+			onClick={props.clicked || props.onClick}
 		>
 			{props.children}
 		</RenderedButton>

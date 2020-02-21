@@ -29,12 +29,12 @@ export default function configureStore(initialState) {
   const middleware = [thunk]
   
   console.log(process.env.NODE_ENV)
-	// if (process.env.NODE_ENV !== 'production')
-	// 	middleware.unshift(
-	// 		require('redux-immutable-state-invariant').default({
-	// 			ignore: ['learnData.currentCardUnnestedUnlockedHintRefs']
-	// 		})
-	// 	)
+	if (process.env.NODE_ENV !== 'production')
+		middleware.unshift(
+			require('redux-immutable-state-invariant').default({
+				ignore: ['learnData.currentCardUnnestedUnlockedHintRefs']
+			})
+		)
 
 	const store = createStore(
 		rootReducer,

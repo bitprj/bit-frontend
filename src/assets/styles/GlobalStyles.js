@@ -50,6 +50,9 @@ export const GlobalStyle = createGlobalStyle`
    * LOW PROFILE SCROLLBAR
    * - with only-hover, fat
    */
+  .low-profile-scrollbar {
+    overflow: auto;
+  }
   .low-profile-scrollbar.only-hover {
     overflow: overlay;
   }
