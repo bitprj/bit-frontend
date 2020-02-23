@@ -8,7 +8,7 @@ import ActivityCard from "./ActivityCard";
 import { setViewStudent } from "../../../redux/actions/viewManager";
 import * as viewTypes from "../../../redux/utils/viewTypes";
 
-import { sizes } from "../../../assets/styles/media";
+import { sizes } from "../../../styles/media";
 
 const Content = styled.div`
   display: flex;

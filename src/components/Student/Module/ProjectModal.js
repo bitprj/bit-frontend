@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState, useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 
 import TwoPanelModal from '../../shared/containers/TwoPanelModal'
-import { sizes } from '../../../assets/styles/media'
+import { sizes } from '../../../styles/media'
 
 import Project from './Project'
 
@@ -64,6 +64,8 @@ const Nbsp = styled.p`
 `
 
 const FinalProject = props => {
+	const themeContext = useContext(ThemeContext)
+
 	const [listView, setListView] = useState(true)
 
 	const handleClosed = () => {
@@ -116,7 +118,7 @@ const FinalProject = props => {
 			<p style={{ marginBottom: 0 }}>{props.description}</p>
 			<br />
 			<SmallText>difficulty</SmallText>
-			<DotRating rating={3} />
+			<DotRating rating={3} offColor={themeContext.accentVariant} />
 			<br />
 			<SmallText>estimated time</SmallText>
 			<span style={{ fontWeight: 'bold' }}>{props.time}</span>
@@ -131,12 +133,15 @@ const FinalProject = props => {
 		<FullImg img="http://squareone.co.in/wp-content/uploads/2018/08/food-Birsto-Oakwood-Premier12-720x700.jpg" />
 	)
 
+	const leftPanel = <LeftPanel>{listView ? choose : description}</LeftPanel>
+	const rightPanel = listView ? projects : fullPic
+
 	return (
 		<TwoPanelModal
 			open={props.open}
 			closed={handleClosed}
-			leftPanel={<LeftPanel>{listView ? choose : description}</LeftPanel>}
-			rightPanel={listView ? projects : fullPic}
+			leftPanel={leftPanel}
+			rightPanel={rightPanel}
 			ratio={0.43}
 		/>
 	)

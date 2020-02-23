@@ -8,31 +8,31 @@ const CustomContainer = styled(Container)`
 	flex-direction: column;
 `
 const Header = styled.div`
-	flex: ${props => props.ratio || 1};
+	flex: ${props => props.ratio};
 	background-color: black;
 	color: white;
 `
 const Content = styled.div`
-	flex: ${props => 1 - props.ratio || 1};
+	flex: ${props => 1 - props.ratio};
 `
 
 const TwoPanelModal = ({
 	open,
 	closed,
-	scale,
+	scaleX = 1,
+	scaleY = 1,
 	header,
 	content,
 	children,
-	ratio
+	ratio = 0.5
 }) => (
 	<DynamicModal
 		className="low-profile-scrollbar fat"
 		custom
 		open={open}
 		closed={closed}
-		scale={scale}
 	>
-		<CustomContainer>
+		<CustomContainer scaleX={scaleX} scaleY={scaleY}>
 			<Header className="low-profile-scrollbar" ratio={ratio}>
 				{header}
 			</Header>

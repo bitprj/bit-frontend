@@ -37,17 +37,17 @@ export default function CentralAnimes(currentButtonState) {
 			// rotate
 			anime({
 				targets: '.learn-r-nextarrow',
-				rotate: '90deg',
-				easing: 'easeOutElastic()',
-				...options
+				rotate: '-90deg',
+				easing: 'easeOutQuad',
+				duration: 400,
 			})
 			// scale
-			anime({
-				targets: '.learn-r-nextbutton, .learn-r-nextarrow',
-				scale: 1.5,
-				duration: 1000,
-				easing: 'easeOutQuad'
-			})
+			// anime({
+			// 	targets: '.learn-r-nextbutton, .learn-r-nextarrow',
+			// 	scale: 1.5,
+			// 	duration: 1000,
+			// 	easing: 'easeOutQuad'
+			// })
 
 			break
 		}

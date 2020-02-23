@@ -10,7 +10,7 @@ import HeaderShadow from '../../shared/utils/HeaderShadow'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 import ParsedContent from '../../shared/ParsedContent'
 
-import { fadeIn } from '../../../assets/styles/GlobalAnime'
+import { fadeIn } from '../../../styles/GlobalAnime'
 import { initUnlockCard } from '../../../redux/actions/learnData'
 import { incrementGemsBy } from '../../../redux/actions/studentData'
 
@@ -36,7 +36,7 @@ const Header = styled(ImgAndContent)`
 
 	transition: 0.2s ease padding;
 
-	&.minimized {
+	&.content-minimized {
 		padding-top: 1em;
 		padding-bottom: 1em;
 	}
@@ -68,6 +68,22 @@ const Content = ({
 }) => {
 	const containerRef = useRef(null)
 	const headerRef = useRef(null)
+
+	useEffect(() => {
+		containerRef.current.addEventListener('scroll', handleHeaderSize)
+	}, [])
+
+	/**
+	 * Control header size when scrolling over content
+	 */
+	const handleHeaderSize = () => {
+		let atTop = containerRef.current.scrollTop === 0
+		if (atTop) {
+			headerRef.current.classList.remove('content-minimized')
+		} else {
+			headerRef.current.classList.add('content-minimized')
+		}
+	}
 
 	/**
 	 * animation loading
@@ -131,30 +147,9 @@ const Content = ({
 		}
 	}, [gems])
 
-	// useEffect(() => {
-	// 	// containerRef.current.addEventListener('scroll', handleHeaderSize)
-	// }, [])
-
-	// let prevScrollTop = 0
-	// const handleHeaderSize = () => {
-	// 	let scrollTop = containerRef.current.scrollTop
-	// 	console.log(scrollTop, prevScrollTop)
-
-	// 	const isMinimized = headerRef.current.classList.contains('minimized')
-	// 	if (!isMinimized && scrollTop > prevScrollTop) {
-	// 		headerRef.current.classList.add('minimized')
-	// 		prevScrollTop = scrollTop + 21.1
-	// 	} else if (isMinimized && scrollTop <= prevScrollTop) {
-	// 		headerRef.current.classList.remove('minimized')
-	// 		prevScrollTop = scrollTop - 21.1
-	// 	} else {
-	// 		prevScrollTop = scrollTop
-	// 	}
-	// }
-
 	return (
 		<Container
-			id="content"
+			id="learn-content"
 			ref={containerRef}
 			className="low-profile-scrollbar fat"
 		>
@@ -163,7 +158,6 @@ const Content = ({
 					<HeaderWrapper id="content-header" className="learn-i-contentheader">
 						<Header
 							ref={headerRef}
-							className="minimized"
 							imgURL={require('../../../assets/icons/document.svg')}
 							imgWidthEms="4"
 							gap="2em"

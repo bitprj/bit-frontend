@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { scroller } from 'react-scroll'
 import { connect } from 'react-redux'
+import { useDidUpdateEffect } from '../../../../utils/customHooks'
 
 import CentralAnimes from './SelectState/CentralAnimes'
 import CentralContent from './SelectState/CentralContent'
@@ -56,6 +57,30 @@ const Central = ({
 	}, [currentCardIndex])
 
 	/**
+   * Determine if STATE_HINT is necessary using IntersectionObserver 
+   * and detecting if hint is in viewpoint
+	 */
+	useEffect(() => {
+		if (lastHintUnlockedId) {
+			const handleIntersect = entries => {
+				if (entries[0].isIntersecting)
+					onRemoveAndBroadcastButtonState(STATE_HINT)
+			}
+			let observer = new IntersectionObserver(handleIntersect, {
+				root: document.getElementById('learn-content'),
+				rootMargin: '-10% 0px 0px 0px',
+				threshold: 1
+			})
+			let target = document.getElementsByName(
+				`unlocked-hint-${lastHintUnlockedId}`
+			)[0]
+			observer.observe(target)
+			return () => {
+				observer.unobserve(target)
+			}
+		}
+	}, [lastHintUnlockedId])
+	/**
 	 * Reflect animation changes based on the button state here
 	 */
 	useEffect(() => {
@@ -71,14 +96,13 @@ const Central = ({
 				scroller.scrollTo(`unlocked-hint-${lastHintUnlockedId}`, {
 					duration: 500,
 					smooth: true,
-					containerId: 'content',
+					containerId: 'learn-content',
 					offset: -document.getElementById('content-header').clientHeight + 1
 				})
 				onRemoveAndBroadcastButtonState(STATE_HINT)
 				break
 			}
 			case STATE_CHECKPOINT: {
-        console.log('ok')
 				setOpenCheckpoint(true)
 				break
 			}

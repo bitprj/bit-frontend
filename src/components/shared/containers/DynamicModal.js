@@ -5,11 +5,9 @@ import Modal from '@material-ui/core/Modal'
 import Backdrop from '@material-ui/core/Backdrop'
 import Fade from '@material-ui/core/Fade'
 
-import { sizes } from '../../../assets/styles/media'
+import { sizes } from '../../../styles/media'
 
-export const Container = styled.div.attrs(props => ({
-	scale: props.scale || 1
-}))`
+export const Container = styled.div`
 	margin: 0 2em;
 	border-radius: 5px;
 	flex: 1;
@@ -26,18 +24,18 @@ export const Container = styled.div.attrs(props => ({
 
 	// SIZING
 
-	max-width: calc(45em * ${props => props.scale});
-	height: calc(36em * ${props => props.scale}); // ipad vertical
+	max-width: calc(45em * ${props => props.scaleX});
+	height: calc(36em * ${props => props.scaleY}); // ipad vertical
 
 	@media screen and (orientation: landscape) and (max-height: ${sizes.tablet}px) {
-		height: calc((100% - 4em) * ${props => props.scale});
+		height: calc((100% - 4em) * ${props => props.scaleY});
 		${props => props.heightAuto && 'height: auto;'}
 	}
 
 	// target vertical phone
 	@media screen and (orientation: portrait) and (max-width: ${sizes.thone}px) {
-		${props => props.type === 'PANELS' && 'flex-direction: column'};
-		height: calc((100% - 10em) * ${props => props.scale});
+		// ${props => props.type === 'PANELS' && 'flex-direction: column'};
+		height: calc((100% - 10em) * ${props => props.scaleY});
 		${props => props.heightAuto && 'height: auto;'}
 	}
 
@@ -54,8 +52,8 @@ const DynamicModal = ({
 	open,
 	closed,
 	custom,
-	type,
-	scale,
+	scaleX = 1,
+	scaleY = 1,
 	heightAuto
 }) => {
 	return (
@@ -79,8 +77,8 @@ const DynamicModal = ({
 				{!custom ? (
 					<Container
 						className={`${className} low-profile-scrollbar fat`}
-						type={type}
-						scale={scale}
+						scaleX={scaleX}
+						scaleY={scaleY}
 						heightAuto={heightAuto}
 					>
 						{children}

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import setTheme from '../../redux/actions/theme'
-import { palepink } from '../../assets/styles/theme'
+import { palepink } from '../../styles/theme'
 
 import SearchIcon from '@material-ui/icons/Search'
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
@@ -84,7 +84,7 @@ const NavBar = props => (
 			<Link to={'/'}>
 				<Icon
 					alt="Bit Project"
-					src={require('../../assets/icons/logo.svg')}
+					src={require('../../assets/logo/logo.svg')}
 					width={contentHeight}
 				/>
 			</Link>

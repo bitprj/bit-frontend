@@ -78,7 +78,8 @@ const LockedHint = ({
 		<DynamicModal
 			open={openConfirmHint}
 			closed={() => setOpenConfirmHint(false)}
-			scale={0.5}
+			scaleX={0.5}
+			scaleY={0.5}
 			heightAuto
 		>
 			<RenderedModal>
@@ -94,13 +95,7 @@ const LockedHint = ({
 							💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
 						</span>
 					</Button>
-					<Button
-						rounder
-						onClick={() => {
-							setOpenConfirmHint(false)
-							console.log('wtf')
-						}}
-					>
+					<Button rounder onClick={() => setOpenConfirmHint(false)}>
 						Cancel
 					</Button>
 				</ButtonArea>
@@ -128,7 +123,9 @@ const LockedHint = ({
 	)
 }
 
-const mapStateToProps = state => ({ studentGems: state.studentData.gems })
+const mapStateToProps = state => ({
+	studentGems: state.studentData.gems
+})
 
 const mapDispatchToProps = dispatch => {
 	return {

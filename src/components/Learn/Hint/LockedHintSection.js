@@ -82,7 +82,7 @@ const LockedHintSection = ({ activityId, hints }) => {
 	)
 
 	return (
-		<Container>
+		<Container className="learn-r-lockedhints-hintslidedown">
 			{hintIndexCounter !== 0 && (
 				<>
 					<LockedHintsContainer>

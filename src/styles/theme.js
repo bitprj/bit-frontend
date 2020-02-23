@@ -12,7 +12,7 @@ const constant = {
 export const bitblue = {
 	...constant,
 	accent: '#007bed',
-	accentVariant: '#86c5ff',
+	accentVariant: '#9acfff', //86c5ff
 	bg: '#0a192f',
 	bgVariant: '#172A45',
 	bgPage: '#f5faff',

@@ -134,7 +134,8 @@ const reducer = (state = initialState, action) => {
 				...state,
 				indicators: {
 					...state.indicators,
-					currentCardIndex: action.cardIndex
+					currentCardIndex: action.cardIndex,
+					lastHintUnlockedId: undefined // smooth slidein for hints
 				}
 			}
 		}

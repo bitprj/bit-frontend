@@ -37,7 +37,7 @@ const RenderedButton = styled.button.attrs(props => ({
   &:hover {
     ${props =>
 			props.invert
-				? 'filter: brightness(110%);'
+        ? 'filter: brightness(110%);'
 				: `box-shadow: inset 0 0 100em 100em ${
 						props.dark ? props.dark + '16' : props.accent + '16'
 				  }`}
@@ -46,7 +46,7 @@ const RenderedButton = styled.button.attrs(props => ({
   &:active {
     ${props =>
 			props.invert
-				? 'filter: brightness(120%);'
+        ? 'filter: brightness(120%);'
 				: `box-shadow: inset 0 0 100em 100em ${
 						props.dark ? props.dark + '32' : props.accent + '32'
 				  }`}
@@ -69,7 +69,7 @@ const Button = props => {
 			fullWidth={props.fullWidth}
 			rounder={props.rounder}
 			sharp={props.sharp}
-			width={props.width}
+      width={props.width}
 			margin={props.margin}
 			padding={props.padding}
 			onClick={props.clicked || props.onClick}

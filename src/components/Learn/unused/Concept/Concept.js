@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import media from "../../../../assets/styles/media";
+import media from "../../../../styles/media";
 import Button from "../../../shared/unused/Button";
 import StepAsset from "../../../shared/StepAsset";
 import RenderedContent from "../../../shared/ParsedContent";

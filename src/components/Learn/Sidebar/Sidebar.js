@@ -2,10 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import { useDidUpdateEffect } from '../../../utils/customHooks'
-import DotRating from '../../shared/gadgets/DotRating'
+import SidebarHeader from './SidebarHeader'
 import SidebarNav from './SidebarNav'
-import { slideIn, fadeIn } from '../../../assets/styles/GlobalAnime'
+
+import { useDidUpdateEffect } from '../../../utils/customHooks'
+import { slideIn, fadeIn } from '../../../styles/GlobalAnime'
 
 const Container = styled.div`
 	flex: 1;
@@ -19,38 +20,17 @@ const Container = styled.div`
 	}
 `
 
-const Header = styled.div`
-	padding: 2em;
-`
-
-const Sidebar = ({ name }) => {
+const Sidebar = ({ isReady }) => {
 	useDidUpdateEffect(() => {
 		fadeIn('.learn-i-sidebar')
 		slideIn('.learn-i-sidebar')
-	}, [name])
-
-	const header = (
-		<div style={{ position: 'relative' }}>
-			<Header>
-				<code style={{ backgroundColor: 'transparent', fontSize: '85%' }}>
-					INTRODUCTION TO GITHUB
-				</code>
-				<h2 style={{ marginTop: '0.1em', marginBottom: '0.5em' }}>{name}</h2>
-				<DotRating
-					style={{ fontSize: '150%' }}
-					type="RECT"
-					rating={3}
-					outOf={8}
-				/>
-			</Header>
-		</div>
-	)
+	}, [isReady])
 
 	return (
 		<Container className="learn-i-sidebar">
-			{name && (
+			{isReady && (
 				<>
-					{header}
+					<SidebarHeader />
 					<SidebarNav />
 				</>
 			)}
@@ -58,9 +38,8 @@ const Sidebar = ({ name }) => {
 	)
 }
 
-const mapStateToProps = state => {
-	const { name } = state.learnData
-	return { name }
-}
+const mapStateToProps = state => ({
+	isReady: !!state.learnData.name
+})
 
 export default connect(mapStateToProps)(Sidebar)

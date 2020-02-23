@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
+import anime from 'animejs'
 import { connect } from 'react-redux'
 import { scroller } from 'react-scroll'
 import ReactMarkdown from 'react-markdown'
 import { get } from 'lodash'
+import { useDidUpdateEffect } from '../../../utils/customHooks'
 
 import ClampedText from '../../shared/utils/ClampedText'
 
@@ -33,12 +35,21 @@ const NavSubitemImg = styled.div`
 	flex-shrink: 0;
 `
 
-const CardHints = ({ setHasSubitems, unlockedHints }) => {
+const CardHints = ({ setHasSubitems, unlockedHints, lastHintUnlockedId }) => {
+	useDidUpdateEffect(() => {
+		anime({
+			targets: '.learn-r-nav-hintslidedown',
+			translateY: ['-2em', 0],
+			easing: 'easeOutQuad',
+			duration: 750
+    })
+	}, [lastHintUnlockedId])
+
 	const handleScrollTo = hintId => {
 		scroller.scrollTo(`unlocked-hint-${hintId}`, {
 			duration: 500,
 			smooth: true,
-			containerId: 'content',
+			containerId: 'learn-content',
 			offset: -document.getElementById('content-header').clientHeight + 1
 		})
 	}
@@ -52,7 +63,7 @@ const CardHints = ({ setHasSubitems, unlockedHints }) => {
 			return (
 				<React.Fragment key={`sidebar-hint-${id}`}>
 					<NavSubWrapper
-						className="hover-lift transition-short"
+						className={`invisible hover-lift transition-short learn-i-hintheader-${id}`}
 						nestLevel={nestLevel}
 						onClick={() => handleScrollTo(id)}
 					>
@@ -69,9 +80,9 @@ const CardHints = ({ setHasSubitems, unlockedHints }) => {
 
 	// prettier-ignore
 	const renderedHints = useMemo(
-    () => renderedHintsRecursive(unlockedHints), [
-		unlockedHints
-	])
+    () => renderedHintsRecursive(unlockedHints), 
+    [unlockedHints]
+  )
 
 	return <Container>{renderedHints}</Container>
 }
@@ -80,14 +91,15 @@ const mapStateToProps = state => {
 	const {
 		learnData: {
 			cards,
-			indicators: { currentCardIndex }
+			indicators: { currentCardIndex, lastHintUnlockedId }
 		}
 	} = state
 
 	const unlockedHints = cards && get(cards[currentCardIndex], 'unlockedHints')
 
 	return {
-		unlockedHints
+		unlockedHints,
+		lastHintUnlockedId
 	}
 }
 

@@ -36,6 +36,10 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
 
+  .invisible {
+    opacity: 0;
+  }
+
   /**
    * HIDE SCROLLBAR
    */
@@ -66,11 +70,12 @@ export const GlobalStyle = createGlobalStyle`
   .low-profile-scrollbar.fat::-webkit-scrollbar {
     width: 1em;
   }
-  .low-profile-scrollbar.fat::-webkit-scrollbar-track {
-    background: #0001;
-  }
   .low-profile-scrollbar::-webkit-scrollbar-track {
     background: #0000; // not working
+  }
+  .low-profile-scrollbar.fat::-webkit-scrollbar-track {
+    background: #0001;
+    border-radius: 0.5em;
   }
   .low-profile-scrollbar::-webkit-scrollbar-thumb {
     background: #0002;
@@ -86,10 +91,6 @@ export const GlobalStyle = createGlobalStyle`
   /**
    * TRANSITIONS 
    */
-  .transition-none,
-  .transition-none-children > * {
-    transition: none;
-  }
   .transition-short,
   .transition-short-children > * {
     transition: 0.1s ease all;
@@ -102,6 +103,10 @@ export const GlobalStyle = createGlobalStyle`
   .transition-long-children > * {
     transition: 0.4s ease all;
   }
+  .transition-none,
+  .transition-none-children > * {
+    transition: none;
+  }
   .lift,
   .hover-raise,
   .hover-lift:hover {
@@ -110,6 +115,9 @@ export const GlobalStyle = createGlobalStyle`
   .strong-lift,
   .hover-strong-lift:hover {
     box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.1);
+  }
+  .strong-lift-bottom {
+    box-shadow: 0px 4px 1.5em -1.5em rgba(0, 0, 0, 0.1);
   }
   .big-lift {
     box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.15);

@@ -47,7 +47,7 @@ const Toolbar = ({ gems }) => {
 	return (
 		<Container>
 			<Elem to="/">
-				<Icon src={require('../../../assets/icons/logo.svg')} width={'100%'} />
+				<Icon src={require('../../../assets/logo/logo.svg')} width={'100%'} />
 			</Elem>
 			<div className="learn-r-gems" style={{ color: '#fff' }}></div>
 		</Container>

@@ -25,7 +25,10 @@ const NavItem = styled(ImgAndContent)`
 	padding: 0.5em 2em 0.5em 0;
 	color: #bbb;
 	cursor: default;
-	${props => (props.hasSubitems ? `border-bottom: 0.5px #e9e9e9 solid;` : '')}
+	${props =>
+		props.hasSubitems
+			? `border-bottom: 0.5px #e9e9e9 solid;`
+			: `border-bottom: 0.5px transparent;`}
 	${props => (props.unlocked ? `color: #000; cursor: pointer;` : '')}
 `
 
@@ -45,41 +48,45 @@ const SidebarNav = ({
 		smooth: true,
 		containerId: container
 	})
-	const handleScrollToTop = container => {
+	const handleScrollToTop = container =>
 		animateScroll.scrollToTop(scrollOptions(container))
-	}
-	const handleScrollToBottom = container => {
+	const handleScrollToBottom = container =>
 		animateScroll.scrollToBottom(scrollOptions(container))
-	}
 
 	const renderedCards =
 		cards &&
 		cards.map((card, index) => {
 			const isCurrentCard = currentCardIndex === index
-			const className = isCurrentCard ? 'strong-lift' : ''
 			return (
-				<ActiveWrapper
-					key={`learn-nav-${index}`}
-					className={`${className} transition-medium`}
-					onClick={() => {
-						index <= lastCardUnlockedIndex && onSetCurrentCardByIndex(index)
-					}}
-				>
-					<NavItem
-						imgWidthEms="3"
-						strongHover
-						imgText={index + 1}
-						title={card && card.name}
-						gap="0"
-						// time={'15 min'}
-						hasSubitems={isCurrentCard && hasSubitems}
-						unlocked={index <= lastCardUnlockedIndex}
-						onClick={() =>
-							isCurrentCard && hasSubitems && handleScrollToTop('content')
-						}
-					/>
-					{isCurrentCard && <CardHints setHasSubitems={setHasSubitems} />}
-				</ActiveWrapper>
+				<React.Fragment key={`learn-nav-${index}`}>
+					<ActiveWrapper
+						id={`learn-nav-${index}`}
+						className={`${isCurrentCard ? 'strong-lift' : ''} ${
+							index > currentCardIndex ? 'learn-r-nav-hintslidedown' : ''
+						} `}
+						onClick={() => {
+							if (index <= lastCardUnlockedIndex && index !== currentCardIndex)
+								onSetCurrentCardByIndex(index)
+						}}
+					>
+						<NavItem
+							imgWidthEms="3"
+							strongHover
+							imgText={index + 1}
+							title={card && card.name}
+							gap="0"
+							// time={'15 min'}
+							hasSubitems={isCurrentCard && hasSubitems}
+							unlocked={index <= lastCardUnlockedIndex}
+							onClick={() =>
+								isCurrentCard &&
+								hasSubitems &&
+								handleScrollToTop('learn-content')
+							}
+						/>
+						{isCurrentCard && <CardHints setHasSubitems={setHasSubitems} />}
+					</ActiveWrapper>
+				</React.Fragment>
 			)
 		})
 
@@ -118,11 +125,9 @@ const mapStateToProps = state => {
 	}
 }
 
-const mapDispatchToProps = dispatch => {
-	return {
-		onSetCurrentCardByIndex: cardIndex =>
-			dispatch(setCurrentCardByIndex(cardIndex))
-	}
-}
+const mapDispatchToProps = dispatch => ({
+	onSetCurrentCardByIndex: cardIndex =>
+		dispatch(setCurrentCardByIndex(cardIndex))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SidebarNav)

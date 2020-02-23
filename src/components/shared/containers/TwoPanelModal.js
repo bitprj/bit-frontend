@@ -7,7 +7,7 @@ const CustomContainer = styled(Container)`
 	display: flex;
 `
 const LeftPanel = styled.div`
-	flex: ${props => props.ratio || 1};
+	flex: ${props => props.ratio};
 	position: relative;
 
 	@media screen and (orientation: landscape) and (max-height: 500px) {
@@ -15,34 +15,36 @@ const LeftPanel = styled.div`
 	}
 `
 const RightPanel = styled.div`
-	flex: ${props => 1 - props.ratio || 1};
+	flex: ${props => 1 - props.ratio};
 	overflow-y: auto;
 `
 
 const TwoPanelModal = ({
 	open,
 	closed,
-	scale,
+	scaleX = 1,
+	scaleY = 1,
 	leftPanel,
 	rightPanel,
-	ratio
-}) => (
-	<DynamicModal
-		className="low-profile-scrollbar fat"
-		custom
-		open={open}
-		closed={closed}
-		scale={scale}
-	>
-		<CustomContainer>
-			<LeftPanel className="low-profile-scrollbar only-hover" ratio={ratio}>
-				{leftPanel}
-			</LeftPanel>
-			<RightPanel className="low-profile-scrollbar" ratio={ratio}>
-				{rightPanel}
-			</RightPanel>
-		</CustomContainer>
-	</DynamicModal>
-)
+	ratio = 0.5
+}) => {
+	return (
+		<DynamicModal
+			className="low-profile-scrollbar fat"
+			custom
+			open={open}
+			closed={closed}
+		>
+			<CustomContainer scaleX={scaleX} scaleY={scaleY}>
+				<LeftPanel className="low-profile-scrollbar only-hover" ratio={ratio}>
+					{leftPanel}
+				</LeftPanel>
+				<RightPanel className="low-profile-scrollbar" ratio={ratio}>
+					{rightPanel}
+				</RightPanel>
+			</CustomContainer>
+		</DynamicModal>
+	)
+}
 
 export default TwoPanelModal

@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-
-import TwoPanelModal from '../../shared/containers/TwoPanelModal'
+import Upload from './Upload'
 
 const Checkpoint = ({ className, render, open, setOpen }) => {
-	console.log(open)
-	return (
-		<TwoPanelModal open={open} closed={() => setOpen(false)}></TwoPanelModal>
-	)
+	const [isResults, setIsResults] = useState(false)
+
+	const selectType = type => {
+		switch (type) {
+			default: {
+				return (
+					<Upload open={open} setOpen={setOpen} />
+				)
+			}
+		}
+	}
+
+	return selectType()
 }
 
 export default Checkpoint

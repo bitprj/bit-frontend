@@ -8,7 +8,7 @@ import Circle from '../../../assets/icons/unused/circle'
 import ActivityModal from './ActivityModal'
 import ProjectModal from './ProjectModal'
 
-import media from '../../../assets/styles/media'
+import media from '../../../styles/media'
 
 const Content = styled.div`
 	display: flex;

@@ -32,7 +32,7 @@ const IconLine = ({ className, children, icon, marginRight, reverse }) => {
 		<Container className={className}>
 			{reverse ? (
 				<>
-					<span>{children}</span>
+					{children}
 					<IconWrapper reverse={reverse} marginRight={marginRight}>
 						{icon}
 					</IconWrapper>
@@ -42,7 +42,7 @@ const IconLine = ({ className, children, icon, marginRight, reverse }) => {
 					<IconWrapper reverse={reverse} marginRight={marginRight}>
 						{icon}
 					</IconWrapper>
-					<span>{children}</span>
+					{children}
 				</>
 			)}
 		</Container>
