@@ -11,8 +11,8 @@ const Header = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-  width: 69%;
-  height: 100%;
+	width: 69%;
+	height: 100%;
 `
 
 const Content = styled.div`
@@ -49,6 +49,11 @@ const SmallerText = styled.p`
 `
 const SmallClampedText = styled(ClampedText)`
 	font-size: 75%;
+`
+
+const StyledButton = styled(Button)`
+	margin: 0;
+	border-radius: 0;
 `
 
 const ActivityModal = props => {
@@ -94,9 +99,7 @@ const ActivityModal = props => {
 			content={content}
 			ratio={0.4}
 		>
-			<Button invert sharp margin="0">
-				Continue
-			</Button>
+			<StyledButton invert>Continue</StyledButton>
 		</PostModal>
 	)
 }

@@ -9,13 +9,13 @@ import { useDidUpdateEffect } from '../../../utils/customHooks'
 import { slideIn, fadeIn } from '../../../styles/GlobalAnime'
 
 const Container = styled.div`
-	flex: 1;
+	flex: 0.36;
 	background: #fafafa;
 	display: flex;
 	flex-direction: column;
 
 	@media screen and (orientation: landscape) {
-		flex: 0.55;
+		flex: 0.21;
 		font-size: 85%;
 	}
 `

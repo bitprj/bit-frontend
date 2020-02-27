@@ -1,15 +1,12 @@
-import React, { useEffect, useMemo, useContext } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import React, { useEffect } from 'react'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
-import Transition from 'react-transition-group/Transition'
-import Spinner from 'react-spinkit'
 
 import Toolbar from '../components/Learn/Toolbar/Toolbar'
 import Sidebar from '../components/Learn/Sidebar/Sidebar'
 import Content from '../components/Learn/Content/Content'
-
-import { fadeIn, statusFadeOut } from '../styles/GlobalAnime'
+import Spinner from '../components/shared/gadgets/Spinner'
 import { init } from '../redux/actions/learnData'
 
 const Container = styled.div`
@@ -41,60 +38,17 @@ const Container = styled.div`
 	}
 `
 
-const SpinnerWrapper = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	z-index: 999;
-	opacity: 0;
-
-	background-color: ${props => props.theme.bgPage}33;
-	pointer-events: none;
-
-	div {
-		width: 10em;
-		height: 10em;
-	}
-`
-
 const Learn = ({ isReady, onInit }) => {
-	const themeContext = useContext(ThemeContext)
-
 	useEffect(() => {
-		fadeIn('.learn-i-spin')
 		onInit(12)
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-	const spinner = useMemo(() => {
-		return (
-			<SpinnerWrapper className="learn-i-spin">
-				<Spinner
-					className="learn-i-spin"
-					name="circle"
-					fadeIn="none"
-					color={`${themeContext.accent}77`}
-				/>
-			</SpinnerWrapper>
-		)
-	}, [])
 
 	return (
 		<Container>
 			<Toolbar />
 			<Sidebar />
 			<Content />
-			<Transition in={!isReady} timeout={1000} mountOnEnter unmountOnExit>
-				{status => {
-					statusFadeOut(status, '.learn-i-spin', 1000)
-					return spinner
-				}}
-			</Transition>
+			<Spinner render={!isReady} />
 		</Container>
 	)
 }
@@ -108,10 +62,8 @@ const mapStateToProps = state => {
 	return {}
 }
 
-const mapDispatchToProps = dispatch => {
-	return {
-		onInit: activityId => dispatch(init(activityId))
-	}
-}
+const mapDispatchToProps = dispatch => ({
+	onInit: activityId => dispatch(init(activityId))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Learn)

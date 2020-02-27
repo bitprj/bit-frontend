@@ -10,27 +10,26 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	padding: 0.5em;
+	align-items: center;
+  flex: 0.08;
 
 	background-color: ${props => props.theme.bg};
 	text-align: center;
 
 	@media screen and (orientation: landscape) {
-		padding: 0.42em;
+    flex: 0.04;
 	}
 `
 
 const Elem = styled(Link)`
-	width: 3em;
-	height: 3em;
+  padding: 10%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
 
 	@media screen and (orientation: landscape) {
-		width: 2.4em;
-		height: 2.4em;
+    padding: 12%;
 	}
 `
 

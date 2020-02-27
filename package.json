@@ -39,7 +39,8 @@
     "redux-thunk": "^2.3.0",
     "rich-text-to-react": "^1.1.0",
     "styled-components": "^4.4.1",
-    "use-callback-ref": "^1.2.1"
+    "use-callback-ref": "^1.2.1",
+    "validate.js": "^0.13.1"
   },
   "scripts": {
     "start": "react-scripts start",

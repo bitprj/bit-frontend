@@ -27,19 +27,19 @@ const initialState = {
 		buttonStateScheduleQueue: new SafeQueue([]) // must be initialized
 	},
 	cards: [
-		{
-			id: undefined,
-			contentfulId: undefined,
-			name: undefined,
-			order: undefined,
-			hints: [],
-			content: undefined,
-			gems: undefined,
-			unlockedHints: [],
-			lockedHints: [],
-			concepts: [],
-			checkpoint: undefined
-		}
+		// {
+		// 	id: undefined,
+		// 	contentfulId: undefined,
+		// 	name: undefined,
+		// 	order: undefined,
+		// 	hints: [],
+		// 	content: undefined,
+		// 	gems: undefined,
+		// 	unlockedHints: [],
+		// 	lockedHints: [],
+		// 	concepts: [],
+		// 	checkpoint: undefined
+		// }
 		// ... and more cards
 	]
 }

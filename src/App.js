@@ -1,46 +1,36 @@
-import React from 'react';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import React from 'react'
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 
-import Layout from './components/Layout/Layout';
+import Layout from './components/Layout/Layout'
+import Home from './pages/Home'
+import Learn from './pages/Learn'
+import Student from './pages/Student'
+import Explore from './pages/Explore'
+import NotFound from './pages/NotFound'
 
-// import Home from "./pages/Home";
-import Learn from './components/Learn/unused/OldLearn';
-import NewLearn from './pages/Learn';
-import Login from './pages/Login';
-import Logout from './pages/Logout';
-import Student from './pages/Student';
-import Explore from './pages/Explore';
-import NotFound from './pages/NotFound';
-
-import WithProviders from './components/HOC/WithProviders';
 import { GlobalStyle, GlobalStyleReset } from './styles/GlobalStyles'
+import WithProviders from './components/HOC/WithProviders'
+import WithAuthentication from './components/HOC/WithAuthentication'
 
-const App = props => {
-  return (
-    <WithProviders>
-      <GlobalStyleReset />
-      <GlobalStyle />
+const App = () => {
+	return (
+		<WithProviders>
+			<GlobalStyleReset />
+			<GlobalStyle />
+			<BrowserRouter>
+				<WithAuthentication>
+					<Layout>
+						<Switch>
+							<Route path="/" exact component={Home} />
+							<Route path="/explore" exact component={Explore} />
+							<Route path="/learn" exact component={Learn} />
+							<Route component={NotFound} />
+						</Switch>
+					</Layout>
+				</WithAuthentication>
+			</BrowserRouter>
+		</WithProviders>
+	)
+}
 
-      <BrowserRouter>
-        <Layout>
-          <Switch>
-            <Route path="/" exact component={Student} />
-            <Route path="/explore" exact component={Explore} />
-            <Route path="/learn" exact component={NewLearn} />
-            <Route path="/old-learn" exact component={Learn} />
-
-            <Route path="/login" exact component={Login} />
-
-            <Route path="/logout" exact component={Logout} />
-            {/* <WithAuthentication> */}
-            {/* </WithAuthentication> */}
-
-            <Route component={NotFound} />
-          </Switch>
-        </Layout>
-      </BrowserRouter>
-    </WithProviders>
-  );
-};
-
-export default App;
+export default App

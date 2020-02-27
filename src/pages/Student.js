@@ -1,29 +1,35 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
+import Login from '../components/Account/Login'
 import Progress from '../components/Student/Progress/Progress'
 import Module from '../components/Student/Module/Module'
 
 import * as studentData from '../redux/actions/studentData'
 import * as viewTypes from '../redux/utils/viewTypes'
 
-class Student extends Component {
-	componentDidMount() {
-		this.props.onInitStudentData()
-	}
+const Student = ({
+	currentView,
+	is_student_data_loaded,
+	onInitStudentData
+}) => {
 
-	componentDidUpdate() {
-		console.log('[Student Updated]')
-		if (this.props.is_student_data_loaded) {
-			// if (!this.props.suggested_activity)
-			// this.props.onInitSuggestedActivity(this.props.current_activities[0].id);
-			// if (!this.props.current_topic)
-			// this.props.onInitCurrentTopic(this.props.current_topic_id);
-		}
-	}
+	useEffect(() => {
+		onInitStudentData()
+	}, [])
 
-	handleCurrentView() {
-		switch (this.props.currentView) {
+	// useEffect(() => {
+	// 	console.log('[Student Updated]')
+	// 	if (is_student_data_loaded) {
+	// if (!this.props.suggested_activity)
+	// this.props.onInitSuggestedActivity(this.props.current_activities[0].id);
+	// if (!this.props.current_topic)
+	// this.props.onInitCurrentTopic(this.props.current_topic_id);
+	// 	}
+	// })
+
+	const handleCurrentView = () => {
+		switch (currentView) {
 			case viewTypes.PROGRESS:
 				return <Progress />
 
@@ -35,13 +41,11 @@ class Student extends Component {
 		}
 	}
 
-	resumeClickedHandler() {
-		// go to current lab
-	}
-
-	render() {
-		return <>{this.handleCurrentView()}</>
-	}
+	return (
+		<>
+			{handleCurrentView()}
+		</>
+	)
 }
 
 const mapStateToProps = state => {

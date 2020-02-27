@@ -21,7 +21,12 @@ const Dot = styled.div`
   vertical-align: middle;
   ${props => (props.type !== 'SQUARE' ? 'border-radius: 0.3em' : '')}
   ${props => (props.fullWidth ? 'flex: 1;' : '')}
-  ${props => (props.callback ? 'cursor: pointer;' : '')}
+  ${props =>
+		props.callback
+			? props.filled || props.offFilled
+				? 'cursor: pointer;'
+				: 'cursor: default;'
+			: ''}
 
   background-color: ${props => {
 		if (props.filled) return props.filledColor || props.theme.accent

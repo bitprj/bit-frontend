@@ -15,14 +15,15 @@ import { initUnlockCard } from '../../../redux/actions/learnData'
 import { incrementGemsBy } from '../../../redux/actions/studentData'
 
 const Container = styled.div`
-	flex: 2;
+	flex: 0.75; // 2
 	background-color: #fff;
 	overflow-y: auto;
 `
 
 const HeaderWrapper = styled.div`
-	position: sticky;
-	top: 0;
+	position: fixed;
+  top: 0;
+  width: 75%
 	z-index: 99;
 	opacity: 0;
 `
@@ -43,7 +44,7 @@ const Header = styled(ImgAndContent)`
 `
 
 const ContentArea = styled.div`
-	padding: 0.2em 2em 3em;
+	padding: 8em 2em 3em;
 	font-size: 84%;
 	opacity: 0;
 
@@ -69,21 +70,55 @@ const Content = ({
 	const containerRef = useRef(null)
 	const headerRef = useRef(null)
 
+	const isCardUnlocked = useRef(undefined)
+	const currentScrollTop = useRef(0)
+	const cardsScrollTop = useRef([])
+
 	useEffect(() => {
-		containerRef.current.addEventListener('scroll', handleHeaderSize)
+		containerRef.current.addEventListener('scroll', handleScroll)
+		return () =>
+			containerRef.current.removeEventListener('scroll', handleScroll)
 	}, [])
+
+	/**
+	 * Keep track of scroll in scrollTopRef
+	 */
+	const handleScroll = () => {
+		const scrollTop = containerRef.current.scrollTop
+		currentScrollTop.current = scrollTop
+		handleHeaderSize(scrollTop)
+	}
 
 	/**
 	 * Control header size when scrolling over content
 	 */
-	const handleHeaderSize = () => {
-		let atTop = containerRef.current.scrollTop === 0
-		if (atTop) {
-			headerRef.current.classList.remove('content-minimized')
+	const handleHeaderSize = scrollTop => {
+		const header = headerRef.current
+		if (scrollTop === 0) {
+			header && headerRef.current.classList.remove('content-minimized')
 		} else {
-			headerRef.current.classList.add('content-minimized')
+			header && headerRef.current.classList.add('content-minimized')
 		}
 	}
+
+	/**
+	 * scroll to top each card change so that unlocking a new
+	 * card won't leave you at the bottom of the page
+	 *  - TODO keep track of all current scroll for each page
+	 */
+	useEffect(() => {
+		if (currentCardIndex) {
+			setTimeout(() => {
+				containerRef.current.scrollTo(
+					0,
+					cardsScrollTop.current[currentCardIndex]
+				)
+			}, 0) // needed to scroll
+			return () => {
+				cardsScrollTop.current[currentCardIndex] = currentScrollTop.current
+			}
+		}
+	}, [currentCardIndex])
 
 	/**
 	 * animation loading
@@ -98,7 +133,6 @@ const Content = ({
 	 *  - without this there's no way of telling if render
 	 *    occurred because card was unlocked
 	 */
-	const isCardUnlocked = useRef(undefined)
 	useEffect(() => {
 		if (
 			isCardUnlocked.current === undefined &&
@@ -112,16 +146,6 @@ const Content = ({
 			isCardUnlocked.current = true
 		}
 	}, [lastCardUnlockedIndex])
-
-	/**
-	 * scroll to top each card change so that unlocking a new
-	 * card won't leave you at the bottom of the page
-	 *  - TODO keep track of all current scroll for each page
-	 */
-	useEffect(() => {
-		if (containerRef.current.scrollTop !== 0)
-			containerRef.current.scrollTo(0, 0)
-	}, [currentCardIndex])
 
 	/**
 	 * unlock card whenever this card is just unlocked

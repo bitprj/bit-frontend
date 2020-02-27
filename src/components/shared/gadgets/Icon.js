@@ -5,7 +5,7 @@ const RenderedIcon = styled.img.attrs(props => ({
 	width: props.width || '5em'
 }))`
 	width: ${props => props.width};
-	height: ${props => props.height || ''};
+	height: ${props => (!props.height && !props.width ? 'height: 5em;' : '')};
 	${props =>
 		(props.borderRadius && `border-radius: ${props.borderRadius};`) ||
 		props.sharp ||

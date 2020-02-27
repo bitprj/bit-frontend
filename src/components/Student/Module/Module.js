@@ -8,6 +8,7 @@ import Circle from '../../../assets/icons/unused/circle'
 import ActivityModal from './ActivityModal'
 import ProjectModal from './ProjectModal'
 
+import AddIcon from '@material-ui/icons/Add'
 import media from '../../../styles/media'
 
 const Content = styled.div`
@@ -131,6 +132,10 @@ const PickButton = styled.div`
 	box-shadow: 0 0 7px 7px ${props => props.theme.accent}07;
 	cursor: pointer;
 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
 	transition: box-shadow 0.2s ease;
 
 	&:hover {
@@ -196,7 +201,9 @@ const Module = props => {
 					<p>
 						Choose a Project to apply <br /> what you have learned!
 					</p>
-					<PickButton>+</PickButton>
+					<PickButton>
+						<AddIcon fontSize="inherit" />
+					</PickButton>
 					<PickImg src="https://cdn.dribbble.com/users/418188/screenshots/5694634/moonworkers_digital_illustration_tubik_2x.png"></PickImg>
 				</PickContainer>
 			</Content>

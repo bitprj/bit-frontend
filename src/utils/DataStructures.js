@@ -5,7 +5,7 @@
 export function SafeStack(stack) {
 	this.copy = () => new SafeStack([...stack])
 	this.push = item => {
-		if (this.peek() !== item) stack.push(item)
+		if (item && this.peek() !== item) stack.push(item)
 		return this
 	}
 	this.pop = item => {
@@ -24,7 +24,7 @@ export function SafeStack(stack) {
 export function SafeQueue(queue) {
 	this.copy = () => new SafeQueue([...queue])
 	this.enqueue = item => {
-		if (queue[queue.length - 1] !== item) queue.push(item)
+		if (item && queue[queue.length - 1] !== item) queue.push(item)
 		return this
 	}
 	this.dequeue = item => {

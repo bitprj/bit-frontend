@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
+import Clipboard from '@material-ui/icons/AssignmentRounded'
 import Flag from '@material-ui/icons/EmojiFlagsRounded'
 
 import {
@@ -22,6 +23,8 @@ export default function CentralContent({ currentButtonState }) {
 		switch (currentButtonState) {
 			case STATE_CHECKPOINT:
 				return <Flag style={{ marginBottom: '0.1em' }} />
+			case STATE_CONCEPT:
+				return <Clipboard />
 			case STATE_HINT:
 			case STATE_CARD:
 				return <RightArrow />

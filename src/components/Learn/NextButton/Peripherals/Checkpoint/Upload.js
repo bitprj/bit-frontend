@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import ReactMarkdown from 'react-markdown'
 
-import TwoPanelModal from '../../shared/containers/TwoPanelModal'
-
-import Button from '../../shared/gadgets/Button'
-import Icon from '../../shared/gadgets/Icon'
-import IconLine from '../../shared/gadgets/IconLine'
+import Button from '../../../../shared/gadgets/Button'
+import Icon from '../../../../shared/gadgets/Icon'
+import IconLine from '../../../../shared/gadgets/IconLine'
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 
 import { FilePond, registerPlugin } from 'react-filepond'
@@ -26,6 +25,7 @@ const LeftPanel = styled.div`
 	position: relative;
 `
 const CheckpointIcon = styled(Icon)`
+	margin-top: -1.5em;
 	width: 100%;
 `
 
@@ -36,6 +36,27 @@ const CancelButton = styled(Button)`
 	bottom: 1em;
 	border: 0;
 `
+
+export const UploadLeftPanel = ({ setOpen, name, instruction }) => {
+	return (
+		<LeftPanel>
+			<CheckpointIcon
+				src={require('../../../../../assets/icons/checkpoint.svg')}
+			/>
+			<div>
+				<h1 style={{ margin: 0, fontSize: '1.6em' }}>
+					<ReactMarkdown className="markdown-header" source={name} />
+				</h1>
+				<span style={{ fontSize: '85%' }}>
+					<ReactMarkdown source={instruction} />
+				</span>
+			</div>
+			<CancelButton onClick={() => setOpen(false)}>
+				<IconLine icon={<LeftArrow />}>Cancel</IconLine>
+			</CancelButton>
+		</LeftPanel>
+	)
+}
 
 const RightPanel = styled.div`
 	padding: 2em;
@@ -109,84 +130,51 @@ const UploadButton = styled(Button)`
 	border: 0;
 `
 
-const Upload = ({ open, setOpen }) => {
-	const required = 4
-
+export const UploadRightPanel = ({ open, files, setFiles }) => {
 	const filePondRef = useRef(undefined)
-	const [files, setFiles] = useState([])
-	// console.log(files)
 	const upload = () => {}
 
-	// console.log(open, filePondRef.current)
-	// useEffect(() => {
-	// 	console.log(filePondRef.current)
-	// 	if (filePondRef.current && files.length) {
-	// 		filePondRef.current.addFiles(files)
-	// 		console.log('files added!')
-  // 	}
-  //  cleanup...
-	// }, [open, filePondRef.current])
+	useEffect(() => {
+		setTimeout(() => {
+			if (filePondRef.current && files.length) {
+				filePondRef.current.addFiles(files)
+			}
+		}, 0)
+		return () => {
+			filePondRef.current = null
+		}
+	}, [open])
 
 	useEffect(() => {
 		const uploadIcon = document.getElementById('learn-r-uploadicon')
-		uploadIcon && uploadIcon.classList.toggle('invisible')
+		if (!!files.length) {
+			uploadIcon && uploadIcon.classList.add('invisible')
+		} else {
+			uploadIcon && uploadIcon.classList.remove('invisible')
+		}
 	}, [!!files.length])
 
-	const leftPanel = (
-		<LeftPanel>
-			<CheckpointIcon src={require('../../../assets/icons/checkpoint.svg')} />
-			<div style={{ marginBottom: '5em' }}>
-				<h1 style={{ margin: 0, fontSize: '1.6em' }}>Check Point</h1>
-				<p style={{ marginTop: '0.5em', marginBottom: 0 }}>
-					Upload solution.py to make sure that it satisfies all of the test
-					cases mentioned before
-				</p>
-			</div>
-			<CancelButton onClick={() => setOpen(false)}>
-				<IconLine icon={<LeftArrow />}>Cancel</IconLine>
-			</CancelButton>
-		</LeftPanel>
-	)
-
-	const rightPanel = (
+	return (
 		<RightPanel>
 			<FilePond
 				ref={filePondRef}
 				allowMultiple={true}
-				maxFiles={required}
 				onupdatefiles={files => setFiles(files)}
-				styleItemPanelAspectRatio={1 / required}
+				styleItemPanelAspectRatio={1 / 3}
 			/>
 			<UploadIconWrapper id="learn-r-uploadicon" className="transition-long">
-				<Icon src={require('../../../assets/icons/upload.svg')} />
+				<Icon src={require('../../../../../assets/icons/upload.svg')} />
 			</UploadIconWrapper>
 			<UploadButtonWrapper>
-				<UploadButton className="hover-raise" invert onClick={upload}>
+				<UploadButton
+					className="hover-raise"
+					invert
+					disabled={!files.length}
+					onClick={upload}
+				>
 					Submit
 				</UploadButton>
 			</UploadButtonWrapper>
 		</RightPanel>
 	)
-
-	return (
-		<TwoPanelModal
-			open={open}
-			closed={() => setOpen(false)}
-			leftPanel={leftPanel}
-			rightPanel={rightPanel}
-			scaleX={0.8}
-		/>
-	)
-}
-
-export default Upload
-
-export const UploadRightPanel = () => {
-	useEffect(() => {
-		// const filepondText = document.querySelector('.filepond--drop-label')
-		// filepondText.insertBefore(
-		// 	<Icon src={require('../../../assets/icons/checkpoint.svg')} />,
-		// 	filepondText.childNodes[0]
-		// )
-	}, [])
 }

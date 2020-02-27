@@ -1,8 +1,8 @@
 /**
  * account
  */
-export const LOGIN = 'LOGIN'
-export const LOGOUT = 'LOGOUT'
+export const AUTHENTICATE = 'AUTHENTICATE'
+export const DEAUTHENTICATE = 'DEAUTHENTICATE'
 
 /**
  * studentData

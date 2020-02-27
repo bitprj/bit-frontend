@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import Login from '../Account/Login'
 import setTheme from '../../redux/actions/theme'
-import { palepink } from '../../styles/theme'
+import { logout } from '../../services/AccountService'
+import { deauthenticate } from '../../redux/actions/account'
+import { orange, palepink } from '../../styles/theme'
 
 import SearchIcon from '@material-ui/icons/Search'
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-
 import Button from '../shared/gadgets/Button'
 import Icon from '../shared/gadgets/Icon'
+import IconLine from '../shared/gadgets/IconLine'
 
 const contentHeight = '2.5em'
 
@@ -73,92 +76,100 @@ const MuiIconWrapper = styled.div`
 	align-items: center;
 `
 
-const styledLink = {
-	color: 'black',
-	textDecoration: 'none'
-}
+const NavButton = styled(Button)`
+	margin: 0 0.5em;
+	padding: 0.4em 0;
+	width: 8em;
+`
 
-const NavBar = props => (
-	<Nav>
-		<NavElement style={{ height: contentHeight }}>
-			<Link to={'/'}>
-				<Icon
-					alt="Bit Project"
-					src={require('../../assets/logo/logo.svg')}
-					width={contentHeight}
-				/>
-			</Link>
-		</NavElement>
-		<NavElement>
-			<Link style={styledLink} to={'/explore'}>
-				Explore
-			</Link>
-		</NavElement>
-		<NavElement>
-			<Link style={styledLink} to={'/learn'}>
-				Community
-			</Link>
-		</NavElement>
+const styledLink = { color: 'black', textDecoration: 'none' }
 
-		{props.userType === 'Student' ? (
-			<>
-				<NavElement style={{ flex: '1' }}>
-					<SearchBarContainer>
-						<SearchBar />
-						<SearchIconWrapper>
-							<SearchIcon />
-						</SearchIconWrapper>
-					</SearchBarContainer>
-				</NavElement>
+const NavBar = ({ userType, onDeauthenticate, onSetTheme }) => {
+	const history = useHistory()
 
-				<NavElement>
-					<MuiIconWrapper>
-						<NotificationsOutlinedIcon />
-					</MuiIconWrapper>
-				</NavElement>
+	const [openLogin, setOpenLogin] = useState(false)
 
-				<NavElement>
-					<Link style={styledLink} to={'/logout'}>
-						<ProfPicWrapper>
-							{/* <AccountCircleIcon style={{ height: "100%" }} /> */}
-						</ProfPicWrapper>
-						<span>Bob</span>
+	const handleLogout = async () => {
+		try {
+			history.push('/')
+			const response = await logout()
+			if (response.logout) {
+				onDeauthenticate()
+			}
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	return (
+		<>
+			<Nav>
+				<NavElement style={{ height: contentHeight }}>
+					<Link to={'/'}>
+						<Icon
+							alt="Bit Project"
+							src={require('../../assets/logo/logo.svg')}
+							width={contentHeight}
+						/>
 					</Link>
 				</NavElement>
-			</>
-		) : null}
 
-		{props.userType === 'Visitor' ? (
-			<VisitorContainer>
-				<Link style={styledLink} to={'/login'}>
-					<Button invert width={'8em'} margin={'0 0.5em'} padding={'0.4em 0'}>
-						Login
-					</Button>
-				</Link>
+				{userType === 'STUDENT' ? (
+					<>
+						<NavElement>
+							<Link style={styledLink} to={'/explore'}>
+								Explore
+							</Link>
+						</NavElement>
+						<NavElement>
+							<Link style={styledLink} to={'/learn'}>
+								Community
+							</Link>
+						</NavElement>
 
-				{/* <Link style={styledLink} to={"/login"}> */}
-				<Button
-					width={'8em'}
-					margin={'0 0.5em'}
-					padding={'0.4em 0'}
-					clicked={() => props.onSetTheme(palepink)}
-				>
-					Sign Up
-				</Button>
-				{/* </Link> */}
-			</VisitorContainer>
-		) : null}
-	</Nav>
-)
+						<NavElement style={{ flex: '1' }}>
+							<SearchBarContainer>
+								<SearchBar />
+								<SearchIconWrapper>
+									<SearchIcon />
+								</SearchIconWrapper>
+							</SearchBarContainer>
+						</NavElement>
 
+						<NavElement>
+							<MuiIconWrapper>
+								<NotificationsOutlinedIcon />
+							</MuiIconWrapper>
+						</NavElement>
+
+						<NavElement onClick={handleLogout}>
+							<IconLine icon={<AccountCircleIcon />}>Bob</IconLine>
+						</NavElement>
+					</>
+				) : null}
+
+				{userType === 'VISITOR' ? (
+					<VisitorContainer>
+						{/* <NavButton onClick={() => onSetTheme(palepink)}>
+							Theme
+						</NavButton> */}
+						<NavButton invert onClick={() => setOpenLogin(true)}>
+							Login
+						</NavButton>
+					</VisitorContainer>
+				) : null}
+			</Nav>
+			<Login open={openLogin} setOpen={setOpenLogin} />
+		</>
+	)
+}
 const mapStateToProps = state => ({
 	userType: state.account.userType
 })
 
-const mapDispatchToProps = dispatch => {
-	return {
-		onSetTheme: theme => dispatch(setTheme(theme))
-	}
-}
+const mapDispatchToProps = dispatch => ({
+	onDeauthenticate: () => dispatch(deauthenticate()),
+	onSetTheme: theme => dispatch(setTheme(theme))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar)

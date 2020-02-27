@@ -33,7 +33,6 @@ const Container = styled(CentralStyles)`
 `
 
 const Central = ({
-	className,
 	setOpenConcept,
 	setOpenCheckpoint,
 
@@ -44,7 +43,7 @@ const Central = ({
 	lastHintUnlockedId,
 	onIncrementCurrentCardIndex,
 	onIncrementLastCardUnlockedIndex,
-	onRemoveAndBroadcastButtonState
+	removeAndBroadcastButtonState
 }) => {
 	/**
 	 * Removes hint state when student changes card
@@ -53,18 +52,17 @@ const Central = ({
 	 *    feature could be to save the scroll for the current card
 	 */
 	useEffect(() => {
-		onRemoveAndBroadcastButtonState(STATE_HINT)
+		removeAndBroadcastButtonState(STATE_HINT)
 	}, [currentCardIndex])
 
 	/**
-   * Determine if STATE_HINT is necessary using IntersectionObserver 
-   * and detecting if hint is in viewpoint
+	 * Determine if STATE_HINT is necessary using IntersectionObserver
+	 * and detecting if hint is in viewpoint
 	 */
 	useEffect(() => {
 		if (lastHintUnlockedId) {
 			const handleIntersect = entries => {
-				if (entries[0].isIntersecting)
-					onRemoveAndBroadcastButtonState(STATE_HINT)
+				if (entries[0].isIntersecting) removeAndBroadcastButtonState(STATE_HINT)
 			}
 			let observer = new IntersectionObserver(handleIntersect, {
 				root: document.getElementById('learn-content'),
@@ -99,7 +97,7 @@ const Central = ({
 					containerId: 'learn-content',
 					offset: -document.getElementById('content-header').clientHeight + 1
 				})
-				onRemoveAndBroadcastButtonState(STATE_HINT)
+				removeAndBroadcastButtonState(STATE_HINT)
 				break
 			}
 			case STATE_CHECKPOINT: {
@@ -129,7 +127,7 @@ const Central = ({
 
 	return (
 		<Container
-			className={`${className} learn-r-nextbutton transition-medium`}
+			className={`learn-r-nextbutton transition-medium`}
 			onClick={handleClickNext}
 			currentButtonState={currentButtonState}
 		>

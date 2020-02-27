@@ -1,26 +1,47 @@
-import React, { Component } from "react";
-import AuthService from "../../services/AuthService";
-import { withRouter } from "react-router-dom";
+import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-class WithAuthentication extends Component {
-  constructor() {
-    super();
-    this.service = new AuthService();
-  }
+import { checkLogin } from '../../services/AccountService'
+import { authenticate, deauthenticate } from '../../redux/actions/account'
 
-  componentDidMount() {
-    // if (!this.service.userAuthenticated()) {
-    //   this.props.history.push("/");
-    // }
-  }
+const WithAuthentication = ({
+	children,
+	isVisitor,
+	onCheckLogin,
+	onAuthenticate,
+	onDeauthenticate
+}) => {
+	const history = useHistory()
 
-  render() {
-    // if (this.service.userAuthenticated()) {
-    return <>{this.props.children}</>;
-    // } else {
-    //   return <h1>Loading...</h1>;
-    // }
-  }
+	useEffect(() => {
+		const _onCheckLogin = async () => {
+			try {
+				const response = await onCheckLogin()
+				if (response.userType || response.message) {
+					onAuthenticate(response.userType || 'STUDENT')
+				} else {
+					alert("[WithAuthentication] confirm message didn't match")
+				}
+			} catch (error) {
+				if (!isVisitor) onDeauthenticate()
+				history.push('/')
+			}
+		}
+		_onCheckLogin()
+	}, [])
+
+	return <>{children}</>
 }
 
-export default withRouter(WithAuthentication);
+const mapStateToProps = state => ({
+	isVisitor: state.account.userType === 'VISITOR'
+})
+
+const mapDispatchToProps = dispatch => ({
+	onCheckLogin: () => dispatch(checkLogin),
+	onAuthenticate: userType => dispatch(authenticate(userType)),
+	onDeauthenticate: userType => dispatch(deauthenticate(userType))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithAuthentication)

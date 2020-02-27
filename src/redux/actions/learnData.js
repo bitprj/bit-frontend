@@ -59,15 +59,19 @@ export const init = activityId => async dispatch => {
 
 		const cardsProgressed = activityBase.cards.slice(0, index + 1)
 
-		// Fetch Unlocked Cards and their Statuses
+		// Fetch Cards and their Statuses
 		// (from fetchActivityProgress, multiple fetchCardStatus)
-		const pendingUnlockedCards = fetchUnlockedCards(cardsProgressed)
 		const pendingCardStatuses = initCardStatuses(activityId, cardsProgressed)
 
 		// done this way because CDN will be guaranteed to be faster
-		// optimizations can be made later
-		const unlockedCards = await pendingUnlockedCards
+		// only issue is if contentful's CDN stalls which is rarely
+		const [conceptsUnlockedCards, unlockedCards] = await Promise.all([
+			fetchConceptsUnlockedCards(cardsProgressed),
+			fetchUnlockedCards(cardsProgressed)
+		])
 		dispatch(setUnlockedCards(unlockedCards))
+		console.log(unlockedCards)
+		console.log(conceptsUnlockedCards)
 
 		const cardStatuses = await pendingCardStatuses
 		dispatch(setCardStatuses(cardStatuses))
@@ -76,12 +80,23 @@ export const init = activityId => async dispatch => {
 	}
 }
 
-const fetchUnlockedCards = cardsProgressed =>
-	Promise.all(
+const fetchUnlockedCards = cardsProgressed => {
+	return Promise.all(
 		cardsProgressed.map(card => {
 			return genFetch(card.contentfulId)
 		})
 	)
+}
+
+const fetchConceptsUnlockedCards = cardsProgressed => {
+	return Promise.all(
+		cardsProgressed.map(card => {
+			return card.concepts.map(concept => {
+				return genFetch(concept.contentfulId)
+			})
+		})
+	)
+}
 
 const initCardStatuses = (activityId, cardsProgressed) =>
 	Promise.all(

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
+import styled from 'styled-components'
+import anime from 'animejs'
 import { connect } from 'react-redux'
 import { Element as ScrollElement } from 'react-scroll'
 import ReactMarkdown from 'react-markdown'
-import styled from 'styled-components'
 
 import ParsedContent from '../../shared/ParsedContent'
 
-import { fadeIn, slideIn } from '../../../styles/GlobalAnime'
 import { STATE_HINT } from '../NextButton/NextButton'
 
 const UnlockedHint = ({
@@ -38,10 +38,21 @@ const UnlockedHint = ({
 	 */
 	useEffect(() => {
 		if (currentButtonState === STATE_HINT) {
-			fadeIn(`.learn-i-hintheader-${lastHintUnlockedId}`)
-			slideIn(`.learn-i-hintheader-${lastHintUnlockedId}`)
-			fadeIn(`.learn-i-hintsteps-${lastHintUnlockedId}`, { delay: 250 })
-			slideIn(`.learn-i-hintsteps-${lastHintUnlockedId}`, { delay: 250 })
+			const options = {
+				translateX: ['-0.5em', 0],
+				opacity: [0, 1],
+				easing: 'easeOutQuad',
+				duration: 500
+			}
+			anime({
+				targets: `.learn-i-hintheader-${lastHintUnlockedId}`,
+				...options
+			})
+			anime({
+				targets: `.learn-i-hintsteps-${lastHintUnlockedId}`,
+				delay: 125,
+				...options
+			})
 		}
 	}, [currentButtonState])
 

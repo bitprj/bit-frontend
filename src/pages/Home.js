@@ -1,14 +1,32 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
 
-import Teacher from '../pages/Teacher'
+import Visitor from './Visitor'
+import Student from './Student'
+import Teacher from './Teacher'
 
-class Home extends Component {
-	render() {
-		return (
-			<Teacher />
-			// <h1>Home Page</h1>
-		)
+const Home = ({ userType }) => {
+	const selectHome = () => {
+		switch (userType) {
+			case 'VISITOR':
+				return <Visitor />
+			case 'STUDENT':
+				return <Student />
+			case 'TEACHER':
+				return <Teacher />
+			default:
+				console.log(
+					"[HOME] we shouldn't be here... missing userType?",
+					userType
+				)
+				return null
+		}
 	}
+	return <>{selectHome()}</>
 }
 
-export default Home
+const mapStateToProps = state => ({
+	userType: state.account.userType
+})
+
+export default connect(mapStateToProps)(Home)

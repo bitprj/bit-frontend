@@ -6,6 +6,9 @@
  */
 
 const constant = {
+	font: '#000000',
+	offFont: '#ebebeb',
+	fontInvert: '#ffffff'
 	// itemHoverShadow: "0px 4px 25px rgba(0, 0, 0, 0.15)"
 }
 
@@ -15,10 +18,7 @@ export const bitblue = {
 	accentVariant: '#9acfff', //86c5ff
 	bg: '#0a192f',
 	bgVariant: '#172A45',
-	bgPage: '#f5faff',
-	font: '#000000',
-	offFont: '#ebebeb',
-	fontInvert: '#ffffff'
+	bgPage: '#f5faff'
 }
 
 export const palepink = {
@@ -27,10 +27,16 @@ export const palepink = {
 	accentVariant: '#ffb5cd',
 	bg: '#320b18',
 	bgVariant: '#451726',
-	bgPage: '#fff5ff',
-	font: '#000000',
-	offFont: '#ebebeb',
-	fontInvert: '#ffffff'
+	bgPage: '#fff5ff'
+}
+
+export const orange = {
+	...constant,
+	accent: '#ED6800',
+	accentVariant: '#FFC69A',
+	bg: '#2F190A',
+	bgVariant: '#462B18',
+	bgPage: '#FFF9F4'
 }
 
 export const black = {
@@ -39,10 +45,7 @@ export const black = {
 	accentVariant: '#787878',
 	bg: '#121212',
 	bgVariant: '#232323',
-	bgPage: '#efefef',
-	font: '#000000',
-	offFont: '#ebebeb',
-	fontInvert: '#ffffff'
+	bgPage: '#efefef'
 }
 
 export default bitblue

@@ -1,22 +1,22 @@
 import { backend, grader } from './AxiosInstances'
 
 export const fetchActivityProgress = activityId => {
-	const endpoint = `/activities/${activityId}/progress`
+	const endpoint = `activities/${activityId}/progress`
 	return backend.get(endpoint)
 }
 
 export const fetchActivity = activityId => {
-	const endpoint = `/activities/${activityId}`
+	const endpoint = `activities/${activityId}`
 	return backend.get(endpoint)
 }
 
 export const fetchCardStatus = (activityId, cardId) => {
-  const endpoint = `/activities/${activityId}/cards/${cardId}`
+  const endpoint = `activities/${activityId}/cards/${cardId}`
   return backend.get(endpoint)
 }
 
 export const unlockCard = (activityId, cardId) => {
-  const endpoint = `/activities/${activityId}/cards/${cardId}`
+  const endpoint = `activities/${activityId}/cards/${cardId}`
   return backend.put(endpoint, {}, {
     headers: {
       'X-CSRF-TOKEN': document.cookie.csrf_access_token
@@ -25,7 +25,7 @@ export const unlockCard = (activityId, cardId) => {
 }
 
 export const unlockHint = (activityId, hintId) => {
-  const endpoint = `/activities/${activityId}/hints/${hintId}`
+  const endpoint = `activities/${activityId}/hints/${hintId}`
   return backend.put(endpoint)
 }
 

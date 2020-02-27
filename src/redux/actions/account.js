@@ -1,35 +1,16 @@
-import AuthService from '../../services/AuthService'
+import { AUTHENTICATE, DEAUTHENTICATE } from '../utils/actionTypes'
 
-import * as actionTypes from '../utils/actionTypes'
-
-const authService = new AuthService()
-
-// const addLoginTrace = () => {
-//   return {
-//     type: actionTypes.LOGIN
-//   };
-// };
-
-export const initLogin = (user, pass, callback) => {
-	console.log(user, pass, callback)
-	return dispatch => {
-		authService
-			.postLogin(user, pass)
-			.then(response => {
-				alert('successful! now go redirect yourself\nGo to the `Community` Tab')
-				callback()
-			})
-			.catch(error => {
-				alert('try again.', error)
-				callback()
-			})
-	}
-}
-// remove logintrace
-export const logout = () => {
+export const authenticate = userType => {
+	localStorage.setItem('userType', userType)
 	return {
-		type: actionTypes.LOGOUT
+		type: AUTHENTICATE,
+		userType
 	}
 }
 
-export const initLogout = () => {}
+export const deauthenticate = () => {
+	localStorage.removeItem('userType')
+	return {
+		type: DEAUTHENTICATE
+	}
+}

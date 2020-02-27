@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { get } from 'lodash'
+import { useDidUpdateEffect } from '../../../utils/customHooks'
 import { SafeStack } from '../../../utils/DataStructures'
 
 import Central from './Central/Central'
-import Checkpoint from '../Checkpoint/Checkpoint'
-import Concept from '../Concept/Concept'
+import Checkpoint from './Peripherals/Checkpoint/Checkpoint'
+import Concept from './Peripherals/Concept/Concept'
 
 import {
 	broadcastButtonState,
@@ -31,19 +33,35 @@ const Container = styled.div`
 const NextButtonManager = ({
 	className,
 	buttonStateScheduleQueue,
+	concepts,
+	checkpoint,
 	onBroadcastButtonState,
 	onResetButtonStateSchedule
 }) => {
-	const buttonStateStack = useRef(new SafeStack([STATE_CARD, STATE_CHECKPOINT]))
+	const buttonStateStack = useRef(new SafeStack([STATE_CARD]))
 	const buttonFinishedTask = useRef([])
 
 	const [openConcept, setOpenConcept] = useState(false)
 	const [openCheckpoint, setOpenCheckpoint] = useState(false)
 
-	const onRemoveAndBroadcastButtonState = buttonState => {
+	const removeAndBroadcastButtonState = buttonState => {
 		buttonStateStack.current.pop(buttonState)
 		onBroadcastButtonState(buttonStateStack.current.peek())
 	}
+
+	useEffect(() => {
+		console.log('here!', checkpoint, concepts)
+		// must be first
+		if (checkpoint) {
+			buttonStateStack.current.push(STATE_CHECKPOINT)
+			onBroadcastButtonState(STATE_CHECKPOINT)
+		}
+		if (concepts && concepts.length) {
+			// buttonStateStack.current.push(STATE_CONCEPT)
+			// setOpenConcept(true)
+			// onBroadcastButtonState(STATE_CONCEPT)
+		}
+	}, [])
 
 	/**
 	 * Update currentButtonState with all states from the schedule queue
@@ -66,11 +84,16 @@ const NextButtonManager = ({
 	return (
 		<Container className={`${className} transition-medium`}>
 			<Central
-				onRemoveAndBroadcastButtonState={onRemoveAndBroadcastButtonState}
+				removeAndBroadcastButtonState={removeAndBroadcastButtonState}
 				setOpenConcept={setOpenConcept}
 				setOpenCheckpoint={setOpenCheckpoint}
 			/>
-			<Concept render={false} open={openConcept} setOpen={setOpenConcept} />
+			<Concept
+				render={false}
+				open={openConcept}
+				setOpen={setOpenConcept}
+				removeAndBroadcastButtonState={removeAndBroadcastButtonState}
+			/>
 			<Checkpoint
 				render={false}
 				open={openCheckpoint}
@@ -83,13 +106,17 @@ const NextButtonManager = ({
 const mapStateToProps = state => {
 	const {
 		learnData: {
-			indicators: { buttonStateStack, buttonStateScheduleQueue }
+			indicators: { currentCardIndex, buttonStateScheduleQueue },
+			cards
 		}
 	} = state
 
+	const card = cards && cards[currentCardIndex]
+
 	return {
-		buttonStateStack,
-		buttonStateScheduleQueue
+		buttonStateScheduleQueue,
+		concepts: get(card, 'concepts'),
+		checkpoint: get(card, 'checkpoint')
 	}
 }
 
