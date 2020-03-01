@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import Login from '../components/Account/Login'
-import Progress from '../components/Student/Progress/Progress'
-import Module from '../components/Student/Module/Module'
+import Login from '../Account/Login'
+import Progress from './Progress/Progress'
+import Module from './Module/Module'
 
-import * as studentData from '../redux/actions/studentData'
-import * as viewTypes from '../redux/utils/viewTypes'
+import * as studentData from '../../redux/actions/studentData'
+import * as viewTypes from '../../redux/utils/viewTypes'
 
 const Student = ({
 	currentView,

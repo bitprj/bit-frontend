@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
-import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounded'
+import KeyUpArrow from '@material-ui/icons/KeyboardArrowUpRounded'
 
 const ShadowWrapper = styled.div`
 	height: 4em;
@@ -32,12 +32,13 @@ const Shadow = styled.div`
 	height: 2em;
 	margin: -2em auto 0;
 	border-radius: 8em / 1em;
-	box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.2);
+	box-shadow: 0px 4px 1.5em
+		rgba(0, 0, 0, ${props => props.shadowStrength || '0.2'});
 	opacity: 0;
 	pointer-events: none;
 `
 
-const UpArrow = styled(KeyboardArrowUpRoundedIcon)`
+const UpArrow = styled(KeyUpArrow)`
 	font-size: 333% !important;
 	transition: 0.1s ease all !important;
 	color: #999;
@@ -62,7 +63,8 @@ const HeaderShadow = ({
 	type,
 	reverse,
 	onClick,
-	innerOnClick
+	innerOnClick,
+	shadowStrength
 }) => {
 	const shadowRef = useRef(null)
 
@@ -115,7 +117,13 @@ const HeaderShadow = ({
 				)
 
 			default:
-				return <Shadow ref={shadowRef} className="transition-short" />
+				return (
+					<Shadow
+						ref={shadowRef}
+						shadowStrength={shadowStrength}
+						className="transition-short"
+					/>
+				)
 		}
 	}
 

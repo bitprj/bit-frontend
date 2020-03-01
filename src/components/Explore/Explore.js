@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import Sidebar from '../components/Explore/Sidebar'
-import Content from '../components/Explore/Content'
+import Sidebar from './Sidebar'
+import Content from './Content'
 
-import { sizes } from '../styles/media'
+import { sizes } from '../../styles/media'
 
 const Container = styled.div`
 	display: flex;

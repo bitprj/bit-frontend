@@ -1,36 +1,44 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const RenderedIcon = styled.img.attrs(props => ({
-	width: props.width || '5em'
-}))`
-	width: ${props => props.width};
-	height: ${props => (!props.height && !props.width ? 'height: 5em;' : '')};
-	${props =>
-		(props.borderRadius && `border-radius: ${props.borderRadius};`) ||
-		props.sharp ||
-		'border-radius: 1em;'}
-	${props =>
-		props.src ? '' : `background-color: ${props.theme.accentVariant};`}
+const RenderedIcon = styled.img`
+	width: ${props => props.width || '5em'};
+  ${props => {
+		if (props.height) return `height: ${props.height}`
+		else if (!props.height && !props.width) return 'height: 5em;'
+	}}
+  
+	${props => {
+		if (props.sharp) {
+			return 'border-radius: 0;'
+		} else if (props.circle) {
+			return 'border-radius: 50%;'
+		} else {
+			return 'border-radius: 1em;'
+		}
+	}}
+
+	${props => (props.src ? '' : `background-color: ${props.theme.accentVariant};`)}
 `
 
 const Icon = ({
+	alt,
 	className,
 	src,
 	width,
 	height,
 	sharp,
-	borderRadius,
+	circle,
 	shadow
 }) => {
 	return (
 		<RenderedIcon
-			// alt="Icon"
-			className={`${className} ${shadow && 'lift transition-medium'}`}
+			alt={alt || ''}
+			className={`${className || ''}${shadow ? 'lift transition-medium' : ''}`}
 			width={width}
 			height={height}
 			sharp={sharp}
-			borderRadius={borderRadius}
+			circle={circle}
 			src={src}
 		/>
 	)

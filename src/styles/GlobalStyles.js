@@ -4,16 +4,19 @@ export const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro|Source+Serif+Pro');
   
   body {
-    font-family: 'Source Sans Pro';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  span, p {
+  body, .sans {
+    font-family: 'Source Sans Pro';
+  }
+
+  span, p, .serif {
     font-family: 'Source Serif Pro';
   }
 
-  code, code * {
+  code, code *, .code {
     font-family: 'Source Code Pro';
   }
 

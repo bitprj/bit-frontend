@@ -3,14 +3,14 @@ import styled, { ThemeContext } from 'styled-components'
 import Transition from 'react-transition-group/Transition'
 import Spinkit from 'react-spinkit'
 
-import { fadeIn, statusFadeOut } from '../../../styles/GlobalAnime'
+import { fadeIn, statusFadeOut } from '../../styles/GlobalAnime'
 
 const SpinnerWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
-	position: absolute;
+	position: fixed;
 	left: 0;
 	right: 0;
 	top: 0;
@@ -27,7 +27,7 @@ const SpinnerWrapper = styled.div`
 	}
 `
 
-const Spinner = ({ render }) => {
+const WithPageSpinner = ({ children, show }) => {
 	const themeContext = useContext(ThemeContext)
 
 	useEffect(() => {
@@ -35,22 +35,25 @@ const Spinner = ({ render }) => {
 	}, [])
 
 	return (
-		<Transition in={render} timeout={1000} mountOnEnter unmountOnExit>
-			{status => {
-				statusFadeOut(status, '.learn-i-spin', 1000)
-				return (
-					<SpinnerWrapper className="learn-i-spin">
-						<Spinkit
-							className="learn-i-spin"
-							name="circle"
-							fadeIn="none"
-							color={`${themeContext.accent}77`}
-						/>
-					</SpinnerWrapper>
-				)
-			}}
-		</Transition>
+		<>
+			<Transition in={show} timeout={1000} mountOnEnter unmountOnExit>
+				{status => {
+					statusFadeOut(status, '.learn-i-spin', 1000)
+					return (
+						<SpinnerWrapper className="learn-i-spin">
+							<Spinkit
+								className="learn-i-spin"
+								name="circle"
+								fadeIn="none"
+								color={`${themeContext.accent}77`}
+							/>
+						</SpinnerWrapper>
+					)
+				}}
+			</Transition>
+			{children}
+		</>
 	)
 }
 
-export default Spinner
+export default WithPageSpinner

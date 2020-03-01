@@ -1,23 +1,17 @@
-import React, { useState, useRef } from 'react'
-import { animateScroll } from 'react-scroll'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import { animateScroll } from 'react-scroll'
 import { connect } from 'react-redux'
 
+import ActiveList from '../../shared/containers/ActiveList'
 import CardHints from './CardHints'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
-import HeaderShadow from '../../shared/utils/HeaderShadow'
 
 import { setCurrentCardByIndex } from '../../../redux/actions/learnData'
 
-const Container = styled.div`
-	overflow-y: auto;
+const StyledActiveList = styled(ActiveList)`
+	font-size: 85%;
 	flex-grow: 1;
-`
-
-const ActiveWrapper = styled.div`
-	&.active {
-		background-color: #fcfcfc;
-	}
 `
 
 const NavItem = styled(ImgAndContent)`
@@ -38,8 +32,6 @@ const SidebarNav = ({
 	lastCardUnlockedIndex,
 	onSetCurrentCardByIndex
 }) => {
-	const containerRef = useRef(null)
-
 	// basically, if hints are unlocked for current card
 	const [hasSubitems, setHasSubitems] = useState(false)
 
@@ -50,61 +42,43 @@ const SidebarNav = ({
 	})
 	const handleScrollToTop = container =>
 		animateScroll.scrollToTop(scrollOptions(container))
-	const handleScrollToBottom = container =>
-		animateScroll.scrollToBottom(scrollOptions(container))
-
-	const renderedCards =
-		cards &&
-		cards.map((card, index) => {
-			const isCurrentCard = currentCardIndex === index
-			return (
-				<React.Fragment key={`learn-nav-${index}`}>
-					<ActiveWrapper
-						id={`learn-nav-${index}`}
-						className={`${isCurrentCard ? 'strong-lift' : ''} ${
-							index > currentCardIndex ? 'learn-r-nav-hintslidedown' : ''
-						} `}
-						onClick={() => {
-							if (index <= lastCardUnlockedIndex && index !== currentCardIndex)
-								onSetCurrentCardByIndex(index)
-						}}
-					>
-						<NavItem
-							imgWidthEms="3"
-							strongHover
-							imgText={index + 1}
-							title={card && card.name}
-							gap="0"
-							// time={'15 min'}
-							hasSubitems={isCurrentCard && hasSubitems}
-							unlocked={index <= lastCardUnlockedIndex}
-							onClick={() =>
-								isCurrentCard &&
-								hasSubitems &&
-								handleScrollToTop('learn-content')
-							}
-						/>
-						{isCurrentCard && <CardHints setHasSubitems={setHasSubitems} />}
-					</ActiveWrapper>
-				</React.Fragment>
-			)
-		})
-
 	return (
-		<Container
-			id="sidebar-nav"
-			ref={containerRef}
-			className="low-profile-scrollbar only-hover"
+		<StyledActiveList
+			identifier="learn"
+			itemList={cards}
+			selectCallback={(_, index) => {
+				if (index <= lastCardUnlockedIndex && index !== currentCardIndex)
+					onSetCurrentCardByIndex(index)
+			}}
+			activeClassName={(_, index) =>
+				`${currentCardIndex === index ? 'strong-lift' : ''} ${
+					index > currentCardIndex ? 'learn-r-nav-hintslidedown' : ''
+				}`
+			}
 		>
-			<HeaderShadow containerRef={containerRef} />
-			{renderedCards}
-			<HeaderShadow
-				containerRef={containerRef}
-				reverse
-				type="arrow"
-				innerOnClick={() => handleScrollToBottom('sidebar-nav')}
-			/>
-		</Container>
+			{(card, index) => (
+				<>
+					<NavItem
+						imgWidthEms="3"
+						strongHover
+						imgText={index + 1}
+						title={card && card.name}
+						gap="0"
+						// time={'15 min'}
+						hasSubitems={currentCardIndex === index && hasSubitems}
+						unlocked={index <= lastCardUnlockedIndex}
+						onClick={() =>
+							currentCardIndex === index &&
+							hasSubitems &&
+							handleScrollToTop('learn-content')
+						}
+					/>
+					{currentCardIndex === index && (
+						<CardHints setHasSubitems={setHasSubitems} />
+					)}
+				</>
+			)}
+		</StyledActiveList>
 	)
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Visitor = () => {
-	return <>Landing</>
+	return <></>
 }
 
 export default Visitor

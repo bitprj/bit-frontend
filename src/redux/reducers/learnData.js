@@ -1,4 +1,4 @@
-import { cloneDeep, merge as mergeDeep, get } from 'lodash'
+import { cloneDeep, merge as mergeDeep } from 'lodash'
 import { SafeQueue } from '../../utils/DataStructures'
 
 import {
@@ -203,8 +203,6 @@ const reducer = (state = initialState, action) => {
 	}
 }
 
-export default reducer
-
 /** HELPERS */
 
 const hintStatusSeparation = node => {
@@ -219,3 +217,5 @@ const hintStatusSeparation = node => {
 		return !hint.isUnlocked
 	})
 }
+
+export default reducer

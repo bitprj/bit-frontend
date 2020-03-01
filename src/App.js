@@ -1,35 +1,29 @@
 import React from 'react'
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
 
-import Layout from './components/Layout/Layout'
-import Home from './pages/Home'
-import Learn from './pages/Learn'
-import Student from './pages/Student'
-import Explore from './pages/Explore'
-import NotFound from './pages/NotFound'
+import OldTeacher from './components/Teacher/unused/Teacher'
+import Teacher from './components/Teacher/Teacher'
+import Home from './components/Home'
+import Learn from './components/Learn/Learn'
+import Explore from './components/Explore/Explore'
+import NotFound from './components/Error/404NotFound'
 
-import { GlobalStyle, GlobalStyleReset } from './styles/GlobalStyles'
-import WithProviders from './components/HOC/WithProviders'
-import WithAuthentication from './components/HOC/WithAuthentication'
+import WithGlobalHOC from './components/HOC/WithGlobalHOC'
 
 const App = () => {
 	return (
-		<WithProviders>
-			<GlobalStyleReset />
-			<GlobalStyle />
-			<BrowserRouter>
-				<WithAuthentication>
-					<Layout>
-						<Switch>
-							<Route path="/" exact component={Home} />
-							<Route path="/explore" exact component={Explore} />
-							<Route path="/learn" exact component={Learn} />
-							<Route component={NotFound} />
-						</Switch>
-					</Layout>
-				</WithAuthentication>
-			</BrowserRouter>
-		</WithProviders>
+		<BrowserRouter>
+			<WithGlobalHOC>
+				<Switch>
+					<Route path="/" exact component={Home} />
+					<Route path="/explore" exact component={Explore} />
+					<Route path="/learn" exact component={Learn} />
+					<Route path="/grade" exact component={Teacher} />
+					<Route path="/oteacher" exact component={OldTeacher} />
+					<Route component={NotFound} />
+				</Switch>
+			</WithGlobalHOC>
+		</BrowserRouter>
 	)
 }
 

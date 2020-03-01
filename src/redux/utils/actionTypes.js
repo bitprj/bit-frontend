@@ -16,6 +16,15 @@ export const INCREMENT_GEMS_BY = 'INCREMENT_GEMS_BY'
 // export const SET_CURRENT_TOPIC_MODULES = "SET_CURRENT_TOPIC_MODULES";
 
 /**
+ * teacherData
+ */
+/* initialization processes */
+export const SET_SUBMISSIONS = 'SET_SUBMISSIONS'
+
+/* runtime processes */
+export const SET_CURRENT_SUBMISSION_BY_INDEX = 'SET_CURRENT_SUBMISSION_BY_INDEX'
+
+/**
  * learnData
  */
 /* initialization processes */
@@ -38,6 +47,11 @@ export const BROADCAST_BUTTON_STATE = 'BROADCAST_BUTTON_STATE'
 export const SCHEDULE_BUTTON_STATE = 'SCHEDULE_BUTTON_STATE'
 export const RESET_BUTTON_STATE_SCHEDULE = 'RESET_BUTTON_STATE_SCHEDULE'
 
+/**
+ * theme
+ */
+export const SET_THEME = 'SET_THEME'
+
 // @unused
 export const SET_ALL_CARDS = 'SET_ALL_CARDS'
 
@@ -45,8 +59,3 @@ export const SET_ALL_CARDS = 'SET_ALL_CARDS'
  * viewManager
  */
 export const SET_VIEW_STUDENT = 'SET_VIEW_STUDENT'
-
-/**
- * Theme
- */
-export const SET_THEME = 'SET_THEME'

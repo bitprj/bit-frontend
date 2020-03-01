@@ -14,6 +14,8 @@ const Container = styled.div`
 	cursor: pointer;
 	font-size: ${props => (props.imgWidthEms / 7) ** 0.5 * 1.2}em;
 	position: relative;
+
+	transition: box-shadow 0.1s ease;
 `
 
 const Wrapper = styled.div`
@@ -70,14 +72,15 @@ const ImgAndContent = forwardRef(
 				<Icon width={`${imgWidthEms}em`} src={imgURL} shadow={shadow} />
 			)) ||
 			(imgText && <Wrapper width={`${imgWidthEms}em`}>{imgText}</Wrapper>)
+
 		return (
 			<Container
 				ref={ref}
 				style={style}
 				imgWidthEms={imgWidthEms}
-				className={`${className} transition-medium ${
-					hover ? 'hover-lift' : ''
-				} ${strongHover ? 'hover-strong-lift' : ''}`}
+				className={`${className || ''} ${hover ? 'hover-lift' : ''} ${
+					strongHover ? 'hover-strong-lift' : ''
+				}`}
 				onClick={clicked || onClick}
 			>
 				{showAppropriateImg}

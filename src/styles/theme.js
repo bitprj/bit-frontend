@@ -8,8 +8,31 @@
 const constant = {
 	font: '#000000',
 	offFont: '#ebebeb',
-	fontInvert: '#ffffff'
+	fontInvert: '#ffffff',
 	// itemHoverShadow: "0px 4px 25px rgba(0, 0, 0, 0.15)"
+
+	pastel: {
+		red: '#e57373',
+		orange: '#ffb74d',
+		yellow: '#ffe14d',
+		green: '#81c784',
+		blue: '#64b5f6',
+		purple: '#b6aaf0',
+		magenta: '#bb91eb',
+		pink: '#f2ace7',
+		cyan: '#aaf0d7'
+	},
+	muted: {
+		red: '#ab5757',
+		orange: '#c78f3e',
+		yellow: '#dec340',
+		green: '#609663',
+		blue: '#4780ad',
+		purple: '#7971a3',
+    magenta: '#8164a3',
+    pink: '#c484ba',
+		cyan: '#5aada2'
+	}
 }
 
 export const bitblue = {

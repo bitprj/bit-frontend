@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import Visitor from './Visitor'
-import Student from './Student'
-import Teacher from './Teacher'
+import Visitor from './Visitor/Visitor'
+import Student from './Student/Student'
 
 const Home = ({ userType }) => {
 	const selectHome = () => {
@@ -12,8 +11,6 @@ const Home = ({ userType }) => {
 				return <Visitor />
 			case 'STUDENT':
 				return <Student />
-			case 'TEACHER':
-				return <Teacher />
 			default:
 				console.log(
 					"[HOME] we shouldn't be here... missing userType?",

@@ -42,8 +42,7 @@ const Field = styled.div`
 	margin: 0.8em auto;
 	display: flex;
 	justify-content: center;
-	// align-items: flex-end;
-	& :nth-child(1) {
+	> :nth-child(1) {
 		margin-right: 0.3em;
 	}
 `
@@ -84,6 +83,7 @@ const Login = ({ open, setOpen, onAuthenticate }) => {
 			onAuthenticate(response.userType.toUpperCase())
 			setOpen(false)
 			history.push('.')
+			setIsWaiting(false)
 		} catch (err) {
 			setIsWaiting(false)
 		}

@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 
+import ContentHeader from './ContentHeader'
 import UnlockedHintSection from '../Hint/UnlockedHintSection'
 import LockedHintSection from '../Hint/LockedHintSection'
 import NextButton from '../NextButton/NextButton'
-import HeaderShadow from '../../shared/utils/HeaderShadow'
-import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 import ParsedContent from '../../shared/ParsedContent'
 
 import { fadeIn } from '../../../styles/GlobalAnime'
@@ -15,32 +14,10 @@ import { initUnlockCard } from '../../../redux/actions/learnData'
 import { incrementGemsBy } from '../../../redux/actions/studentData'
 
 const Container = styled.div`
-	flex: 0.75; // 2
+	position: relative;
+	flex: 0.75;
 	background-color: #fff;
 	overflow-y: auto;
-`
-
-const HeaderWrapper = styled.div`
-	position: fixed;
-  top: 0;
-  width: 75%
-	z-index: 99;
-	opacity: 0;
-`
-
-const Header = styled(ImgAndContent)`
-	margin: 0;
-	padding: 2em 1em 1.5em;
-	padding-left: 3em;
-	cursor: auto;
-	background-color: #fff;
-
-	transition: 0.2s ease padding;
-
-	&.content-minimized {
-		padding-top: 1em;
-		padding-bottom: 1em;
-	}
 `
 
 const ContentArea = styled.div`
@@ -104,7 +81,6 @@ const Content = ({
 	/**
 	 * scroll to top each card change so that unlocking a new
 	 * card won't leave you at the bottom of the page
-	 *  - TODO keep track of all current scroll for each page
 	 */
 	useEffect(() => {
 		if (currentCardIndex) {
@@ -179,22 +155,11 @@ const Content = ({
 		>
 			{content && (
 				<>
-					<HeaderWrapper id="content-header" className="learn-i-contentheader">
-						<Header
-							ref={headerRef}
-							imgURL={require('../../../assets/icons/document.svg')}
-							imgWidthEms="4"
-							gap="2em"
-							reverse
-							contentSize={'150%'}
-							title={name}
-						>
-							<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
-								INTRODUCTION TO GITHUB
-							</code>
-						</Header>
-						<HeaderShadow containerRef={containerRef} />
-					</HeaderWrapper>
+					<ContentHeader
+						ref={headerRef}
+						containerRef={containerRef}
+						name={name}
+					/>
 
 					<ContentArea className="learn-i-contentarea">
 						<ParsedContent id="learn-content" document={content} />

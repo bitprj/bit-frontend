@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import DotRating from '../../shared/gadgets/DotRating'
 import { setCurrentCardByIndex } from '../../../redux/actions/learnData'
 
-const Header = styled.div`
+const Container = styled.div`
 	padding: 2em;
 `
 
@@ -17,7 +17,7 @@ const SidebarHeader = ({
 	onSetCurrentCardByIndex
 }) => {
 	return (
-		<Header>
+		<Container>
 			<code style={{ backgroundColor: 'transparent', fontSize: '85%' }}>
 				INTRODUCTION TO GITHUB
 			</code>
@@ -34,7 +34,7 @@ const SidebarHeader = ({
 						onSetCurrentCardByIndex(index)
 				}}
 			/>
-		</Header>
+		</Container>
 	)
 }
 

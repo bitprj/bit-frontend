@@ -95,7 +95,7 @@ const Central = ({
 					duration: 500,
 					smooth: true,
 					containerId: 'learn-content',
-					offset: -document.getElementById('content-header').clientHeight + 1
+					offset: -document.getElementById('learn-content-header').clientHeight + 1
 				})
 				removeAndBroadcastButtonState(STATE_HINT)
 				break

@@ -76,7 +76,7 @@ const DynamicModal = ({
 			<Fade in={open}>
 				{!custom ? (
 					<Container
-						className={`${className} low-profile-scrollbar fat`}
+						className={`${className || ''} low-profile-scrollbar fat`}
 						scaleX={scaleX}
 						scaleY={scaleY}
 						heightAuto={heightAuto}

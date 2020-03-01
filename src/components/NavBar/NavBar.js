@@ -1,41 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import Login from '../Account/Login'
+import Logout from '../Account/Logout'
 import setTheme from '../../redux/actions/theme'
-import { logout } from '../../services/AccountService'
 import { deauthenticate } from '../../redux/actions/account'
 import { orange, palepink } from '../../styles/theme'
 
+import IconArea from '../shared/gadgets/IconArea'
 import SearchIcon from '@material-ui/icons/Search'
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import Button from '../shared/gadgets/Button'
 import Icon from '../shared/gadgets/Icon'
-import IconLine from '../shared/gadgets/IconLine'
 
-const contentHeight = '2.5em'
+const contentHeight = '2.2em'
 
 const Nav = styled.nav`
-	font-size: 108%;
 	padding: 0.8em 1em;
+	font-size: 108%;
 	box-shadow: 0 4px 30px 0 rgba(144, 144, 144, 0.2);
 	display: flex;
-	align-items: center;
+	align-items: stretch;
 	flex-wrap: wrap;
 `
 
 const NavElement = styled.div`
 	margin: 0 1em;
+	display: flex;
+	align-items: center;
 `
-//^ line-height: ${contentHeight};
 
-const StudentContainer = styled.div``
-
-const VisitorContainer = styled.div`
-	flex: 1;
+const AlignRight = styled.div`
+	${props => (props.userType !== 'STUDENT' ? 'flex-grow: 1;' : '')}
 	display: flex;
 	justify-content: flex-end;
 `
@@ -45,6 +44,7 @@ const SearchBarContainer = styled.div`
 	background-color: #f1f1f1;
 	border-radius: ${contentHeight};
 	display: flex;
+	width: 100%;
 `
 
 const SearchBar = styled.input`
@@ -69,9 +69,7 @@ const SearchIconWrapper = styled.div`
 	cursor: pointer;
 `
 
-const ProfPicWrapper = styled.div``
-
-const MuiIconWrapper = styled.div`
+const VerticalAlign = styled.div`
 	display: flex;
 	align-items: center;
 `
@@ -88,27 +86,21 @@ const NavBar = ({ userType, onDeauthenticate, onSetTheme }) => {
 	const history = useHistory()
 
 	const [openLogin, setOpenLogin] = useState(false)
+	const [logout, setLogout] = useState(null)
 
-	const handleLogout = async () => {
-		try {
-			history.push('/')
-			const response = await logout()
-			if (response.logout) {
-				onDeauthenticate()
-			}
-		} catch (error) {
-			console.log(error)
-		}
-	}
+	useEffect(() => {
+		setLogout(false)
+	}, [logout])
 
 	return (
 		<>
-			<Nav>
+			<Nav id="nav-bar">
 				<NavElement style={{ height: contentHeight }}>
 					<Link to={'/'}>
 						<Icon
 							alt="Bit Project"
 							src={require('../../assets/logo/logo.svg')}
+							sharp
 							width={contentHeight}
 						/>
 					</Link>
@@ -137,29 +129,39 @@ const NavBar = ({ userType, onDeauthenticate, onSetTheme }) => {
 						</NavElement>
 
 						<NavElement>
-							<MuiIconWrapper>
+							<VerticalAlign>
 								<NotificationsOutlinedIcon />
-							</MuiIconWrapper>
-						</NavElement>
-
-						<NavElement onClick={handleLogout}>
-							<IconLine icon={<AccountCircleIcon />}>Bob</IconLine>
+							</VerticalAlign>
 						</NavElement>
 					</>
 				) : null}
 
+				{userType === 'STUDENT' || userType === 'TEACHER' ? (
+					<AlignRight userType={userType}>
+						<NavElement onClick={() => setLogout(true)}>
+							<IconArea
+								src={require('../../assets/icons/prof-pic.png')}
+								iconSize={contentHeight}
+							>
+								Potato
+							</IconArea>
+						</NavElement>
+					</AlignRight>
+				) : null}
+
 				{userType === 'VISITOR' ? (
-					<VisitorContainer>
+					<AlignRight>
 						{/* <NavButton onClick={() => onSetTheme(palepink)}>
 							Theme
 						</NavButton> */}
 						<NavButton invert onClick={() => setOpenLogin(true)}>
 							Login
 						</NavButton>
-					</VisitorContainer>
+					</AlignRight>
 				) : null}
 			</Nav>
 			<Login open={openLogin} setOpen={setOpenLogin} />
+			{logout && <Logout />}
 		</>
 	)
 }

@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 
-import Toolbar from '../components/Learn/Toolbar/Toolbar'
-import Sidebar from '../components/Learn/Sidebar/Sidebar'
-import Content from '../components/Learn/Content/Content'
-import Spinner from '../components/shared/gadgets/Spinner'
-import { init } from '../redux/actions/learnData'
+import Toolbar from './Toolbar/Toolbar'
+import Sidebar from './Sidebar/Sidebar'
+import Content from './Content/Content'
+import WithPageSpinner from '../HOC/WithPageSpinner'
+import { init } from '../../redux/actions/learnData'
 
 const Container = styled.div`
 	display: flex;
@@ -44,12 +44,13 @@ const Learn = ({ isReady, onInit }) => {
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
-		<Container>
-			<Toolbar />
-			<Sidebar />
-			<Content />
-			<Spinner render={!isReady} />
-		</Container>
+		<WithPageSpinner show={!isReady}>
+			<Container>
+				<Toolbar />
+				<Sidebar />
+				<Content />
+			</Container>
+		</WithPageSpinner>
 	)
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -19,7 +19,7 @@ const WithAuthentication = ({
 			try {
 				const response = await onCheckLogin()
 				if (response.userType || response.message) {
-					onAuthenticate(response.userType || 'STUDENT')
+					onAuthenticate(response.userType || 'TEACHER')
 				} else {
 					alert("[WithAuthentication] confirm message didn't match")
 				}

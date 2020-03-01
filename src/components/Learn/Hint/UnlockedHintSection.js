@@ -13,12 +13,15 @@ const Container = styled.div`
 
 const UnlockedHintSection = ({ unlockedHints, lastHintUnlockedId }) => {
 	useDidUpdateEffect(() => {
-		anime({
-			targets: '.learn-r-lockedhints-hintslidedown',
-			translateY: ['-10em', 0], // static value that looks good
-			easing: 'easeOutQuad',
-			duration: 750
-		})
+		// TODO allow users to boost animations
+		let boostedAnimations = false
+		if (boostedAnimations)
+			anime({
+				targets: '.learn-r-lockedhints-hintslidedown',
+				translateY: ['-10em', 0], // static value that looks good
+				easing: 'easeOutQuad',
+				duration: 750
+			})
 	}, [lastHintUnlockedId])
 
 	let hintIndexMapper = 0

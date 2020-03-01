@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import EntryBox from './Grade/EntryBox';
 import Submission from './Grade/Submission';
 
-import TeacherService from '../../services/TeacherService';
+import TeacherService from '../../../services/TeacherService';
 
 const data = [
     {

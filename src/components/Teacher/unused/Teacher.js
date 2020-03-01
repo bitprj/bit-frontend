@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
-import TeacherHero from '../components/Teacher/TeacherHero'
-import TeacherContent from '../components/Teacher/TeacherContent'
+import TeacherHero from './TeacherHero'
+import TeacherContent from './TeacherContent'
 
 class Teacher extends Component {
 	constructor() {

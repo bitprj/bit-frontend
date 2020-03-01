@@ -6,9 +6,9 @@ import Checkbox from '@material-ui/core/Checkbox'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
-import Button from '../../shared/unused/Button'
+import Button from '../../../shared/unused/Button'
 
-import TeacherService from '../../../services/TeacherService'
+import TeacherService from '../../../../services/TeacherService'
 
 const GradingArea = styled.div`
 	padding: 1.5rem;

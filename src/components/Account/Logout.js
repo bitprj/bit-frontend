@@ -1,31 +1,35 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { connect } from 'react-redux'
-import { logout } from '../../redux/actions/account'
+import { deauthenticate } from '../../redux/actions/account'
 
-import AuthService from '../../services/AccountService'
+import { logout } from '../../services/AccountService'
 
-class Logout extends Component {
-	constructor() {
-		super()
+/**
+ * Declarative logout
+ */
+const Logout = ({ onDeauthenticate }) => {
+	useEffect(() => {
+		const _logout = async () => {
+			try {
+				const response = await logout()
+				if (response.logout) {
+					onDeauthenticate()
+				}
+			} catch (error) {
+				console.log(error)
+			}
+		}
+		_logout()
+	}, [])
 
-		this.service = new AuthService()
-	}
-
-	componentDidMount() {
-		// this.service.logout();
-		this.props.logout()
-	}
-
-	render() {
-		return <Redirect to="/" />
-	}
+	return <Redirect to="/" />
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		logout: () => dispatch(logout())
+		onDeauthenticate: () => dispatch(deauthenticate())
 	}
 }
 

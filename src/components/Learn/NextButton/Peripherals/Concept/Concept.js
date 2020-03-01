@@ -15,7 +15,7 @@ const Concept = ({
 	currentSlide = 0,
 	removeAndBroadcastButtonState
 }) => {
-	const currentConcept = concepts[currentSlide]
+	const currentConcept = concepts[currentSlide] || {}
 
 	return (
 		<TwoPanelModal

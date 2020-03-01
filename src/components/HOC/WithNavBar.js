@@ -2,21 +2,22 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import styled from 'styled-components'
 
-import NavBar from './NavBar'
+import NavBar from '../NavBar/NavBar'
 
 const Main = styled.main`
 	background-color: ${props => props.theme.bgPage};
 	position: relative;
 `
 
-const Layout = props => (
+const WithNavBar = props => (
 	<>
 		<Switch>
 			<Route path="/learn" exact />
+			<Route path="/grade" exact />
 			<Route path="/" component={NavBar} />
 		</Switch>
 		<Main>{props.children}</Main>
 	</>
 )
 
-export default Layout
+export default WithNavBar
