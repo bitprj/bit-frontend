@@ -39,7 +39,7 @@ export default function CentralAnimes(currentButtonState) {
 				targets: '.learn-r-nextarrow',
 				rotate: '-90deg',
 				easing: 'easeOutQuad',
-				duration: 400,
+				duration: 400
 			})
 			// scale
 			// anime({
@@ -56,13 +56,20 @@ export default function CentralAnimes(currentButtonState) {
 			break
 		}
 
+		case STATE_CONCEPT: {
+			break
+		}
+
 		case STATE_CARD: {
 			break
 		}
 
 		default:
 			if (currentButtonState !== undefined)
-				console.log('[CentralAnimes] error... missing state check?')
+				console.log(
+					'[CentralAnimes] error... missing state check?',
+					currentButtonState
+				)
 			break
 	}
 }

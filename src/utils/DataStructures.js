@@ -28,7 +28,7 @@ export function SafeQueue(queue) {
 		return this
 	}
 	this.dequeue = item => {
-		if (!this.isEmpty() && queue[queue.length - 1] === item) queue.shift()
+		if (!this.isEmpty() && this.front() === item) queue.shift()
 		return this
 	}
 	this.front = () => (this.isEmpty() ? 'empty queue' : queue[0])

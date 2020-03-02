@@ -12,8 +12,8 @@ const Container = styled.div`
 	padding: 1em 2em;
 	flex-shrink: 0;
 	position: fixed;
-  bottom: 0;
-  width: 100%;
+	bottom: 0;
+	width: 100%;
 
 	background-color: ${props => props.theme.bg};
 	color: ${props => props.theme.offFont};
@@ -21,10 +21,10 @@ const Container = styled.div`
 
 const AssignmentName = styled(ClampedDiv)`
 	margin-top: 0;
-  margin-bottom: 0.5em;
-  font-weight: bold;
-  font-size: 120%;
-  width: 12em;
+	margin-bottom: 0.5em;
+	font-weight: bold;
+	font-size: 120%;
+	width: 12em;
 `
 
 const GradeStatus = styled(IconLine)`
@@ -35,18 +35,18 @@ const GradeStatus = styled(IconLine)`
 	color: ${props => props.theme.warning};
 `
 
-const DetailsHeader = ({ name }) => {
+const DetailsHeader = ({ activityName, studentName }) => {
 	return (
 		<Container>
 			<GradeStatus className="sans" icon={<Dot />} gap={'0.5em'}>
 				PARTIALLY GRADED
 			</GradeStatus>
-			<AssignmentName>{`${name}`}</AssignmentName>
+			<AssignmentName>{`${activityName}`}</AssignmentName>
 			<IconArea
 				src={require('../../../assets/icons/prof-pic.png')}
 				iconSize={'2em'}
 			>
-				Potato
+				{`${studentName}`}
 			</IconArea>
 		</Container>
 	)
@@ -63,7 +63,8 @@ const mapStateToProps = state => {
 	const submission = submissions && submissions[currentSubmissionIndex]
 
 	return {
-		name: get(submission, 'activity.name')
+		activityName: get(submission, 'activity.name'),
+		studentName: get(submission, 'student.name')
 	}
 }
 

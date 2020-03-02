@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { scroller } from 'react-scroll'
 import { connect } from 'react-redux'
-import { useDidUpdateEffect } from '../../../../utils/customHooks'
 
 import CentralAnimes from './SelectState/CentralAnimes'
 import CentralContent from './SelectState/CentralContent'
@@ -46,16 +45,6 @@ const Central = ({
 	removeAndBroadcastButtonState
 }) => {
 	/**
-	 * Removes hint state when student changes card
-	 *  - If a student changes the card, the scrolling feature
-	 *    is no longer applicable to that new page. A future
-	 *    feature could be to save the scroll for the current card
-	 */
-	useEffect(() => {
-		removeAndBroadcastButtonState(STATE_HINT)
-	}, [currentCardIndex])
-
-	/**
 	 * Determine if STATE_HINT is necessary using IntersectionObserver
 	 * and detecting if hint is in viewpoint
 	 */
@@ -95,7 +84,8 @@ const Central = ({
 					duration: 500,
 					smooth: true,
 					containerId: 'learn-content',
-					offset: -document.getElementById('learn-content-header').clientHeight + 1
+					offset:
+						-document.getElementById('learn-content-header').clientHeight + 1
 				})
 				removeAndBroadcastButtonState(STATE_HINT)
 				break

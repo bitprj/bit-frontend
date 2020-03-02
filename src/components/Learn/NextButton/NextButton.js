@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
-import { useDidUpdateEffect } from '../../../utils/customHooks'
 import { SafeStack } from '../../../utils/DataStructures'
 
 import Central from './Central/Central'
@@ -32,9 +31,11 @@ const Container = styled.div`
 
 const NextButtonManager = ({
 	className,
-	buttonStateScheduleQueue,
 	concepts,
 	checkpoint,
+	currentCardIndex,
+	lastCardUnlockedIndex,
+	buttonStateScheduleQueue,
 	onBroadcastButtonState,
 	onResetButtonStateSchedule
 }) => {
@@ -46,22 +47,35 @@ const NextButtonManager = ({
 
 	const removeAndBroadcastButtonState = buttonState => {
 		buttonStateStack.current.pop(buttonState)
+		buttonFinishedTask.current.push(buttonState)
+		onBroadcastButtonState(buttonStateStack.current.peek())
+	}
+
+	const resetAndBroadcastButtonState = () => {
+		buttonStateStack.current = new SafeStack([STATE_CARD])
 		onBroadcastButtonState(buttonStateStack.current.peek())
 	}
 
 	useEffect(() => {
-		console.log('here!', checkpoint, concepts)
-		// must be first
-		if (checkpoint) {
-			buttonStateStack.current.push(STATE_CHECKPOINT)
-			onBroadcastButtonState(STATE_CHECKPOINT)
-		}
-		if (concepts && concepts.length) {
-			// buttonStateStack.current.push(STATE_CONCEPT)
-			// setOpenConcept(true)
-			// onBroadcastButtonState(STATE_CONCEPT)
-		}
+		onBroadcastButtonState(buttonStateStack.current.peek())
 	}, [])
+
+	useEffect(() => {
+		// if (checkpoint) {
+		// buttonFinishedTask.current.push(STATE_CHECKPOINT)
+		// }
+		if (concepts && concepts.length) {
+			buttonFinishedTask.current.push(STATE_CONCEPT)
+		}
+		return () => {
+			resetAndBroadcastButtonState()
+			buttonFinishedTask.current = []
+		}
+	}, [currentCardIndex])
+
+	useEffect(() => {
+		console.log(buttonFinishedTask.current)
+	}, [currentCardIndex])
 
 	/**
 	 * Update currentButtonState with all states from the schedule queue
@@ -73,11 +87,15 @@ const NextButtonManager = ({
 				const scheduledButtonState = buttonStateScheduleQueue.front()
 				buttonStateStack.current.push(scheduledButtonState)
 				buttonStateScheduleQueue.dequeue(scheduledButtonState)
-				if (i === 9) console.log('[NextButton] Houston, we may have a problem')
+				if (i === 10) console.log('[NextButton] Houston, we may have a problem')
 			}
 			const nextButtonState = buttonStateStack.current.peek()
 			onBroadcastButtonState(nextButtonState)
 			onResetButtonStateSchedule(nextButtonState)
+
+			if (nextButtonState === STATE_CONCEPT) {
+				setOpenConcept(true)
+			}
 		}
 	}, [buttonStateScheduleQueue])
 
@@ -106,7 +124,11 @@ const NextButtonManager = ({
 const mapStateToProps = state => {
 	const {
 		learnData: {
-			indicators: { currentCardIndex, buttonStateScheduleQueue },
+			indicators: {
+				lastCardUnlockedIndex,
+				currentCardIndex,
+				buttonStateScheduleQueue
+			},
 			cards
 		}
 	} = state
@@ -114,6 +136,8 @@ const mapStateToProps = state => {
 	const card = cards && cards[currentCardIndex]
 
 	return {
+		currentCardIndex,
+		lastCardUnlockedIndex,
 		buttonStateScheduleQueue,
 		concepts: get(card, 'concepts'),
 		checkpoint: get(card, 'checkpoint')

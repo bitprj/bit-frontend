@@ -65,13 +65,16 @@ export const GlobalStyle = createGlobalStyle`
   }
   .low-profile-scrollbar.only-hover::-webkit-scrollbar {
     width: 0;
+    height: 0;
   }
   .low-profile-scrollbar::-webkit-scrollbar,
   .low-profile-scrollbar.only-hover:hover::-webkit-scrollbar {
     width: 0.5em;
+    height: 0.5em;
   }
   .low-profile-scrollbar.fat::-webkit-scrollbar {
     width: 1em;
+    height: 1em;
   }
   .low-profile-scrollbar::-webkit-scrollbar-track {
     background: #0000; // not working

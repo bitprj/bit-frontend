@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
 
 import Button from '../../../../shared/gadgets/Button'
 import Icon from '../../../../shared/gadgets/Icon'
-import IconLine from '../../../../shared/gadgets/IconLine'
-import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
+
+import { initSubmitCheckpointProgress } from '../../../../../redux/actions/learnData'
 
 import { FilePond, registerPlugin } from 'react-filepond'
 import 'filepond/dist/filepond.min.css'
@@ -14,7 +15,7 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
-const LeftPanel = styled.div`
+const DescriptionLeftPanelContainer = styled.div`
 	padding: 2em;
 	display: flex;
 	flex-direction: column;
@@ -29,17 +30,9 @@ const CheckpointIcon = styled(Icon)`
 	width: 100%;
 `
 
-const CancelButton = styled(Button)`
-	padding-left: 1em;
-	position: absolute;
-	left: 1em;
-	bottom: 1em;
-	border: 0;
-`
-
-export const UploadLeftPanel = ({ setOpen, name, instruction }) => {
+export const DescriptionLeftPanel = ({ name, instruction }) => {
 	return (
-		<LeftPanel>
+		<DescriptionLeftPanelContainer>
 			<CheckpointIcon
 				src={require('../../../../../assets/icons/checkpoint.svg')}
 			/>
@@ -51,14 +44,11 @@ export const UploadLeftPanel = ({ setOpen, name, instruction }) => {
 					<ReactMarkdown source={instruction} />
 				</span>
 			</div>
-			<CancelButton onClick={() => setOpen(false)}>
-				<IconLine icon={<LeftArrow />}>Cancel</IconLine>
-			</CancelButton>
-		</LeftPanel>
+		</DescriptionLeftPanelContainer>
 	)
 }
 
-const RightPanel = styled.div`
+const FilesRightPanelContainer = styled.div`
 	padding: 2em;
 	padding-left: 0;
 	width: 100%;
@@ -130,9 +120,18 @@ const UploadButton = styled(Button)`
 	border: 0;
 `
 
-export const UploadRightPanel = ({ open, files, setFiles }) => {
+const UnconnectedFilesRightPanel = ({
+	id,
+	type,
+	open,
+	files,
+	setFiles,
+	onInitSubmitCheckpointProgress
+}) => {
 	const filePondRef = useRef(undefined)
-	const upload = () => {}
+	const upload = () => {
+		onInitSubmitCheckpointProgress(id, type, files)
+	}
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -155,7 +154,7 @@ export const UploadRightPanel = ({ open, files, setFiles }) => {
 	}, [!!files.length])
 
 	return (
-		<RightPanel>
+		<FilesRightPanelContainer>
 			<FilePond
 				ref={filePondRef}
 				allowMultiple={true}
@@ -175,6 +174,16 @@ export const UploadRightPanel = ({ open, files, setFiles }) => {
 					Submit
 				</UploadButton>
 			</UploadButtonWrapper>
-		</RightPanel>
+		</FilesRightPanelContainer>
 	)
 }
+
+const mapDispatchToProps = dispatch => ({
+	onInitSubmitCheckpointProgress: (checkpointId, type, content) =>
+		dispatch(initSubmitCheckpointProgress(checkpointId, type, content))
+})
+
+export const FilesRightPanel = connect(
+	null,
+	mapDispatchToProps
+)(UnconnectedFilesRightPanel)

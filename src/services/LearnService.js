@@ -11,26 +11,54 @@ export const fetchActivity = activityId => {
 }
 
 export const fetchCardStatus = (activityId, cardId) => {
-  const endpoint = `activities/${activityId}/cards/${cardId}`
-  return backend.get(endpoint)
+	const endpoint = `activities/${activityId}/cards/${cardId}`
+	return backend.get(endpoint)
 }
 
 export const unlockCard = (activityId, cardId) => {
-  const endpoint = `activities/${activityId}/cards/${cardId}`
-  return backend.put(endpoint, {}, {
-    headers: {
-      'X-CSRF-TOKEN': document.cookie.csrf_access_token
-    }
-  })
+	const endpoint = `activities/${activityId}/cards/${cardId}`
+	return backend.put(
+		endpoint,
+		{},
+		{
+			headers: {
+				'X-CSRF-TOKEN': document.cookie.csrf_access_token
+			}
+		}
+	)
 }
 
 export const unlockHint = (activityId, hintId) => {
-  const endpoint = `activities/${activityId}/hints/${hintId}`
-  return backend.put(endpoint)
+	const endpoint = `activities/${activityId}/hints/${hintId}`
+	return backend.put(endpoint)
 }
 
+export const submitCheckpointProgress = (checkpointId, type, content) => {
+	const endpoint = `checkpoints/${checkpointId}/submit`
+  let data
+  let formData = new FormData
+	switch (type) {
+		case 'Autograder': {
+		}
 
+		case 'Image': {
+      formData.append('image', content[0])
+		}
 
+		case 'Video': {
+		}
+
+		case 'Multiple Choice': {
+		}
+
+		case 'Short Answer': {
+		}
+	}
+
+	if (type !== 'Autograder') {
+		return backend.put(endpoint, data || formData)
+	}
+}
 
 export const uploadFiles = fileItems => {
 	let srcFile = null

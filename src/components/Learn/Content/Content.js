@@ -9,8 +9,13 @@ import LockedHintSection from '../Hint/LockedHintSection'
 import NextButton from '../NextButton/NextButton'
 import ParsedContent from '../../shared/ParsedContent'
 
+import { STATE_CHECKPOINT, STATE_CONCEPT } from '../NextButton/NextButton'
+
 import { fadeIn } from '../../../styles/GlobalAnime'
-import { initUnlockCard } from '../../../redux/actions/learnData'
+import {
+	initUnlockCard,
+	scheduleButtonState
+} from '../../../redux/actions/learnData'
 import { incrementGemsBy } from '../../../redux/actions/studentData'
 
 const Container = styled.div`
@@ -37,11 +42,14 @@ const Content = ({
 	id,
 	contentfulId,
 	content,
+	concepts,
+	checkpoint,
 	gems,
 	name,
 	currentCardIndex,
 	lastCardUnlockedIndex,
 	onInitUnlockCard,
+	onScheduleButtonState,
 	onIncrementGemsBy
 }) => {
 	const containerRef = useRef(null)
@@ -129,6 +137,14 @@ const Content = ({
 	useEffect(() => {
 		if (isCardUnlocked.current && activityId) {
 			onInitUnlockCard(activityId, id, contentfulId)
+
+			console.log('here!', checkpoint, concepts)
+			if (checkpoint) {
+				onScheduleButtonState(STATE_CHECKPOINT)
+			}
+			if (concepts && concepts.length) {
+				onScheduleButtonState(STATE_CONCEPT)
+			}
 		}
 	}, [lastCardUnlockedIndex])
 
@@ -192,6 +208,8 @@ const mapStateToProps = state => {
 		contentfulId: get(card, 'contentfulId'),
 		name: get(card, 'name'),
 		content: get(card, 'content'),
+		concepts: get(card, 'concepts'),
+		checkpoint: get(card, 'checkpoint'),
 		gems: get(card, 'gems'),
 		currentCardIndex,
 		lastCardUnlockedIndex
@@ -201,6 +219,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
 	onInitUnlockCard: (activityId, id, contentfulId) =>
 		dispatch(initUnlockCard(activityId, id, contentfulId)),
+	onScheduleButtonState: buttonState =>
+		dispatch(scheduleButtonState(buttonState)),
 	onIncrementGemsBy: gemAmount => dispatch(incrementGemsBy(gemAmount))
 })
 

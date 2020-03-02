@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.bubble.css'
 import Dot from '@material-ui/icons/FiberManualRecord'
 
 import ThreeCheckbox from './ThreeCheckbox'
@@ -22,7 +24,7 @@ const selectTypeColor = props => {
 	}
 }
 
-const Container = styled.div`
+const Container = styled.section`
 	margin: 3em 5em 3em 2em;
 	display: flex;
 `
@@ -53,7 +55,7 @@ const Question = styled.div`
 `
 
 const MediaContainer = styled.div`
-	margin-top: 2em;
+	margin: 2em 0;
 	height: 18em;
 `
 
@@ -61,6 +63,19 @@ const Image = styled.img`
 	margin: 0 auto;
 	max-width: 100%;
 	max-height: 100%;
+`
+
+const Video = styled.video`
+	margin: 0 auto;
+	max-width: 100%;
+	max-height: 100%;
+`
+
+const Comments = styled(ReactQuill)`
+	border-radius: 0.5em;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  width: 100%;
 `
 
 const Checkpoints = ({
@@ -80,6 +95,11 @@ const Checkpoints = ({
 			}
 
 			case 'VIDEO': {
+				return (
+					<Video className="strong-lift" controls>
+						<source src={content} type="video/mp4" />
+					</Video>
+				)
 			}
 
 			case 'GRADER': {
@@ -102,6 +122,16 @@ const Checkpoints = ({
 				<Name>{name}</Name>
 				<Question>{question}</Question>
 				<MediaContainer>{selectContent()}</MediaContainer>
+				<Comments
+					className="strong-lift"
+					theme="bubble"
+					placeholder="Comments..."
+					// preserveWhitespace
+					onChange={(content, delta, source, editor) => {
+						// console.log(content, delta, source, editor)
+						console.log(content, editor.getContents().ops[0])
+					}}
+				/>
 			</Content>
 		</Container>
 	)

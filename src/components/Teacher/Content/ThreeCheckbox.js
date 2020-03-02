@@ -22,9 +22,8 @@ const selectColor = props => {
 	}
 }
 
-const Container = styled.div`
-	width: ${props => props.size};
-	height: ${props => props.size};
+const Container = styled.button`
+	padding: 0.3em;
 	border-radius: 50%;
 
 	display: flex;
@@ -32,11 +31,21 @@ const Container = styled.div`
 	align-items: center;
 
 	color: white;
+	border: 0.1em solid transparent;
 	background-color: ${props => selectColor(props)};
 	box-shadow: 0 4px 1.5em ${props => selectColor(props)}88;
-	cursor: pointer;
+  cursor: pointer;
+  font-size: 170%;
+  outline: 0;
 
-	transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  
+  :focus {
+    border: 0.1em solid ${props => {
+			if (states[props.state] === 'NONE') return '#00000001'
+			return `${selectColor(props)}66`
+		}};
+  }
 `
 
 const states = ['NONE', 'PASS', 'FAIL']
@@ -63,13 +72,13 @@ const ThreeCheckbox = ({ size }) => {
 	const selectState = () => {
 		switch (states[state]) {
 			case 'PASS': {
-				return <Pass />
+				return <Pass fontSize="inherit" />
 			}
 			case 'FAIL': {
-				return <Fail />
+				return <Fail fontSize="inherit" />
 			}
 			case 'NONE':
-				return <None />
+				return <None fontSize="inherit" />
 			default:
 				break
 		}

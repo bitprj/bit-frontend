@@ -62,7 +62,7 @@ const Rating = ({
 			fullWidth={fullWidth}
 			filledColor={filledColor}
 			offFilledColor={offFilledColor}
-			offColor={offColor}
+      offColor={offColor}
 			callback={callback}
 			onClick={() => isFunction(callback) && callback(index)}
 		/>

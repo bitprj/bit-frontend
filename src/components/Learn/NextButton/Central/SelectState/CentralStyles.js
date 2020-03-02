@@ -11,18 +11,19 @@ const CentralStyles = styled.div`
 		switch (props.currentButtonState) {
 			case STATE_HINT:
 				return `
-          background-color: #b19cd9;
-          box-shadow: 0 4px 14px 0 #b19cd988;
+          background-color: ${props.theme.pastel.magenta};
+          box-shadow: 0 4px 14px 0 ${props.theme.pastel.magenta}88;
         `
 			case STATE_CONCEPT:
 				return `
-          background-color: #ffd100;
-          box-shadow: 0 4px 14px 0 #ffd10088;
+          background-color: ${props.theme.pastel.yellow};
+          box-shadow: 0 4px 14px 0 ${props.theme.pastel.yellow}88;
+          // box-shadow: 0 4px 14px 0 #ffd10088;
         `
 			case STATE_CHECKPOINT:
 				return `
-          background-color: #7FC588;
-          box-shadow: 0 4px 14px 0 #7FC58888;
+          background-color: ${props.theme.pastel.green};
+          box-shadow: 0 4px 14px 0 ${props.theme.pastel.green}88;
         `
 			case STATE_CARD:
 				return `

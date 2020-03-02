@@ -20,6 +20,8 @@ const RightPanel = styled.div`
 `
 
 const TwoPanelModal = ({
+	className,
+	children,
 	open,
 	closed,
 	scaleX = 1,
@@ -30,18 +32,23 @@ const TwoPanelModal = ({
 }) => {
 	return (
 		<DynamicModal
-			className="low-profile-scrollbar fat"
+			className={`low-profile-scrollbar fat`}
 			custom
 			open={open}
 			closed={closed}
 		>
-			<CustomContainer scaleX={scaleX} scaleY={scaleY}>
+			<CustomContainer
+				className={`${className || ''}`}
+				scaleX={scaleX}
+				scaleY={scaleY}
+			>
 				<LeftPanel className="low-profile-scrollbar only-hover" ratio={ratio}>
 					{leftPanel}
 				</LeftPanel>
 				<RightPanel className="low-profile-scrollbar" ratio={ratio}>
 					{rightPanel}
 				</RightPanel>
+				{children}
 			</CustomContainer>
 		</DynamicModal>
 	)

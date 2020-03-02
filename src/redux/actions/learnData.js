@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import { get, merge as mergeDeep } from 'lodash'
 import { iterateNodes } from '../../utils/deepObjUtils'
 import { genFetch } from '../../services/ContentfulService'
 import {
@@ -6,7 +6,8 @@ import {
 	fetchActivityProgress,
 	fetchCardStatus,
 	unlockCard,
-	unlockHint
+	unlockHint,
+	submitCheckpointProgress
 } from '../../services/LearnService'
 
 import { STATE_HINT } from '../../components/Learn/NextButton/NextButton'
@@ -46,8 +47,7 @@ export const init = activityId => async dispatch => {
 
 	// Process activityProgress
 	let index = activityBase.cards.findIndex(
-		// card => card.contentfulId === activityProgress.cardContentfulId
-		card => card.contentfulId === '4HgUxdMhu3ROtsRJeZzSLH'
+		card => card.contentfulId === activityProgress.cardContentfulId
 	)
 	index = index >= 0 ? index : 0
 	activityProgress = {
@@ -64,13 +64,12 @@ export const init = activityId => async dispatch => {
 
 	// done this way because CDN will be guaranteed to be faster
 	// only issue is if contentful's CDN stalls which is rarely
-	const [conceptsUnlockedCards, unlockedCards] = await Promise.all([
-		fetchConceptsUnlockedCards(cardsProgressed),
-		fetchUnlockedCards(cardsProgressed)
+	const [unlockedCards, conceptsUnlockedCards] = await Promise.all([
+		fetchUnlockedCards(cardsProgressed),
+		fetchConceptsUnlockedCards(cardsProgressed)
 	])
+	mergeDeep(unlockedCards, conceptsUnlockedCards)
 	dispatch(setUnlockedCards(unlockedCards))
-	console.log(unlockedCards)
-	console.log(conceptsUnlockedCards)
 
 	const cardStatuses = await pendingCardStatuses
 	dispatch(setCardStatuses(cardStatuses))
@@ -86,10 +85,14 @@ const fetchUnlockedCards = cardsProgressed => {
 
 const fetchConceptsUnlockedCards = cardsProgressed => {
 	return Promise.all(
-		cardsProgressed.map(card => {
-			return card.concepts.map(concept => {
-				return genFetch(concept.contentfulId)
-			})
+		cardsProgressed.map(async card => {
+			return {
+				concepts: await Promise.all(
+					card.concepts.map(concept => {
+						return genFetch(concept.contentfulId)
+					})
+				)
+			}
 		})
 	)
 }
@@ -154,6 +157,15 @@ export const initUnlockHint = (activityId, id, contentId) => async dispatch => {
 	dispatch(scheduleButtonState(STATE_HINT))
 
 	// await unlockHint(activityId, id)
+}
+
+export const initSubmitCheckpointProgress = (
+	checkpointId,
+	type,
+	content
+) => async dispatch => {
+	const result = await submitCheckpointProgress(checkpointId, type, content)
+	console.log(result)
 }
 
 export const setCurrentCardByIndex = cardIndex => ({
