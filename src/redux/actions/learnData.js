@@ -1,4 +1,4 @@
-import { get, merge as mergeDeep } from 'lodash'
+import { get, merge as mergeDeep, cloneDeep } from 'lodash'
 import { iterateNodes } from '../../utils/deepObjUtils'
 import { genFetch } from '../../services/ContentfulService'
 import {
@@ -35,7 +35,7 @@ import {
  * and user progress
  * @param {*} activityId
  */
-export const init = activityId => async dispatch => {
+export const init = (activityId, currentCardIndex) => async dispatch => {
 	// Concurrently FetchActivity and FetchActivityProgress
 	let [activityBase, activityProgress] = await Promise.all([
 		fetchActivity(activityId),
@@ -49,78 +49,96 @@ export const init = activityId => async dispatch => {
 	let index = activityBase.cards.findIndex(
 		card => card.contentfulId === activityProgress.cardContentfulId
 	)
-	index = index >= 0 ? index : 0
+	if (index === -1) index = 0 // TODO also an error here
 	activityProgress = {
 		currentCardIndex: index,
 		lastCardUnlockedIndex: index
+	}
+
+	if (currentCardIndex) {
+		activityProgress.currentCardIndex = currentCardIndex
 	}
 	dispatch(setActivityProgress(activityProgress))
 
 	const cardsProgressed = activityBase.cards.slice(0, index + 1)
 
-	// Fetch Cards and their Statuses
-	// (from fetchActivityProgress, multiple fetchCardStatus)
-	const pendingCardStatuses = initCardStatuses(activityId, cardsProgressed)
-
-	// done this way because CDN will be guaranteed to be faster
-	// only issue is if contentful's CDN stalls which is rarely
-	const [unlockedCards, conceptsUnlockedCards] = await Promise.all([
-		fetchUnlockedCards(cardsProgressed),
-		fetchConceptsUnlockedCards(cardsProgressed)
-	])
-	mergeDeep(unlockedCards, conceptsUnlockedCards)
+	// Fetch Unlocked Card data
+	let unlockedCards = await fetchUnlockedCards(cardsProgressed)
 	dispatch(setUnlockedCards(unlockedCards))
 
-	const cardStatuses = await pendingCardStatuses
+	// Fetch Cards and their Statuses
+	// (from fetchActivityProgress, multiple fetchCardStatus)
+	const cardStatuses = await initCardStatuses(activityId, unlockedCards)
 	dispatch(setCardStatuses(cardStatuses))
 }
 
 const fetchUnlockedCards = cardsProgressed => {
 	return Promise.all(
-		cardsProgressed.map(card => {
-			return genFetch(card.contentfulId)
-		})
-	)
-}
-
-const fetchConceptsUnlockedCards = cardsProgressed => {
-	return Promise.all(
 		cardsProgressed.map(async card => {
-			return {
-				concepts: await Promise.all(
+			const [unprocessedCardData, concepts] = await Promise.all([
+				genFetch(card.contentfulId),
+				Promise.all(
 					card.concepts.map(concept => {
-						return genFetch(concept.contentfulId)
+						return genFetch(concept.contentfulId) // fetch concept steps
 					})
 				)
+			])
+
+			/**
+			 * This destructure allows you to exclude variables from cardData
+			 * Excluded variables are the variables listed before
+			 *  - destructure renames added for additional info
+			 */
+			const {
+				hints,
+				checkpoint,
+				concepts: useless,
+				...cardData // just in case more data is added later
+			} = unprocessedCardData
+
+			const newCard = {
+				...card,
+				...cardData,
+				hints: card.hints.map((hint, i) => ({ ...hints[i], ...hint })),
+				checkpoint: card.checkpoint
+					? { ...card.checkpoint, ...checkpoint }
+					: null,
+				concepts
 			}
+
+			return cloneDeep(newCard)
 		})
 	)
 }
 
-const initCardStatuses = (activityId, cardsProgressed) =>
+const initCardStatuses = (activityId, unlockedCards) =>
 	Promise.all(
-		cardsProgressed.map(card => {
+		unlockedCards.map(async card => {
 			if (get(card, 'hints.length') === 0) return []
-			return fetchAndProcessCardStatus(activityId, card.id)
+			const [cardStatus, cardData] = await Promise.all([
+				fetchCardStatus(activityId, card.id),
+				genFetch(card.contentfulId, 5)
+			])
+			const allHintsData = cardData.hints
+			mergeDeep(cardStatus, allHintsData)
+
+			iterateNodes(cardStatus, node => {
+				// processing (kinda useless but for now, easier readability)
+				// this is done bc the hint object doesn't provide anything useful
+				// ^ (id, contentfulId)
+				if (node.hint) {
+					Object.assign(node, { ...node.hint })
+					delete node.hint
+				}
+
+				if (node.isUnlocked === false) {
+					// need false check
+					node.steps = []
+				}
+			})
+			return cardStatus
 		})
 	)
-
-const fetchAndProcessCardStatus = async (activityId, id) => {
-	const cardStatus = await fetchCardStatus(activityId, id)
-	return iterateNodes(cardStatus, node => {
-		// processing
-		if (node.hint) {
-			Object.assign(node, { ...node.hint })
-			delete node.hint
-		}
-		// TEMP - RENAMING
-		if (node.hintChildren) {
-			node.hints = node.hintChildren
-			delete node.hintChildren
-		}
-		// END TEMP
-	})
-}
 
 const setActivity = activity => ({
 	type: SET_ACTIVITY,
@@ -146,9 +164,18 @@ const setCardStatuses = cardStatuses => ({
 
 export const initUnlockCard = (activityId, id, contentId) => async dispatch => {
 	const card = await genFetch(contentId)
+
+	if (card.concepts && card.concepts.length) {
+		card.concepts = await Promise.all(
+			card.concepts.map(concept => {
+				return genFetch(concept.contentfulId)
+			})
+		)
+	}
+
 	dispatch(setCard(card))
 
-	// await unlockCard(activityId, id)
+	console.log(await unlockCard(activityId, id))
 }
 
 export const initUnlockHint = (activityId, id, contentId) => async dispatch => {
@@ -156,7 +183,7 @@ export const initUnlockHint = (activityId, id, contentId) => async dispatch => {
 	dispatch(setHint(id, contentId, hint))
 	dispatch(scheduleButtonState(STATE_HINT))
 
-	// await unlockHint(activityId, id)
+	console.log(await unlockHint(activityId, id))
 }
 
 export const initSubmitCheckpointProgress = (
@@ -164,8 +191,8 @@ export const initSubmitCheckpointProgress = (
 	type,
 	content
 ) => async dispatch => {
-	const result = await submitCheckpointProgress(checkpointId, type, content)
-	console.log(result)
+	const response = await submitCheckpointProgress(checkpointId, type, content)
+	console.log(response)
 }
 
 export const setCurrentCardByIndex = cardIndex => ({

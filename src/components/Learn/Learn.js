@@ -38,9 +38,9 @@ const Container = styled.div`
 	}
 `
 
-const Learn = ({ isReady, onInit }) => {
+const Learn = ({ isReady, currentCardIndex, onInit }) => {
 	useEffect(() => {
-		onInit(12)
+		onInit(12, currentCardIndex)
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
@@ -55,16 +55,23 @@ const Learn = ({ isReady, onInit }) => {
 }
 
 const mapStateToProps = state => {
-	const isReady = !!get(state, 'learnData.cards[0].content')
-	if (isReady)
-		return {
-			isReady
+	const {
+		learnData: {
+			cards,
+			indicators: { currentCardIndex }
 		}
-	return {}
+	} = state
+
+	const isReady = !!get(cards, '[0].content')
+	return {
+		isReady,
+		currentCardIndex
+	}
 }
 
 const mapDispatchToProps = dispatch => ({
-	onInit: activityId => dispatch(init(activityId))
+	onInit: (activityId, currentCardIndex) =>
+		dispatch(init(activityId, currentCardIndex))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Learn)

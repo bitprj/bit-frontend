@@ -62,7 +62,9 @@ const reducer = (state = initialState, action) => {
 				...state,
 				cards: cloneDeep(state.cards)
 			}
-			mergeDeep(nextState.cards, action.unlockedCards)
+			action.unlockedCards.forEach((card, i) => {
+				mergeDeep(nextState.cards[i], card)
+			})
 			return nextState
 		}
 
@@ -72,10 +74,9 @@ const reducer = (state = initialState, action) => {
 				cards: cloneDeep(state.cards)
 			}
 			action.cardStatuses.forEach((cardStatus, i) => {
-				const card = nextState.cards[i]
-				mergeDeep(card.hints, cardStatus)
-				hintStatusSeparation(card)
-			})
+				nextState.cards[i].hints = cardStatus
+				hintStatusSeparation(nextState.cards[i])
+      })
 			return nextState
 		}
 
@@ -94,7 +95,7 @@ const reducer = (state = initialState, action) => {
 		}
 
 		case SET_HINT: {
-			// use hints not lockedhints instead because lockedhints removes lower stuff
+			// use hints not lockedhints instead because lockedhints removes nested objects
 			const { id, contentId, hint: nextHint } = action
 			const nextState = {
 				...state,
@@ -109,7 +110,7 @@ const reducer = (state = initialState, action) => {
 
 			const hintUnlockMovement = node => {
 				if (!node.hints) return
-				if (!node.unlockedHints) return alert('bruh chill, wait a sec')
+				// if (!node.unlockedHints) return alert('bruh chill, wait a sec')
 				// TODO make a notification: wait a bit nicer
 
 				node.hints.some(hint => {

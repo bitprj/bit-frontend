@@ -87,11 +87,20 @@ export const GlobalStyle = createGlobalStyle`
     background: #0002;
     border-radius: 0.5em;
   }
+  .low-profile-scrollbar.light::-webkit-scrollbar-thumb {
+    background: #fff2;
+  }
   .low-profile-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #0003;
   }
+  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:hover {
+    background: #fff3;
+  }
   .low-profile-scrollbar::-webkit-scrollbar-thumb:active {
     background: #0004;
+  }
+  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:active {
+    background: #fff4;
   }
 
   /**

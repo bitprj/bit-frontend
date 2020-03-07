@@ -85,6 +85,10 @@ const FilesRightPanelContainer = styled.div`
 	.filepond--list.filepond--list {
 		margin-top: 1.5em;
 	}
+	// hover circle file
+	.filepond--drip-blob {
+		background-color: #fff;
+	}
 `
 
 const UploadIconWrapper = styled.div`
@@ -107,13 +111,13 @@ const UploadIconWrapper = styled.div`
 `
 
 const UploadButtonWrapper = styled.div`
-	margin-right: 2em;
 	position: absolute;
-	left: 0;
-	right: 0;
+	left: 50%;
+	transform: translateX(calc(-50% - 1em));
 	bottom: 2.75em;
 	display: flex;
 	justify-content: center;
+	${props => (props.disabled ? 'pointer-events: none' : '')}
 `
 
 const UploadButton = styled(Button)`
@@ -164,7 +168,7 @@ const UnconnectedFilesRightPanel = ({
 			<UploadIconWrapper id="learn-r-uploadicon" className="transition-long">
 				<Icon src={require('../../../../../assets/icons/upload.svg')} />
 			</UploadIconWrapper>
-			<UploadButtonWrapper>
+			<UploadButtonWrapper disabled={!files.length}>
 				<UploadButton
 					className="hover-raise"
 					invert

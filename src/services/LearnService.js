@@ -15,17 +15,14 @@ export const fetchCardStatus = (activityId, cardId) => {
 	return backend.get(endpoint)
 }
 
+export const deleteActivityProgress = activityId => {
+	const endpoint = `activities/${activityId}/progress`
+	return backend({ method: 'DELETE', url: endpoint })
+}
+
 export const unlockCard = (activityId, cardId) => {
 	const endpoint = `activities/${activityId}/cards/${cardId}`
-	return backend.put(
-		endpoint,
-		{},
-		{
-			headers: {
-				'X-CSRF-TOKEN': document.cookie.csrf_access_token
-			}
-		}
-	)
+	return backend.put(endpoint)
 }
 
 export const unlockHint = (activityId, hintId) => {
@@ -35,14 +32,15 @@ export const unlockHint = (activityId, hintId) => {
 
 export const submitCheckpointProgress = (checkpointId, type, content) => {
 	const endpoint = `checkpoints/${checkpointId}/submit`
-  let data
-  let formData = new FormData
+	let data
+	let formData
 	switch (type) {
 		case 'Autograder': {
 		}
 
 		case 'Image': {
-      formData.append('image', content[0])
+			formData = new FormData()
+			formData.append('image', content[0])
 		}
 
 		case 'Video': {
@@ -54,11 +52,10 @@ export const submitCheckpointProgress = (checkpointId, type, content) => {
 		case 'Short Answer': {
 		}
 	}
-
-	if (type !== 'Autograder') {
-		return backend.put(endpoint, data || formData)
-	}
+	return backend.put(endpoint, data || formData)
 }
+
+// @ half unused
 
 export const uploadFiles = fileItems => {
 	let srcFile = null
@@ -95,8 +92,8 @@ export const uploadFiles = fileItems => {
 export const processResult = rawData => {
 	const passCases = rawData.pass_cases.map(pass => {
 		return pass
-	})
-
+  })
+  
 	const result = {
 		submission: rawData.submission,
 		passCases: passCases,

@@ -4,7 +4,7 @@ import {
 	STATE_CONCEPT,
 	STATE_CHECKPOINT,
 	STATE_HINT
-} from '../../NextButton'
+} from '../NextButton'
 
 export default function CentralAnimes(currentButtonState) {
 	// reset

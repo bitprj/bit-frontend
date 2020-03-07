@@ -5,13 +5,17 @@
 export function SafeStack(stack) {
 	this.copy = () => new SafeStack([...stack])
 	this.push = item => {
-		if (item && this.peek() !== item) stack.push(item)
+		if (item && !this.has(item)) stack.push(item)
 		return this
 	}
 	this.pop = item => {
-		if (!this.isEmpty() && this.peek() === item) stack.pop()
+		if (!this.isEmpty()) {
+			if (this.peek() === item) stack.pop()
+			else return stack.filter(i => i !== item)
+		}
 		return this
 	}
+	this.has = item => stack.includes(item)
 	this.peek = () => (this.isEmpty() ? 'empty stack' : stack[stack.length - 1])
 	this.isEmpty = () => stack.length === 0
 	this.get = () => stack // use only for testing
@@ -24,13 +28,17 @@ export function SafeStack(stack) {
 export function SafeQueue(queue) {
 	this.copy = () => new SafeQueue([...queue])
 	this.enqueue = item => {
-		if (item && queue[queue.length - 1] !== item) queue.push(item)
+		if (item && !this.has(item)) queue.push(item)
 		return this
 	}
 	this.dequeue = item => {
-		if (!this.isEmpty() && this.front() === item) queue.shift()
+		if (!this.isEmpty()) {
+			if (this.front() === item) queue.shift()
+			else return queue.filter(i => i !== item)
+		}
 		return this
 	}
+	this.has = item => queue.includes(item)
 	this.front = () => (this.isEmpty() ? 'empty queue' : queue[0])
 	this.isEmpty = () => queue.length === 0
 	this.get = () => queue // use only for testing

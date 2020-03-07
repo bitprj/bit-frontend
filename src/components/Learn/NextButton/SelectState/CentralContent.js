@@ -9,25 +9,26 @@ import {
 	STATE_CONCEPT,
 	STATE_CHECKPOINT,
 	STATE_HINT
-} from '../../NextButton'
+} from '../NextButton'
 
 const Container = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	color: #fff;
+	font-size: 200%;
 `
 
-export default function CentralContent({ currentButtonState }) {
+export default function CentralContent({ className, currentButtonState }) {
 	const centralContent = () => {
 		switch (currentButtonState) {
 			case STATE_CHECKPOINT:
-				return <Flag style={{ marginBottom: '0.1em' }} />
+				return <Flag fontSize="inherit" style={{ marginBottom: '0.1em' }} />
 			case STATE_CONCEPT:
-				return <Clipboard />
+				return <Clipboard fontSize="inherit" />
 			case STATE_HINT:
 			case STATE_CARD:
-				return <RightArrow />
+				return <RightArrow fontSize="inherit" />
 			default:
 				if (currentButtonState !== undefined)
 					console.log('[CentralContent] error... missing state check?')
@@ -35,5 +36,5 @@ export default function CentralContent({ currentButtonState }) {
 		}
 	}
 
-	return <Container className="learn-r-nextarrow">{centralContent()}</Container>
+	return <Container className={className}>{centralContent()}</Container>
 }

@@ -88,3 +88,5 @@ export const iterateNodes = (obj, callback, nestLevel = Infinity) => {
 	}
 	return obj
 }
+
+// export const iterateNodesWithPath = (obj, callback, path, nextLevel = Infinity)

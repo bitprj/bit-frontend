@@ -4,20 +4,24 @@ import { isFunction } from 'lodash'
 
 const Container = styled.div`
 	line-height: 1em;
+	height: 1em;
 
 	${props =>
 		props.fullWidth
 			? `display: flex;
-        height: 1em;
         align-items: center;`
 			: ''}
 `
 
 const Dot = styled.div`
   display: inline-block;
-  margin-right: 0.4em;
-  width: 0.3em;
-  height: 0.3em;
+  
+  &:not(:last-child) {
+    margin-right: ${props => props.gap};
+  }
+
+  width: ${props => props.dotSize};
+  height: ${props => props.dotSize};
   vertical-align: middle;
   ${props => (props.type !== 'SQUARE' ? 'border-radius: 0.3em' : '')}
   ${props => (props.fullWidth ? 'flex: 1;' : '')}
@@ -35,7 +39,6 @@ const Dot = styled.div`
 		return props.offColor || props.theme.offFont
 	}}
 `
-// 007BED
 
 /**
  *
@@ -43,33 +46,39 @@ const Dot = styled.div`
  */
 const Rating = ({
 	style,
+	className,
 	type,
 	fullWidth,
 	rating = 3,
 	offRating,
 	outOf = 5,
+	upTo = true,
 	filledColor,
 	offFilledColor,
 	offColor,
+	dotSize = '0.3em',
+	gap = '0.3em',
 	callback
 }) => {
-	const renderedDots = [...Array(outOf)].map((dot, index) => (
+	const renderedDots = [...Array(outOf)].map((_, index) => (
 		<Dot
 			key={`dots-${index}`}
-			filled={index < rating}
-			offFilled={index < offRating}
+			filled={upTo ? index < rating : index === rating - 1}
+			offFilled={upTo ? index < offRating : index === rating - 1}
 			type={type}
 			fullWidth={fullWidth}
 			filledColor={filledColor}
 			offFilledColor={offFilledColor}
-      offColor={offColor}
+			offColor={offColor}
 			callback={callback}
+			dotSize={dotSize}
+			gap={gap}
 			onClick={() => isFunction(callback) && callback(index)}
 		/>
 	))
 
 	return (
-		<Container style={style} fullWidth={fullWidth}>
+		<Container style={style} className={className} fullWidth={fullWidth}>
 			{renderedDots}
 		</Container>
 	)

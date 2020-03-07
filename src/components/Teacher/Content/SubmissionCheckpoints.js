@@ -35,7 +35,7 @@ const CheckArea = styled.div`
 `
 
 const Content = styled.div`
-	flex: 1;
+	min-width: 0; // fixes text-expansion
 `
 
 const Type = styled(IconLine)`
@@ -73,9 +73,8 @@ const Video = styled.video`
 
 const Comments = styled(ReactQuill)`
 	border-radius: 0.5em;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  width: 100%;
+	overflow-y: auto;
+	width: 100%;
 `
 
 const Checkpoints = ({
@@ -126,7 +125,7 @@ const Checkpoints = ({
 					className="strong-lift"
 					theme="bubble"
 					placeholder="Comments..."
-					// preserveWhitespace
+					preserveWhitespace
 					onChange={(content, delta, source, editor) => {
 						// console.log(content, delta, source, editor)
 						console.log(content, editor.getContents().ops[0])

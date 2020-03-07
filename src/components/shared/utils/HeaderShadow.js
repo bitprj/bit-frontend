@@ -38,6 +38,14 @@ const Shadow = styled.div`
 	pointer-events: none;
 `
 
+export const Shadows = ({ shadowStrength }) => {
+	return (
+		<ShadowWrapper>
+			<Shadow style={{ opacity: 1 }} shadowStrength={shadowStrength} />
+		</ShadowWrapper>
+	)
+}
+
 const UpArrow = styled(KeyUpArrow)`
 	font-size: 333% !important;
 	transition: 0.1s ease all !important;

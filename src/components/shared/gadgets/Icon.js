@@ -5,7 +5,7 @@ const RenderedIcon = styled.img`
 	width: ${props => props.width || '5em'};
   ${props => {
 		if (props.height) return `height: ${props.height}`
-		else if (!props.height && !props.width) return 'height: 5em;'
+		else if (!props.width && !props.height) return 'height: 5em;'
 	}}
   
 	${props => {

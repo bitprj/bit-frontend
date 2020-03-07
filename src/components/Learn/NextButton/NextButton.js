@@ -22,11 +22,7 @@ const Container = styled.div`
 	position: fixed;
 	right: 5.2em;
 	bottom: 4em;
-	opacity: 0.3;
-
-	&:hover {
-		transform: translateY(-0.3em);
-	}
+	opacity: 0.3; // before animation
 `
 
 const NextButtonManager = ({
@@ -34,88 +30,123 @@ const NextButtonManager = ({
 	concepts,
 	checkpoint,
 	currentCardIndex,
-	lastCardUnlockedIndex,
 	buttonStateScheduleQueue,
 	onBroadcastButtonState,
 	onResetButtonStateSchedule
 }) => {
+	/**
+	 * Stack-based system to determine current button state
+	 *
+	 *  - Had to be ref because setState was async
+	 *    ...essentially, the effect with resetAndBroadcastButtonState
+	 *    didn't work because the removal wasn't immediate
+	 */
 	const buttonStateStack = useRef(new SafeStack([STATE_CARD]))
-	const buttonFinishedTask = useRef([])
-
-	const [openConcept, setOpenConcept] = useState(false)
-	const [openCheckpoint, setOpenCheckpoint] = useState(false)
-
-	const removeAndBroadcastButtonState = buttonState => {
-		buttonStateStack.current.pop(buttonState)
-		buttonFinishedTask.current.push(buttonState)
-		onBroadcastButtonState(buttonStateStack.current.peek())
-	}
-
-	const resetAndBroadcastButtonState = () => {
-		buttonStateStack.current = new SafeStack([STATE_CARD])
-		onBroadcastButtonState(buttonStateStack.current.peek())
-	}
-
-	useEffect(() => {
-		onBroadcastButtonState(buttonStateStack.current.peek())
-	}, [])
-
-	useEffect(() => {
-		// if (checkpoint) {
-		// buttonFinishedTask.current.push(STATE_CHECKPOINT)
-		// }
-		if (concepts && concepts.length) {
-			buttonFinishedTask.current.push(STATE_CONCEPT)
-		}
-		return () => {
-			resetAndBroadcastButtonState()
-			buttonFinishedTask.current = []
-		}
-	}, [currentCardIndex])
-
-	useEffect(() => {
-		console.log(buttonFinishedTask.current)
-	}, [currentCardIndex])
+	const [finishedButtonStates, setFinishedButtonStates] = useState([])
 
 	/**
-	 * Update currentButtonState with all states from the schedule queue
+	 * Modals for Concepts and Checkpoint
+	 */
+	const [openConcepts, setOpenConcepts] = useState(false)
+	const [openCheckpoint, setOpenCheckpoint] = useState(false)
+
+	/**
+	 * Update currentButtonState with all states from the schedule queue FIRST
 	 */
 	useEffect(() => {
 		if (!buttonStateScheduleQueue.isEmpty()) {
 			let i = 0 // infinite recursion? uwu
 			while (i++ < 10 && !buttonStateScheduleQueue.isEmpty()) {
 				const scheduledButtonState = buttonStateScheduleQueue.front()
-				buttonStateStack.current.push(scheduledButtonState)
+				pushToButtonStateStack(scheduledButtonState)
 				buttonStateScheduleQueue.dequeue(scheduledButtonState)
 				if (i === 10) console.log('[NextButton] Houston, we may have a problem')
 			}
 			const nextButtonState = buttonStateStack.current.peek()
 			onBroadcastButtonState(nextButtonState)
-			onResetButtonStateSchedule(nextButtonState)
-
-			if (nextButtonState === STATE_CONCEPT) {
-				setOpenConcept(true)
-			}
+			onResetButtonStateSchedule()
 		}
 	}, [buttonStateScheduleQueue])
 
+	useEffect(() => {
+		if (checkpoint /* TODO && checkpointFinished */) {
+			// pushToFinishedButtonStates(STATE_CHECKPOINT)
+			addAndBroadcastButtonState(STATE_CHECKPOINT)
+		}
+
+		if (
+			concepts &&
+			concepts.length &&
+			!buttonStateStack.current.has(STATE_CONCEPT)
+		) {
+			pushToFinishedButtonStates(STATE_CONCEPT)
+		}
+
+		if (buttonStateStack.current.peek() === STATE_CARD)
+			onBroadcastButtonState(STATE_CARD)
+
+		return () => {
+			resetAndBroadcastButtonState()
+			setFinishedButtonStates([])
+		}
+	}, [currentCardIndex])
+
+	useEffect(() => {
+		if (buttonStateStack.current.peek() === STATE_CONCEPT) {
+			setOpenConcepts(true)
+		}
+	}, [buttonStateStack.current])
+
+	// useEffect(() => {
+	// console.log(finishedButtonStates)
+	// }, [finishedButtonStates])
+
+	/** Helper Methods */
+
+	const pushToButtonStateStack = buttonState => {
+		buttonStateStack.current.push(buttonState)
+	}
+	const popFromButtonStateStack = buttonState => {
+		buttonStateStack.current.pop(buttonState)
+	}
+	const addAndBroadcastButtonState = buttonState => {
+		pushToButtonStateStack(buttonState)
+		onBroadcastButtonState(buttonStateStack.current.peek())
+	}
+	const removeAndBroadcastButtonState = buttonState => {
+		popFromButtonStateStack(buttonState)
+		pushToFinishedButtonStates(buttonState)
+		onBroadcastButtonState(buttonStateStack.current.peek())
+	}
+	const resetAndBroadcastButtonState = () => {
+		buttonStateStack.current = new SafeStack([STATE_CARD])
+		onBroadcastButtonState(buttonStateStack.current.peek())
+	}
+
+	const pushToFinishedButtonStates = buttonState => {
+		finishedButtonStates.push(buttonState)
+		setFinishedButtonStates([...finishedButtonStates])
+	}
+
 	return (
 		<Container className={`${className} transition-medium`}>
-			<Central
-				removeAndBroadcastButtonState={removeAndBroadcastButtonState}
-				setOpenConcept={setOpenConcept}
-				setOpenCheckpoint={setOpenCheckpoint}
-			/>
 			<Concept
-				render={false}
-				open={openConcept}
-				setOpen={setOpenConcept}
+				STATE_CONCEPT={STATE_CONCEPT}
+				render={finishedButtonStates.includes(STATE_CONCEPT)}
+				open={openConcepts}
+				setOpen={setOpenConcepts}
 				removeAndBroadcastButtonState={removeAndBroadcastButtonState}
 			/>
 			<Checkpoint
-				render={false}
+				STATE_CHECKPOINT={STATE_CHECKPOINT}
+				render={finishedButtonStates.includes(STATE_CHECKPOINT)}
 				open={openCheckpoint}
 				setOpen={setOpenCheckpoint}
+			/>
+			<Central
+				removeAndBroadcastButtonState={removeAndBroadcastButtonState}
+				setOpenConcepts={setOpenConcepts}
+				setOpenCheckpoint={setOpenCheckpoint}
 			/>
 		</Container>
 	)
@@ -124,11 +155,7 @@ const NextButtonManager = ({
 const mapStateToProps = state => {
 	const {
 		learnData: {
-			indicators: {
-				lastCardUnlockedIndex,
-				currentCardIndex,
-				buttonStateScheduleQueue
-			},
+			indicators: { currentCardIndex, buttonStateScheduleQueue },
 			cards
 		}
 	} = state
@@ -137,7 +164,6 @@ const mapStateToProps = state => {
 
 	return {
 		currentCardIndex,
-		lastCardUnlockedIndex,
 		buttonStateScheduleQueue,
 		concepts: get(card, 'concepts'),
 		checkpoint: get(card, 'checkpoint')

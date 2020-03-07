@@ -11,6 +11,7 @@ import IconLine from '../../../../shared/gadgets/IconLine'
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
 
+import Peripheral from '../Peripheral'
 import TwoPanelModal from '../../../../shared/containers/TwoPanelModal'
 
 const StyledTwoPanelModal = styled(TwoPanelModal)`
@@ -25,7 +26,18 @@ const ToggleView = styled(Button)`
 	border: 0;
 `
 
-const Checkpoint = ({ render, open, setOpen, id, name, instruction, type }) => {
+const Checkpoint = ({
+	STATE_CHECKPOINT,
+
+	render,
+	open,
+	setOpen,
+
+	id,
+	name,
+	instruction,
+	type
+}) => {
 	let leftPanelUpload
 	let rightPanelUpload
 	let leftPanelResult
@@ -68,29 +80,37 @@ const Checkpoint = ({ render, open, setOpen, id, name, instruction, type }) => {
 	// ...
 
 	return (
-		<StyledTwoPanelModal
-			open={open}
-			closed={() => setOpen(false)}
-			leftPanel={!resultView ? leftPanelUpload : leftPanelResult}
-			rightPanel={!resultView ? rightPanelUpload : rightPanelResult}
-			ratio={modalRatio}
-			scaleX={0.8}
-		>
-			<ToggleView
-				reverse={resultView}
-				onClick={() => setResultView(!resultView)}
+		<>
+			{render && (
+				<Peripheral
+					currentButtonState={STATE_CHECKPOINT}
+					onClick={() => setOpen(true)}
+				/>
+			)}
+			<StyledTwoPanelModal
+				open={open}
+				closed={() => setOpen(false)}
+				leftPanel={!resultView ? leftPanelUpload : leftPanelResult}
+				rightPanel={!resultView ? rightPanelUpload : rightPanelResult}
+				ratio={modalRatio}
+				scaleX={0.8}
 			>
-				{!resultView ? (
-					<IconLine className="sans" icon={<RightArrow />} reverse>
-						See Results
-					</IconLine>
-				) : (
-					<IconLine className="sans" icon={<LeftArrow />}>
-						Back
-					</IconLine>
-				)}
-			</ToggleView>
-		</StyledTwoPanelModal>
+				<ToggleView
+					reverse={resultView}
+					onClick={() => setResultView(!resultView)}
+				>
+					{!resultView ? (
+						<IconLine className="sans" icon={<RightArrow />} reverse>
+							See Results
+						</IconLine>
+					) : (
+						<IconLine className="sans" icon={<LeftArrow />}>
+							Back
+						</IconLine>
+					)}
+				</ToggleView>
+			</StyledTwoPanelModal>
+		</>
 	)
 }
 

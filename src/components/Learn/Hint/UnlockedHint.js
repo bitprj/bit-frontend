@@ -2,9 +2,10 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import anime from 'animejs'
 import { connect } from 'react-redux'
-import { Element as ScrollElement } from 'react-scroll'
 import ReactMarkdown from 'react-markdown'
+import { Element as ScrollElement } from 'react-scroll'
 
+import CodeBlock from '../../shared/CodeBlock'
 import ParsedContent from '../../shared/ParsedContent'
 
 import { STATE_HINT } from '../NextButton/NextButton'
@@ -12,6 +13,7 @@ import { STATE_HINT } from '../NextButton/NextButton'
 const UnlockedHint = ({
 	className,
 	id,
+	contentfulId,
 	steps,
 	name,
 	lastHintUnlockedId,
@@ -57,14 +59,13 @@ const UnlockedHint = ({
 	}, [currentButtonState])
 
 	/**
-	 * Render all hints, including nested children hints
-	 *  - recursive
+	 * Render all steps
 	 */
-	const renderSteps = () => {
+	const renderedSteps = () => {
 		return steps.map((step, i) => {
 			return (
-				<React.Fragment key={`step-${id}-${i}`}>
-					{steps.length === 1 && name !== step.heading && (
+				<React.Fragment key={`hint-step-${id}-${i}`}>
+					{steps.length === 1 && name.trim() !== step.heading.trim() && (
 						<h3>
 							<ReactMarkdown
 								className="markdown-header"
@@ -73,10 +74,26 @@ const UnlockedHint = ({
 						</h3>
 					)}
 					<ParsedContent document={step.content} />
+					{step.snippet && (
+						<ReactMarkdown
+							className="low-profile-scrollbar only-hover light learn-concept-codeblock"
+							source={step.snippet}
+							renderers={{
+								code: props =>
+									CodeBlock({
+										...props,
+										style: {
+											width: '100%'
+										}
+									})
+							}}
+						/>
+					)}
 				</React.Fragment>
 			)
 		})
 	}
+
 	return (
 		<ScrollElement
 			className={className}
@@ -86,7 +103,9 @@ const UnlockedHint = ({
 			<h2 className={`invisible learn-i-hintheader-${id}`}>
 				<ReactMarkdown className="markdown-header" source={name} />
 			</h2>
-			<div className={`invisible learn-i-hintsteps-${id}`}>{renderSteps()}</div>
+			<div className={`invisible learn-i-hintsteps-${id}`}>
+				{renderedSteps()}
+			</div>
 		</ScrollElement>
 	)
 }

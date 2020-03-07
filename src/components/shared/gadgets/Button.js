@@ -4,8 +4,12 @@ import anime from 'animejs'
 
 const RenderedButton = styled.button.attrs(props => {
 	if (props.disabled) {
-		props.dark = '#444444'
-		props.light = '#aaaaaa'
+		if (props.invert) {
+			props.dark = '#666666'
+			props.light = '#aaaaaa'
+		} else {
+			props.dark = '#aaaaaa'
+		}
 	}
 	return {
 		dark: props.dark || props.theme.accent
@@ -23,14 +27,16 @@ const RenderedButton = styled.button.attrs(props => {
   border: ${props => props.dark} solid 0.1em;
 
   ${props => {
-		if (props.invert)
+		if (props.invert) {
 			return `
       background-color: ${props.dark}};
       color: ${props.light || '#fff'};
       ${props.disabled ? '' : `box-shadow: 0 4px 14px 0 ${props.dark}77;`}`
-		return `
-      background-color: ${props.light || 'transparent'};
-      color: ${props.dark};`
+		} else {
+			return `
+        background-color: ${props.light || 'transparent'};
+        color: ${props.dark};`
+		}
 	}}
 
   text-align: center;
@@ -60,47 +66,6 @@ const RenderedButton = styled.button.attrs(props => {
   }
 `
 
-const ArtifactRoot = styled.div`
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	overflow: hidden;
-`
-
-const RenderedArtifact = styled.div`
-	width: ${props => props.size};
-	height: ${props => props.size};
-	position: absolute;
-	// opacity: 0;
-	border-radius: 50%;
-	// transform: scale(0);
-	background-color: #6666;
-`
-
-const Artifact = ({ size, coords, done }) => {
-	const artifactRef = React.useRef(null)
-	const x = coords[0]
-	const y = coords[1]
-
-	React.useEffect(() => {
-		anime({
-			targets: artifactRef.current,
-			keyframes: [
-				{ duration: 0, opacity: 0, scale: 0 },
-				{ duration: 100, opacity: 1 },
-				{ duration: 600, opacity: 0, scale: 2 },
-				{ duration: 0, scale: 0 }
-			],
-			transformOrigin: [`${x}px ${y}px`, `${x}px ${y}px`],
-			easing: 'easeOutQuad',
-			complete: () => done()
-		})
-	}, [])
-	return <RenderedArtifact ref={artifactRef} size={size} />
-}
-
 /**
  * THICC BUTTON
  *
@@ -108,28 +73,8 @@ const Artifact = ({ size, coords, done }) => {
  * @param {*} props
  */
 const Button = props => {
-	const buttonRef = React.useRef(null)
-	const size = React.useRef()
-	const [anims, setAnims] = React.useState([])
-
-	React.useEffect(() => {
-		size.current = `${buttonRef.current.offsetWidth}px`
-	}, [])
-
-	const animateClick = e => {
-		const bounds = e.target.getBoundingClientRect()
-		const x = e.clientX - bounds.left
-		const y = e.clientY - bounds.top
-
-		const nextAnims = anims.filter(anim => !anim.done)
-		console.log(nextAnims)
-		nextAnims.push({ coords: [x, y], done: false })
-		setAnims(nextAnims)
-	}
-
 	return (
 		<RenderedButton
-			ref={buttonRef}
 			className={props.className}
 			dark={props.dark}
 			light={props.light}
@@ -141,18 +86,7 @@ const Button = props => {
 				if (props.onClick) props.onClick()
 				else if (props.clicked) props.clicked()
 			}}
-			// onMouseDown={animateClick}
 		>
-			{/* <ArtifactRoot>
-				{anims.map((anim, i) => (
-					<Artifact
-						key={i}
-						size={size.current}
-						coords={anim.coords}
-						done={() => (anim.done = true)}
-					/>
-				))}
-			</ArtifactRoot> */}
 			{props.children}
 		</RenderedButton>
 	)

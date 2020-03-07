@@ -23,23 +23,30 @@ const IconWrapper = styled.div`
 		top: 0.125em;
 		position: relative;
 		font-size: inherit;
-		transition: 0.1s ease all;
+		${props => (!props.noTransition ? 'transition: 0.1s ease all;' : '')}
 	}
 `
 
-const IconLine = ({ className, children, icon, gap, reverse }) => {
+const IconLine = ({
+	className,
+	children,
+	icon,
+	gap,
+	reverse,
+	noTransition
+}) => {
 	return (
 		<Container className={className}>
 			{reverse ? (
 				<>
 					{children}
-					<IconWrapper reverse={reverse} gap={gap}>
+					<IconWrapper reverse={reverse} gap={gap} noTransition={noTransition}>
 						{icon}
 					</IconWrapper>
 				</>
 			) : (
 				<>
-					<IconWrapper reverse={reverse} gap={gap}>
+					<IconWrapper reverse={reverse} gap={gap} noTransition={noTransition}>
 						{icon}
 					</IconWrapper>
 					{children}

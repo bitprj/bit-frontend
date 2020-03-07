@@ -10,6 +10,7 @@ export const authenticate = userType => {
 
 export const deauthenticate = () => {
 	localStorage.removeItem('userType')
+	document.cookie = 'csrf-token=John Doe; expires=Thu, 01 Jan 1970 00:00:00 UTC'
 	return {
 		type: DEAUTHENTICATE
 	}

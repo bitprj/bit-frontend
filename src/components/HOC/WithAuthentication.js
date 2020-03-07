@@ -19,7 +19,7 @@ const WithAuthentication = ({
 			try {
 				const response = await onCheckLogin()
 				if (response.userType || response.message) {
-					onAuthenticate(response.userType || 'TEACHER')
+					onAuthenticate(response.userType.toUpperCase())
 				} else {
 					alert("[WithAuthentication] confirm message didn't match")
 				}

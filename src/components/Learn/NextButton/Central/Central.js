@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 
-import CentralAnimes from './SelectState/CentralAnimes'
-import CentralContent from './SelectState/CentralContent'
-import CentralStyles from './SelectState/CentralStyles'
+import CentralAnimes from '../SelectState/CentralAnimes'
+import CentralContent from '../SelectState/CentralContent'
+import CentralStyles from '../SelectState/CentralStyles'
 
 import {
 	STATE_CARD,
@@ -29,10 +29,27 @@ const Container = styled(CentralStyles)`
 	padding: 1em;
 	border-radius: 50%;
 	cursor: pointer;
+
+	&:hover {
+		transform: translateY(-0.3em);
+	}
 `
 
+export const CentralTemplate = ({ className, currentButtonState, onClick }) => (
+	<Container
+		className={`transition-medium ${className || ''}`}
+		onClick={onClick}
+		currentButtonState={currentButtonState}
+	>
+		<CentralContent
+			className="learn-r-nextarrow"
+			currentButtonState={currentButtonState}
+		/>
+	</Container>
+)
+
 const Central = ({
-	setOpenConcept,
+	setOpenConcepts,
 	setOpenCheckpoint,
 
 	currentButtonState,
@@ -95,7 +112,7 @@ const Central = ({
 				break
 			}
 			case STATE_CONCEPT: {
-				setOpenConcept(true)
+				setOpenConcepts(true)
 				break
 			}
 			case STATE_CARD: {
@@ -116,13 +133,11 @@ const Central = ({
 	}
 
 	return (
-		<Container
-			className={`learn-r-nextbutton transition-medium`}
+		<CentralTemplate
+			className={`learn-r-nextbutton`}
 			onClick={handleClickNext}
 			currentButtonState={currentButtonState}
-		>
-			<CentralContent currentButtonState={currentButtonState} />
-		</Container>
+		/>
 	)
 }
 

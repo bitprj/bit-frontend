@@ -79,8 +79,10 @@ const Login = ({ open, setOpen, onAuthenticate }) => {
 		e.preventDefault()
 
 		try {
-			const response = await login(userCombo.user, userCombo.pass)
+      const response = await login(userCombo.user, userCombo.pass)
+			document.cookie = `csrf-token=${response.csrfToken};`
 			onAuthenticate(response.userType.toUpperCase())
+
 			setOpen(false)
 			history.push('.')
 			setIsWaiting(false)

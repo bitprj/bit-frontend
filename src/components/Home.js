@@ -11,6 +11,8 @@ const Home = ({ userType }) => {
 				return <Visitor />
 			case 'STUDENT':
 				return <Student />
+      case 'TEACHER':
+        return null
 			default:
 				console.log(
 					"[HOME] we shouldn't be here... missing userType?",

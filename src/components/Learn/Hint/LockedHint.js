@@ -3,10 +3,13 @@ import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
 import { connect } from 'react-redux'
 
+import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
+
 import DynamicModal from '../../shared/containers/DynamicModal'
 import ClampedText from '../../shared/utils/ClampedText'
-import Button from '../../shared/gadgets/Button'
+import ConfirmCancel from '../../shared/gadgets/ConfirmCancel'
 import Icon from '../../shared/gadgets/Icon'
+import IconLine from '../../shared/gadgets/IconLine'
 
 import { initUnlockHint } from '../../../redux/actions/learnData'
 import { incrementGemsBy } from '../../../redux/actions/studentData'
@@ -42,10 +45,9 @@ const ModalIcon = styled(Icon)`
 	height: 10em;
 `
 
-const ButtonArea = styled.div`
+const ButtonArea = styled(ConfirmCancel)`
 	margin-top: 2em;
-	text-align: right;
-	font-size: 80%;
+	font-size: 85%;
 `
 
 const LockedHint = ({
@@ -83,22 +85,24 @@ const LockedHint = ({
 			heightAuto
 		>
 			<RenderedModal>
-				<ModalIcon src="https://gamepedia.cursecdn.com/zelda_gamepedia_en/thumb/f/fb/Cielaph.png/302px-Cielaph.png" />
-				<br />
+				<h2 style={{ margin: 0 }}>Unlock Hint</h2>
+				<ModalIcon src={require('../../../assets/icons/locked-hint.svg')} />
 				<ReactMarkdown
 					className="markdown-header"
 					source={`Unlock *${name}* ?`}
 				/>
-				<ButtonArea>
-					<Button invert rounder onClick={unlockHint}>
+				<ButtonArea
+          cancelText={
+            <IconLine className="sans" icon={<LeftArrow />}>Cancel</IconLine>
+          }
+					confirmText={
 						<span style={{ lineHeight: '1em' }}>
 							💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
 						</span>
-					</Button>
-					<Button rounder onClick={() => setOpenConfirmHint(false)}>
-						Cancel
-					</Button>
-				</ButtonArea>
+					}
+					cancelOnClick={() => setOpenConfirmHint(false)}
+					confirmOnClick={unlockHint}
+				/>
 			</RenderedModal>
 		</DynamicModal>
 	)
