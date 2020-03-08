@@ -13,7 +13,6 @@ import { STATE_HINT } from '../NextButton/NextButton'
 const UnlockedHint = ({
 	className,
 	id,
-	contentfulId,
 	steps,
 	name,
 	lastHintUnlockedId,

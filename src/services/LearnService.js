@@ -36,20 +36,25 @@ export const submitCheckpointProgress = (checkpointId, type, content) => {
 	let formData
 	switch (type) {
 		case 'Autograder': {
+			break
 		}
 
 		case 'Image': {
 			formData = new FormData()
 			formData.append('image', content[0])
+			break
 		}
 
 		case 'Video': {
+			break
 		}
 
 		case 'Multiple Choice': {
+			break
 		}
 
 		case 'Short Answer': {
+			break
 		}
 	}
 	return backend.put(endpoint, data || formData)
@@ -92,8 +97,8 @@ export const uploadFiles = fileItems => {
 export const processResult = rawData => {
 	const passCases = rawData.pass_cases.map(pass => {
 		return pass
-  })
-  
+	})
+
 	const result = {
 		submission: rawData.submission,
 		passCases: passCases,

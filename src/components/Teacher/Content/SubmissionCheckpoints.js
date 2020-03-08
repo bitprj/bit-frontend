@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.bubble.css'
 import Dot from '@material-ui/icons/FiberManualRecord'
 
 import ThreeCheckbox from './ThreeCheckbox'
@@ -71,12 +69,6 @@ const Video = styled.video`
 	max-height: 100%;
 `
 
-const Comments = styled(ReactQuill)`
-	border-radius: 0.5em;
-	overflow-y: auto;
-	width: 100%;
-`
-
 const Checkpoints = ({
 	type,
 	name,
@@ -121,16 +113,6 @@ const Checkpoints = ({
 				<Name>{name}</Name>
 				<Question>{question}</Question>
 				<MediaContainer>{selectContent()}</MediaContainer>
-				<Comments
-					className="strong-lift"
-					theme="bubble"
-					placeholder="Comments..."
-					preserveWhitespace
-					onChange={(content, delta, source, editor) => {
-						// console.log(content, delta, source, editor)
-						console.log(content, editor.getContents().ops[0])
-					}}
-				/>
 			</Content>
 		</Container>
 	)

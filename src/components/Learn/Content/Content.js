@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
-import ReactMarkdown from 'react-markdown'
-import axios from 'axios'
 
 import ContentHeader from './ContentHeader'
 import UnlockedHintSection from '../Hint/UnlockedHintSection'
@@ -164,7 +162,7 @@ const Content = ({
 				lastCardUnlockedIndexRef.current = lastCardUnlockedIndex
 			}
 		}
-  }, [gems])
+	}, [gems])
 
 	return (
 		<Container

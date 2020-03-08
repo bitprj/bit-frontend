@@ -71,7 +71,7 @@ const NextButtonManager = ({
 	useEffect(() => {
 		if (checkpoint /* TODO && checkpointFinished */) {
 			// pushToFinishedButtonStates(STATE_CHECKPOINT)
-			addAndBroadcastButtonState(STATE_CHECKPOINT)
+			// addAndBroadcastButtonState(STATE_CHECKPOINT)// TODO CHECKPOINT
 		}
 
 		if (
@@ -96,10 +96,6 @@ const NextButtonManager = ({
 			setOpenConcepts(true)
 		}
 	}, [buttonStateStack.current])
-
-	// useEffect(() => {
-	// console.log(finishedButtonStates)
-	// }, [finishedButtonStates])
 
 	/** Helper Methods */
 
