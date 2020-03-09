@@ -13,6 +13,7 @@ import {
 import { STATE_HINT } from '../../components/Learn/NextButton/NextButton'
 
 import {
+	INDICATE_INITIAL_LOAD_LEARN,
 	SET_ACTIVITY,
 	SET_ACTIVITY_PROGRESS,
 	SET_UNLOCKED_CARDS,
@@ -139,6 +140,10 @@ const initCardStatuses = (activityId, unlockedCards) =>
 			return cardStatus
 		})
 	)
+
+export const indicateInitialLoadLearn = () => ({
+	type: INDICATE_INITIAL_LOAD_LEARN
+})
 
 const setActivity = activity => ({
 	type: SET_ACTIVITY,

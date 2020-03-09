@@ -2,6 +2,7 @@ import { cloneDeep, merge as mergeDeep } from 'lodash'
 import { SafeQueue } from '../../utils/DataStructures'
 
 import {
+	INDICATE_INITIAL_LOAD_LEARN,
 	SET_ACTIVITY,
 	SET_ACTIVITY_PROGRESS,
 	SET_UNLOCKED_CARDS,
@@ -19,6 +20,8 @@ import {
 
 const initialState = {
 	indicators: {
+		hasLoadedOnce: false,
+
 		currentCardIndex: undefined,
 		lastCardUnlockedIndex: undefined, // must be undefined
 		lastHintUnlockedId: undefined,
@@ -46,6 +49,13 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
+		case INDICATE_INITIAL_LOAD_LEARN: {
+			return {
+				...state,
+				indicators: { ...state.indicators, hasLoadedOnce: true }
+			}
+		}
+
 		case SET_ACTIVITY: {
 			return { ...state, ...action.activity }
 		}
@@ -76,7 +86,7 @@ const reducer = (state = initialState, action) => {
 			action.cardStatuses.forEach((cardStatus, i) => {
 				nextState.cards[i].hints = cardStatus
 				hintStatusSeparation(nextState.cards[i])
-      })
+			})
 			return nextState
 		}
 

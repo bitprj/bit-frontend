@@ -50,6 +50,11 @@ const NextButtonManager = ({
 	const [openConcepts, setOpenConcepts] = useState(false)
 	const [openCheckpoint, setOpenCheckpoint] = useState(false)
 
+	useEffect(() => {
+		if (buttonStateStack.current.peek() === STATE_CARD)
+			onBroadcastButtonState(STATE_CARD)
+	}, [])
+
 	/**
 	 * Update currentButtonState with all states from the schedule queue FIRST
 	 */
@@ -63,7 +68,8 @@ const NextButtonManager = ({
 				if (i === 10) console.log('[NextButton] Houston, we may have a problem')
 			}
 			const nextButtonState = buttonStateStack.current.peek()
-			onBroadcastButtonState(nextButtonState)
+			if (!finishedButtonStates.includes(nextButtonState))
+				onBroadcastButtonState(nextButtonState)
 			onResetButtonStateSchedule()
 		}
 	}, [buttonStateScheduleQueue])
@@ -71,7 +77,7 @@ const NextButtonManager = ({
 	useEffect(() => {
 		if (checkpoint /* TODO && checkpointFinished */) {
 			// pushToFinishedButtonStates(STATE_CHECKPOINT)
-			// addAndBroadcastButtonState(STATE_CHECKPOINT)// TODO CHECKPOINT
+			addAndBroadcastButtonState(STATE_CHECKPOINT) // on revisit
 		}
 
 		if (
@@ -81,9 +87,6 @@ const NextButtonManager = ({
 		) {
 			pushToFinishedButtonStates(STATE_CONCEPT)
 		}
-
-		if (buttonStateStack.current.peek() === STATE_CARD)
-			onBroadcastButtonState(STATE_CARD)
 
 		return () => {
 			resetAndBroadcastButtonState()

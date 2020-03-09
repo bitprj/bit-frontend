@@ -26,7 +26,14 @@ export const slideIn = (targets, options) =>
 export const statusFadeOut = (status, targets, duration = 750) => {
 	return anime({
 		targets,
-		opacity: () => status === 'exiting' && '0',
+		opacity: () => {
+			switch (status) {
+				case 'exiting':
+					return 0
+				default:
+					return 1
+			}
+		},
 		easing: 'easeInQuad',
 		duration
 	})

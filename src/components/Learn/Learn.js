@@ -7,7 +7,7 @@ import Toolbar from './Toolbar/Toolbar'
 import Sidebar from './Sidebar/Sidebar'
 import Content from './Content/Content'
 import WithPageSpinner from '../HOC/WithPageSpinner'
-import { init } from '../../redux/actions/learnData'
+import { init, indicateInitialLoadLearn } from '../../redux/actions/learnData'
 
 const Container = styled.div`
 	display: flex;
@@ -38,9 +38,18 @@ const Container = styled.div`
 	}
 `
 
-const Learn = ({ isReady, currentCardIndex, onInit }) => {
+const Learn = ({
+	isReady,
+	hasLoadedOnce,
+	currentCardIndex,
+	onInit,
+	onIndicateInitialLoadLearn
+}) => {
 	useEffect(() => {
-		onInit(12, currentCardIndex)
+		if (!hasLoadedOnce) {
+			onIndicateInitialLoadLearn()
+			onInit(12, currentCardIndex)
+		}
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
@@ -58,20 +67,22 @@ const mapStateToProps = state => {
 	const {
 		learnData: {
 			cards,
-			indicators: { currentCardIndex }
+			indicators: { hasLoadedOnce, currentCardIndex }
 		}
 	} = state
 
 	const isReady = !!get(cards, '[0].content')
 	return {
 		isReady,
+		hasLoadedOnce,
 		currentCardIndex
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
 	onInit: (activityId, currentCardIndex) =>
-		dispatch(init(activityId, currentCardIndex))
+		dispatch(init(activityId, currentCardIndex)),
+	onIndicateInitialLoadLearn: () => dispatch(indicateInitialLoadLearn())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Learn)

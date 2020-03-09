@@ -50,17 +50,15 @@ const AnimatingIconLine = styled(IconLine)`
 
 const LockedHintSection = ({ activityId, hints }) => {
 	const containerRef = useRef(null)
-	let hintIndexCounter = 0
 
+	let isAllUnlocked = true
 	const renderedLockedHintsRecursive = hints => {
 		if (!hints) return
 
 		return hints.map(hint => {
-			hintIndexCounter++
-			if (hint.isUnlocked) {
-				return renderedLockedHintsRecursive(hint.hints)
-			} else {
-				const { id, contentfulId, name, difficulty, gems } = hint
+			const { id, contentfulId, name, difficulty, gems, isUnlocked } = hint
+			if (!isUnlocked) {
+        isAllUnlocked = false
 				return (
 					<LockedHint
 						key={`hint-${id}`}
@@ -73,6 +71,7 @@ const LockedHintSection = ({ activityId, hints }) => {
 					/>
 				)
 			}
+			return renderedLockedHintsRecursive(hint.hints)
 		})
 	}
 
@@ -83,7 +82,7 @@ const LockedHintSection = ({ activityId, hints }) => {
 
 	return (
 		<Container className="learn-r-lockedhints-hintslidedown">
-			{hintIndexCounter !== 0 && (
+			{!isAllUnlocked && (
 				<>
 					<LockedHintsContainer>
 						<HeaderShadow containerRef={containerRef} />

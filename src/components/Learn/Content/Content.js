@@ -136,13 +136,13 @@ const Content = ({
 	 * can't just use lastCardUnlocked because init will trigger
 	 */
 	useEffect(() => {
-		if (isCardUnlocked.current && activityId) {
-			onInitUnlockCard(activityId, id, contentfulId)
+		if (currentCardIndex === 0 || (isCardUnlocked.current && activityId)) {
+			if (isCardUnlocked.current) onInitUnlockCard(activityId, id, contentfulId)
 
-			console.log('here!', checkpoint, concepts)
 			if (checkpoint) {
 				onScheduleButtonState(STATE_CHECKPOINT)
 			}
+
 			if (concepts && concepts.length) {
 				onScheduleButtonState(STATE_CONCEPT)
 			}

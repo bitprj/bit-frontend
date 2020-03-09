@@ -3,12 +3,14 @@ import styled from 'styled-components'
 import anime from 'animejs'
 import { connect } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
+import { get } from 'lodash'
 import { Element as ScrollElement } from 'react-scroll'
 
 import CodeBlock from '../../shared/CodeBlock'
 import ParsedContent from '../../shared/ParsedContent'
 
 import { STATE_HINT } from '../NextButton/NextButton'
+import Icon from '../../shared/gadgets/Icon'
 
 const UnlockedHint = ({
 	className,
@@ -73,6 +75,7 @@ const UnlockedHint = ({
 						</h3>
 					)}
 					<ParsedContent document={step.content} />
+					{step.image && <img src={get(step, 'image.file.url')} />}
 					{step.snippet && (
 						<ReactMarkdown
 							className="low-profile-scrollbar only-hover light learn-concept-codeblock"

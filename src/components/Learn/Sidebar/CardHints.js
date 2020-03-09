@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { scroller } from 'react-scroll'
 import ReactMarkdown from 'react-markdown'
 import { get } from 'lodash'
-import { useDidUpdateEffect } from '../../../utils/customHooks'
 
 import ClampedText from '../../shared/utils/ClampedText'
 
@@ -36,13 +35,15 @@ const NavSubitemImg = styled.div`
 `
 
 const CardHints = ({ setHasSubitems, unlockedHints, lastHintUnlockedId }) => {
-	useDidUpdateEffect(() => {
-		anime({
-			targets: '.learn-r-nav-hintslidedown',
-			translateY: ['-2em', 0],
-			easing: 'easeOutQuad',
-			duration: 750
-    })
+	useEffect(() => {
+		if (lastHintUnlockedId) {
+			anime({
+				targets: '.learn-r-nav-hintslidedown',
+				translateY: ['-2em', 0],
+				easing: 'easeOutQuad',
+				duration: 750
+			})
+		}
 	}, [lastHintUnlockedId])
 
 	const handleScrollTo = hintId => {

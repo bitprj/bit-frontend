@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
+import anime from 'animejs'
 import Transition from 'react-transition-group/Transition'
 import Spinkit from 'react-spinkit'
 

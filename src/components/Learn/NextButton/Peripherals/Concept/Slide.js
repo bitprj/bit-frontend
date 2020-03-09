@@ -36,7 +36,7 @@ const Content = styled.div`
 	font-size: 85%;
 `
 
-const ButtonArea = styled.div`
+const Indicators = styled.div`
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -129,18 +129,20 @@ const Slide = ({ name, steps, slideIndex, setStepIndex }) => {
 					</h2>
 					<ParsedContent document={step.content} />
 				</Content>
-				<ButtonArea>
-					{buttons}
-					<Dots
-						dotSize="0.4em"
-						gap="1.2em"
-						upTo={false}
-						rating={currentStepIndex + 1}
-						offRating={steps.length}
-						outOf={steps.length}
-						callback={index => setCurrentStepIndex(index)}
-					/>
-				</ButtonArea>
+				{steps.length !== 1 && (
+					<Indicators>
+						{buttons}
+						<Dots
+							dotSize="0.4em"
+							gap="1.2em"
+							upTo={false}
+							rating={currentStepIndex + 1}
+							offRating={steps.length}
+							outOf={steps.length}
+							callback={index => setCurrentStepIndex(index)}
+						/>
+					</Indicators>
+				)}
 			</LeftPanel>
 
 			<RightPanel>

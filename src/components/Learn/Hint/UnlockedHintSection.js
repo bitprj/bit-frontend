@@ -1,9 +1,8 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import anime from 'animejs'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
-import { useDidUpdateEffect } from '../../../utils/customHooks'
 
 import UnlockedHint from './UnlockedHint'
 
@@ -12,16 +11,18 @@ const Container = styled.div`
 `
 
 const UnlockedHintSection = ({ unlockedHints, lastHintUnlockedId }) => {
-	useDidUpdateEffect(() => {
-		// TODO allow users to boost animations
-		let boostedAnimations = false
-		if (boostedAnimations)
-			anime({
-				targets: '.learn-r-lockedhints-hintslidedown',
-				translateY: ['-10em', 0], // static value that looks good
-				easing: 'easeOutQuad',
-				duration: 750
-			})
+	useEffect(() => {
+		if (lastHintUnlockedId) {
+			// TODO allow users to boost animations
+			let boostedAnimations = false
+			if (boostedAnimations)
+				anime({
+					targets: '.learn-r-lockedhints-hintslidedown',
+					translateY: ['-10em', 0], // static value that looks good
+					easing: 'easeOutQuad',
+					duration: 750
+				})
+		}
 	}, [lastHintUnlockedId])
 
 	let hintIndexMapper = 0
