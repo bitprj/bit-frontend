@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { validate } from 'validate.js'
 
 import TextField from '@material-ui/core/TextField'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'

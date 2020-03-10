@@ -38,47 +38,49 @@ const BlackTextArea = styled.pre`
 	min-height: 6em;
 `
 
-const TestLine = ({ pass, details = {} }) => (
-	<TestLineContainer>
-		<div style={{ display: 'flex' }}>
-			<div style={{ flex: 1 }}>
-				<h4>{details.name}</h4>
+const TestLine = ({ pass, details = {} }) => {
+	if (Array.isArray(details.expected.length)) {
+		details.expected.join('\n')
+	}
+	if (Array.isArray(details.output.length)) {
+		details.expected.join('\n')
+	}
+	return (
+		<TestLineContainer>
+			<div style={{ display: 'flex' }}>
+				<div style={{ flex: 1 }}>
+					<h4>{details.name}</h4>
+				</div>
+				<PassFail pass={pass}>{pass ? 'Passed' : 'Failed'}</PassFail>
 			</div>
-			<PassFail pass={pass}>{pass ? 'Passed' : 'Failed'}</PassFail>
-		</div>
-		{!pass && (
-			<div style={{ margin: '1em 0' }}>
-				<hr />
-				<h4>Expected Output</h4>
-				<BlackTextArea className="code">{details.expected}</BlackTextArea>
-				<h4>Your Output</h4>
-				<BlackTextArea className="code">{details.output}</BlackTextArea>
-				<hr />
-			</div>
-		)}
-	</TestLineContainer>
-)
+			{!pass && (
+				<div style={{ margin: '1em 0' }}>
+					<hr />
+					<h4>Expected Output</h4>
+					<BlackTextArea className="code">{details.expected}</BlackTextArea>
+					<h4>Your Output</h4>
+					<BlackTextArea className="code">{details.output}</BlackTextArea>
+					<hr />
+				</div>
+			)}
+		</TestLineContainer>
+	)
+}
 
 const RightPanelContainer = styled.div``
 
-export const AutograderRightPanel = ({}) => {
+export const AutograderRightPanel = ({ gradingInfo = {} }) => {
+	const { failCase, numFail, numPass, passCases } = gradingInfo
 	return (
-		<>
-			<TestLine
-				details={{
-					name: 'TODO',
-					output: ['>>> from thing import *', '>>> mult_add(3, 4)', '12']
-				}}
-				pass
-			/>
-			<TestLine
-				details={{
-					expected: '12\n',
-					name: 'TODO',
-					output: '7\n'
-				}}
-				pass={false}
-			/>
-		</>
+		<RightPanelContainer>
+			{passCases &&
+				passCases.map(details => {
+					return <TestLine details={details} pass />
+				})}
+			{failCase && <TestLine details={failCase} pass={false} />}
+			<div style={{ textAlign: 'right' }}>
+				{numPass}/{numPass + numFail}
+			</div>
+		</RightPanelContainer>
 	)
 }

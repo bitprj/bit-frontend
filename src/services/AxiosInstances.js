@@ -1,10 +1,12 @@
 import axios from 'axios'
 import camelCase from 'camelcase-keys-deep'
 
+const baseURL = 'https://darlene-backend.herokuapp.com/'
+
 /** GENERAL BACKEND (mainly for GET) */
 
 export const backend = axios.create({
-	baseURL: 'https://darlene-backend.herokuapp.com/',
+	baseURL,
 	withCredentials: true
 })
 backend.interceptors.response.use(response =>
@@ -12,7 +14,7 @@ backend.interceptors.response.use(response =>
 )
 
 export const backendSaves = axios.create({
-	baseURL: 'https://darlene-backend.herokuapp.com/',
+	baseURL,
 	withCredentials: true
 })
 backendSaves.defaults.headers.common['X-CSRF-TOKEN'] = localStorage.getItem(
