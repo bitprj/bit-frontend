@@ -1,26 +1,57 @@
-import React from 'react';
+import React, { useContext } from 'react'
+import styled from 'styled-components'
+import { ThemeContext } from 'styled-components'
 
-import CheckIcon from '../../../assets/icons/check';
-import ThreeDotsIcon from '../../../assets/icons/threedots';
-import LockIcon from '../../../assets/icons/lock';
+import CheckIcon from '@material-ui/icons/CheckRounded'
+import ThreeDotsIcon from '@material-ui/icons/MoreHoriz'
+import LockIcon from '@material-ui/icons/LockRounded'
+
+import MuiIconBox from '../external/MuiIconBox'
+
+const selectColor = props => {
+	switch (props.type) {
+		case 'complete':
+			return props.theme.pastel.green
+		case 'incomplete':
+			return props.theme.pastel.yellow
+		case 'locked':
+			return props.theme.pastel.red
+
+		default:
+			return null
+	}
+}
+
+const Container = styled(MuiIconBox)`
+	background-color: ${props => selectColor(props)};
+`
 
 /**
  * Helper Class to choose Status Icon appropriately
- * @param {status} props 
+ * @param {status} props
  */
-const StatusIcon = props => {
-    const { type, width, height } = props;
-    switch (type) {
-        case 'complete':
-            return <CheckIcon color="#2BDB66" check_width={width || "2.25em"} check_height={height} />
-        case 'incomplete':
-            return <ThreeDotsIcon color="#FF5454" width={width || "2.25em"} height={height} />
-        case 'locked':
-            return <LockIcon color="#FFE554" width={width || "2.25em"} height={height} />
+const StatusIcon = ({ type, width = '2.25em' }) => {
+	const themeContext = useContext(ThemeContext)
 
-        default:
-            return null
-    }
+	const selectIcon = () => {
+		switch (type) {
+			case 'complete':
+				return <CheckIcon fontSize={'inherit'} />
+			case 'incomplete':
+				return <ThreeDotsIcon fontSize={'inherit'} />
+			case 'locked':
+				return <LockIcon fontSize={'inherit'} />
+
+			default:
+				return null
+		}
+	}
+
+	return (
+		<Container circle width={width} type={type}>
+			{selectIcon()}
+		</Container>
+	)
 }
 
-export default StatusIcon;
+export default StatusIcon

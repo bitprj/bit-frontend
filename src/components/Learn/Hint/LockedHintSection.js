@@ -6,7 +6,7 @@ import { get } from 'lodash'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import Icon from '../../shared/gadgets/Icon'
 import IconLine from '../../shared/gadgets/IconLine'
-import HeaderShadow from '../../shared/utils/HeaderShadow'
+import HeaderShadow from '../../shared/gadgets/HeaderShadow'
 
 import LockedHint from './LockedHint'
 

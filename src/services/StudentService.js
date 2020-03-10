@@ -3,21 +3,22 @@ import { backend } from './AxiosInstances'
 /**
  * GET request for getting Student data
  */
-export const getStudentInfo = () => {
-	const endpoint = 'students/data'
+export const fetchStudentInfo = () => {
+	const endpoint = '/students/data'
 	return backend.get(endpoint)
 }
 
+//@unused
 /**
  * GET request for getting track data
  * @param {String} trackID
  */
-export const getTrack = trackID => {
+export const fetchTrack = trackID => {
 	const endpoint = `tracks/${trackID}`
 	return backend.get(endpoint)
 }
 
-export const getTrackProgress = trackID => {
+export const fetchTrackProgress = trackID => {
 	const endpoint = `tracks/${trackID}/progress`
 	return backend.get(endpoint)
 }
@@ -26,7 +27,7 @@ export const getTrackProgress = trackID => {
  * GET request for getting topic data
  * @param {String} topicID
  */
-export const getTopic = topicID => {
+export const fetchTopic = topicID => {
 	const endpoint = `topics/${topicID}`
 	return backend.get(endpoint)
 }
@@ -35,7 +36,7 @@ export const getTopic = topicID => {
  * GET request for getting activity data
  * @param {String} activityID
  */
-export const getActivity = activityID => {
+export const fetchActivity = activityID => {
 	const endpoint = `activities/${activityID}`
 	return backend.get(endpoint)
 }

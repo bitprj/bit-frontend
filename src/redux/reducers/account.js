@@ -1,4 +1,4 @@
-import { AUTHENTICATE, DEAUTHENTICATE } from '../utils/actionTypes'
+import { AUTHENTICATE, DEAUTHENTICATE } from '../actionTypes'
 
 const type = localStorage.getItem('userType')
 

@@ -1,7 +1,7 @@
 import {
 	SET_SUBMISSIONS,
 	SET_CURRENT_SUBMISSION_BY_INDEX
-} from '../utils/actionTypes'
+} from '../actionTypes'
 
 const initialState = {
 	indicators: {

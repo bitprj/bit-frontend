@@ -1,8 +1,8 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Visitor from './Visitor/Visitor'
-import Student from './Student/Student'
 
 const Home = ({ userType }) => {
 	const selectHome = () => {
@@ -10,9 +10,9 @@ const Home = ({ userType }) => {
 			case 'VISITOR':
 				return <Visitor />
 			case 'STUDENT':
-				return <Student />
-      case 'TEACHER':
-        return null
+				return <Redirect to="/dashboard/" />
+			case 'TEACHER':
+				return <Redirect to="/grade/" />
 			default:
 				console.log(
 					"[HOME] we shouldn't be here... missing userType?",

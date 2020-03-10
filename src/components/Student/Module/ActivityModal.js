@@ -1,10 +1,14 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 
 import PostModal from '../../shared/containers/PostModal'
 import ProgressBar from '../../shared/gadgets/ProgressBar'
 import Button from '../../shared/gadgets/Button'
 import ClampedText from '../../shared/utils/ClampedText'
+
+import { setSelectedActivityId } from '../../../redux/actions/ram'
 
 const Header = styled.div`
 	padding: 0 3em;
@@ -16,6 +20,7 @@ const Header = styled.div`
 `
 
 const Content = styled.div`
+	height: 100%;
 	margin: 0;
 	padding: 0 3em;
 	display: flex;
@@ -56,11 +61,26 @@ const StyledButton = styled(Button)`
 	border-radius: 0;
 `
 
-const ActivityModal = props => {
+const ActivityModal = ({
+	open,
+	closed,
+	id,
+	name,
+	description,
+	learningObjectives = `Coding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software.\n\nCoding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software.`,
+	onSetSelectedActivityId
+}) => {
+	const history = useHistory()
+
+	const handleResume = () => {
+		onSetSelectedActivityId(id)
+		setTimeout(() => history.push('/learn/'), 0)
+	}
+
 	const header = (
 		<Header>
-			<h2 style={{ margin: '0.5em 0' }}>{props.name}</h2>
-			<SmallClampedText clamp="3">{props.description}</SmallClampedText>
+			<h2 style={{ margin: '0.5em 0' }}>{name}</h2>
+			<SmallClampedText clamp="3">{description}</SmallClampedText>
 			<ProgressBar
 				style={{ marginTop: '1em', height: '0.4em' }}
 				width={'69%'}
@@ -74,7 +94,7 @@ const ActivityModal = props => {
 			<LearningObjectives>
 				<h3 style={{ marginTop: '0.5em' }}>Learning Objectives</h3>
 				<pre>
-					<SmallText>{props.learningObjectives}</SmallText>
+					<SmallText>{learningObjectives}</SmallText>
 				</pre>
 			</LearningObjectives>
 			<Prerequisites>
@@ -93,15 +113,22 @@ const ActivityModal = props => {
 
 	return (
 		<PostModal
-			open={props.open}
-			closed={props.closed}
+			open={open}
+			closed={closed}
 			header={header}
 			content={content}
 			ratio={0.4}
 		>
-			<StyledButton invert>Continue</StyledButton>
+			<StyledButton invert onClick={handleResume}>
+				Continue
+			</StyledButton>
 		</PostModal>
 	)
 }
 
-export default ActivityModal
+const mapDispatchToProps = dispatch => ({
+	onSetSelectedActivityId: activityId =>
+		dispatch(setSelectedActivityId(activityId))
+})
+
+export default connect(null, mapDispatchToProps)(ActivityModal)

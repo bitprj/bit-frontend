@@ -77,21 +77,22 @@ const Concept = ({
 }) => {
 	/**
 	 * Persistent memory of current concept even if user closes concept modal
-   * # TODO doesn't work rn because carousel onchange is messed
+	 * # TODO doesn't work rn because carousel onchange is messed
 	 */
 	const [conceptLocation, setConceptLocation] = useState({
 		slideIndex: 0,
 		stepIndex: 0
-  })
-  
+	})
+
 	const slides =
+		concepts &&
 		concepts.length &&
 		concepts.map((concept, index) => (
 			<Slide
 				key={`learn-concept-${concept.id}-${index}`}
 				name={concept.name}
-        steps={concept.steps}
-        slideIndex={conceptLocation.slideIndex}
+				steps={concept.steps}
+				slideIndex={conceptLocation.slideIndex}
 				setStepIndex={stepIndex =>
 					setConceptLocation({ ...conceptLocation, stepIndex })
 				}

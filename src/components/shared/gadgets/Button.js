@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import anime from 'animejs'
 
 const RenderedButton = styled.button.attrs(props => {
 	if (props.disabled) {
@@ -24,7 +23,10 @@ const RenderedButton = styled.button.attrs(props => {
   ${props =>
 		props.rounder ? 'border-radius: 0.5em;' : 'border-radius: 0.25em;'}
 
-  border: ${props => props.dark} solid 0.1em;
+  ${props =>
+		!props.noOutline
+			? `border: ${props.dark} solid 0.1em;`
+			: 'border: transparent;'}
 
   ${props => {
 		if (props.invert) {
@@ -82,6 +84,7 @@ const Button = props => {
 			fullWidth={props.fullWidth}
 			disabled={props.disabled}
 			rounder={props.rounder}
+			noOutline={props.noOutline}
 			onClick={() => {
 				if (props.onClick) props.onClick()
 				else if (props.clicked) props.clicked()

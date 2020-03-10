@@ -1,23 +1,44 @@
 import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro|Source+Serif+Pro');
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans|Poppins|Source+Code+Pro&display=swap');
   
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  body, .sans {
-    font-family: 'Source Sans Pro';
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins';
   }
 
+  body, .sans,
   span, p, .serif {
-    font-family: 'Source Serif Pro';
+    font-family: 'Open Sans';
   }
 
   code, code *, .code {
     font-family: 'Source Code Pro';
+  }
+
+  /**
+   * Normalize Poppins
+   */
+  h1 { font-size: 1.8em }
+  h2 { font-size: 1.35em }
+  h3 { font-size: 1.05em }
+  h4 { font-size: 0.9em }
+  h5 { font-size: 0.75em }
+  h6 { font-size: 0.6em }
+
+  /**
+   * Normalize Markdown For Headers
+   */
+  .markdown-header,
+  .markdown-header span,
+  .markdown-header p {
+    margin: 0;
+    font-family: 'Poppins';
   }
 
   code {
@@ -146,16 +167,6 @@ export const GlobalStyle = createGlobalStyle`
   }
   .hover-raise:hover {
     box-shadow: 0px 0.75em 1.5em rgba(38, 38, 38, 0.125);
-  }
-
-  /**
-   * Normalize Markdown For Headers
-   */
-  .markdown-header,
-  .markdown-header span,
-  .markdown-header p {
-    margin: 0;
-    font-family: 'Source Sans Pro';
   }
 `
 

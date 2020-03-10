@@ -13,11 +13,11 @@ import {
 import { STATE_HINT } from '../../components/Learn/NextButton/NextButton'
 
 import {
-	INDICATE_INITIAL_LOAD_LEARN,
 	SET_ACTIVITY,
 	SET_ACTIVITY_PROGRESS,
 	SET_UNLOCKED_CARDS,
 	SET_CARD_STATUSES,
+	RESET_TO_INITIAL_STATE,
 	SET_CARD,
 	SET_HINT,
 	SET_CURRENT_CARD_BY_INDEX,
@@ -27,7 +27,7 @@ import {
 	BROADCAST_BUTTON_STATE,
 	SCHEDULE_BUTTON_STATE,
 	RESET_BUTTON_STATE_SCHEDULE
-} from '../utils/actionTypes'
+} from '../actionTypes'
 
 /* ===== INITIALIZATION */
 
@@ -36,7 +36,7 @@ import {
  * and user progress
  * @param {*} activityId
  */
-export const init = (activityId, currentCardIndex) => async dispatch => {
+export const init = activityId => async dispatch => {
 	// Concurrently FetchActivity and FetchActivityProgress
 	let [activityBase, activityProgress] = await Promise.all([
 		fetchActivity(activityId),
@@ -56,9 +56,6 @@ export const init = (activityId, currentCardIndex) => async dispatch => {
 		lastCardUnlockedIndex: index
 	}
 
-	if (currentCardIndex) {
-		activityProgress.currentCardIndex = currentCardIndex
-	}
 	dispatch(setActivityProgress(activityProgress))
 
 	const cardsProgressed = activityBase.cards.slice(0, index + 1)
@@ -141,10 +138,6 @@ const initCardStatuses = (activityId, unlockedCards) =>
 		})
 	)
 
-export const indicateInitialLoadLearn = () => ({
-	type: INDICATE_INITIAL_LOAD_LEARN
-})
-
 const setActivity = activity => ({
 	type: SET_ACTIVITY,
 	activity
@@ -166,6 +159,10 @@ const setCardStatuses = cardStatuses => ({
 })
 
 // ===== RUNTIME
+
+export const resetToInitialState = () => ({
+	type: RESET_TO_INITIAL_STATE
+})
 
 export const initUnlockCard = (activityId, id, contentId) => async dispatch => {
 	const card = await genFetch(contentId)

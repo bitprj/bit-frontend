@@ -1,4 +1,4 @@
-import { AUTHENTICATE, DEAUTHENTICATE } from '../utils/actionTypes'
+import { AUTHENTICATE, DEAUTHENTICATE } from '../actionTypes'
 
 export const authenticate = userType => {
 	localStorage.setItem('userType', userType)
@@ -9,7 +9,7 @@ export const authenticate = userType => {
 }
 
 export const deauthenticate = () => {
-	localStorage.removeItem('userType')
+	localStorage.setItem('userType', 'VISITOR')
 	localStorage.removeItem('csrf-token')
 	return {
 		type: DEAUTHENTICATE

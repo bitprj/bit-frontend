@@ -4,9 +4,13 @@ import {
 	SET_CURRENT_TOPIC,
 	SET_SUGGESTED_ACTIVITY,
 	INCREMENT_GEMS_BY
-} from '../utils/actionTypes'
+} from '../actionTypes'
 
 const initialState = {
+	indicators: {},
+	suggestedActivity: {},
+	inprogressModules: [],
+	inprogressTopics: [],
 	gems: 1160
 }
 
@@ -15,7 +19,6 @@ const reducer = (state = initialState, action) => {
 		case SET_STUDENT_DATA: {
 			return {
 				...state,
-				is_student_data_loaded: true,
 				...action.studentData
 			}
 		}

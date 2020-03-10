@@ -37,7 +37,7 @@ export const DescriptionLeftPanel = ({ name, instruction }) => {
 				src={require('../../../../../assets/icons/checkpoint.svg')}
 			/>
 			<div>
-				<h1 style={{ margin: 0, fontSize: '1.6em' }}>
+				<h1 style={{ margin: 0, fontSize: '1.4em' }}>
 					<ReactMarkdown className="markdown-header" source={name} />
 				</h1>
 				<span style={{ fontSize: '85%' }}>

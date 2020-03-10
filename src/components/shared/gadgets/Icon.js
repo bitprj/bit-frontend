@@ -34,7 +34,7 @@ const Icon = ({
 	return (
 		<RenderedIcon
 			alt={alt || ''}
-			className={`${className || ''}${shadow ? 'lift transition-medium' : ''}`}
+			className={`${className || ''} ${shadow ? 'lift transition-medium' : ''}`}
 			width={width}
 			height={height}
 			sharp={sharp}

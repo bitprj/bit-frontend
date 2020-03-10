@@ -7,7 +7,7 @@ import Toolbar from './Toolbar/Toolbar'
 import Sidebar from './Sidebar/Sidebar'
 import Content from './Content/Content'
 import WithPageSpinner from '../HOC/WithPageSpinner'
-import { init, indicateInitialLoadLearn } from '../../redux/actions/learnData'
+import { init, resetToInitialState } from '../../redux/actions/learnData'
 
 const Container = styled.div`
 	display: flex;
@@ -39,18 +39,18 @@ const Container = styled.div`
 `
 
 const Learn = ({
+	selectedActivityId,
 	isReady,
-	hasLoadedOnce,
-	currentCardIndex,
+	activityId,
 	onInit,
-	onIndicateInitialLoadLearn
+	onResetToInitialState
 }) => {
 	useEffect(() => {
-		if (!hasLoadedOnce) {
-			onIndicateInitialLoadLearn()
-			onInit(12, currentCardIndex)
+		if (selectedActivityId !== activityId) {
+			if (activityId) onResetToInitialState()
+			onInit(selectedActivityId)
 		}
-	}, []) // eslint-disable-line react-hooks/exhaustive-deps
+	}, [selectedActivityId]) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<WithPageSpinner show={!isReady}>
@@ -65,24 +65,21 @@ const Learn = ({
 
 const mapStateToProps = state => {
 	const {
-		learnData: {
-			cards,
-			indicators: { hasLoadedOnce, currentCardIndex }
-		}
+		ram: { selectedActivityId },
+		learnData: { id: activityId, cards }
 	} = state
 
 	const isReady = !!get(cards, '[0].content')
 	return {
+		selectedActivityId,
 		isReady,
-		hasLoadedOnce,
-		currentCardIndex
+		activityId
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
-	onInit: (activityId, currentCardIndex) =>
-		dispatch(init(activityId, currentCardIndex)),
-	onIndicateInitialLoadLearn: () => dispatch(indicateInitialLoadLearn())
+	onInit: activityId => dispatch(init(activityId)),
+	onResetToInitialState: () => dispatch(resetToInitialState())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Learn)

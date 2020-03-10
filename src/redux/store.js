@@ -5,15 +5,17 @@ import rootReducer from './rootReducer'
 
 import * as accountActions from './actions/account'
 import * as learnDataActions from './actions/learnData'
+import * as ramActions from './actions/ram'
+import * as teacherDataActions from './actions/studentData'
 import * as studentDataActions from './actions/studentData'
 import * as themeActions from './actions/theme'
-import * as viewManagerActions from './actions/viewManager'
 const actionCreators = {
 	...accountActions,
 	...learnDataActions,
+	...ramActions,
+	...teacherDataActions,
 	...studentDataActions,
-	...themeActions,
-	...viewManagerActions
+	...themeActions
 }
 
 export default function configureStore(initialState) {
@@ -26,9 +28,9 @@ export default function configureStore(initialState) {
 			  })
 			: compose
 
-  const middleware = [thunk]
-  
-  console.log(process.env.NODE_ENV)
+	const middleware = [thunk]
+
+	console.log(process.env.NODE_ENV)
 	if (process.env.NODE_ENV !== 'production')
 		middleware.unshift(
 			require('redux-immutable-state-invariant').default({

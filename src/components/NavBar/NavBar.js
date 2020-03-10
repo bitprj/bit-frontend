@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
@@ -20,7 +20,6 @@ const contentHeight = '2.2em'
 
 const Nav = styled.nav`
 	padding: 0.8em 1em;
-	font-size: 108%;
 	box-shadow: 0 4px 30px 0 rgba(144, 144, 144, 0.2);
 	display: flex;
 	align-items: stretch;
@@ -82,7 +81,7 @@ const NavButton = styled(Button)`
 
 const styledLink = { color: 'black', textDecoration: 'none' }
 
-const NavBar = ({ userType, onDeauthenticate, onSetTheme }) => {
+const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
 	const history = useHistory()
 
 	const [openLogin, setOpenLogin] = useState(false)
@@ -108,13 +107,18 @@ const NavBar = ({ userType, onDeauthenticate, onSetTheme }) => {
 
 				{userType === 'STUDENT' ? (
 					<>
+						{/* <NavElement>
+							<Link style={styledLink} to={'/dashboard/'}>
+								Dashboard
+							</Link>
+						</NavElement> */}
 						<NavElement>
-							<Link style={styledLink} to={'/explore'}>
+							<Link style={styledLink} to={'/explore/'}>
 								Explore
 							</Link>
 						</NavElement>
 						<NavElement>
-							<Link style={styledLink} to={'/learn'}>
+							<Link style={styledLink} to={'./'}>
 								Community
 							</Link>
 						</NavElement>
@@ -143,7 +147,7 @@ const NavBar = ({ userType, onDeauthenticate, onSetTheme }) => {
 								src={require('../../assets/icons/prof-pic.png')}
 								iconSize={contentHeight}
 							>
-								Potato
+								{firstName}
 							</IconArea>
 						</NavElement>
 					</AlignRight>
@@ -165,9 +169,17 @@ const NavBar = ({ userType, onDeauthenticate, onSetTheme }) => {
 		</>
 	)
 }
-const mapStateToProps = state => ({
-	userType: state.account.userType
-})
+const mapStateToProps = state => {
+	const {
+		account: { userType },
+		studentData: { firstName }
+	} = state
+
+	return {
+		firstName,
+		userType
+	}
+}
 
 const mapDispatchToProps = dispatch => ({
 	onDeauthenticate: () => dispatch(deauthenticate()),

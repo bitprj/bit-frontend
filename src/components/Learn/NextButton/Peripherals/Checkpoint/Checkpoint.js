@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { get } from 'lodash'
 
 import { DescriptionLeftPanel, FilesRightPanel } from './Upload'
-import { ResultLeftPanel } from './Result'
+import { ResultLeftPanel, AutograderRightPanel } from './Result'
 
 import Button from '../../../../shared/gadgets/Button'
 import IconLine from '../../../../shared/gadgets/IconLine'
@@ -50,8 +50,8 @@ const Checkpoint = ({
 	 * Autograder | Image | Video
 	 */
 	const [files, setFiles] = useState([])
-	if (type === 'Autograder' || type === 'Image' || type === 'Video') {
-		if (!resultView) {
+	if (!resultView) {
+		if (type === 'Autograder' || type === 'Image' || type === 'Video') {
 			if (modalRatio !== 0.5) setModalRatio(0.5)
 			leftPanelUpload = (
 				<DescriptionLeftPanel name={name} instruction={instruction} />
@@ -65,17 +65,22 @@ const Checkpoint = ({
 					setFiles={setFiles}
 				/>
 			)
-		} else {
+		}
+	} else {
+		if (type === 'Image' || type === 'Video') {
 			if (modalRatio !== 1) setModalRatio(1)
 			leftPanelResult = (
 				<DescriptionLeftPanel name={name} instruction={instruction} />
 			)
 			rightPanelResult = null
+		} else {
+			leftPanelResult = null
+			rightPanelResult = <AutograderRightPanel />
 		}
 	}
 
 	/**
-	 * Multiple Choice
+	 * Multiple Choice | SA
 	 */
 	// ...
 

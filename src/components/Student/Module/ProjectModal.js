@@ -124,7 +124,7 @@ const FinalProject = props => {
 			<span style={{ fontWeight: 'bold' }}>{props.time}</span>
 			<div style={{ flexGrow: '1', display: 'flex', alignItems: 'flex-end' }}>
 				<Button invert fullWidth>
-					Start Lab
+					Choose Project
 				</Button>
 			</div>
 		</>

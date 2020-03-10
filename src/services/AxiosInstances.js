@@ -1,30 +1,48 @@
 import axios from 'axios'
 import camelCase from 'camelcase-keys-deep'
 
+/** GENERAL BACKEND (mainly for GET) */
+
 export const backend = axios.create({
 	baseURL: 'https://darlene-backend.herokuapp.com/',
 	withCredentials: true
 })
-backend.defaults.headers.put['X-CSRF-TOKEN'] = localStorage.getItem(
+backend.interceptors.response.use(response =>
+	camelCase(response.data, { deep: true })
+)
+
+export const backendSaves = axios.create({
+	baseURL: 'https://darlene-backend.herokuapp.com/',
+	withCredentials: true
+})
+backendSaves.defaults.headers.common['X-CSRF-TOKEN'] = localStorage.getItem(
 	'csrf-token'
 )
-backend.defaults.headers.post['X-CSRF-TOKEN'] = localStorage.getItem(
-	'csrf-token'
-)
-backend.defaults.headers.delete['X-CSRF-TOKEN'] = localStorage.getItem(
-	'csrf-token'
-)
-backend.interceptors.request.use(
-	request => {
-		return request
+
+/** BACKEND_SAVES (with CSRF, mainly for PUT, POST, DELETE) */
+
+let pending = 0
+// window.onbeforeunload = e => {
+// 	e.preventDefault()
+// 	e.returnValue('Changes may not be saved. Continue?')
+// 	return 'Changes may not be saved. Continue?'
+// }
+
+backendSaves.interceptors.request.use(response => {
+	pending++
+	console.log(pending)
+	return response
+})
+backendSaves.interceptors.response.use(
+	response => {
+		pending--
+		return camelCase(response.data, { deep: true })
 	},
 	error => {
+		pending--
 		return error
 	}
 )
-backend.interceptors.response.use(response => {
-	return camelCase(response.data, { deep: true })
-})
 
 export const grader = axios.create({
 	baseURL: 'https://darlene-autograder.herokuapp.com/',

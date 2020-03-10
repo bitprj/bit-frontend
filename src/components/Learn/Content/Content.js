@@ -93,10 +93,11 @@ const Content = ({
 	useEffect(() => {
 		if (currentCardIndex) {
 			setTimeout(() => {
-				containerRef.current.scrollTo(
-					0,
-					cardsScrollTop.current[currentCardIndex]
-				)
+				containerRef.current &&
+					containerRef.current.scrollTo(
+						0,
+						cardsScrollTop.current[currentCardIndex]
+					)
 			}, 0) // needed to scroll
 			return () => {
 				cardsScrollTop.current[currentCardIndex] = currentScrollTop.current

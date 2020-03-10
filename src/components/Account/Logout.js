@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { deauthenticate } from '../../redux/actions/account'
@@ -10,12 +10,15 @@ import { logout } from '../../services/AccountService'
  * Declarative logout
  */
 const Logout = ({ onDeauthenticate }) => {
+  const history = useHistory()
+
 	useEffect(() => {
 		const _logout = async () => {
 			try {
 				const response = await logout()
 				if (response.logout) {
-					onDeauthenticate()
+          onDeauthenticate()
+          history.push('/')
 				}
 			} catch (error) {
 				console.log(error)
@@ -24,7 +27,7 @@ const Logout = ({ onDeauthenticate }) => {
 		_logout()
 	}, [])
 
-	return <Redirect to="/" />
+	return null
 }
 
 const mapDispatchToProps = dispatch => {

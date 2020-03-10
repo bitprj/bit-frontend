@@ -2,11 +2,11 @@ import { cloneDeep, merge as mergeDeep } from 'lodash'
 import { SafeQueue } from '../../utils/DataStructures'
 
 import {
-	INDICATE_INITIAL_LOAD_LEARN,
 	SET_ACTIVITY,
 	SET_ACTIVITY_PROGRESS,
 	SET_UNLOCKED_CARDS,
 	SET_CARD_STATUSES,
+	RESET_TO_INITIAL_STATE,
 	SET_CARD,
 	SET_HINT,
 	SET_CURRENT_CARD_BY_INDEX,
@@ -16,12 +16,10 @@ import {
 	BROADCAST_BUTTON_STATE,
 	SCHEDULE_BUTTON_STATE,
 	RESET_BUTTON_STATE_SCHEDULE
-} from '../utils/actionTypes'
+} from '../actionTypes'
 
 const initialState = {
 	indicators: {
-		hasLoadedOnce: false,
-
 		currentCardIndex: undefined,
 		lastCardUnlockedIndex: undefined, // must be undefined
 		lastHintUnlockedId: undefined,
@@ -49,13 +47,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
-		case INDICATE_INITIAL_LOAD_LEARN: {
-			return {
-				...state,
-				indicators: { ...state.indicators, hasLoadedOnce: true }
-			}
-		}
-
 		case SET_ACTIVITY: {
 			return { ...state, ...action.activity }
 		}
@@ -88,6 +79,10 @@ const reducer = (state = initialState, action) => {
 				hintStatusSeparation(nextState.cards[i])
 			})
 			return nextState
+		}
+
+		case RESET_TO_INITIAL_STATE: {
+			return initialState
 		}
 
 		case SET_CARD: {

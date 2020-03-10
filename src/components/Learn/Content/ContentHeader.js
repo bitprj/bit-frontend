@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import styled from 'styled-components'
 
-import HeaderShadow from '../../shared/utils/HeaderShadow'
+import HeaderShadow from '../../shared/gadgets/HeaderShadow'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 
 const Container = styled.div`

@@ -84,7 +84,7 @@ const Login = ({ open, setOpen, onAuthenticate }) => {
 			onAuthenticate(response.userType.toUpperCase())
 
 			setOpen(false)
-			history.push('.')
+			history.push('/')
 			setIsWaiting(false)
 		} catch (err) {
 			setIsWaiting(false)

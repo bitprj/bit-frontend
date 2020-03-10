@@ -1,16 +1,17 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import AddIcon from '@material-ui/icons/Add'
+import StatusIcon from '../../shared/gadgets/StatusIcon'
 
 const ActivityCardWrapper = styled.div`
-	margin: 6em 3em;
+	margin: 4.5em 2.25em;
 	position: relative;
 `
 
 const RenderActivityCard = styled.div`
-	padding: 3em 3em 0;
-	height: 24em;
+	padding: 2.25em 2.25em 0;
+	height: 18em;
 	border-radius: 1em;
 	background-color: #fff;
 	text-align: center;
@@ -19,41 +20,31 @@ const RenderActivityCard = styled.div`
 	cursor: pointer;
 `
 const DottedLine = styled.div`
-  border-bottom: 3px #eaeaea dashed;
-  position: absolute;
-  width: 100%;
-  left: ${props => (props.isLeft ? '50%' : '-50%')};
-  bottom: 4.2em;
-  z-index: -1;
-}`
-
-const StatusContainer = styled.div`
-  font-size: 1.5em;
-	margin: 0 auto;
-	border-radius: 2px;
-	color: white;
-	width: 1.5em;
-  height: 1.5em;
-  
-	display: flex;
-	justify-content: center;
-  align-items: center;
-  
-	background-color: lightgreen;
-	// box-shadow: 0 0 7px lightgreen;
+	border-bottom: 3px #eaeaea dashed;
+	position: absolute;
+	width: 100%;
+	left: ${props => (props.isLeft ? '50%' : '-50%')};
+	bottom: 4.2em;
+	z-index: -1;
 `
 
-const ActivityCard = props => {
+const styledLink = { color: 'black', textDecoration: 'none' }
+
+const ActivityCard = ({ isLast, isLeft, id, name }) => {
 	return (
-		<ActivityCardWrapper onClick={props.clicked}>
-			<RenderActivityCard className="hover-raise transition-medium">
-				<StatusContainer>
-					<AddIcon fontSize="inherit" />
-				</StatusContainer>
-				<h2>Python Basics</h2>
-				<p>Choose a module to learn an interesting tidbit about Python</p>
-			</RenderActivityCard>
-			{!props.isLast ? <DottedLine isLeft={props.isLeft} /> : null}
+		<ActivityCardWrapper>
+			<Link style={styledLink} to={`/modules/${id}`}>
+				<RenderActivityCard className="hover-raise transition-medium">
+					<div>
+						<StatusIcon type="incomplete" width={'2em'} />
+						<h2 style={{ margin: '0.5em 0', fontSize: '115%' }}>{name}</h2>
+						<p style={{ fontSize: '85%', margin: 0 }}>
+							Choose a module to learn an interesting tidbit about Python
+						</p>
+					</div>
+				</RenderActivityCard>
+			</Link>
+			{!isLast && <DottedLine isLeft={isLeft} />}
 		</ActivityCardWrapper>
 	)
 }
