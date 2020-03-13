@@ -8,7 +8,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 import Slide from './Slide'
 import Peripheral from '../Peripheral'
-import DynamicModal from '../../../../shared/containers/DynamicModal'
+import DynamicModal from '../../../shared/containers/DynamicModal'
 
 const StyledCarousel = styled(Carousel)`
 	width: 100%;

@@ -1,5 +1,8 @@
 import { cloneDeep } from 'lodash'
 
+export const objectArrayToObject = array =>
+	array.reduce((obj, item) => ({ ...obj, ...item }), {})
+
 /**
  * Formats Contentful Data the way we want it
  * @param {*} root
@@ -46,11 +49,11 @@ export const modifyNodeByContentfulId = (
 // not working
 export const objWithNestLevel = (root, nestLevel = 1) => {
 	const objWithNestLevelRecurse = (obj, nestLevel) => {
-    if (!obj) return undefined
+		if (!obj) return undefined
 
 		for (let property in obj) {
 			if (obj.hasOwnProperty(property) && obj[property] != null) {
-        console.log(obj, nestLevel)
+				console.log(obj, nestLevel)
 				if (nestLevel === 0) return delete obj[property]
 				if (obj[property].constructor === Object) {
 					objWithNestLevelRecurse(obj[property], nestLevel - 1)

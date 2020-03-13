@@ -5,7 +5,7 @@ import { get } from 'lodash'
 
 import HeaderShadow from '../../shared/utils/HeaderShadow'
 import IconLine from '../../shared/gadgets/IconLine'
-import IconArea from '../../shared/gadgets/IconArea'
+import ProfPic from '../../shared/gadgets/ProfPic'
 import Dot from '@material-ui/icons/FiberManualRecord'
 
 const Container = styled.div`
@@ -41,12 +41,12 @@ const ContentHeader = forwardRef(({ containerRef, name }, ref) => {
 						PARTIALLY GRADED
 					</GradeStatus>
 				</div>
-				<IconArea
+				<ProfPic
 					src={require('../../../assets/icons/prof-pic.png')}
 					iconSize={'2em'}
 				>
 					Potato
-				</IconArea>
+				</ProfPic>
 			</Header>
 			<HeaderShadow containerRef={containerRef} />
 		</Container>

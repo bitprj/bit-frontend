@@ -9,7 +9,6 @@ import { Element as ScrollElement } from 'react-scroll'
 import CodeBlock from '../../shared/CodeBlock'
 import ParsedContent from '../../shared/ParsedContent'
 
-import { STATE_HINT } from '../NextButton/NextButton'
 import Icon from '../../shared/gadgets/Icon'
 
 const UnlockedHint = ({
@@ -40,7 +39,7 @@ const UnlockedHint = ({
 	 * FadeIn + SlideIn animations upon hint unlock
 	 */
 	useEffect(() => {
-		if (currentButtonState === STATE_HINT) {
+		if (lastHintUnlockedId) {
 			const options = {
 				translateX: ['-0.5em', 0],
 				opacity: [0, 1],
@@ -57,7 +56,7 @@ const UnlockedHint = ({
 				...options
 			})
 		}
-	}, [currentButtonState])
+	}, [lastHintUnlockedId])
 
 	/**
 	 * Render all steps

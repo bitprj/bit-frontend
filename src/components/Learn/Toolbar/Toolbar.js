@@ -70,10 +70,13 @@ const Toolbar = ({ gems }) => {
 					</Elem>
 				</Link>
 			</TopSection>
-			<MiddleSection>
-				<div className="learn-r-gems" style={{ color: '#fff' }}></div>
-			</MiddleSection>
+			<MiddleSection></MiddleSection>
 			<BottomSection>
+				<div style={{ fontSize: '125%' }}>💎</div>
+				<div
+					className="learn-r-gems"
+					style={{ color: '#fff', fontSize: '85%' }}
+				></div>
 				<Elem className="pointer">
 					<Settings />
 				</Elem>

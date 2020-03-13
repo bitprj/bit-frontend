@@ -10,7 +10,8 @@ import LockOpenIcon from '@material-ui/icons/LockOpenRounded'
 
 import Button from '../../components/shared/gadgets/Button'
 import Icon from '../../components/shared/gadgets/Icon'
-import TwoPanelModal from '../shared/containers/TwoPanelModal'
+import DynamicModal from '../shared/containers/DynamicModal'
+import TwoPanel from '../shared/containers/TwoPanel'
 
 import { login } from '../../services/AccountService'
 import { authenticate } from '../../redux/actions/account'
@@ -79,6 +80,7 @@ const Login = ({ open, setOpen, onAuthenticate }) => {
 
 		try {
 			const response = await login(userCombo.user, userCombo.pass)
+			console.log(response)
 			localStorage.setItem('csrf-token', response.csrfToken)
 			onAuthenticate(response.userType.toUpperCase())
 
@@ -133,13 +135,9 @@ const Login = ({ open, setOpen, onAuthenticate }) => {
 	)
 
 	return (
-		<TwoPanelModal
-			open={open}
-			closed={() => setOpen(false)}
-			leftPanel={leftPanel}
-			rightPanel={rightPanel}
-			scaleX={0.9}
-		/>
+		<DynamicModal open={open} closed={() => setOpen(false)} scaleX={0.9}>
+			<TwoPanel fullSizeAxis first={leftPanel} second={rightPanel} />
+		</DynamicModal>
 	)
 }
 

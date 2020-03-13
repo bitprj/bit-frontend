@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 
-import StudentHero from '../Hero/StudentHero'
 import ActivityList from './ActivityList'
 import PickProject from './PickProject'
+import Hero from '../../shared/gadgets/Hero'
 
 import { genFetch } from '../../../services/ContentfulService'
 import media from '../../../styles/media'
@@ -27,6 +27,10 @@ const Content = styled.div`
 	${media.desktop`
     margin: 0 2em;
   `}
+`
+
+const StyledHero = styled(Hero)`
+	height: 22.5em;
 `
 
 const Module = ({ modules }) => {
@@ -58,10 +62,13 @@ const Module = ({ modules }) => {
 
 	return (
 		<>
-			<StudentHero
-				use={'MODULE'}
+			<StyledHero
+				goBack
 				title={get(mod.current, 'name')}
-				description={get(mod.current, 'description')}
+				// description={get(mod.current, 'description')}
+				description={
+					'Coding Best Practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software'
+				}
 			/>
 
 			<Content>

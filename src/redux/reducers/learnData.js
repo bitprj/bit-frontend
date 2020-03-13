@@ -2,7 +2,7 @@ import { cloneDeep, merge as mergeDeep } from 'lodash'
 import { SafeQueue } from '../../utils/DataStructures'
 
 import {
-	SET_ACTIVITY,
+	SET_ACTIVITY_SKELETON,
 	SET_ACTIVITY_PROGRESS,
 	SET_UNLOCKED_CARDS,
 	SET_CARD_STATUSES,
@@ -13,19 +13,28 @@ import {
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
 	INCREMENT_LAST_CARD_UNLOCKED_INDEX,
+	SET_SUBMITTED_CHECKPOINT_SUCCESSFUL,
 	BROADCAST_BUTTON_STATE,
 	SCHEDULE_BUTTON_STATE,
-	RESET_BUTTON_STATE_SCHEDULE
+	RESET_BUTTON_STATE_SCHEDULE,
+	PUSH_TO_LOADED_CHECKPOINTS_PROGRESS
 } from '../actionTypes'
 
 const initialState = {
+	// variables helpful for navigation, etc
 	indicators: {
 		currentCardIndex: undefined,
-		lastCardUnlockedIndex: undefined, // must be undefined
+		lastCardUnlockedIndex: undefined, // must be undefined bc of isCardUnlocked, shuld be moved to progress at some point
 		lastHintUnlockedId: undefined,
+		submittedCheckpointSuccessful: undefined,
 
 		currentButtonState: undefined,
 		buttonStateScheduleQueue: new SafeQueue([]) // must be initialized
+	},
+	progress: {
+		lastCardUnlockedIndex: undefined, // disconnected rn, refer to above
+		hintsProgress: {},
+		checkpointsProgress: {}
 	},
 	cards: [
 		// {
@@ -47,7 +56,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
-		case SET_ACTIVITY: {
+		case SET_ACTIVITY_SKELETON: {
 			return { ...state, ...action.activity }
 		}
 
@@ -174,6 +183,16 @@ const reducer = (state = initialState, action) => {
 			}
 		}
 
+		case SET_SUBMITTED_CHECKPOINT_SUCCESSFUL: {
+			return {
+				...state,
+				indicators: {
+					...state.indicators,
+					submittedCheckpointSuccessful: action.success
+				}
+			}
+		}
+
 		case BROADCAST_BUTTON_STATE: {
 			return {
 				...state,
@@ -200,6 +219,38 @@ const reducer = (state = initialState, action) => {
 				indicators: {
 					...state.indicators,
 					buttonStateScheduleQueue: new SafeQueue([])
+				}
+			}
+		}
+
+		case PUSH_TO_LOADED_CHECKPOINTS_PROGRESS: {
+			/**
+			 * For newly submitted checkpoints
+			 */
+			let newCheckpointsProgress
+			const checkpointId = Object.keys(action.newLoads)[0]
+			if (state.progress.checkpointsProgress[checkpointId]) {
+				newCheckpointsProgress = {
+					[checkpointId]: action.newLoads[checkpointId].concat(
+						state.progress.checkpointsProgress[checkpointId]
+					)
+				}
+			} else {
+				newCheckpointsProgress = {
+					...state.progress.checkpointsProgress,
+					...action.newLoads
+				}
+			}
+
+			return {
+				...state,
+				indicators: {
+					...state.indicators,
+					submittedCheckpointSuccessful: undefined
+				},
+				progress: {
+					...state.progress,
+					checkpointsProgress: newCheckpointsProgress
 				}
 			}
 		}

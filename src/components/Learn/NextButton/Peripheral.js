@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { CentralTemplate } from '../Central/Central'
+import { CentralTemplate } from './Central/Central'
 
 const Container = styled(CentralTemplate)`
 	position: absolute;

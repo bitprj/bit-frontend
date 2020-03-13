@@ -5,8 +5,8 @@ import { get } from 'lodash'
 import { SafeStack } from '../../../utils/DataStructures'
 
 import Central from './Central/Central'
-import Checkpoint from './Peripherals/Checkpoint/Checkpoint'
-import Concept from './Peripherals/Concept/Concept'
+import Checkpoint from './Checkpoint/Checkpoint'
+import Concept from './Concept/Concept'
 
 import {
 	broadcastButtonState,
@@ -48,7 +48,10 @@ const NextButtonManager = ({
 	 * Modals for Concepts and Checkpoint
 	 */
 	const [openConcepts, setOpenConcepts] = useState(false)
+
 	const [openCheckpoint, setOpenCheckpoint] = useState(false)
+	const [checkpointView, setCheckpointView] = useState(['HOME'])
+	const [autograderResultIndex, setAutograderResultIndex] = useState(0)
 
 	useEffect(() => {
 		if (buttonStateStack.current.peek() === STATE_CARD)
@@ -128,7 +131,7 @@ const NextButtonManager = ({
 	}
 
 	return (
-		<Container className={`${className} transition-medium`}>
+		<Container className={`${className || ''} transition-medium`}>
 			<Concept
 				STATE_CONCEPT={STATE_CONCEPT}
 				render={finishedButtonStates.includes(STATE_CONCEPT)}
@@ -141,6 +144,10 @@ const NextButtonManager = ({
 				render={finishedButtonStates.includes(STATE_CHECKPOINT)}
 				open={openCheckpoint}
 				setOpen={setOpenCheckpoint}
+				view={checkpointView}
+				setView={setCheckpointView}
+				autograderResultIndex={autograderResultIndex}
+				setAutograderResultIndex={setAutograderResultIndex}
 			/>
 			<Central
 				removeAndBroadcastButtonState={removeAndBroadcastButtonState}

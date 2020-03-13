@@ -1,32 +1,34 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Icon from './Icon'
-
 const VerticalAlign = styled.div`
 	display: flex;
 	align-items: center;
+	${props => (props.reverse ? 'flex-direction: column-reverse;' : '')}
 `
 
-const AccountContainer = styled.div`
-	display: flex;
-	cursor: default;
+const IconWrapper = styled.div`
+	${props =>
+		!props.reverse
+			? `margin-right: ${props.gap};`
+			: `margin-left: ${props.gap};`}
 `
 
-const ProfilePicture = styled(Icon)`
-	margin-right: 0.5em;
-	padding: 0.1em;
-	background-color: ${props => props.theme.accentVariant};
-`
-
-const IconArea = ({ src, children, iconSize }) => {
+const IconArea = ({
+	className,
+	children,
+	icon,
+	gap = '0.5em',
+	reverse,
+	onClick
+}) => {
 	return (
-		<AccountContainer>
-			<VerticalAlign>
-				<ProfilePicture src={src} width={iconSize} height={iconSize} circle />
-				{children}
-			</VerticalAlign>
-		</AccountContainer>
+		<VerticalAlign className={className} reverse={reverse} onClick={onClick}>
+			<IconWrapper gap={gap} reverse={reverse}>
+				{icon}
+			</IconWrapper>
+			{children}
+		</VerticalAlign>
 	)
 }
 

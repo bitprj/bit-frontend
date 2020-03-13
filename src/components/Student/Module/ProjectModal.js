@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 
-import TwoPanelModal from '../../shared/containers/TwoPanelModal'
+import DynamicModal from '../../shared/containers/DynamicModal'
+import TwoPanel from '../../shared/containers/TwoPanel'
 import { sizes } from '../../../styles/media'
 
 import Project from './Project'
@@ -137,13 +138,9 @@ const FinalProject = props => {
 	const rightPanel = listView ? projects : fullPic
 
 	return (
-		<TwoPanelModal
-			open={props.open}
-			closed={handleClosed}
-			leftPanel={leftPanel}
-			rightPanel={rightPanel}
-			ratio={0.43}
-		/>
+		<DynamicModal open={props.open} closed={handleClosed} ratio={0.43}>
+			<TwoPanel fullSizeAxis first={leftPanel} second={rightPanel} />
+		</DynamicModal>
 	)
 }
 

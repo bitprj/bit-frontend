@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { get } from 'lodash'
 
 import IconLine from '../../shared/gadgets/IconLine'
-import IconArea from '../../shared/gadgets/IconArea'
+import ProfPic from '../../shared/gadgets/ProfPic'
 import ClampedDiv from '../../shared/utils/ClampedDiv'
 import Dot from '@material-ui/icons/FiberManualRecord'
 
@@ -42,12 +42,12 @@ const DetailsHeader = ({ activityName, studentName }) => {
 				PARTIALLY GRADED
 			</GradeStatus>
 			<AssignmentName>{`${activityName}`}</AssignmentName>
-			<IconArea
+			<ProfPic
 				src={require('../../../assets/icons/prof-pic.png')}
 				iconSize={'2em'}
 			>
 				{`${studentName}`}
-			</IconArea>
+			</ProfPic>
 		</Container>
 	)
 }

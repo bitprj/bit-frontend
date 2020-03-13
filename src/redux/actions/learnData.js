@@ -1,10 +1,11 @@
 import { get, merge as mergeDeep, cloneDeep } from 'lodash'
-import { iterateNodes } from '../../utils/deepObjUtils'
+import { iterateNodes, objectArrayToObject } from '../../utils/objUtils'
 import { genFetch } from '../../services/ContentfulService'
 import {
-	fetchActivity,
+	fetchActivitySkeleton,
 	fetchActivityProgress,
 	fetchCardStatus,
+	fetchCheckpointProgress,
 	unlockCard,
 	unlockHint,
 	submitCheckpointProgress
@@ -13,7 +14,7 @@ import {
 import { STATE_HINT } from '../../components/Learn/NextButton/NextButton'
 
 import {
-	SET_ACTIVITY,
+	SET_ACTIVITY_SKELETON,
 	SET_ACTIVITY_PROGRESS,
 	SET_UNLOCKED_CARDS,
 	SET_CARD_STATUSES,
@@ -24,9 +25,11 @@ import {
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
 	INCREMENT_LAST_CARD_UNLOCKED_INDEX,
+	SET_SUBMITTED_CHECKPOINT_SUCCESSFUL,
 	BROADCAST_BUTTON_STATE,
 	SCHEDULE_BUTTON_STATE,
-	RESET_BUTTON_STATE_SCHEDULE
+	RESET_BUTTON_STATE_SCHEDULE,
+	PUSH_TO_LOADED_CHECKPOINTS_PROGRESS
 } from '../actionTypes'
 
 /* ===== INITIALIZATION */
@@ -37,17 +40,29 @@ import {
  * @param {*} activityId
  */
 export const init = activityId => async dispatch => {
-	// Concurrently FetchActivity and FetchActivityProgress
-	let [activityBase, activityProgress] = await Promise.all([
-		fetchActivity(activityId),
+	/**
+	 * FETCH_ACTIVITY_SKELETON
+	 *  - provide roadmap/foundation of id's and content id's for
+	 *    the entire activity
+	 *
+	 * FETCH_ACTIVITY_PROGRESS
+	 *  - get the card the user is currently on
+	 */
+	let [activitySkeleton, activityProgress] = await Promise.all([
+		fetchActivitySkeleton(activityId),
 		fetchActivityProgress(activityId)
 	])
 
-	activityBase.cards.sort((a, b) => a.order - b.order)
-	dispatch(setActivity(activityBase))
+	/**
+	 * sort by order just in case it isn't
+	 */
+	activitySkeleton.cards.sort((a, b) => a.order - b.order)
+
+	// send to redux
+	dispatch(setActivitySkeleton(activitySkeleton))
 
 	// Process activityProgress
-	let index = activityBase.cards.findIndex(
+	let index = activitySkeleton.cards.findIndex(
 		card => card.contentfulId === activityProgress.cardContentfulId
 	)
 	if (index === -1) index = 0 // TODO also an error here
@@ -56,18 +71,25 @@ export const init = activityId => async dispatch => {
 		lastCardUnlockedIndex: index
 	}
 
+	// send to redux
 	dispatch(setActivityProgress(activityProgress))
 
-	const cardsProgressed = activityBase.cards.slice(0, index + 1)
+	const cardsProgressed = activitySkeleton.cards.slice(0, index + 1)
 
 	// Fetch Unlocked Card data
-	let unlockedCards = await fetchUnlockedCards(cardsProgressed)
+	const unlockedCards = await fetchUnlockedCards(cardsProgressed)
+	// console.log(unlockedCards)
 	dispatch(setUnlockedCards(unlockedCards))
 
 	// Fetch Cards and their Statuses
 	// (from fetchActivityProgress, multiple fetchCardStatus)
 	const cardStatuses = await initCardStatuses(activityId, unlockedCards)
 	dispatch(setCardStatuses(cardStatuses))
+
+	const checkpointProgresses = await initCheckpointProgress(unlockedCards)
+	dispatch(
+		pushToLoadedCheckpointsProgress(objectArrayToObject(checkpointProgresses))
+	)
 }
 
 const fetchUnlockedCards = cardsProgressed => {
@@ -138,8 +160,18 @@ const initCardStatuses = (activityId, unlockedCards) =>
 		})
 	)
 
-const setActivity = activity => ({
-	type: SET_ACTIVITY,
+const initCheckpointProgress = unlockedCards =>
+	Promise.all(
+		unlockedCards
+			.filter(card => card.checkpoint)
+			.map(async card => {
+				const progress = await fetchCheckpointProgress(card.checkpoint.id)
+				return { [card.checkpoint.id]: progress.submissions }
+			})
+	)
+
+const setActivitySkeleton = activity => ({
+	type: SET_ACTIVITY_SKELETON,
 	activity
 })
 
@@ -177,7 +209,7 @@ export const initUnlockCard = (activityId, id, contentId) => async dispatch => {
 
 	dispatch(setCard(card))
 
-	console.log(await unlockCard(activityId, id))
+	unlockCard(activityId, id).then(res => console.log(res.message))
 }
 
 export const initUnlockHint = (activityId, id, contentId) => async dispatch => {
@@ -185,16 +217,33 @@ export const initUnlockHint = (activityId, id, contentId) => async dispatch => {
 	dispatch(setHint(id, contentId, hint))
 	dispatch(scheduleButtonState(STATE_HINT))
 
-	console.log(await unlockHint(activityId, id))
+	unlockHint(activityId, id).then(res => console.log(res.message))
 }
 
 export const initSubmitCheckpointProgress = (
+	activityId,
 	checkpointId,
 	type,
 	content
 ) => async dispatch => {
-	const response = await submitCheckpointProgress(checkpointId, type, content)
-	console.log(response)
+	try {
+		const response = await submitCheckpointProgress(
+			activityId,
+			checkpointId,
+			type,
+			content
+		)
+		dispatch(setSubmittedCheckpointSuccessful(true))
+		dispatch(
+			// correct format
+			pushToLoadedCheckpointsProgress({
+				[checkpointId]: [{ results: response }]
+			})
+		)
+	} catch (e) {
+		console.log(e)
+		dispatch(setSubmittedCheckpointSuccessful(false))
+	}
 }
 
 export const setCurrentCardByIndex = cardIndex => ({
@@ -213,6 +262,11 @@ export const incrementLastCardUnlockedIndex = () => ({
 	type: INCREMENT_LAST_CARD_UNLOCKED_INDEX
 })
 
+const setSubmittedCheckpointSuccessful = success => ({
+	type: SET_SUBMITTED_CHECKPOINT_SUCCESSFUL,
+	success
+})
+
 export const broadcastButtonState = buttonState => ({
 	type: BROADCAST_BUTTON_STATE,
 	buttonState
@@ -224,6 +278,11 @@ export const scheduleButtonState = buttonState => ({
 export const resetButtonStateSchedule = buttonState => ({
 	type: RESET_BUTTON_STATE_SCHEDULE,
 	buttonState
+})
+
+export const pushToLoadedCheckpointsProgress = newLoads => ({
+	type: PUSH_TO_LOADED_CHECKPOINTS_PROGRESS,
+	newLoads
 })
 
 const setCard = card => ({

@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const RenderedIcon = styled.img`
+const Icon = styled.img`
+  ${props => (props.center ? 'margin: 0 auto;' : '')}
 	width: ${props => props.width || '5em'};
   ${props => {
 		if (props.height) return `height: ${props.height}`
@@ -20,28 +21,5 @@ const RenderedIcon = styled.img`
 
 	${props => (props.src ? '' : `background-color: ${props.theme.accentVariant};`)}
 `
-
-const Icon = ({
-	alt,
-	className,
-	src,
-	width,
-	height,
-	sharp,
-	circle,
-	shadow
-}) => {
-	return (
-		<RenderedIcon
-			alt={alt || ''}
-			className={`${className || ''} ${shadow ? 'lift transition-medium' : ''}`}
-			width={width}
-			height={height}
-			sharp={sharp}
-			circle={circle}
-			src={src}
-		/>
-	)
-}
 
 export default Icon

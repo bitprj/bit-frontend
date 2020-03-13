@@ -1,11 +1,13 @@
 import { backend, backendSaves, grader } from './AxiosInstances'
 
+/* ===== INITIAL */
+
 export const fetchActivityProgress = activityId => {
 	const endpoint = `/activities/${activityId}/progress`
 	return backend.get(endpoint)
 }
 
-export const fetchActivity = activityId => {
+export const fetchActivitySkeleton = activityId => {
 	const endpoint = `/activities/${activityId}`
 	return backend.get(endpoint)
 }
@@ -14,6 +16,13 @@ export const fetchCardStatus = (activityId, cardId) => {
 	const endpoint = `/activities/${activityId}/cards/${cardId}`
 	return backend.get(endpoint)
 }
+
+export const fetchCheckpointProgress = checkpointId => {
+	const endpoint = `/checkpoints/${checkpointId}/progress`
+	return backend.get(endpoint)
+}
+
+/* ===== RUNTIME */
 
 export const deleteActivityProgress = activityId => {
 	const endpoint = `/activities/${activityId}/progress`
@@ -30,22 +39,20 @@ export const unlockHint = (activityId, hintId) => {
 	return backendSaves.put(endpoint)
 }
 
-export const submitCheckpointProgress = (checkpointId, type, content) => {
-	const endpoint = `/checkpoints/${checkpointId}/submit`
+export const submitCheckpointProgress = (
+	activityId,
+	checkpointId,
+	type,
+	content
+) => {
 	let data
 	let formData = new FormData()
+
 	switch (type) {
+		case 'Video':
+		case 'Image':
 		case 'Autograder': {
-			formData.append('content', content[0])
-			break
-		}
-
-		case 'Image': {
-			formData.append('content', content[0])
-			break
-		}
-
-		case 'Video': {
+			formData.append('content', content)
 			break
 		}
 
@@ -57,83 +64,15 @@ export const submitCheckpointProgress = (checkpointId, type, content) => {
 			break
 		}
 	}
-	console.log(data, formData)
-	return backendSaves.put(endpoint, data || formData)
+
+	if (data) {
+		data.activity_id = activityId
+		data.checkpoint_id = checkpointId
+		data.username = 'Student@example.com'
+		return grader.put('', data)
+	}
+	formData.append('activity_id', activityId)
+	formData.append('checkpoint_id', checkpointId)
+	formData.append('username', 'Student@example.com')
+	return grader.post('/uploader', formData)
 }
-
-// @ half unused
-
-// export const uploadFiles = fileItems => {
-// 	let srcFile = null
-// 	let testsFile = null
-
-// 	fileItems.forEach(fileItem => {
-// 		if (fileItem.filename === 'src.zip') {
-// 			srcFile = fileItem.file
-// 		} else if (fileItem.filename === 'tests.zip') {
-// 			testsFile = fileItem.file
-// 		}
-// 	})
-
-// 	if (srcFile && testsFile) {
-// 		let formData = new FormData()
-// 		formData.append('src', srcFile)
-// 		formData.append('tests', testsFile)
-// 		formData.append('checkpoint_id', 12)
-
-// 		return grader
-// 			.post('/uploader', formData)
-// 			.then(response => response.data)
-// 			.catch(err => {
-// 				console.log(err)
-// 			})
-// 	} else {
-// 		const err = new Error(
-// 			'Invalid Files - Submit exactly one src.zip and one tests.zip file.'
-// 		)
-// 		throw err
-// 	}
-// }
-
-// export const processResult = rawData => {
-// 	const passCases = rawData.pass_cases.map(pass => {
-// 		return pass
-// 	})
-
-// 	const result = {
-// 		submission: rawData.submission,
-// 		passCases: passCases,
-// 		failCase: rawData.fail_case,
-// 		numFail: rawData.num_fail,
-// 		numPass: rawData.num_pass
-// 	}
-
-// 	return result
-// }
-
-// // @unused
-
-// export const getHintStatus = (labID, cardID) => {
-// 	const endpoint = `/lab/${labID}/card/${cardID}/fetch`
-// 	return backend.get(endpoint)
-// }
-
-// export const processHintStatus = rawData => {
-// 	const hints = rawData.map(hint => {
-// 		const children = hint.hint_children.map(child => {
-// 			return {
-// 				dbID: child.hint.id,
-// 				id: child.hint.contentful_id,
-// 				isLocked: !child.is_unlocked
-// 			}
-// 		})
-// 		return {
-// 			dbID: hint.hint.id,
-// 			id: hint.hint.contentful_id,
-// 			isLocked: !hint.is_unlocked,
-// 			children: children
-// 		}
-// 	})
-
-// 	return hints
-// }

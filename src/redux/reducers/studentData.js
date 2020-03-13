@@ -11,7 +11,7 @@ const initialState = {
 	suggestedActivity: {},
 	inprogressModules: [],
 	inprogressTopics: [],
-	gems: 1160
+	gems: 860
 }
 
 const reducer = (state = initialState, action) => {

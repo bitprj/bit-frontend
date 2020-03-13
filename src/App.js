@@ -30,12 +30,12 @@ const App = ({ userType, onInit }) => {
 			<WithGlobalHOC>
 				<Switch>
 					<Route path="/" exact component={Home} />
-					<Route path="/explore" component={Explore} />
-					<Route path="/modules/:id" component={Module} />
-					<Route path="/dashboard" component={Student} />
-					<Route path="/learn" component={Learn} />
-					<Route path="/grade" component={Teacher} />
-					<Route path="/oteacher" component={OldTeacher} />
+					<Route path="/explore/" component={Explore} />
+					<Route path="/modules/:id/" component={Module} />
+					<Route path="/dashboard/" component={Student} />
+					<Route path="/learn/" component={Learn} />
+					<Route path="/grade/" component={Teacher} />
+					<Route path="/oteacher/" component={OldTeacher} />
 					<Route component={NotFound} />
 				</Switch>
 			</WithGlobalHOC>

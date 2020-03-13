@@ -16,7 +16,7 @@ const Content = styled.div`
 	flex: ${props => 1 - props.ratio};
 `
 
-const TwoPanelModal = ({
+const PostModal = ({
 	open,
 	closed,
 	scaleX = 1,
@@ -44,4 +44,4 @@ const TwoPanelModal = ({
 	</DynamicModal>
 )
 
-export default TwoPanelModal
+export default PostModal

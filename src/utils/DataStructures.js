@@ -18,7 +18,7 @@ export function SafeStack(stack) {
 	this.has = item => stack.includes(item)
 	this.peek = () => (this.isEmpty() ? 'empty stack' : stack[stack.length - 1])
 	this.isEmpty = () => stack.length === 0
-	this.get = () => stack // use only for testing
+  this.get = () => stack // use only for testing
 }
 
 /**

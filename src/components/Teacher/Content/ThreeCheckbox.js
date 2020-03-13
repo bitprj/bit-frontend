@@ -15,7 +15,7 @@ const selectColor = props => {
 			return props.theme.pastel.red
 		}
 		case 'NONE': {
-			return '#e4e4e4'
+			return props.theme.offFont
 		}
 		default:
 			break

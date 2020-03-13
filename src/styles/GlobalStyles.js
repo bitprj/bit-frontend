@@ -78,25 +78,23 @@ export const GlobalStyle = createGlobalStyle`
    * LOW PROFILE SCROLLBAR
    * - with only-hover, fat
    */
-  .low-profile-scrollbar {
-    overflow: auto;
+  .low-profile-scrollbar { overflow: auto; }
+  .low-profile-scrollbar.only-hover { overflow: overlay; }
+
+  .low-profile-scrollbar.only-hover:hover::-webkit-scrollbar,
+  .low-profile-scrollbar::-webkit-scrollbar { 
+    width: 0.5em; 
+    height: 0.5em; 
   }
-  .low-profile-scrollbar.only-hover {
-    overflow: overlay;
-  }
-  .low-profile-scrollbar.only-hover::-webkit-scrollbar {
-    width: 0;
+  .low-profile-scrollbar.only-hover::-webkit-scrollbar { 
+    width: 0; 
     height: 0;
   }
-  .low-profile-scrollbar::-webkit-scrollbar,
-  .low-profile-scrollbar.only-hover:hover::-webkit-scrollbar {
-    width: 0.5em;
-    height: 0.5em;
+  .low-profile-scrollbar.fat::-webkit-scrollbar { 
+    width: 1em; 
+    height: 1em; 
   }
-  .low-profile-scrollbar.fat::-webkit-scrollbar {
-    width: 1em;
-    height: 1em;
-  }
+
   .low-profile-scrollbar::-webkit-scrollbar-track {
     background: #0000; // not working
   }
@@ -104,25 +102,15 @@ export const GlobalStyle = createGlobalStyle`
     background: #0001;
     border-radius: 0.5em;
   }
-  .low-profile-scrollbar::-webkit-scrollbar-thumb {
-    background: #0002;
-    border-radius: 0.5em;
-  }
-  .low-profile-scrollbar.light::-webkit-scrollbar-thumb {
-    background: #fff2;
-  }
-  .low-profile-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #0003;
-  }
-  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:hover {
-    background: #fff3;
-  }
-  .low-profile-scrollbar::-webkit-scrollbar-thumb:active {
-    background: #0004;
-  }
-  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:active {
-    background: #fff4;
-  }
+
+  .low-profile-scrollbar::-webkit-scrollbar-thumb { background: #0002; border-radius: 0.5em; }
+  .low-profile-scrollbar.light::-webkit-scrollbar-thumb { background: #fff6; }
+  
+  .low-profile-scrollbar::-webkit-scrollbar-thumb:hover { background: #0003; }
+  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:hover { background: #fff7; }
+
+  .low-profile-scrollbar::-webkit-scrollbar-thumb:active { background: #0004; }
+  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:active { background: #fff8; }
 
   /**
    * TRANSITIONS 

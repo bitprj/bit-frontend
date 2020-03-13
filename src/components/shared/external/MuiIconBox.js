@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const MuiIconBox = styled.div`
 	margin: 0 auto;
-	padding: calc(${props => props.width} / 10);
+	padding: calc(${props => props.width} / 7.5);
 	width: ${props => props.width};
 	height: ${props => props.width};
   ${props =>

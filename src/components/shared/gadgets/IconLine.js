@@ -37,19 +37,19 @@ const IconLine = ({
 }) => {
 	return (
 		<Container className={className}>
-			{reverse ? (
+			{!reverse ? (
 				<>
-					{children}
 					<IconWrapper reverse={reverse} gap={gap} noTransition={noTransition}>
 						{icon}
 					</IconWrapper>
+					{children}
 				</>
 			) : (
 				<>
+					{children}
 					<IconWrapper reverse={reverse} gap={gap} noTransition={noTransition}>
 						{icon}
 					</IconWrapper>
-					{children}
 				</>
 			)}
 		</Container>

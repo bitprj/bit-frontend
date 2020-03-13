@@ -31,7 +31,7 @@ const WithAuthentication = ({
 		_onCheckLogin()
 	}, [])
 
-	return <>{children}</>
+	return children
 }
 
 const mapStateToProps = state => ({

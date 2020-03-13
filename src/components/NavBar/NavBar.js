@@ -9,7 +9,7 @@ import setTheme from '../../redux/actions/theme'
 import { deauthenticate } from '../../redux/actions/account'
 import { orange, palepink } from '../../styles/theme'
 
-import IconArea from '../shared/gadgets/IconArea'
+import ProfPic from '../shared/gadgets/ProfPic'
 import SearchIcon from '@material-ui/icons/Search'
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -143,12 +143,12 @@ const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
 				{userType === 'STUDENT' || userType === 'TEACHER' ? (
 					<AlignRight userType={userType}>
 						<NavElement onClick={() => setLogout(true)}>
-							<IconArea
+							<ProfPic
 								src={require('../../assets/icons/prof-pic.png')}
 								iconSize={contentHeight}
 							>
 								{firstName}
-							</IconArea>
+							</ProfPic>
 						</NavElement>
 					</AlignRight>
 				) : null}

@@ -36,9 +36,10 @@ const Settings = ({ activityId }) => {
 	const resetActivity = async () => {
 		try {
 			setWaiting(true)
-			const response = await deleteActivityProgress(activityId)
-			if (response.message) {
-				window.location.replace('/learn')
+			const res = await deleteActivityProgress(activityId)
+			console.log(res.message)
+			if (res.message) {
+				window.location.replace('/learn/')
 			}
 		} catch (e) {
 			console.log(e)

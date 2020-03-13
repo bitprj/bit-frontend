@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
 
-import ParsedContent from '../../../../shared/ParsedContent'
-import CodeBlock from '../../../../shared/CodeBlock'
-import Icon from '../../../../shared/gadgets/Icon'
-import IconLine from '../../../../shared/gadgets/IconLine'
-import ConfirmCancel from '../../../../shared/gadgets/ConfirmCancel'
-import DotRating from '../../../../shared/gadgets/DotRating'
+import ParsedContent from '../../../shared/ParsedContent'
+import CodeBlock from '../../../shared/CodeBlock'
+import Icon from '../../../shared/gadgets/Icon'
+import IconLine from '../../../shared/gadgets/IconLine'
+import ConfirmCancel from '../../../shared/gadgets/ConfirmCancel'
+import DotRating from '../../../shared/gadgets/DotRating'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
@@ -165,7 +165,7 @@ const Slide = ({ name, steps, slideIndex, setStepIndex }) => {
 				) : (
 					<Icon
 						width="69%"
-						src={require('../../../../../assets/icons/prof-pic.png')}
+						src={require('../../../../assets/icons/prof-pic.png')}
 					/>
 				)}
 			</RightPanel>

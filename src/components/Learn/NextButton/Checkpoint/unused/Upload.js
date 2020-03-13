@@ -125,7 +125,8 @@ const UploadButton = styled(Button)`
 `
 
 const UnconnectedFilesRightPanel = ({
-	id,
+	activityId,
+	checkpointId,
 	type,
 	open,
 	files,
@@ -134,18 +135,16 @@ const UnconnectedFilesRightPanel = ({
 }) => {
 	const filePondRef = useRef(undefined)
 	const upload = () => {
-		onInitSubmitCheckpointProgress(id, type, files)
+		onInitSubmitCheckpointProgress(activityId, checkpointId, type, files[0])
 	}
 
 	useEffect(() => {
-		setTimeout(() => {
+		const addFilesToFilePond = () => {
 			if (filePondRef.current && files.length) {
 				filePondRef.current.addFiles(files)
 			}
-		}, 0)
-		return () => {
-			filePondRef.current = null
 		}
+		setTimeout(addFilesToFilePond, 0)
 	}, [open])
 
 	useEffect(() => {
@@ -161,9 +160,9 @@ const UnconnectedFilesRightPanel = ({
 		<FilesRightPanelContainer>
 			<FilePond
 				ref={filePondRef}
-				allowMultiple={true}
+				allowMultiple={false}
 				onupdatefiles={files => setFiles(files)}
-				styleItemPanelAspectRatio={1 / 3}
+				styleItemPanelAspectRatio={1}
 			/>
 			<UploadIconWrapper id="learn-r-uploadicon" className="transition-long">
 				<Icon src={require('../../../../../assets/icons/upload.svg')} />
@@ -183,11 +182,15 @@ const UnconnectedFilesRightPanel = ({
 }
 
 const mapDispatchToProps = dispatch => ({
-	onInitSubmitCheckpointProgress: (checkpointId, type, content) =>
-		dispatch(initSubmitCheckpointProgress(checkpointId, type, content))
+	onInitSubmitCheckpointProgress: (activityId, checkpointId, type, content) =>
+		dispatch(
+			initSubmitCheckpointProgress(activityId, checkpointId, type, content)
+		)
 })
 
 export const FilesRightPanel = connect(
 	null,
 	mapDispatchToProps
 )(UnconnectedFilesRightPanel)
+
+

@@ -58,7 +58,7 @@ const LockedHintSection = ({ activityId, hints }) => {
 		return hints.map(hint => {
 			const { id, contentfulId, name, difficulty, gems, isUnlocked } = hint
 			if (!isUnlocked) {
-        isAllUnlocked = false
+				isAllUnlocked = false
 				return (
 					<LockedHint
 						key={`hint-${id}`}

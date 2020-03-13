@@ -1,6 +1,6 @@
 import { createClient } from 'contentful'
 import camelCase from 'camelcase-keys-deep'
-import { normalizeContentful } from '../utils/deepObjUtils'
+import { normalizeContentful } from '../utils/objUtils'
 
 const client = createClient({
 	space: process.env.REACT_APP_CONTENTFUL_SPACE,
