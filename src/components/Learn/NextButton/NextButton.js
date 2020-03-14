@@ -29,6 +29,7 @@ const NextButtonManager = ({
 	className,
 	concepts,
 	checkpoint,
+	checkpointFinished,
 	currentCardIndex,
 	buttonStateScheduleQueue,
 	onBroadcastButtonState,
@@ -78,11 +79,15 @@ const NextButtonManager = ({
 	}, [buttonStateScheduleQueue])
 
 	useEffect(() => {
-		if (checkpoint /* TODO && checkpointFinished */) {
-			// pushToFinishedButtonStates(STATE_CHECKPOINT)
-			addAndBroadcastButtonState(STATE_CHECKPOINT) // on revisit
+		if (checkpoint) {
+			if (checkpointFinished) {
+				removeAndBroadcastButtonState(STATE_CHECKPOINT)
+			} else {
+				addAndBroadcastButtonState(STATE_CHECKPOINT) // on revisit
+			}
 		}
-
+	}, [currentCardIndex, checkpointFinished])
+	useEffect(() => {
 		if (
 			concepts &&
 			concepts.length &&
@@ -162,17 +167,30 @@ const mapStateToProps = state => {
 	const {
 		learnData: {
 			indicators: { currentCardIndex, buttonStateScheduleQueue },
+			progress: { checkpointsProgress },
 			cards
 		}
 	} = state
 
 	const card = cards && cards[currentCardIndex]
+	const checkpoint = get(card, 'checkpoint')
+
+	/**
+	 * Checkpoint Finished calculation
+	 */
+	const checkpointId = get(checkpoint, 'id')
+	const recentCheckpoint =
+		checkpointsProgress &&
+		get(checkpointsProgress[checkpointId], '[0].results', {})
+	const { numPass, numFail } = recentCheckpoint
+	const checkpointFinished = numPass > numFail
 
 	return {
 		currentCardIndex,
 		buttonStateScheduleQueue,
 		concepts: get(card, 'concepts'),
-		checkpoint: get(card, 'checkpoint')
+		checkpoint,
+		checkpointFinished
 	}
 }
 

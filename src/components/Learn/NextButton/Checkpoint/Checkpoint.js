@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 
@@ -38,8 +38,8 @@ const Container = styled.div`
 `
 
 const InfoContainer = styled.div`
-	padding: 1em;
-	padding-right: 2em;
+	padding: 2em;
+	padding-right: 4em;
 	padding-bottom: 0em;
 	display: flex;
 	align-items: center;
@@ -93,8 +93,24 @@ const Checkpoint = ({
 	type,
 	progress
 }) => {
-	const autograderResult =
-		progress && get(progress[autograderResultIndex], 'results')
+	const autograderResult = useMemo(() => {
+		const unprocessed =
+			progress && get(progress[autograderResultIndex], 'results')
+
+		if (!unprocessed) return {}
+
+		/**
+		 * Process
+		 */
+		const results = { ...unprocessed }
+		const { passCases, failCase } = results
+		results.allCases = [...passCases].reverse()
+		if (!isEmpty(failCase)) {
+			results.allCases.unshift(failCase)
+		}
+
+		return results
+	}, [progress])
 
 	const pushView = newView => {
 		view.push(newView)
@@ -173,13 +189,15 @@ const Checkpoint = ({
 				<Peripheral
 					currentButtonState={STATE_CHECKPOINT}
 					onClick={() => setOpen(true)}
+					top="-15%"
+					left="65%"
 				/>
 			)}
 			<StyledDynamicModal
 				open={open}
 				closed={() => setOpen(false)}
-				scaleX={0.8}
-				scaleY={0.9}
+				scaleX={0.84}
+				scaleY={0.945}
 			>
 				<Container>
 					{peekView(view) !== AUTOGRADER &&
@@ -225,9 +243,7 @@ const mapStateToProps = state => {
 	} = state
 
 	const card = cards && cards[currentCardIndex]
-
 	const checkpointId = get(card, 'checkpoint.id')
-
 	const progress = checkpointsProgress && checkpointsProgress[checkpointId]
 
 	return {
@@ -241,62 +257,3 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps)(Checkpoint)
-
-// let leftPanelUpload
-// let rightPanelUpload
-// let leftPanelResult
-// let rightPanelResult
-
-// const [resultView, setResultView] = useState(false)
-// const [modalRatio, setModalRatio] = useState(0.5)
-
-// const [files, setFiles] = useState([])
-
-// if (!resultView) {
-// 	switch (type) {
-// 		case 'Short Answer':
-// 		case 'Multiple Choice': {
-// 			leftPanelUpload = null
-// 			rightPanelUpload = null
-// 			break
-// 		}
-// 		case 'Image':
-// 		case 'Video':
-// 		case 'Autograder': {
-// 			leftPanelUpload = (
-// 				<DescriptionLeftPanel name={name} instruction={instruction} />
-// 			)
-// 			rightPanelUpload = (
-// 				<FilesRightPanel
-// 					activityId={activityId}
-// 					checkpointId={checkpointId}
-// 					type={type}
-// 					open={open}
-// 					files={files}
-// 					setFiles={setFiles}
-// 				/>
-// 			)
-// 		}
-// 	}
-// } else {
-// 	switch (type) {
-// 		case 'Image':
-// 		case 'Video': {
-// 			if (modalRatio !== 1) setModalRatio(1)
-// 			leftPanelResult = (
-// 				<DescriptionLeftPanel name={name} instruction={instruction} />
-// 			)
-// 			break
-// 		}
-// 		case 'Short Answer':
-// 		case 'Multiple Choice':
-// 		case 'Autograder': {
-// 			rightPanelResult = <AutograderRightPanel progress={progress} />
-// 		}
-// 	}
-// }
-
-/**
- * Multiple Choice | SA
- */
-// ...

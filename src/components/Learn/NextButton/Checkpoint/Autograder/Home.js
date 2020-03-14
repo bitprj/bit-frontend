@@ -155,12 +155,12 @@ const Card = ({ icon, title, description, onClick }) => (
 
 const TopAreaTwoPanel = styled(TwoPanel)`
 	flex: 1;
-	padding: 0 3em;
+	padding: 0 4em;
 `
 
 const NavigationTwoPanel = styled(TwoPanel)`
 	flex: 1;
-	padding: 0 1.5em;
+	padding: 0 2.5em;
 `
 
 const Home = ({

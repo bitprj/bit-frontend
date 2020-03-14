@@ -79,10 +79,7 @@ const Concept = ({
 	 * Persistent memory of current concept even if user closes concept modal
 	 * # TODO doesn't work rn because carousel onchange is messed
 	 */
-	const [conceptLocation, setConceptLocation] = useState({
-		slideIndex: 0,
-		stepIndex: 0
-	})
+	const [slideIndex, setSlideIndex] = useState(0)
 
 	const slides =
 		concepts &&
@@ -92,10 +89,9 @@ const Concept = ({
 				key={`learn-concept-${concept.id}-${index}`}
 				name={concept.name}
 				steps={concept.steps}
-				slideIndex={conceptLocation.slideIndex}
-				setStepIndex={stepIndex =>
-					setConceptLocation({ ...conceptLocation, stepIndex })
-				}
+				slideIndex={slideIndex}
+				slidesLength={concepts && concepts.length}
+				setOpen={setOpen}
 			/>
 		))
 
@@ -122,9 +118,8 @@ const Concept = ({
 					showThumbs={false}
 					showStatus={false}
 					showIndicators={false}
-					onChange={slideIndex =>
-						setConceptLocation({ ...conceptLocation, slideIndex })
-					}
+					useKeyboardArrows
+					onChange={slideIndex => setSlideIndex(slideIndex)}
 					width="100%"
 				>
 					{slides}

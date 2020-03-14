@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { get } from 'lodash'
 
 import Icon from '../../../../shared/gadgets/Icon'
+import IconArea from '../../../../shared/gadgets/IconArea'
 import Scrollable from '../../../../shared/containers/Scrollable'
 import TwoPanel from '../../../../shared/containers/TwoPanel'
 
 const flagIcon = require('../../../../../assets/icons/flag.svg')
 
 const TestLineContainer = styled.div`
-	height: 100%;
+	padding: 1em;
+	margin: 0.5em 1em;
 	display: flex;
-	flex-direction: column;
+
+	cursor: pointer;
+	transition: box-shadow 0.1s ease;
 `
 
 const TestLineName = styled.h4`
@@ -28,13 +31,11 @@ const PassFail = styled.div`
 	text-align: center;
 `
 
-const TestLine = ({ pass, name }) => {
+const TestLine = ({ pass, name, onClick }) => {
 	return (
-		<TestLineContainer>
-			<div style={{ display: 'flex' }}>
-				<TestLineName>{name}</TestLineName>
-				<PassFail pass={pass}>{pass ? 'Passed' : 'Failed'}</PassFail>
-			</div>
+		<TestLineContainer className="hover-strong-lift" onClick={onClick}>
+			<TestLineName>{name}</TestLineName>
+			<PassFail pass={pass}>{pass ? 'Passed' : 'Failed'}</PassFail>
 		</TestLineContainer>
 	)
 }
@@ -46,9 +47,8 @@ const LeftPanelContainer = styled.div`
 `
 
 const LeftPanelHeader = styled.div`
-	padding: 1em;
-	padding-right: 2em;
-	padding-bottom: 0em;
+	padding: 3.1em 2em 2em;
+	padding-right: 4em;
 	display: flex;
 	align-items: center;
 	font-size: 90%;
@@ -59,30 +59,37 @@ const StyledIcon = styled(Icon)`
 	margin-right: 1em;
 `
 
-const Title = styled.h1`
-	margin: 1em;
-`
-
 const TestLineList = styled(Scrollable)`
-	padding: 0 2.5em;
+	margin: 0 1em;
+	padding: 0 1em;
 `
 
-const LeftPanel = ({ result = {} }) => {
-	const { failCase, numFail, numPass, passCases } = result
+const LeftPanel = ({ result, setTestCaseIndex }) => {
+	const { numFail, numPass, allCases } = result
 	return (
 		<LeftPanelContainer>
 			<LeftPanelHeader>
-				<StyledIcon width="3em" src={flagIcon} />
-				<Title>{`${numPass}/${numPass + numFail} TEST CASES`}</Title>
+				<IconArea gap={'2em'} icon={<StyledIcon width="3em" src={flagIcon} />}>
+					<div>
+						<h1 style={{ margin: 0 }}>Test Cases</h1>
+						<p style={{ margin: 0 }}>{`${numPass}/${numPass +
+							numFail} PASSED`}</p>
+					</div>
+				</IconArea>
 			</LeftPanelHeader>
 
 			<TestLineList>
-				<div style={{ margin: '2em 0' }}>
-					{passCases &&
-						passCases.map(details => {
-							return <TestLine pass name={details.name} />
-						})}
-					{failCase && <TestLine pass={false} name={failCase.name} />}
+				<div style={{ margin: '1em 0 2em' }}>
+					{allCases.map((details, index) => {
+						return (
+							<TestLine
+								key={`learn-checkpointresult-failcase-${index}`}
+								pass={!(index === 0 && numFail > 0)}
+								name={details.name}
+								onClick={() => setTestCaseIndex(index)}
+							/>
+						)
+					})}
 				</div>
 			</TestLineList>
 		</LeftPanelContainer>
@@ -90,11 +97,12 @@ const LeftPanel = ({ result = {} }) => {
 }
 
 const RightPanelContainer = styled.div`
-	padding: 2em 2.5em 0;
+	padding: 3em 4em 0;
+	padding-left: 2em;
 	height: 100%;
 `
 
-const FailContainer = styled.div`
+const DetailsContainer = styled.div`
 	flex: 1;
 	height: 100%;
 	display: flex;
@@ -113,25 +121,25 @@ const BlackTextArea = styled.pre`
 `
 
 const SmallHeader = styled.h4`
-	margin: 0.8em 0;
+	margin: 1.5em 0;
 `
 
-const RightPanel = ({ result = {} }) => {
-	const { failCase, numFail, numPass, passCases } = result
+const RightPanel = ({ result, testCaseIndex }) => {
+	const { allCases } = result
+	const { output, expected } = allCases[testCaseIndex]
+
 	return (
 		<RightPanelContainer>
-			{failCase && (
-				<FailContainer>
-					<SmallHeader>Expected Output</SmallHeader>
-					<BlackTextArea className="code low-profile-scrollbar fat light">
-						{failCase.expected}
-					</BlackTextArea>
-					<SmallHeader>Your Output</SmallHeader>
-					<BlackTextArea className="code low-profile-scrollbar fat light">
-						{failCase.output}
-					</BlackTextArea>
-				</FailContainer>
-			)}
+			<DetailsContainer>
+				<SmallHeader>Expected Output</SmallHeader>
+				<BlackTextArea className="code low-profile-scrollbar fat light">
+					{(output && output.join('\n')) || expected.join('\n')}
+				</BlackTextArea>
+				<SmallHeader>Your Output</SmallHeader>
+				<BlackTextArea className="code low-profile-scrollbar fat light">
+					{output.join('\n')}
+				</BlackTextArea>
+			</DetailsContainer>
 		</RightPanelContainer>
 	)
 }
@@ -141,12 +149,14 @@ const StyledTwoPanel = styled(TwoPanel)`
 `
 
 const AutograderResult = ({ result }) => {
+	const [testCaseIndex, setTestCaseIndex] = useState(0)
+
 	return (
 		<StyledTwoPanel
 			fullSizeAxis
 			fullSizeOffAxis
-			first={<LeftPanel result={result} />}
-			second={<RightPanel result={result} />}
+			first={<LeftPanel result={result} setTestCaseIndex={setTestCaseIndex} />}
+			second={<RightPanel result={result} testCaseIndex={testCaseIndex} />}
 		/>
 	)
 }

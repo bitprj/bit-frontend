@@ -77,13 +77,8 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
 	align-items: center;
 `
 
-const Slide = ({ name, steps, slideIndex, setStepIndex }) => {
+const Slide = ({ name, steps, slideIndex, slidesLength, setOpen }) => {
 	const [currentStepIndex, setCurrentStepIndex] = useState(0)
-
-	useEffect(() => {
-		// console.log(currentStepIndex)
-		// setStepIndex(currentStepIndex)
-	}, [currentStepIndex, slideIndex]) // account for slideIndex change
 
 	const step = steps && steps[currentStepIndex]
 
@@ -104,17 +99,32 @@ const Slide = ({ name, steps, slideIndex, setStepIndex }) => {
 			}
 			confirmText={
 				<IconLine className="sans" reverse noTransition icon={<RightArrow />}>
-					Next
+					{slideIndex !== slidesLength - 1 ||
+					currentStepIndex !== steps.length - 1
+						? 'Next'
+						: 'Finish'}
 				</IconLine>
 			}
-			cancelProps={{ disabled: currentStepIndex === 0 }}
-			confirmProps={{ disabled: currentStepIndex === steps.length - 1 }}
+			cancelProps={{ disabled: currentStepIndex === 0 && slideIndex === 0 }}
 			cancelOnClick={() => {
-				if (currentStepIndex > 0) setCurrentStepIndex(currentStepIndex - 1)
+				if (currentStepIndex > 0) {
+					setCurrentStepIndex(currentStepIndex - 1)
+				} else if (slideIndex > 0) {
+					document
+						.querySelector('.carousel .control-prev.control-arrow')
+						.click()
+				}
 			}}
 			confirmOnClick={() => {
-				if (currentStepIndex < steps.length - 1)
+				if (currentStepIndex < steps.length - 1) {
 					setCurrentStepIndex(currentStepIndex + 1)
+				} else if (slideIndex < slidesLength - 1) {
+					document
+						.querySelector('.carousel .control-next.control-arrow')
+						.click()
+				} else {
+					setOpen(false)
+				}
 			}}
 		/>
 	)

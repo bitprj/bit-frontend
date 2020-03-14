@@ -16,9 +16,15 @@ import Module from './components/Student/Module/Module'
 import NotFound from './components/Error/404NotFound'
 
 import WithGlobalHOC from './components/HOC/WithGlobalHOC'
+
 import { init } from './redux/actions/studentData'
+import { ping } from './services/TestService'
 
 const App = ({ userType, onInit }) => {
+	useEffect(() => {
+		ping()
+	}, [])
+
 	useEffect(() => {
 		if (userType && userType !== 'VISITOR') {
 			onInit()

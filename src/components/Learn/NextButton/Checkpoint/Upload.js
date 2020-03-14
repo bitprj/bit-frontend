@@ -7,8 +7,6 @@ import { connect } from 'react-redux'
 import Icon from '../../../shared/gadgets/Icon'
 import IconArea from '../../../shared/gadgets/IconArea'
 
-import { submitCheckpointProgress } from '../../../../services/LearnService'
-
 import { initSubmitCheckpointProgress } from '../../../../redux/actions/learnData'
 
 import { LOADING } from './Checkpoint'
