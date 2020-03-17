@@ -3,12 +3,16 @@ import {
 	SET_CURRENT_SUBMISSION_BY_INDEX
 } from '../actionTypes'
 
-import { fetchSubmissions } from '../../services/TeacherService'
+import { fetchClassroom, fetchSubmissions } from '../../services/TeacherService'
 
 /* ===== INITIALIZATION */
-export const init = classroomID => async dispatch => {
-	const submissions = await fetchSubmissions(classroomID)
-	console.log(submissions)
+export const init = classroomId => async dispatch => {
+	const [classroom, submissions] = await Promise.all([
+		fetchClassroom(classroomId),
+		fetchSubmissions(classroomId)
+	])
+
+	console.log(classroom, submissions)
 	dispatch(setSubmissions(submissions))
 }
 

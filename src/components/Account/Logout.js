@@ -10,21 +10,21 @@ import { logout } from '../../services/AccountService'
  * Declarative logout
  */
 const Logout = ({ onDeauthenticate }) => {
-  const history = useHistory()
+	const history = useHistory()
 
 	useEffect(() => {
-		const _logout = async () => {
+		const _ = async () => {
 			try {
 				const response = await logout()
 				if (response.logout) {
-          onDeauthenticate()
-          history.push('/')
+					onDeauthenticate()
+					history.push('/')
 				}
 			} catch (error) {
 				console.log(error)
 			}
 		}
-		_logout()
+		_()
 	}, [])
 
 	return null

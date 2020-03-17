@@ -87,6 +87,7 @@ export const init = activityId => async dispatch => {
 	dispatch(setCardStatuses(cardStatuses))
 
 	const checkpointProgresses = await initCheckpointProgress(unlockedCards)
+	console.log(objectArrayToObject(checkpointProgresses))
 	dispatch(
 		pushToLoadedCheckpointsProgress(objectArrayToObject(checkpointProgresses))
 	)
@@ -165,8 +166,13 @@ const initCheckpointProgress = unlockedCards =>
 		unlockedCards
 			.filter(card => card.checkpoint)
 			.map(async card => {
-				const progress = await fetchCheckpointProgress(card.checkpoint.id)
-				return { [card.checkpoint.id]: progress.submissions }
+				try {
+					const progress = await fetchCheckpointProgress(card.checkpoint.id)
+					const processed = progress.submissions.map(p => p.results)
+					return { [card.checkpoint.id]: processed }
+				} catch (e) {
+					return { [card.checkpoint.id]: [] }
+				}
 			})
 	)
 
@@ -234,10 +240,12 @@ export const initSubmitCheckpointProgress = (
 			content
 		)
 		dispatch(setSubmittedCheckpointSuccessful(true))
+		console.log(response)
+
 		dispatch(
 			// correct format
 			pushToLoadedCheckpointsProgress({
-				[checkpointId]: [{ results: response }]
+				[checkpointId]: [response]
 			})
 		)
 	} catch (e) {

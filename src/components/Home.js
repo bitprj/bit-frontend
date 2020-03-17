@@ -12,7 +12,7 @@ const Home = ({ userType }) => {
 			case 'STUDENT':
 				return <Redirect to="/dashboard/" />
 			case 'TEACHER':
-				return <Redirect to="/grade/" />
+				return null
 			default:
 				console.log(
 					"[HOME] we shouldn't be here... missing userType?",

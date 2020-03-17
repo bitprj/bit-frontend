@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { get, isEmpty } from 'lodash'
@@ -8,7 +8,11 @@ import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 import AutograderHome from './Autograder/Home'
 import AutograderCLI from './Autograder/CLI'
 import AutograderResult from './Autograder/Result'
+
 import AutograderLoading from './Autograder/Loading'
+
+import MediaHome from './Media/Home'
+
 import Upload from './Upload'
 
 import Peripheral from '../Peripheral'
@@ -83,8 +87,8 @@ const Checkpoint = ({
 	setOpen,
 	view,
 	setView,
-	autograderResultIndex,
-	setAutograderResultIndex,
+	submissionIndex,
+	setSubmissionIndex,
 
 	activityId,
 	checkpointId,
@@ -93,24 +97,19 @@ const Checkpoint = ({
 	type,
 	progress
 }) => {
-	const autograderResult = useMemo(() => {
-		const unprocessed =
-			progress && get(progress[autograderResultIndex], 'results')
+	const getSubmission = () => {
+		const unprocessed = progress && progress[submissionIndex]
 
 		if (!unprocessed) return {}
 
-		/**
-		 * Process
-		 */
 		const results = { ...unprocessed }
 		const { passCases, failCase } = results
 		results.allCases = [...passCases].reverse()
 		if (!isEmpty(failCase)) {
 			results.allCases.unshift(failCase)
 		}
-
 		return results
-	}, [progress])
+	}
 
 	const pushView = newView => {
 		view.push(newView)
@@ -129,16 +128,28 @@ const Checkpoint = ({
 						return (
 							<AutograderHome
 								pushView={pushView}
-								setAutograderResultIndex={setAutograderResultIndex}
 								instruction={instruction}
 								progress={progress}
+								setSubmissionIndex={setSubmissionIndex}
 							/>
 						)
+
+					case 'Image':
+					case 'Video':
+						return (
+							<MediaHome
+								pushView={pushView}
+								instruction={instruction}
+								progress={progress}
+								setSubmissionIndex={setSubmissionIndex}
+							/>
+						)
+
 					default:
 						return null
 				}
 			case AUTOGRADER:
-				return <AutograderResult result={autograderResult} />
+				return <AutograderResult result={getSubmission()} />
 			case CLI:
 				return <AutograderCLI />
 			case UPLOAD:
@@ -153,9 +164,9 @@ const Checkpoint = ({
 			case LOADING:
 				return (
 					<AutograderLoading
-						pushViewAndRemovingLoading={newView => {
+						pushViewAndRemoveIntermediaries={newView => {
 							view.push(newView)
-							setView(view.filter(v => v !== LOADING))
+							setView(view.filter(v => v !== LOADING && v !== UPLOAD))
 						}}
 					/>
 				)
@@ -166,20 +177,36 @@ const Checkpoint = ({
 	}
 
 	const mostRecentGradeStatus = () => {
-		const recent = get(progress, '[0].results', {})
+		let status = 'NONE'
+		let message = 'LOADING'
 
-		let status = ''
-		let message = 'NO DATA'
-		if (recent.numPass === 0) {
-			status = 'FATAL'
-			message = 'NONE PASSING'
-		} else if (recent.numPass > 0 && recent.numFail > 0) {
-			status = 'WARNING'
-			message = 'PARTIALLY PASSING'
-		} else if (recent.numFail === 0) {
-			status = 'SUCCESS'
-			message = 'ALL PASSING'
+		const calculateGradeStatus = () => {
+			if (!progress) return
+
+			if (Array.isArray(progress) && !progress.length) {
+				status = ''
+				message = 'NO SUBMISSIONS'
+				return
+			}
+
+			const recent = progress[0]
+
+			/**
+			 * AUTOGRADING
+			 */
+			if (recent.numPass === 0) {
+				status = 'FATAL'
+				message = 'NONE PASSING'
+			} else if (recent.numPass > 0 && recent.numFail > 0) {
+				status = 'WARNING'
+				message = 'PARTIALLY PASSING'
+			} else if (recent.numFail === 0) {
+				status = 'SUCCESS'
+				message = 'ALL PASSING'
+			}
 		}
+		calculateGradeStatus()
+
 		return <StyledGradeStatus status={status}>{message}</StyledGradeStatus>
 	}
 

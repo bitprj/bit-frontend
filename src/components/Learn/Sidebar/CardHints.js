@@ -34,6 +34,10 @@ const NavSubitemImg = styled.div`
 	flex-shrink: 0;
 `
 
+const StyledReactMarkdown = styled(ReactMarkdown)`
+	word-break: break-all;
+`
+
 const CardHints = ({ setHasSubitems, unlockedHints, lastHintUnlockedId }) => {
 	useEffect(() => {
 		if (lastHintUnlockedId) {
@@ -70,7 +74,7 @@ const CardHints = ({ setHasSubitems, unlockedHints, lastHintUnlockedId }) => {
 					>
 						<NavSubitemImg>&bull;</NavSubitemImg>
 						<NavSubitem clamp={1}>
-							<ReactMarkdown className="markdown-header" source={name} />
+							<StyledReactMarkdown className="markdown-header" source={name} />
 						</NavSubitem>
 					</NavSubWrapper>
 					{renderedHintsRecursive(hint.unlockedHints, nestLevel + 1)}

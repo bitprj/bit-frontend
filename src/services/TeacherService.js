@@ -1,5 +1,10 @@
 import { backend } from './AxiosInstances'
 
+export const fetchClassroom = classroomId => {
+	const endpoint = `classrooms/${classroomId}`
+	return backend.get(endpoint)
+}
+
 export const fetchSubmissions = classroomId => {
 	const endpoint = `teachers/${classroomId}/grade`
 	return backend.get(endpoint).then(() => [

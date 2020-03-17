@@ -12,8 +12,10 @@ const selectColor = props => {
 			return props.theme.pastel.red
 		case 'WARNING':
 			return props.theme.pastel.yellow
+		case 'NONE':
+			return '#aaaaaa'
 		default:
-			return '#cccccc'
+			return props.theme.accent
 	}
 }
 

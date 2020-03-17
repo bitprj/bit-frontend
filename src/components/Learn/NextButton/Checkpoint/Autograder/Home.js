@@ -15,6 +15,20 @@ import { CLI, UPLOAD, AUTOGRADER } from '../Checkpoint'
 const cliSvg = require('../../../../../assets/icons/cli.svg')
 const uploadCardsSvg = require('../../../../../assets/icons/upload-cards.svg')
 
+const PassedLineIconArea = styled(IconArea)`
+	width: fit-content;
+	margin-bottom: 1em;
+	padding-right: 2em;
+	padding-left: 1.5em;
+	cursor: pointer;
+	transition: box-shadow 0.1s ease;
+
+	:hover {
+		position: relative;
+		background-color: ${props => props.theme.fontInvert};
+	}
+`
+
 const FilledGradientIconWrapper = styled(MuiIconBox)`
 	position: relative;
 	z-index: 1;
@@ -30,20 +44,6 @@ const UnfilledGradientIconWrapper = styled(MuiIconBox)`
 	border: 0.1em solid ${props => props.theme.accent};
 	background-color: ${props => props.theme.fontInvert};
 	color: ${props => props.theme.accent};
-`
-
-const PassedLineIconArea = styled(IconArea)`
-	width: fit-content;
-	margin-bottom: 1em;
-	padding-right: 2em;
-	padding-left: 1.5em;
-	cursor: pointer;
-	transition: box-shadow 0.1s ease;
-
-	:hover {
-		position: relative;
-		background-color: ${props => props.theme.fontInvert};
-	}
 `
 
 const PassedLine = ({ className, score = '0/0', pass, onClick }) => (
@@ -67,6 +67,50 @@ const PassedLine = ({ className, score = '0/0', pass, onClick }) => (
 	</PassedLineIconArea>
 )
 
+const UnloadedCircle = styled(MuiIconBox)`
+	position: relative;
+	z-index: 1;
+	border: 0.1em solid ${props => props.theme.offFont};
+	background-color: ${props => props.theme.fontInvert};
+`
+
+const AnimatingLine = styled.div`
+	width: 7.5em;
+	height: 0.15em;
+	background-color: ${props => props.theme.offFont};
+`
+
+const UnloadedIconArea = styled(PassedLineIconArea)`
+	cursor: default;
+
+	:hover {
+		background: transparent;
+	}
+`
+
+const UnloadedLineWrapper = styled.div`
+	height: 3.6em;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+`
+
+const UnloadedLine = ({}) => {
+	useEffect(() => {}, [])
+
+	return (
+		<UnloadedIconArea
+			gap={'1.5em'}
+			icon={<UnloadedCircle circle width="2em" />}
+		>
+			<UnloadedLineWrapper>
+				<AnimatingLine />
+				<AnimatingLine />
+			</UnloadedLineWrapper>
+		</UnloadedIconArea>
+	)
+}
+
 const ProgressContainer = styled.div`
 	padding: 1em 3em 0;
 	height: 100%;
@@ -80,35 +124,39 @@ const VerticalLine = styled.div`
 	top: 0;
 	left: 5.43em;
 	bottom: 0;
-	background: linear-gradient(
-		180deg,
-		${props => props.theme.accent} 0%,
-		rgba(0, 123, 237, 0.4) 0.01%,
-		${props => props.theme.accent} 53.65%,
-		rgba(0, 123, 237, 0) 100%
-	);
+
+	${props =>
+		!props.isReady
+			? `background: linear-gradient(
+        180deg,
+        ${props.theme.offFont} 0%,
+        ${props.theme.offFont} 0.01%,
+        ${props.theme.offFont} 53.65%,
+        ${props.theme.offFont} 100%
+      );`
+			: `background: linear-gradient(
+        180deg,
+        ${props.theme.accent} 0%,
+        rgba(0, 123, 237, 0.4) 0.01%,
+        ${props.theme.accent} 53.65%,
+        rgba(0, 123, 237, 0) 100%
+      );`}
 `
 
-const Progress = ({ pushView, progress, setAutograderResultIndex }) => {
-	useEffect(() => {
-		anime({
-			// targets: '.learn-i-checkpointresult-recent',
-			// border: ['0.1em solid black', '0.1em solid purple'],
-			// duration: 500,
-			// direction: 'alternate',
-			// loop: true
-		})
-	}, [progress])
+const Progress = ({ pushView, progress, setSubmissionIndex }) => {
+	const isReady = !!progress
 
 	return (
 		<ProgressContainer>
-			{progress ? (
-				<>
-					<VerticalLine />
-					{progress
+			<VerticalLine isReady={isReady} />
+			{!isReady
+				? [...Array(2)].map((_, i) => {
+						return <UnloadedLine key={`learn-checkpointunloaded-${i}`} />
+				  })
+				: progress
 						.filter((_, index) => index < 2)
 						.map((result, index) => {
-							const { numPass, numFail } = result.results
+							const { numPass, numFail } = result
 							return (
 								<PassedLine
 									key={`learn-checkpointresult-${index}`}
@@ -117,15 +165,14 @@ const Progress = ({ pushView, progress, setAutograderResultIndex }) => {
 									}
 									pass={numPass > 1}
 									score={`${numPass}/${numPass + numFail}`}
+									isReady
 									onClick={() => {
 										pushView(AUTOGRADER)
-										setAutograderResultIndex(index)
+										setSubmissionIndex(index)
 									}}
 								/>
 							)
 						})}
-				</>
-			) : null}
 		</ProgressContainer>
 	)
 }
@@ -145,7 +192,7 @@ const CardContainer = styled.div`
 	transition: box-shadow 0.2s ease, transform 0.2s ease;
 `
 
-const Card = ({ icon, title, description, onClick }) => (
+export const Card = ({ icon, title, description, onClick }) => (
 	<CardContainer className="hover-raise" onClick={onClick}>
 		<Icon src={icon} width="6.6em" height="6em" />
 		<h2 style={{ margin: 0, fontSize: '1.14em' }}>{title}</h2>
@@ -165,9 +212,9 @@ const NavigationTwoPanel = styled(TwoPanel)`
 
 const Home = ({
 	pushView,
-	setAutograderResultIndex,
 	instruction = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.',
-	progress
+	progress,
+	setSubmissionIndex
 }) => {
 	return (
 		<>
@@ -177,7 +224,7 @@ const Home = ({
 					<Progress
 						progress={progress}
 						pushView={pushView}
-						setAutograderResultIndex={setAutograderResultIndex}
+						setSubmissionIndex={setSubmissionIndex}
 					/>
 				}
 				ratio={0.55}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { SafeStack } from '../../../utils/DataStructures'
 
 import Central from './Central/Central'
@@ -35,6 +35,10 @@ const NextButtonManager = ({
 	onBroadcastButtonState,
 	onResetButtonStateSchedule
 }) => {
+	console.log('rerender start!')
+	useEffect(() => {
+		console.log('currentCardIndex changed!')
+	}, [currentCardIndex])
 	/**
 	 * Stack-based system to determine current button state
 	 *
@@ -52,12 +56,27 @@ const NextButtonManager = ({
 
 	const [openCheckpoint, setOpenCheckpoint] = useState(false)
 	const [checkpointView, setCheckpointView] = useState(['HOME'])
-	const [autograderResultIndex, setAutograderResultIndex] = useState(0)
+	const [submissionIndex, setSubmissionIndex] = useState(0)
 
 	useEffect(() => {
 		if (buttonStateStack.current.peek() === STATE_CARD)
 			onBroadcastButtonState(STATE_CARD)
 	}, [])
+
+	useEffect(() => {
+		return () => {
+			console.log('cleaning up...')
+			resetAndBroadcastButtonState()
+			if (finishedButtonStates.includes(STATE_CHECKPOINT)) {
+				removeFromFinishedButtonStates(STATE_CHECKPOINT)
+				console.log('removing checkpoint...', finishedButtonStates)
+			}
+			if (finishedButtonStates.includes(STATE_CONCEPT)) {
+				removeFromFinishedButtonStates(STATE_CONCEPT)
+				console.log('removing concept...', finishedButtonStates)
+			}
+		}
+	}, [currentCardIndex])
 
 	/**
 	 * Update currentButtonState with all states from the schedule queue FIRST
@@ -81,26 +100,34 @@ const NextButtonManager = ({
 	useEffect(() => {
 		if (checkpoint) {
 			if (checkpointFinished) {
+				console.log('adding checkpoint...', finishedButtonStates)
 				removeAndBroadcastButtonState(STATE_CHECKPOINT)
 			} else {
 				addAndBroadcastButtonState(STATE_CHECKPOINT) // on revisit
 			}
 		}
-	}, [currentCardIndex, checkpointFinished])
-	useEffect(() => {
-		if (
-			concepts &&
-			concepts.length &&
-			!buttonStateStack.current.has(STATE_CONCEPT)
-		) {
-			pushToFinishedButtonStates(STATE_CONCEPT)
-		}
-
 		return () => {
-			resetAndBroadcastButtonState()
-			setFinishedButtonStates([])
+			// if (finishedButtonStates.includes(STATE_CHECKPOINT)) {
+			// 	removeFromFinishedButtonStates(STATE_CHECKPOINT)
+			// }
 		}
-	}, [currentCardIndex])
+	}, [currentCardIndex, checkpointFinished])
+
+	const conceptsFinished = !buttonStateStack.current.has(STATE_CONCEPT)
+	useEffect(() => {
+		if (concepts && concepts.length) {
+			if (conceptsFinished) {
+				console.log('adding concepts...', finishedButtonStates)
+				pushToFinishedButtonStates(STATE_CONCEPT)
+			}
+		} else {
+		}
+		return () => {
+			// if (finishedButtonStates.includes(STATE_CONCEPT)) {
+			// 	removeFromFinishedButtonStates(STATE_CONCEPT)
+			// }
+		}
+	}, [currentCardIndex, conceptsFinished])
 
 	useEffect(() => {
 		if (buttonStateStack.current.peek() === STATE_CONCEPT) {
@@ -134,6 +161,11 @@ const NextButtonManager = ({
 		finishedButtonStates.push(buttonState)
 		setFinishedButtonStates([...finishedButtonStates])
 	}
+	const removeFromFinishedButtonStates = buttonState => {
+		setFinishedButtonStates(
+			finishedButtonStates.filter(bs => bs !== buttonState)
+		)
+	}
 
 	return (
 		<Container className={`${className || ''} transition-medium`}>
@@ -151,8 +183,8 @@ const NextButtonManager = ({
 				setOpen={setOpenCheckpoint}
 				view={checkpointView}
 				setView={setCheckpointView}
-				autograderResultIndex={autograderResultIndex}
-				setAutograderResultIndex={setAutograderResultIndex}
+				submissionIndex={submissionIndex}
+				setSubmissionIndex={setSubmissionIndex}
 			/>
 			<Central
 				removeAndBroadcastButtonState={removeAndBroadcastButtonState}
@@ -178,12 +210,20 @@ const mapStateToProps = state => {
 	/**
 	 * Checkpoint Finished calculation
 	 */
+	let checkpointFinished = false
 	const checkpointId = get(checkpoint, 'id')
 	const recentCheckpoint =
-		checkpointsProgress &&
-		get(checkpointsProgress[checkpointId], '[0].results', {})
-	const { numPass, numFail } = recentCheckpoint
-	const checkpointFinished = numPass > numFail
+		checkpointsProgress && get(checkpointsProgress[checkpointId], '[0]', {})
+
+	const checkpointType = get(checkpoint, 'checkpointType')
+	if (checkpointType === 'Autograder') {
+		const { numPass, numFail } = recentCheckpoint
+		checkpointFinished = numPass > numFail
+	} else {
+		if (!isEmpty(recentCheckpoint)) {
+			checkpointFinished = true
+		}
+	}
 
 	return {
 		currentCardIndex,

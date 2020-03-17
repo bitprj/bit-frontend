@@ -80,7 +80,6 @@ const Login = ({ open, setOpen, onAuthenticate }) => {
 
 		try {
 			const response = await login(userCombo.user, userCombo.pass)
-			console.log(response)
 			localStorage.setItem('csrf-token', response.csrfToken)
 			onAuthenticate(response.userType.toUpperCase())
 

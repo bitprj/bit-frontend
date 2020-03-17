@@ -82,13 +82,13 @@ const NavButton = styled(Button)`
 const styledLink = { color: 'black', textDecoration: 'none' }
 
 const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
-	const history = useHistory()
-
 	const [openLogin, setOpenLogin] = useState(false)
 	const [logout, setLogout] = useState(null)
 
 	useEffect(() => {
-		setLogout(false)
+		if (logout) {
+			setLogout(false)
+		}
 	}, [logout])
 
 	return (

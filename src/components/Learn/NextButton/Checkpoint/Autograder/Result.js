@@ -80,16 +80,17 @@ const LeftPanel = ({ result, setTestCaseIndex }) => {
 
 			<TestLineList>
 				<div style={{ margin: '1em 0 2em' }}>
-					{allCases.map((details, index) => {
-						return (
-							<TestLine
-								key={`learn-checkpointresult-failcase-${index}`}
-								pass={!(index === 0 && numFail > 0)}
-								name={details.name}
-								onClick={() => setTestCaseIndex(index)}
-							/>
-						)
-					})}
+					{allCases &&
+						allCases.map((details, index) => {
+							return (
+								<TestLine
+									key={`learn-checkpointresult-failcase-${index}`}
+									pass={!(index === 0 && numFail > 0)}
+									name={details.name}
+									onClick={() => setTestCaseIndex(index)}
+								/>
+							)
+						})}
 				</div>
 			</TestLineList>
 		</LeftPanelContainer>
@@ -133,11 +134,11 @@ const RightPanel = ({ result, testCaseIndex }) => {
 			<DetailsContainer>
 				<SmallHeader>Expected Output</SmallHeader>
 				<BlackTextArea className="code low-profile-scrollbar fat light">
-					{(output && output.join('\n')) || expected.join('\n')}
+					{(output && output.join('\n')) || (expected && expected.join('\n'))}
 				</BlackTextArea>
 				<SmallHeader>Your Output</SmallHeader>
 				<BlackTextArea className="code low-profile-scrollbar fat light">
-					{output.join('\n')}
+					{output && output.join('\n')}
 				</BlackTextArea>
 			</DetailsContainer>
 		</RightPanelContainer>

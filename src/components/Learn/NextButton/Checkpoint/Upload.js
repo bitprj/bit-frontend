@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import anime from 'animejs'
+import anime, { get } from 'animejs'
 import { useDropzone } from 'react-dropzone'
 import { connect } from 'react-redux'
 
@@ -61,6 +61,76 @@ const Upload = ({
 }) => {
 	const themeContext = useContext(ThemeContext)
 
+	const containerRef = useRef(null)
+
+	const [error, setError] = useState(false)
+
+	const handleSubmit = () => {
+		setError(false)
+		onInitSubmitCheckpointProgress(
+			activityId,
+			checkpointId,
+			type,
+			acceptedFiles[0]
+		)
+		pushView(LOADING)
+	}
+
+	const handleError = () => {
+		setError(true)
+		anime({
+			targets: containerRef,
+			boxShadow: [
+				'inset 0 0 20em 5em #0000',
+				`inset 0 0 20em 5em ${themeContext.pastel.red}55`
+			],
+			duration: 1000,
+			direction: 'alternate'
+		})
+	}
+
+	const getAcceptedFileTypes = () => {
+		switch (type) {
+			case 'Image':
+				return 'image/*'
+			case 'Video':
+				return 'video/*'
+			case 'Autograder':
+				return 'zip,application/zip,application/x-zip,application/x-zip-compressed'
+		}
+	}
+
+	const getDescription = () => {
+		switch (type) {
+			case 'Image':
+				return <>Drag your image to the browser</>
+			case 'Video':
+				return <>Drag your video to the browser</>
+
+			case 'Autograder':
+				return (
+					<>
+						Drag your <code>src.zip</code> to the browser
+					</>
+				)
+		}
+	}
+
+	const getErrorMessage = () => {
+		switch (type) {
+			case 'Image':
+				return <>Make sure you upload an image</>
+			case 'Video':
+				return <>Make sure you upload a video' case 'Autograder</>
+			case 'Autograder':
+				return (
+					<>
+						Make sure you upload a <code>src.zip</code> file
+					</>
+				)
+		}
+	}
+
 	const {
 		acceptedFiles,
 		rejectedFiles,
@@ -70,44 +140,32 @@ const Upload = ({
 		isDragAccept,
 		isDragReject
 	} = useDropzone({
-		accept:
-			'zip,application/zip,application/x-zip,application/x-zip-compressed',
+		accept: getAcceptedFileTypes(),
 		multiple: false
 	})
 
-	const containerRef = useRef(null)
-
-	const [error, setError] = useState(false)
-
 	useEffect(() => {
 		if (acceptedFiles.length) {
-			if (acceptedFiles[0].name === 'src.zip') {
-				setError(false)
-				onInitSubmitCheckpointProgress(
-					activityId,
-					checkpointId,
-					type,
-					acceptedFiles[0]
-				)
-				pushView(LOADING)
-			} else {
-				setError(true)
-				anime({
-					targets: containerRef,
-					boxShadow: [
-						'inset 0 0 20em 5em #0000',
-						`inset 0 0 20em 5em ${themeContext.pastel.red}55`
-					],
-					duration: 1000,
-					direction: 'alternate'
-				})
+			switch (type) {
+				case 'Image':
+				case 'Video':
+					handleSubmit()
+					break
+
+				case 'Autograder':
+					if (acceptedFiles[0].name === 'src.zip') {
+						handleSubmit()
+					} else {
+						handleError()
+					}
+					break
 			}
 		}
 	}, [acceptedFiles])
 
 	useEffect(() => {
 		if (rejectedFiles.length) {
-			setError(true)
+			handleError()
 		}
 	}, [rejectedFiles])
 
@@ -120,14 +178,8 @@ const Upload = ({
 			<IconArea icon={<Icon src={uploadCardsSvg} />} gap="0.75em">
 				<div>
 					<h3 style={{ margin: 0 }}>Upload or Drag File</h3>
-					<p style={{ margin: 0 }}>
-						Drag your <code>src.zip</code> to the browser
-					</p>
-					{error && (
-						<Error>
-							Make sure you upload a <code>src.zip</code> file
-						</Error>
-					)}
+					<p style={{ margin: 0 }}>{getDescription()}</p>
+					{error && <Error>{getErrorMessage()}</Error>}
 				</div>
 			</IconArea>
 		</Container>

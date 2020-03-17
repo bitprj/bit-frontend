@@ -19,7 +19,7 @@ const ProfilePicture = styled(Icon)`
 	background-color: ${props => props.theme.accentVariant};
 `
 
-const IconArea = ({ src, children, iconSize }) => {
+const ProfPic = ({ src, children, iconSize }) => {
 	return (
 		<AccountContainer>
 			<VerticalAlign>
@@ -30,4 +30,4 @@ const IconArea = ({ src, children, iconSize }) => {
 	)
 }
 
-export default IconArea
+export default ProfPic

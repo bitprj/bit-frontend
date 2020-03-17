@@ -3,8 +3,8 @@ import camelCase from 'camelcase-keys-deep'
 
 /** GENERAL BACKEND (mainly for GET) */
 
-// const backendBaseURL = 'http://darlene-backend.herokuapp.com/'
-const backendBaseURL = 'https://bit-backend.azurewebsites.net/'
+const backendBaseURL = 'http://darlene-backend.herokuapp.com/'
+// const backendBaseURL = 'https://bit-backend.azurewebsites.net/'
 // const backendBaseURL = 'https://1acd7318.ngrok.io'
 export const backend = axios.create({
 	baseURL: backendBaseURL,

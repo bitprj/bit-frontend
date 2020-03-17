@@ -31,16 +31,18 @@ const Caption = styled.p`
 `
 
 const Loading = ({
-	pushViewAndRemovingLoading,
+	pushViewAndRemoveIntermediaries,
 	submittedCheckpointSuccessful
 }) => {
 	const [error, setError] = useState(false)
 
 	useEffect(() => {
-		if (submittedCheckpointSuccessful) {
-			pushViewAndRemovingLoading(AUTOGRADER)
-		} else if (submittedCheckpointSuccessful === false) {
-			setError(true)
+		if (submittedCheckpointSuccessful !== undefined) {
+			if (submittedCheckpointSuccessful) {
+				pushViewAndRemoveIntermediaries(AUTOGRADER)
+			} else if (!submittedCheckpointSuccessful) {
+				setError(true)
+			}
 		}
 	}, [submittedCheckpointSuccessful])
 
