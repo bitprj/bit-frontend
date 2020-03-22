@@ -46,7 +46,7 @@ const UnfilledGradientIconWrapper = styled(MuiIconBox)`
 	color: ${props => props.theme.accent};
 `
 
-const PassedLine = ({ className, score = '0/0', pass, onClick }) => (
+const PassedLine = ({ className, error, score = '0/0', pass, onClick }) => (
 	<PassedLineIconArea
 		className={`hover-strong-lift ${className || ''}`}
 		gap={'1.5em'}
@@ -63,7 +63,7 @@ const PassedLine = ({ className, score = '0/0', pass, onClick }) => (
 		}
 		onClick={onClick}
 	>
-		<h3>{score} PASSED</h3>
+		<h3>{error ? `ERROR` : `${score} PASSED`}</h3>
 	</PassedLineIconArea>
 )
 
@@ -145,18 +145,28 @@ const VerticalLine = styled.div`
 
 const Progress = ({ pushView, progress, setSubmissionIndex }) => {
 	const isReady = !!progress
+	const submissions = progress?.submissions
 
 	return (
 		<ProgressContainer>
-			<VerticalLine isReady={isReady} />
+			{submissions?.length !== 0 && <VerticalLine isReady={isReady} />}
 			{!isReady
 				? [...Array(2)].map((_, i) => {
 						return <UnloadedLine key={`learn-checkpointunloaded-${i}`} />
 				  })
-				: progress
+				: submissions
 						.filter((_, index) => index < 2)
-						.map((result, index) => {
-							const { numPass, numFail } = result
+						.map((submission, index) => {
+							const results = submission.results
+							if (results.error) {
+								return (
+									<PassedLine key={`learn-checkpointresult-${index}`} error>
+										{results.error}
+									</PassedLine>
+								)
+							}
+
+							const { numPass, numFail } = results
 							return (
 								<PassedLine
 									key={`learn-checkpointresult-${index}`}

@@ -145,6 +145,7 @@ const reducer = (state = initialState, action) => {
 		}
 
 		case SET_CURRENT_CARD_BY_INDEX: {
+			console.error('changed!')
 			return {
 				...state,
 				indicators: {
@@ -224,21 +225,25 @@ const reducer = (state = initialState, action) => {
 		}
 
 		case PUSH_TO_LOADED_CHECKPOINTS_PROGRESS: {
+			let newCheckpointsProgress = {
+				...state.progress.checkpointsProgress,
+				...action.newLoads
+			}
+
 			/**
-			 * For newly submitted checkpoints
+			 * Can expect only one 'newLoad'
 			 */
-			let newCheckpointsProgress
-			const checkpointId = Object.keys(action.newLoads)[0]
-			if (state.progress.checkpointsProgress[checkpointId]) {
-				newCheckpointsProgress = {
-					[checkpointId]: action.newLoads[checkpointId].concat(
-						state.progress.checkpointsProgress[checkpointId]
-					)
-				}
-			} else {
+			if (action.autograder) {
+				const checkpointId = Object.keys(action.newLoads)[0]
+
+				const processed = cloneDeep(
+					state.progress.checkpointsProgress[checkpointId]
+				)
+				processed.submissions.unshift(action.newLoads[checkpointId])
+
 				newCheckpointsProgress = {
 					...state.progress.checkpointsProgress,
-					...action.newLoads
+					[checkpointId]: processed
 				}
 			}
 

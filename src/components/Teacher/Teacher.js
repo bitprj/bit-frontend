@@ -18,8 +18,8 @@ const Container = styled.div`
 
 	> :nth-child(1),
 	> :nth-child(2),
-  > :nth-child(3),
-  > :nth-child(4) {
+	> :nth-child(3),
+	> :nth-child(4) {
 		height: 100vh;
 	}
 
@@ -32,7 +32,7 @@ const Teacher = ({ isReady, onInit }) => {
 	const containerRef = useRef(null)
 
 	useEffect(() => {
-		onInit(1)
+		onInit()
 	}, [])
 
 	return (
@@ -41,7 +41,7 @@ const Teacher = ({ isReady, onInit }) => {
 				<Toolbar />
 				<Sidebar />
 				<Content />
-        <Details />
+				<Details />
 			</Container>
 		</WithPageSpinner>
 	)
@@ -52,7 +52,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	onInit: classroomId => dispatch(init(classroomId))
+	onInit: () => dispatch(init())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Teacher)

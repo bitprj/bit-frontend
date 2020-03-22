@@ -37,8 +37,7 @@ const Settings = ({ activityId }) => {
 		try {
 			setWaiting(true)
 			const res = await deleteActivityProgress(activityId)
-			console.log(res.message)
-			if (res.message) {
+			if (res.message === 'Student activity progress successfully deleted.') {
 				window.location.replace('/learn/')
 			}
 		} catch (e) {

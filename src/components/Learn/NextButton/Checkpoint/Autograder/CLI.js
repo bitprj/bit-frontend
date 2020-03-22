@@ -20,8 +20,10 @@ const TitleArea = styled(ImgAndContent)`
 
 const CodeArea = styled.pre`
 	padding: 1em 1.5em;
-	background-color: #000;
+	background-color: #2b2b2b;
 	color: #fff;
+  white-space: nowrap;
+  border-radius: 0.5em;
 `
 
 const CLI = ({
@@ -40,7 +42,9 @@ const CLI = ({
 					Upload Code Using Terminal
 				</TitleArea>
 				<p style={{ margin: '1.5em 0' }}>{description}</p>
-				<CodeArea className="code">{command}</CodeArea>
+				<CodeArea className="code low-profile-scrollbar only-hover light">
+					{command}
+				</CodeArea>
 			</div>
 		</Container>
 	)

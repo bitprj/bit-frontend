@@ -63,7 +63,7 @@ export const init = activityId => async dispatch => {
 
 	// Process activityProgress
 	let index = activitySkeleton.cards.findIndex(
-		card => card.contentfulId === activityProgress.cardContentfulId
+		card => card.id === activityProgress.lastCardCompletedId
 	)
 	if (index === -1) index = 0 // TODO also an error here
 	activityProgress = {
@@ -87,7 +87,6 @@ export const init = activityId => async dispatch => {
 	dispatch(setCardStatuses(cardStatuses))
 
 	const checkpointProgresses = await initCheckpointProgress(unlockedCards)
-	console.log(objectArrayToObject(checkpointProgresses))
 	dispatch(
 		pushToLoadedCheckpointsProgress(objectArrayToObject(checkpointProgresses))
 	)
@@ -168,8 +167,7 @@ const initCheckpointProgress = unlockedCards =>
 			.map(async card => {
 				try {
 					const progress = await fetchCheckpointProgress(card.checkpoint.id)
-					const processed = progress.submissions.map(p => p.results)
-					return { [card.checkpoint.id]: processed }
+					return { [card.checkpoint.id]: progress }
 				} catch (e) {
 					return { [card.checkpoint.id]: [] }
 				}
@@ -240,13 +238,13 @@ export const initSubmitCheckpointProgress = (
 			content
 		)
 		dispatch(setSubmittedCheckpointSuccessful(true))
-		console.log(response)
-
 		dispatch(
-			// correct format
-			pushToLoadedCheckpointsProgress({
-				[checkpointId]: [response]
-			})
+			pushToLoadedCheckpointsProgress(
+				{
+					[checkpointId]: response
+				},
+				type === 'Autograder'
+			)
 		)
 	} catch (e) {
 		console.log(e)
@@ -288,9 +286,10 @@ export const resetButtonStateSchedule = buttonState => ({
 	buttonState
 })
 
-export const pushToLoadedCheckpointsProgress = newLoads => ({
+export const pushToLoadedCheckpointsProgress = (newLoads, autograder) => ({
 	type: PUSH_TO_LOADED_CHECKPOINTS_PROGRESS,
-	newLoads
+	newLoads,
+	autograder
 })
 
 const setCard = card => ({

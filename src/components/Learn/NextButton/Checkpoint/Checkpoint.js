@@ -97,20 +97,10 @@ const Checkpoint = ({
 	type,
 	progress
 }) => {
-	const getSubmission = () => {
-		const unprocessed = progress && progress[submissionIndex]
-
-		if (!unprocessed) return {}
-
-		const results = { ...unprocessed }
-		const { passCases, failCase } = results
-		results.allCases = [...passCases].reverse()
-		if (!isEmpty(failCase)) {
-			results.allCases.unshift(failCase)
-		}
-		return results
+	const previousView = () => {
+		view.pop()
+		setView([...view])
 	}
-
 	const pushView = newView => {
 		view.push(newView)
 		setView([...view])
@@ -139,28 +129,46 @@ const Checkpoint = ({
 						return (
 							<MediaHome
 								pushView={pushView}
+								type={type}
 								instruction={instruction}
 								progress={progress}
-								setSubmissionIndex={setSubmissionIndex}
 							/>
 						)
 
 					default:
 						return null
 				}
+
 			case AUTOGRADER:
-				return <AutograderResult result={getSubmission()} />
+				const getSubmission = () => {
+					console.log(progress)
+					const unprocessed = progress.submissions[submissionIndex] ?? {}
+					if (unprocessed.error) return unprocessed
+
+					const results = { ...unprocessed.results }
+					const { passCases, failCase } = results
+					results.allCases = [...passCases].reverse()
+					if (!isEmpty(failCase)) {
+						results.allCases.unshift(failCase)
+					}
+					return results
+				}
+				return <AutograderResult results={getSubmission()} />
+
 			case CLI:
 				return <AutograderCLI />
+
 			case UPLOAD:
 				return (
 					<Upload
 						pushView={pushView}
+						previousView={previousView}
 						activityId={activityId}
 						checkpointId={checkpointId}
 						type={type}
 					/>
 				)
+
 			case LOADING:
 				return (
 					<AutograderLoading
@@ -176,6 +184,10 @@ const Checkpoint = ({
 		}
 	}
 
+	const getRecentSubmissionContent = () => {
+		return progress?.content ?? progress?.submissions?.[0]
+	}
+
 	const mostRecentGradeStatus = () => {
 		let status = 'NONE'
 		let message = 'LOADING'
@@ -183,26 +195,47 @@ const Checkpoint = ({
 		const calculateGradeStatus = () => {
 			if (!progress) return
 
-			if (Array.isArray(progress) && !progress.length) {
+			const recent = getRecentSubmissionContent()
+
+			if (!recent) {
 				status = ''
 				message = 'NO SUBMISSIONS'
 				return
 			}
 
-			const recent = progress[0]
+			/**
+			 * ERROR
+			 */
+			if (recent.error) {
+				status = 'FATAL'
+				message = 'NOT PASSING'
+				return
+			}
 
 			/**
 			 * AUTOGRADING
 			 */
-			if (recent.numPass === 0) {
-				status = 'FATAL'
-				message = 'NONE PASSING'
-			} else if (recent.numPass > 0 && recent.numFail > 0) {
-				status = 'WARNING'
-				message = 'PARTIALLY PASSING'
-			} else if (recent.numFail === 0) {
+			if (type === 'Autograder') {
+				const results = recent.results
+				if (results.numPass === 0) {
+					status = 'FATAL'
+					message = 'NOT PASSING'
+				} else if (results.numPass > 0 && results.numFail > 0) {
+					status = 'WARNING'
+					message = 'PARTIALLY PASSING'
+				} else if (results.numFail === 0) {
+					status = 'SUCCESS'
+					message = 'ALL PASSING'
+				}
+				return
+			}
+
+			/**
+			 * NOT AUTOGRADER
+			 */
+			if (type !== 'Autograder') {
 				status = 'SUCCESS'
-				message = 'ALL PASSING'
+				message = 'SUBMITTED'
 			}
 		}
 		calculateGradeStatus()
@@ -272,6 +305,8 @@ const mapStateToProps = state => {
 	const card = cards && cards[currentCardIndex]
 	const checkpointId = get(card, 'checkpoint.id')
 	const progress = checkpointsProgress && checkpointsProgress[checkpointId]
+
+	// console.log(progress)
 
 	return {
 		activityId,

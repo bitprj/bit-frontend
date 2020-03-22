@@ -21,6 +21,8 @@ const TestLineName = styled.h4`
 	margin: 0;
 	flex: 1;
 	font-size: 1em;
+
+	white-space: nowrap;
 `
 const PassFail = styled.div`
 	width: 4.5em;
@@ -31,10 +33,15 @@ const PassFail = styled.div`
 	text-align: center;
 `
 
-const TestLine = ({ pass, name, onClick }) => {
+const TestLine = ({ className, pass, name, onClick }) => {
 	return (
-		<TestLineContainer className="hover-strong-lift" onClick={onClick}>
-			<TestLineName>{name}</TestLineName>
+		<TestLineContainer
+			className={`${className || ''} hover-strong-lift`}
+			onClick={onClick}
+		>
+			<TestLineName className="low-profile-scrollbar only-hover">
+				{name}
+			</TestLineName>
 			<PassFail pass={pass}>{pass ? 'Passed' : 'Failed'}</PassFail>
 		</TestLineContainer>
 	)
@@ -64,8 +71,8 @@ const TestLineList = styled(Scrollable)`
 	padding: 0 1em;
 `
 
-const LeftPanel = ({ result, setTestCaseIndex }) => {
-	const { numFail, numPass, allCases } = result
+const LeftPanel = ({ results, testCaseIndex, setTestCaseIndex }) => {
+	const { numFail, numPass, allCases } = results
 	return (
 		<LeftPanelContainer>
 			<LeftPanelHeader>
@@ -85,6 +92,7 @@ const LeftPanel = ({ result, setTestCaseIndex }) => {
 							return (
 								<TestLine
 									key={`learn-checkpointresult-failcase-${index}`}
+									className={testCaseIndex === index ? 'big-lift' : ''}
 									pass={!(index === 0 && numFail > 0)}
 									name={details.name}
 									onClick={() => setTestCaseIndex(index)}
@@ -125,8 +133,8 @@ const SmallHeader = styled.h4`
 	margin: 1.5em 0;
 `
 
-const RightPanel = ({ result, testCaseIndex }) => {
-	const { allCases } = result
+const RightPanel = ({ results, testCaseIndex }) => {
+	const { allCases } = results
 	const { output, expected } = allCases[testCaseIndex]
 
 	return (
@@ -149,15 +157,25 @@ const StyledTwoPanel = styled(TwoPanel)`
 	padding-bottom: 1em;
 `
 
-const AutograderResult = ({ result }) => {
+const AutograderResult = ({ results }) => {
 	const [testCaseIndex, setTestCaseIndex] = useState(0)
+
+	if (results.error) {
+		return <h1>{results.error}</h1>
+	}
 
 	return (
 		<StyledTwoPanel
 			fullSizeAxis
 			fullSizeOffAxis
-			first={<LeftPanel result={result} setTestCaseIndex={setTestCaseIndex} />}
-			second={<RightPanel result={result} testCaseIndex={testCaseIndex} />}
+			first={
+				<LeftPanel
+					results={results}
+					testCaseIndex={testCaseIndex}
+					setTestCaseIndex={setTestCaseIndex}
+				/>
+			}
+			second={<RightPanel results={results} testCaseIndex={testCaseIndex} />}
 		/>
 	)
 }

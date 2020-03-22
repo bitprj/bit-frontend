@@ -47,36 +47,15 @@ export const submitCheckpointProgress = (
 ) => {
 	const backendEndpoint = `checkpoints/${checkpointId}/progress`
 
-	let data
-	let formData = new FormData()
+	const formData = new FormData()
+	formData.append('content', content)
+	formData.append('comment', '')
 
-	switch (type) {
-		case 'Video':
-		case 'Image':
-		case 'Autograder':
-			formData.append('content', content)
-			formData.append('activity_id', activityId)
-			formData.append('checkpoint_id', checkpointId)
-			formData.append('username', 'Student@example.com')
-
-			formData.append('content', content)
-			break
-
-		case 'Multiple Choice':
-		case 'Short Answer':
-		default:
-			break
+	if (type === 'Autograder') {
+		formData.append('activity_id', activityId)
+		formData.append('checkpoint_id', checkpointId)
+		formData.append('username', 'Student@example.com')
+		return grader.post('/uploader', formData)
 	}
-
-	if (formData) {
-		if (type === 'Autograder') {
-			return grader.post('/uploader', formData)
-		}
-		return backend.put(backendEndpoint, formData)
-	}
-
-	data.activity_id = activityId
-	data.checkpoint_id = checkpointId
-	data.username = 'Student@example.com'
-	return backend.put(backendEndpoint, data)
+	return backendSaves.put(backendEndpoint, formData)
 }

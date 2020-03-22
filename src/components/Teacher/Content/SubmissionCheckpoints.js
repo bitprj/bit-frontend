@@ -1,9 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import MediaLightbox, {
+	TYPE_IMAGE,
+	TYPE_VIDEO
+} from '../../shared/gadgets/MediaLightbox'
 import Dot from '@material-ui/icons/FiberManualRecord'
 
-import ThreeCheckbox from './ThreeCheckbox'
+import MarkdownArea from '../../shared/external/MarkdownArea'
+import ThreeCheckbox from '../../shared/gadgets/ThreeCheckbox'
 import IconLine from '../../shared/gadgets/IconLine'
 
 const selectTypeColor = props => {
@@ -25,6 +30,7 @@ const selectTypeColor = props => {
 const Container = styled.section`
 	margin: 3em 5em 3em 2em;
 	display: flex;
+	font-size: 75%;
 `
 
 const CheckArea = styled.div`
@@ -55,18 +61,8 @@ const Question = styled.div`
 const MediaContainer = styled.div`
 	margin: 2em 0;
 	height: 18em;
-`
-
-const Image = styled.img`
-	margin: 0 auto;
-	max-width: 100%;
-	max-height: 100%;
-`
-
-const Video = styled.video`
-	margin: 0 auto;
-	max-width: 100%;
-	max-height: 100%;
+	display: flex;
+	justify-content: center;
 `
 
 const Checkpoints = ({
@@ -77,24 +73,13 @@ const Checkpoints = ({
 }) => {
 	const selectContent = () => {
 		switch (type) {
-			case 'IMAGE': {
-				return (
-					<a data-src={content} data-fancybox>
-						<Image className="strong-lift" src={content} />
-					</a>
-				)
-			}
+			case 'IMAGE':
+				return <MediaLightbox type={TYPE_IMAGE} src={content} />
 
-			case 'VIDEO': {
-				return (
-					<Video className="strong-lift" controls>
-						<source src={content} type="video/mp4" />
-					</Video>
-				)
-			}
+			case 'VIDEO':
+				return <MediaLightbox type={TYPE_VIDEO} src={content} />
 
-			case 'GRADER': {
-			}
+			case 'GRADER':
 
 			default:
 				break
@@ -113,6 +98,7 @@ const Checkpoints = ({
 				<Name>{name}</Name>
 				<Question>{question}</Question>
 				<MediaContainer>{selectContent()}</MediaContainer>
+				<MarkdownArea onChange={contents => console.log(contents)} />
 			</Content>
 		</Container>
 	)

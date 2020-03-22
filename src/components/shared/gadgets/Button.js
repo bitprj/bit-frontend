@@ -46,6 +46,7 @@ const RenderedButton = styled.button.attrs(props => {
   white-space: nowrap;
   transition: 0.2s ease all;
   font-size: inherit;
+  user-select: none;
 
   ${props => (props.disabled ? 'pointer-events: none;' : '')}
 

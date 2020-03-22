@@ -1,15 +1,23 @@
 import {
-	SET_SUBMISSIONS,
+  SET_SUBMISSIONS,
+  SET_CURRENT_CLASSROOM_BY_INDEX,
 	SET_CURRENT_SUBMISSION_BY_INDEX
 } from '../actionTypes'
 
-import { fetchClassroom, fetchSubmissions } from '../../services/TeacherService'
+import {
+	fetchTeacherData,
+	fetchClassroom,
+	fetchSubmissionsAll
+} from '../../services/TeacherService'
 
 /* ===== INITIALIZATION */
-export const init = classroomId => async dispatch => {
+export const init = () => async dispatch => {
+	const teacherData = await fetchTeacherData()
+	const classroomId = teacherData.classrooms[0].id
+
 	const [classroom, submissions] = await Promise.all([
 		fetchClassroom(classroomId),
-		fetchSubmissions(classroomId)
+		fetchSubmissionsAll(classroomId)
 	])
 
 	console.log(classroom, submissions)
@@ -22,6 +30,11 @@ const setSubmissions = submissions => ({
 })
 
 /* ===== RUNTIME */
+export const setCurrentClassroomByIndex = classroomIndex => ({
+	type: SET_CURRENT_CLASSROOM_BY_INDEX,
+	classroomIndex
+})
+
 export const setCurrentSubmissionByIndex = submissionIndex => ({
 	type: SET_CURRENT_SUBMISSION_BY_INDEX,
 	submissionIndex

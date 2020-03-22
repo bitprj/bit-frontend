@@ -53,6 +53,7 @@ const Error = styled.p`
 
 const Upload = ({
 	pushView,
+	previousView,
 
 	activityId,
 	checkpointId,
@@ -73,7 +74,11 @@ const Upload = ({
 			type,
 			acceptedFiles[0]
 		)
-		pushView(LOADING)
+		if (type === 'Autograder') {
+			pushView(LOADING)
+		} else {
+			previousView()
+		}
 	}
 
 	const handleError = () => {

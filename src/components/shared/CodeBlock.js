@@ -5,17 +5,18 @@ import codeStyle from 'react-syntax-highlighter/dist/esm/styles/prism/darcula'
 const CodeBlock = ({ language, value, style }) => {
 	return (
 		<SyntaxHighlighter
+			className="low-profile-scrollbar light only-hover"
 			language={language}
 			style={codeStyle}
+			showLineNumbers
 			lineNumberContainerProps={{ style: { paddingRight: '1em' } }}
 			customStyle={{
-				borderRadius: '1em',
+				borderRadius: '0.75em',
 				whiteSpace: 'pre-wrap',
 				display: 'flex',
+				overflow: 'overlay',
 				...style
 			}}
-			codeTagProps={{ style: { whitespace: 'pre-wrap' } }}
-			showLineNumbers
 		>
 			{value}
 		</SyntaxHighlighter>

@@ -1,12 +1,17 @@
 import { backend } from './AxiosInstances'
 
+export const fetchTeacherData = () => {
+	const endpoint = `teachers/data`
+	return backend.get(endpoint)
+}
+
 export const fetchClassroom = classroomId => {
 	const endpoint = `classrooms/${classroomId}`
 	return backend.get(endpoint)
 }
 
-export const fetchSubmissions = classroomId => {
-	const endpoint = `teachers/${classroomId}/grade`
+export const fetchSubmissionsAll = classroomId => {
+	const endpoint = `classrooms/${classroomId}/activities`
 	return backend.get(endpoint).then(() => [
 		{
 			id: 31,
@@ -80,9 +85,25 @@ export const fetchSubmissions = classroomId => {
 	])
 }
 
-export const gradeActivity = classroomId => {
-	const endpoint = `teachers/${classroomId}/grade`
-	const data = {}
+/**
+ * {
+ *   "student_id": "69",
+ *   "checkpoints": [
+ *     {
+ *       "checkpoint_id": "69",
+ *       "is_passed": "true",
+ *       "comment": "I am a comment"
+ *     },
+ *     {
+ *       "checkpoint_id": "32",
+ *       "is_passed": "false",
+ *       "comment": "asdfasdf"
+ *     }
+ *   ]
+ * }
+ */
+export const gradeSubmission = ({ activityId, ...data }) => {
+	const endpoint = `teachers/activities/${activityId}`
 	return backend.put(endpoint, data)
 }
 

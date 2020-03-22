@@ -156,6 +156,19 @@ export const GlobalStyle = createGlobalStyle`
   .hover-raise:hover {
     box-shadow: 0px 0.75em 1.5em rgba(38, 38, 38, 0.125);
   }
+
+  /**
+   * Externals
+   */
+	.react-images__view-image {
+		margin: 0 auto;
+  }
+  .fullscreen .react-images__blanket {
+    z-index: 2199;
+  }
+  .fullscreen .react-images__positioner {
+    z-index: 2200;
+  }
 `
 
 export const GlobalStyleReset = createGlobalStyle`

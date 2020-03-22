@@ -17,6 +17,10 @@ import Button from '../../shared/gadgets/Button'
 //   padding: 0.5em 0.7em;
 // `;
 
+const StyledTwoPanel = styled(TwoPanel)`
+	font-size: 80%;
+`
+
 const LeftPanel = styled.div`
 	margin: 0 auto;
 	padding: 1.5em 2.5em 2.5em;
@@ -139,7 +143,7 @@ const FinalProject = props => {
 
 	return (
 		<DynamicModal open={props.open} closed={handleClosed} ratio={0.43}>
-			<TwoPanel fullSizeAxis first={leftPanel} second={rightPanel} />
+			<StyledTwoPanel fullSizeAxis first={leftPanel} second={rightPanel} />
 		</DynamicModal>
 	)
 }

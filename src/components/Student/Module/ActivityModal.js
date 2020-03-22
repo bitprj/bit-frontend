@@ -24,18 +24,19 @@ const Content = styled.div`
 	margin: 0;
 	padding: 0 3em;
 	display: flex;
-	align-items: center;
 `
 
 const LearningObjectives = styled.div`
 	margin-right: 3em;
-	padding: 1em 0;
+	padding: 1em;
+	padding-left: 0;
 	white-space: pre-line;
 	flex: 2;
-	overflow-y: auto;
 `
 
 const Prerequisites = styled.div`
+	padding: 1em;
+	padding-right: 0;
 	flex: 1.4;
 `
 
@@ -91,7 +92,7 @@ const ActivityModal = ({
 
 	const content = (
 		<Content>
-			<LearningObjectives>
+			<LearningObjectives className="low-profile-scrollbar only-hover">
 				<h3 style={{ marginTop: '0.5em' }}>Learning Objectives</h3>
 				<pre>
 					<SmallText>{learningObjectives}</SmallText>
