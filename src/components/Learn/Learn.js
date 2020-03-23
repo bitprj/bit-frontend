@@ -1,13 +1,22 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
+import { compose } from 'redux'
 
 import Toolbar from './Toolbar/Toolbar'
 import Sidebar from './Sidebar/Sidebar'
 import Content from './Content/Content'
 import WithPageSpinner from '../HOC/WithPageSpinner'
-import { init, resetToInitialState } from '../../redux/actions/learnData'
+
+import withApiCacheData, {
+	isDataReady,
+	WARD_ACTIVITY,
+	WARD_ACTIVITY_PROGRESS
+} from '../HOC/WithApiCacheData'
+import {
+	initActivityProgress,
+	preloadActivityCards
+} from '../../redux/actions/learnData'
 
 const Container = styled.div`
 	display: flex;
@@ -39,18 +48,20 @@ const Container = styled.div`
 `
 
 const Learn = ({
-	selectedActivityId,
+	ward_data,
+	id,
 	isReady,
-	activityId,
-	onInit,
-	onResetToInitialState
+	onInitActivityProgress,
+	onPreloadActivityCards
 }) => {
 	useEffect(() => {
-		if (selectedActivityId !== activityId) {
-			if (activityId) onResetToInitialState()
-			onInit(selectedActivityId)
+		if (id && isDataReady(ward_data)) {
+			onInitActivityProgress(...ward_data)
+
+			const activity = ward_data[0]
+			onPreloadActivityCards(activity)
 		}
-	}, [selectedActivityId]) // eslint-disable-line react-hooks/exhaustive-deps
+	}, [id, ward_data]) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<WithPageSpinner show={!isReady}>
@@ -65,21 +76,29 @@ const Learn = ({
 
 const mapStateToProps = state => {
 	const {
-		ram: { selectedActivityId },
-		learnData: { id: activityId, cards }
+		cache: { selectedActivityId: id, cachedActivities, cachedCards }
 	} = state
 
-	const isReady = !!get(cards, '[0].content')
+	const cardId = cachedActivities[id]?.cards[0]?.id
+	const card = cachedCards[cardId]
+
+	const isReady = !!card?.content
 	return {
-		selectedActivityId,
 		isReady,
-		activityId
+		id
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
-	onInit: activityId => dispatch(init(activityId)),
-	onResetToInitialState: () => dispatch(resetToInitialState())
+	onInitActivityProgress: (activity, activityProgress) =>
+		dispatch(initActivityProgress(activity, activityProgress)),
+	onPreloadActivityCards: activity => dispatch(preloadActivityCards(activity))
+	// onResetToInitialState: () => dispatch(resetToInitialState())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Learn)
+const enhancer = compose(
+	connect(mapStateToProps, mapDispatchToProps),
+	withApiCacheData(WARD_ACTIVITY, WARD_ACTIVITY_PROGRESS)
+)
+
+export default enhancer(Learn)

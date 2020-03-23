@@ -7,7 +7,7 @@ import { get } from 'lodash'
 import { Element as ScrollElement } from 'react-scroll'
 
 import CodeBlock from '../../shared/CodeBlock'
-import ParsedContent from '../../shared/ParsedContent'
+import ParsedContent from '../../shared/OldParsedContent'
 
 import Icon from '../../shared/gadgets/Icon'
 

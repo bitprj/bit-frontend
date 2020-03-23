@@ -8,7 +8,7 @@ import ProgressBar from '../../shared/gadgets/ProgressBar'
 import Button from '../../shared/gadgets/Button'
 import ClampedText from '../../shared/utils/ClampedText'
 
-import { setSelectedActivityId } from '../../../redux/actions/ram'
+import { setSelectedActivityId } from '../../../redux/actions/cache'
 
 const Header = styled.div`
 	padding: 0 3em;

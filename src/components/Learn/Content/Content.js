@@ -1,17 +1,22 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
+import { compose } from 'redux'
+import axios from 'axios'
 
 import ContentHeader from './ContentHeader'
 import UnlockedHintSection from '../Hint/UnlockedHintSection'
 import LockedHintSection from '../Hint/LockedHintSection'
 import NextButton from '../NextButton/NextButton'
-import ParsedContent from '../../shared/ParsedContent'
+import MarkdownContent from '../../shared/MarkdownContent'
+import ReactMarkdown from 'react-markdown'
+
+import withApiCacheData, { WARD_CARD } from '../../HOC/WithApiCacheData'
 
 import { STATE_CHECKPOINT, STATE_CONCEPT } from '../NextButton/NextButton'
 
 import { fadeIn } from '../../../styles/GlobalAnime'
+
 import {
 	initUnlockCard,
 	scheduleButtonState
@@ -40,14 +45,19 @@ const Content = ({
 	isReady,
 	activityId,
 	id,
-	contentfulId,
-	content,
-	concepts,
-	checkpoint,
-	gems,
-	name,
+
 	currentCardIndex,
 	lastCardUnlockedIndex,
+
+	card,
+
+	// contentfulId,
+	// content,
+	// concepts,
+	// checkpoint,
+	// gems,
+	// name,
+
 	onInitUnlockCard,
 	onScheduleButtonState,
 	onIncrementGemsBy
@@ -55,7 +65,6 @@ const Content = ({
 	const containerRef = useRef(null)
 	const headerRef = useRef(null)
 
-	const isCardUnlocked = useRef(undefined)
 	const currentScrollTop = useRef(0)
 	const cardsScrollTop = useRef([])
 
@@ -118,33 +127,21 @@ const Content = ({
 	 *  - without this there's no way of telling if render
 	 *    occurred because card was unlocked
 	 */
-	useEffect(() => {
-		if (
-			isCardUnlocked.current === undefined &&
-			lastCardUnlockedIndex !== undefined
-		) {
-			isCardUnlocked.current = false
-		} else if (
-			isCardUnlocked.current === false &&
-			lastCardUnlockedIndex !== undefined
-		) {
-			isCardUnlocked.current = true
-		}
-	}, [lastCardUnlockedIndex])
+	const isCardUnlocked = useIsCardUnlocked(lastCardUnlockedIndex)
 
 	/**
 	 * unlock card whenever this card is just unlocked
 	 * can't just use lastCardUnlocked because init will trigger
 	 */
 	useEffect(() => {
-		if (currentCardIndex === 0 || (isCardUnlocked.current && activityId)) {
-			if (isCardUnlocked.current) onInitUnlockCard(activityId, id, contentfulId)
+		if (currentCardIndex === 0 || (isCardUnlocked && activityId)) {
+			// if (isCardUnlocked) onInitUnlockCard(activityId, id, contentfulId)
 
-			if (checkpoint) {
+			if (card?.checkpoint) {
 				onScheduleButtonState(STATE_CHECKPOINT)
 			}
 
-			if (concepts && concepts.length) {
+			if (card?.concepts?.length) {
 				onScheduleButtonState(STATE_CONCEPT)
 			}
 		}
@@ -157,13 +154,13 @@ const Content = ({
 	 */
 	const lastCardUnlockedIndexRef = useRef(undefined)
 	useEffect(() => {
-		if (isCardUnlocked.current && gems) {
+		if (isCardUnlocked && card?.gems) {
 			if (lastCardUnlockedIndex !== lastCardUnlockedIndexRef.current) {
-				onIncrementGemsBy(gems)
+				onIncrementGemsBy(card?.gems)
 				lastCardUnlockedIndexRef.current = lastCardUnlockedIndex
 			}
 		}
-	}, [gems])
+	}, [card?.gems])
 
 	return (
 		<Container
@@ -171,16 +168,16 @@ const Content = ({
 			ref={containerRef}
 			className="low-profile-scrollbar fat"
 		>
-			{content && (
+			{card?.githubRawData && (
 				<>
 					<ContentHeader
 						ref={headerRef}
 						containerRef={containerRef}
-						name={name}
+						name={card?.name}
 					/>
 
 					<ContentArea className="learn-i-contentarea">
-						<ParsedContent id="learn-content" document={content} />
+						<MarkdownContent source={card?.content} />
 
 						<UnlockedHintSection />
 						<LockedHintSection />
@@ -195,26 +192,32 @@ const Content = ({
 
 const mapStateToProps = state => {
 	const {
+		cache: { selectedActivityId, cachedActivities, cachedCards },
 		learnData: {
-			id: activityId,
-			cards,
 			indicators: { currentCardIndex, lastCardUnlockedIndex }
 		}
 	} = state
 
-	const card = cards && cards[currentCardIndex]
+	const cardId =
+		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
+
+	const card = cachedCards[cardId]
+
 	return {
-		isReady: !!get(card, 'content'),
-		activityId,
-		id: get(card, 'id'),
-		contentfulId: get(card, 'contentfulId'),
-		name: get(card, 'name'),
-		content: get(card, 'content'),
-		concepts: get(card, 'concepts'),
-		checkpoint: get(card, 'checkpoint'),
-		gems: get(card, 'gems'),
+		isReady: !!card?.githubRawData,
+		activityId: selectedActivityId,
+		id: cardId,
+
 		currentCardIndex,
-		lastCardUnlockedIndex
+		lastCardUnlockedIndex,
+		card,
+
+		contentfulId: card?.contentfulId,
+		name: card?.name,
+		content: card?.content,
+		concepts: card?.concepts,
+		checkpoint: card?.checkpoint,
+		gems: card?.gems
 	}
 }
 
@@ -226,4 +229,27 @@ const mapDispatchToProps = dispatch => ({
 	onIncrementGemsBy: gemAmount => dispatch(incrementGemsBy(gemAmount))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Content)
+const enhancer = compose(
+	connect(mapStateToProps, mapDispatchToProps),
+	withApiCacheData(WARD_CARD)
+)
+
+export default enhancer(Content)
+
+export const useIsCardUnlocked = lastCardUnlockedIndex => {
+	const isCardUnlocked = useRef()
+	useEffect(() => {
+		if (
+			isCardUnlocked.current === undefined &&
+			lastCardUnlockedIndex !== undefined
+		) {
+			isCardUnlocked.current = false
+		} else if (
+			isCardUnlocked.current === false &&
+			lastCardUnlockedIndex !== undefined
+		) {
+			isCardUnlocked.current = true
+		}
+	})
+	return isCardUnlocked.current
+}
