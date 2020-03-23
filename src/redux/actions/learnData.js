@@ -1,17 +1,15 @@
 import { get, merge as mergeDeep, cloneDeep } from 'lodash'
 import { iterateNodes, objectArrayToObject } from '../../utils/objUtils'
-
 import { genFetch } from '../../services/ContentfulService'
 import {
+	fetchActivitySkeleton,
+	fetchActivityProgress,
 	fetchCardStatus,
 	fetchCheckpointProgress,
 	unlockCard,
 	unlockHint,
 	submitCheckpointProgress
 } from '../../services/LearnService'
-
-import { fetch } from '../../services/ContentService'
-import { WARD_CARD } from '../../components/HOC/WithApiCacheData'
 
 import { STATE_HINT } from '../../components/Learn/NextButton/NextButton'
 
@@ -34,36 +32,7 @@ import {
 	PUSH_TO_LOADED_CHECKPOINTS_PROGRESS
 } from '../actionTypes'
 
-import { saveToCache } from './cache'
-
 /* ===== INITIALIZATION */
-
-export const initActivityProgress = (
-	activity,
-	activityProgress
-) => async dispatch => {
-	const foundIndex = activity.cards.findIndex(
-		card => card.id === activityProgress.lastCardUnlockedId
-	)
-	const index = Math.max(0, foundIndex) // TODO this is also an error here
-
-	dispatch(
-		setActivityProgress({
-			currentCardIndex: index,
-			lastCardUnlockedIndex: index
-		})
-	)
-}
-
-export const preloadActivityCards = activity => async dispatch => {
-	const data = await Promise.all(
-		activity.cards.map(async card => {
-			return { [card.id]: await fetch(card.id, WARD_CARD) }
-		})
-	)
-	console.log(objectArrayToObject)
-	dispatch(saveToCache(WARD_CARD, objectArrayToObject(data)))
-}
 
 /**
  * Setup the Learning View with appropriate activity
@@ -72,23 +41,55 @@ export const preloadActivityCards = activity => async dispatch => {
  */
 export const init = activityId => async dispatch => {
 	/**
+	 * FETCH_ACTIVITY_SKELETON
+	 *  - provide roadmap/foundation of id's and content id's for
+	 *    the entire activity
+	 *
 	 * FETCH_ACTIVITY_PROGRESS
 	 *  - get the card the user is currently on
 	 */
+	let [activitySkeleton, activityProgress] = await Promise.all([
+		fetchActivitySkeleton(activityId),
+		fetchActivityProgress(activityId)
+	])
+
+	/**
+	 * sort by order just in case it isn't
+	 */
+	activitySkeleton.cards.sort((a, b) => a.order - b.order)
+
+	// send to redux
+	dispatch(setActivitySkeleton(activitySkeleton))
+
 	// Process activityProgress
-	// const cardsProgressed = activitySkeleton.cards.slice(0, index + 1)
-	// // Fetch Unlocked Card data
-	// const unlockedCards = await fetchUnlockedCards(cardsProgressed)
-	// // console.log(unlockedCards)
-	// dispatch(setUnlockedCards(unlockedCards))
-	// // Fetch Cards and their Statuses
-	// // (from fetchActivityProgress, multiple fetchCardStatus)
-	// const cardStatuses = await initCardStatuses(activityId, unlockedCards)
-	// dispatch(setCardStatuses(cardStatuses))
-	// const checkpointProgresses = await initCheckpointProgress(unlockedCards)
-	// dispatch(
-	// 	pushToLoadedCheckpointsProgress(objectArrayToObject(checkpointProgresses))
-	// )
+	let index = activitySkeleton.cards.findIndex(
+		card => card.id === activityProgress.lastCardCompletedId
+	)
+	if (index === -1) index = 0 // TODO also an error here
+	activityProgress = {
+		currentCardIndex: index,
+		lastCardUnlockedIndex: index
+	}
+
+	// send to redux
+	dispatch(setActivityProgress(activityProgress))
+
+	const cardsProgressed = activitySkeleton.cards.slice(0, index + 1)
+
+	// Fetch Unlocked Card data
+	const unlockedCards = await fetchUnlockedCards(cardsProgressed)
+	// console.log(unlockedCards)
+	dispatch(setUnlockedCards(unlockedCards))
+
+	// Fetch Cards and their Statuses
+	// (from fetchActivityProgress, multiple fetchCardStatus)
+	const cardStatuses = await initCardStatuses(activityId, unlockedCards)
+	dispatch(setCardStatuses(cardStatuses))
+
+	const checkpointProgresses = await initCheckpointProgress(unlockedCards)
+	dispatch(
+		pushToLoadedCheckpointsProgress(objectArrayToObject(checkpointProgresses))
+	)
 }
 
 const fetchUnlockedCards = cardsProgressed => {
@@ -102,8 +103,6 @@ const fetchUnlockedCards = cardsProgressed => {
 					})
 				)
 			])
-
-			console.log(unprocessedCardData)
 
 			/**
 			 * This destructure allows you to exclude variables from cardData

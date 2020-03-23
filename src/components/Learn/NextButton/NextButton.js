@@ -8,7 +8,7 @@ import Checkpoint from './Checkpoint/Checkpoint'
 import Concept from './Concept/Concept'
 
 import { SafeStack } from '../../../utils/DataStructures'
-import { usePrevious, useTraceUpdate } from '../../../utils/customHooks'
+import { usePrevious } from '../../../utils/customHooks'
 
 import {
 	broadcastButtonState,
@@ -37,6 +37,10 @@ const NextButtonManager = ({
 	onBroadcastButtonState,
 	onResetButtonStateSchedule
 }) => {
+	console.log('rerender start!')
+	useEffect(() => {
+		console.log('currentCardIndex changed!')
+	}, [currentCardIndex])
 	/**
 	 * Stack-based system to determine current button state
 	 *
@@ -60,6 +64,31 @@ const NextButtonManager = ({
 		if (buttonStateStack.current.peek() === STATE_CARD)
 			onBroadcastButtonState(STATE_CARD)
 	}, [])
+
+	const conceptsFinished = !buttonStateStack.current.has(STATE_CONCEPT)
+	const prevCurrentCardIndex = usePrevious(currentCardIndex)
+	console.log(prevCurrentCardIndex, currentCardIndex)
+	useEffect(() => {
+		if (concepts && concepts.length) {
+			if (conceptsFinished) {
+				pushToFinishedButtonStates(STATE_CONCEPT)
+			}
+		}
+
+		if (checkpoint) {
+			if (checkpointFinished) {
+				removeAndBroadcastButtonState(STATE_CHECKPOINT)
+			} else {
+				addAndBroadcastButtonState(STATE_CHECKPOINT) // on revisit
+			}
+		}
+
+		if (prevCurrentCardIndex !== currentCardIndex) {
+			removeFromFinishedButtonStates(STATE_CONCEPT)
+			removeFromFinishedButtonStates(STATE_CHECKPOINT)
+			resetAndBroadcastButtonState()
+		}
+	})
 
 	/**
 	 * Update currentButtonState with all states from the schedule queue FIRST
@@ -86,30 +115,6 @@ const NextButtonManager = ({
 		}
 	})
 
-	const prevCurrentCardIndex = usePrevious(currentCardIndex)
-	useEffect(() => {
-		if (concepts && concepts.length) {
-			const conceptsFinished = !buttonStateStack.current.has(STATE_CONCEPT)
-			if (conceptsFinished) {
-				pushToFinishedButtonStates(STATE_CONCEPT)
-			}
-		}
-
-		if (checkpoint) {
-			if (checkpointFinished) {
-				removeAndBroadcastButtonState(STATE_CHECKPOINT)
-			} else {
-				addAndBroadcastButtonState(STATE_CHECKPOINT) // on revisit
-			}
-		}
-
-		if (prevCurrentCardIndex && prevCurrentCardIndex !== currentCardIndex) {
-			removeFromFinishedButtonStates(STATE_CHECKPOINT)
-			removeFromFinishedButtonStates(STATE_CONCEPT)
-			resetAndBroadcastButtonState()
-		}
-	})
-
 	/** Helper Methods */
 
 	const pushToButtonStateStack = buttonState => {
@@ -128,18 +133,19 @@ const NextButtonManager = ({
 		onBroadcastButtonState(buttonStateStack.current.peek())
 	}
 	const resetAndBroadcastButtonState = () => {
-		console.log('i was reset!', buttonStateStack.current.get())
 		buttonStateStack.current = new SafeStack([STATE_CARD])
 		onBroadcastButtonState(buttonStateStack.current.peek())
 	}
 
 	const pushToFinishedButtonStates = buttonState => {
 		if (finishedButtonStates.includes(buttonState)) return
-		setFinishedButtonStates(state => state.concat([buttonState]))
+		setFinishedButtonStates(finishedButtonStates.concat([buttonState]))
 	}
 	const removeFromFinishedButtonStates = buttonState => {
 		if (!finishedButtonStates.includes(buttonState)) return
-		setFinishedButtonStates(state => state.filter(bs => bs !== buttonState))
+		setFinishedButtonStates(
+			finishedButtonStates.filter(bs => bs !== buttonState)
+		)
 	}
 
 	return (
@@ -192,7 +198,7 @@ const mapStateToProps = state => {
 	const progress = checkpointsProgress?.[checkpointId]
 
 	if (checkpointType === 'Autograder') {
-		const { numPass, numFail } = progress?.submissions[0]?.results ?? {}
+		const { numPass, numFail } = progress?.submissions[0].results ?? {}
 		checkpointFinished = numPass > numFail
 	} else {
 		if (!isEmpty(progress?.content)) {

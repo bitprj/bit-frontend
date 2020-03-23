@@ -302,16 +302,19 @@ const mapStateToProps = state => {
 		}
 	} = state
 
-	const card = cards?.[currentCardIndex]
-	const checkpointId = card?.checkpoint.id
+	const card = cards && cards[currentCardIndex]
+	const checkpointId = get(card, 'checkpoint.id')
+	const progress = checkpointsProgress && checkpointsProgress[checkpointId]
+
+	// console.log(progress)
 
 	return {
 		activityId,
 		checkpointId,
-		name: card?.checkpoint.name,
-		instruction: card?.checkpoint.instruction,
-		type: card?.checkpoint.checkpointType,
-		progress: checkpointsProgress?.[checkpointId]
+		name: get(card, 'checkpoint.name'),
+		instruction: get(card, 'checkpoint.instruction'),
+		type: get(card, 'checkpoint.checkpointType'),
+		progress
 	}
 }
 

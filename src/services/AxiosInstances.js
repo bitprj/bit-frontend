@@ -4,7 +4,8 @@ import camelCase from 'camelcase-keys-deep'
 /** GENERAL BACKEND (mainly for GET) */
 
 const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
-// const backendBaseURL = 'https://080f200e.ngrok.io/'
+// const backendBaseURL = 'https://bit-backend.azurewebsites.net/'
+// const backendBaseURL = 'https://1acd7318.ngrok.io'
 export const backend = axios.create({
 	baseURL: backendBaseURL,
 	withCredentials: true
@@ -45,6 +46,7 @@ backendSaves.interceptors.response.use(
 	}
 )
 
+// const graderBaseURL = 'https://secure-escarpment-83921.herokuapp.com/'
 const graderBaseURL = 'https://darlene-autograder.herokuapp.com/'
 export const grader = axios.create({
 	baseURL: graderBaseURL

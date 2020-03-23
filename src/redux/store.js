@@ -5,14 +5,14 @@ import rootReducer from './rootReducer'
 
 import * as accountActions from './actions/account'
 import * as learnDataActions from './actions/learnData'
-import * as cacheActions from './actions/cache'
+import * as ramActions from './actions/ram'
 import * as teacherDataActions from './actions/studentData'
 import * as studentDataActions from './actions/studentData'
 import * as themeActions from './actions/theme'
 const actionCreators = {
 	...accountActions,
 	...learnDataActions,
-	...cacheActions,
+	...ramActions,
 	...teacherDataActions,
 	...studentDataActions,
 	...themeActions

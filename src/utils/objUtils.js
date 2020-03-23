@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash'
 
 export const objectArrayToObject = array =>
-	array.reduce((acc, item) => ({ ...acc, ...item }), {})
+	array.reduce((obj, item) => ({ ...obj, ...item }), {})
 
 /**
  * Formats Contentful Data the way we want it

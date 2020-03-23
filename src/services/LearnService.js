@@ -1,9 +1,5 @@
 import { backend, backendSaves, grader } from './AxiosInstances'
 
-/* ===== CDN */
-
-// export const fetchCard =
-
 /* ===== INITIAL */
 
 export const fetchActivityProgress = activityId => {
@@ -11,7 +7,7 @@ export const fetchActivityProgress = activityId => {
 	return backend.get(endpoint)
 }
 
-export const fetchActivity = activityId => {
+export const fetchActivitySkeleton = activityId => {
 	const endpoint = `/activities/${activityId}`
 	return backend.get(endpoint)
 }

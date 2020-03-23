@@ -109,7 +109,6 @@ const Concept = ({
 				open={open}
 				closed={() => {
 					setOpen(false)
-					console.log('i closed')
 					removeAndBroadcastButtonState(STATE_CONCEPT)
 				}}
 				scaleX={0.9}

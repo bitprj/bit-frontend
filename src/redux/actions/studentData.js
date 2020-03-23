@@ -13,7 +13,7 @@ import {
 	INCREMENT_GEMS_BY
 } from '../actionTypes'
 
-import { setSelectedActivityId, pushToLoadedModules } from './cache'
+import { setSelectedActivityId, pushToLoadedModules } from './ram'
 
 /* ===== INITIALIZATION */
 
@@ -89,7 +89,7 @@ export const init = () => async dispatch => {
 	dispatch(setStudentData(studentData))
 
 	// external
-	dispatch(setSelectedActivityId(65))
+	dispatch(setSelectedActivityId(studentData.suggestedActivity.id))
 }
 
 export const initCurrentTrack = currentTrackID => {
