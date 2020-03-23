@@ -7,7 +7,7 @@ import { get } from 'lodash'
 import ProgressCard from './ProgressCard'
 import Hero from '../../shared/gadgets/Hero'
 import GoBack from '../../shared/external/GoBack'
-import { setSelectedActivityId } from '../../../redux/actions/ram'
+import { setSelectedActivityId } from '../../../redux/actions/cache'
 
 const ProgressBar = styled.div`
 	margin-top: 2em;
