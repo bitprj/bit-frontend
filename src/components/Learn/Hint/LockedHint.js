@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import ReactMarkdown from 'react-markdown'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
+import ReactMarkdown from 'react-markdown'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 
@@ -11,6 +12,10 @@ import ConfirmCancel from '../../shared/gadgets/ConfirmCancel'
 import Icon from '../../shared/gadgets/Icon'
 import IconLine from '../../shared/gadgets/IconLine'
 
+import withApiCache, {
+	CACHE_HINT,
+	CACHE_HINT_PROGRESS
+} from '../../HOC/WithApiCache'
 import { initUnlockHint } from '../../../redux/actions/learnData'
 import { incrementGemsBy } from '../../../redux/actions/studentData'
 
@@ -53,14 +58,19 @@ const ButtonArea = styled(ConfirmCancel)`
 const LockedHint = ({
 	activityId,
 	id,
-	contentfulId,
-	name,
-	difficulty,
-	gems,
+
+	wac_data: [hint, hintProgress],
+
 	studentGems,
+	currentCardIndex,
+
 	onInitUnlockHint,
 	onIncrementGemsBy
 }) => {
+	const { name, difficulty, gems = 69 } = hint ?? {}
+	const { isUnlocked } = hintProgress ?? {}
+	// console.log(isUnlocked)
+
 	let clickOnce = false
 	const [openConfirmHint, setOpenConfirmHint] = useState(false)
 
@@ -68,9 +78,14 @@ const LockedHint = ({
 		setOpenConfirmHint(false)
 
 		if (!clickOnce) {
+			/**
+			 * TODO change from this approach to
+			 * https://stackoverflow.com/questions/41824730/redux-how-to-handle-errors-in-reducer
+			 * basically, global error catcher, notify user (or not) and move on
+			 */
 			if (studentGems < gems) return alert('Not enough gems')
 
-			onInitUnlockHint(activityId, id, contentfulId)
+			onInitUnlockHint(activityId, id)
 			onIncrementGemsBy(-gems)
 			clickOnce = true
 		}
@@ -92,9 +107,11 @@ const LockedHint = ({
 					source={`Unlock *${name}* ?`}
 				/>
 				<ButtonArea
-          cancelText={
-            <IconLine className="sans" icon={<LeftArrow />}>Cancel</IconLine>
-          }
+					cancelText={
+						<IconLine className="sans" icon={<LeftArrow />}>
+							Cancel
+						</IconLine>
+					}
 					confirmText={
 						<span style={{ lineHeight: '1em' }}>
 							💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
@@ -127,16 +144,26 @@ const LockedHint = ({
 	)
 }
 
-const mapStateToProps = state => ({
-	studentGems: state.studentData.gems
-})
-
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
+	const {
+		studentData: { gems },
+		learnData: { currentCardIndex }
+	} = state
 	return {
-		onInitUnlockHint: (activityId, id, contentId) =>
-			dispatch(initUnlockHint(activityId, id, contentId)),
-		onIncrementGemsBy: gemAmount => dispatch(incrementGemsBy(gemAmount))
+		studentGems: gems,
+		currentCardIndex
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LockedHint)
+const mapDispatchToProps = dispatch => ({
+	onInitUnlockHint: (activityId, id) =>
+		dispatch(initUnlockHint(activityId, id)),
+	onIncrementGemsBy: gemAmount => dispatch(incrementGemsBy(gemAmount))
+})
+
+const enhancer = compose(
+	connect(mapStateToProps, mapDispatchToProps),
+	withApiCache(CACHE_HINT, CACHE_HINT_PROGRESS)
+)
+
+export default enhancer(LockedHint)

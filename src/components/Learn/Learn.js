@@ -8,15 +8,12 @@ import Sidebar from './Sidebar/Sidebar'
 import Content from './Content/Content'
 import WithPageSpinner from '../HOC/WithPageSpinner'
 
-import withApiCacheData, {
+import withApiCache, {
 	isDataReady,
-	WARD_ACTIVITY,
-	WARD_ACTIVITY_PROGRESS
-} from '../HOC/WithApiCacheData'
-import {
-	initActivityProgress,
-	preloadActivityCards
-} from '../../redux/actions/learnData'
+	CACHE_ACTIVITY,
+	CACHE_ACTIVITY_PROGRESS
+} from '../HOC/WithApiCache'
+import { init } from '../../redux/actions/learnData'
 
 const Container = styled.div`
 	display: flex;
@@ -47,21 +44,12 @@ const Container = styled.div`
 	}
 `
 
-const Learn = ({
-	ward_data,
-	id,
-	isReady,
-	onInitActivityProgress,
-	onPreloadActivityCards
-}) => {
+const Learn = ({ wac_data, id, isReady, onInit }) => {
 	useEffect(() => {
-		if (id && isDataReady(ward_data)) {
-			onInitActivityProgress(...ward_data)
-
-			const activity = ward_data[0]
-			onPreloadActivityCards(activity)
+		if (id && isDataReady(wac_data)) {
+			onInit(...wac_data)
 		}
-	}, [id, ward_data]) // eslint-disable-line react-hooks/exhaustive-deps
+	}, [id, wac_data]) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<WithPageSpinner show={!isReady}>
@@ -90,15 +78,14 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-	onInitActivityProgress: (activity, activityProgress) =>
-		dispatch(initActivityProgress(activity, activityProgress)),
-	onPreloadActivityCards: activity => dispatch(preloadActivityCards(activity))
+	onInit: (activity, activityProgress) =>
+		dispatch(init(activity, activityProgress))
 	// onResetToInitialState: () => dispatch(resetToInitialState())
 })
 
 const enhancer = compose(
 	connect(mapStateToProps, mapDispatchToProps),
-	withApiCacheData(WARD_ACTIVITY, WARD_ACTIVITY_PROGRESS)
+	withApiCache(CACHE_ACTIVITY, CACHE_ACTIVITY_PROGRESS)
 )
 
 export default enhancer(Learn)

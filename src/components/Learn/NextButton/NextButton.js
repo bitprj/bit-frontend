@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 
 import Central from './Central/Central'
 import Checkpoint from './Checkpoint/Checkpoint'
-import Concept from './Concept/Concept'
+import Concept from '../Concept/Concept'
 
 import { SafeStack } from '../../../utils/DataStructures'
-import { usePrevious, useTraceUpdate } from '../../../utils/customHooks'
+import { usePrevious } from '../../../utils/customHooks'
 
 import {
 	broadcastButtonState,
@@ -29,10 +29,11 @@ const Container = styled.div`
 
 const NextButtonManager = ({
 	className,
-	concepts,
-	checkpoint,
+	hasConcepts,
+	hasCheckpoint,
 	checkpointFinished,
 	currentCardIndex,
+	lastCardUnlockedIndex,
 	buttonStateScheduleQueue,
 	onBroadcastButtonState,
 	onResetButtonStateSchedule
@@ -80,33 +81,58 @@ const NextButtonManager = ({
 		}
 	}, [buttonStateScheduleQueue])
 
+	const prevCurrentCardIndex = usePrevious(currentCardIndex)
+	useEffect(() => {
+		if (prevCurrentCardIndex && prevCurrentCardIndex !== currentCardIndex) {
+			removeFromFinishedButtonStates(STATE_CHECKPOINT)
+			removeFromFinishedButtonStates(STATE_CONCEPT)
+			resetAndBroadcastButtonState()
+		}
+	})
+
+	/**
+	 * unlock card whenever this card is just unlocked
+	 * can't just use lastCardUnlocked because init will trigger
+	 */
+	useEffect(() => {
+		if (lastCardUnlockedIndex !== undefined) {
+			// if (isCardUnlocked) onInitUnlockCard(activityId, id, contentfulId)
+
+			if (hasCheckpoint) {
+				addAndBroadcastButtonState(STATE_CHECKPOINT)
+			}
+
+			if (hasConcepts) {
+				addAndBroadcastButtonState(STATE_CONCEPT)
+			}
+		}
+	}, [lastCardUnlockedIndex])
+
 	useEffect(() => {
 		if (buttonStateStack.current.peek() === STATE_CONCEPT) {
 			setOpenConcepts(true)
 		}
 	})
 
-	const prevCurrentCardIndex = usePrevious(currentCardIndex)
+	/**
+	 * Properly adding/removing buttonStates to finishedButtonStates
+	 * during card changes
+	 */
 	useEffect(() => {
-		if (concepts && concepts.length) {
+		if (hasConcepts) {
 			const conceptsFinished = !buttonStateStack.current.has(STATE_CONCEPT)
 			if (conceptsFinished) {
 				pushToFinishedButtonStates(STATE_CONCEPT)
 			}
 		}
 
-		if (checkpoint) {
+		if (hasCheckpoint) {
 			if (checkpointFinished) {
+				console.log('o boi')
 				removeAndBroadcastButtonState(STATE_CHECKPOINT)
 			} else {
 				addAndBroadcastButtonState(STATE_CHECKPOINT) // on revisit
 			}
-		}
-
-		if (prevCurrentCardIndex && prevCurrentCardIndex !== currentCardIndex) {
-			removeFromFinishedButtonStates(STATE_CHECKPOINT)
-			removeFromFinishedButtonStates(STATE_CONCEPT)
-			resetAndBroadcastButtonState()
 		}
 	})
 
@@ -128,7 +154,6 @@ const NextButtonManager = ({
 		onBroadcastButtonState(buttonStateStack.current.peek())
 	}
 	const resetAndBroadcastButtonState = () => {
-		console.log('i was reset!', buttonStateStack.current.get())
 		buttonStateStack.current = new SafeStack([STATE_CARD])
 		onBroadcastButtonState(buttonStateStack.current.peek())
 	}
@@ -172,39 +197,48 @@ const NextButtonManager = ({
 
 const mapStateToProps = state => {
 	const {
+		cache: { selectedActivityId, cachedActivities, cachedCards },
 		learnData: {
-			indicators: { currentCardIndex, buttonStateScheduleQueue },
-			progress: { checkpointsProgress },
-			cards
+			indicators: {
+				currentCardIndex,
+				lastCardUnlockedIndex,
+				buttonStateScheduleQueue
+			},
+			progress: { checkpointsProgress }
 		}
 	} = state
 
-	const card = cards && cards[currentCardIndex]
-	const checkpoint = get(card, 'checkpoint')
+	const cardId =
+		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
+
+	const card = cachedCards[cardId]
+
+	const checkpoint = card?.checkpoint
+	const concepts = card?.concepts
 
 	/**
 	 * Checkpoint Finished calculation
 	 */
-	let checkpointFinished = false
-	const checkpointId = get(checkpoint, 'id')
-	const checkpointType = get(checkpoint, 'checkpointType')
+	const checkpointId = checkpoint?.id
+	const checkpointType = checkpoint?.checkpointType
 
 	const progress = checkpointsProgress?.[checkpointId]
 
-	if (checkpointType === 'Autograder') {
-		const { numPass, numFail } = progress?.submissions[0]?.results ?? {}
-		checkpointFinished = numPass > numFail
-	} else {
-		if (!isEmpty(progress?.content)) {
-			checkpointFinished = true
+	const getCheckpointFinished = () => {
+		if (checkpointType === 'Autograder') {
+			const { numPass, numFail } = progress?.submissions[0]?.results ?? {}
+			return numPass > numFail
 		}
+		return !isEmpty(progress?.content)
 	}
+	const checkpointFinished = getCheckpointFinished()
 
 	return {
 		currentCardIndex,
+		lastCardUnlockedIndex,
 		buttonStateScheduleQueue,
-		concepts: get(card, 'concepts'),
-		checkpoint,
+		hasConcepts: !!(concepts && concepts.length),
+		hasCheckpoint: !!checkpoint,
 		checkpointFinished
 	}
 }

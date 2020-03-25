@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get, isEmpty } from 'lodash'
+import { compose } from 'redux'
+import { isEmpty } from 'lodash'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 
@@ -21,6 +22,8 @@ import IconLine from '../../../shared/gadgets/IconLine'
 import DynamicModal from '../../../shared/containers/DynamicModal'
 import GradeStatus from '../../../shared/gadgets/GradeStatus'
 import Button from '../../../shared/gadgets/Button'
+
+import withApiCache, { CACHE_CHECKPOINT } from '../../../HOC/WithApiCache'
 
 const flagIcon = require('../../../../assets/icons/flag.svg')
 
@@ -90,8 +93,8 @@ const Checkpoint = ({
 	submissionIndex,
 	setSubmissionIndex,
 
+	id,
 	activityId,
-	checkpointId,
 	name,
 	instruction,
 	type,
@@ -164,7 +167,7 @@ const Checkpoint = ({
 						pushView={pushView}
 						previousView={previousView}
 						activityId={activityId}
-						checkpointId={checkpointId}
+						id={id}
 						type={type}
 					/>
 				)
@@ -294,25 +297,39 @@ const Checkpoint = ({
 
 const mapStateToProps = state => {
 	const {
+		cache: {
+			selectedActivityId,
+			cachedActivities,
+			cachedCards,
+			cachedCheckpoints
+		},
 		learnData: {
-			id: activityId,
-			cards,
 			indicators: { currentCardIndex },
 			progress: { checkpointsProgress }
 		}
 	} = state
 
-	const card = cards?.[currentCardIndex]
-	const checkpointId = card?.checkpoint.id
+	const cardId =
+		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
+
+	const checkpointId = cachedCards[cardId].checkpoint?.id
+
+	const checkpoint = cachedCheckpoints[checkpointId]
 
 	return {
-		activityId,
-		checkpointId,
-		name: card?.checkpoint.name,
-		instruction: card?.checkpoint.instruction,
-		type: card?.checkpoint.checkpointType,
-		progress: checkpointsProgress?.[checkpointId]
+		activityId: selectedActivityId,
+		id: checkpointId,
+
+		name: checkpoint?.name,
+		instruction: checkpoint?.instruction,
+		type: checkpoint?.checkpointType,
+		progress: checkpointsProgress?.[checkpoint?.id]
 	}
 }
 
-export default connect(mapStateToProps)(Checkpoint)
+const enhancer = compose(
+	connect(mapStateToProps),
+	withApiCache(CACHE_CHECKPOINT)
+)
+
+export default enhancer(Checkpoint)

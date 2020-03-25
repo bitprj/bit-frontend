@@ -2,22 +2,25 @@ import { cloneDeep, merge as mergeDeep } from 'lodash'
 import { SafeQueue } from '../../utils/DataStructures'
 
 import {
-	SET_ACTIVITY_SKELETON,
-	SET_ACTIVITY_PROGRESS,
-	SET_UNLOCKED_CARDS,
-	SET_CARD_STATUSES,
-	RESET_TO_INITIAL_STATE,
-	SET_CARD,
-	SET_HINT,
+	SET_INDICATORS,
+	SET_PROGRESS,
+	BROADCAST_BUTTON_STATE,
+	SCHEDULE_BUTTON_STATE,
+	RESET_BUTTON_STATE_SCHEDULE,
+	//
 	SET_CURRENT_CARD_BY_INDEX,
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
 	INCREMENT_LAST_CARD_UNLOCKED_INDEX,
 	SET_SUBMITTED_CHECKPOINT_SUCCESSFUL,
-	BROADCAST_BUTTON_STATE,
-	SCHEDULE_BUTTON_STATE,
-	RESET_BUTTON_STATE_SCHEDULE,
-	PUSH_TO_LOADED_CHECKPOINTS_PROGRESS
+	PUSH_TO_LOADED_CHECKPOINTS_PROGRESS,
+	//
+	SET_ACTIVITY_SKELETON,
+	SET_UNLOCKED_CARDS,
+	SET_CARD_STATUSES,
+	RESET_TO_INITIAL_STATE,
+	SET_CARD,
+	SET_HINT
 } from '../actionTypes'
 
 const initialState = {
@@ -32,81 +35,73 @@ const initialState = {
 		buttonStateScheduleQueue: new SafeQueue([]) // must be initialized
 	},
 	progress: {
-		lastCardUnlockedIndex: undefined, // disconnected rn, refer to above
-		hintsProgress: {},
+		lastCardUnlockedIndex: undefined, // disconnected rn, refer to above,
+
 		checkpointsProgress: {}
-	},
-	cards: [
-		// {
-		// 	id: undefined,
-		// 	contentfulId: undefined,
-		// 	name: undefined,
-		// 	order: undefined,
-		// 	hints: [],
-		// 	content: undefined,
-		// 	gems: undefined,
-		// 	unlockedHints: [],
-		// 	lockedHints: [],
-		// 	concepts: [],
-		// 	checkpoint: undefined
-		// }
-		// ... and more cards
-	]
+	}
 }
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
-		case SET_ACTIVITY_SKELETON: {
-			return { ...state, ...action.activity }
-		}
-
-		case SET_ACTIVITY_PROGRESS: {
+		case SET_INDICATORS: {
 			return {
 				...state,
-				indicators: { ...state.indicators, ...action.activityProgress }
+				indicators: { ...state.indicators, ...action.indicators }
 			}
 		}
 
-		case SET_UNLOCKED_CARDS: {
-			const nextState = {
+		case SET_PROGRESS: {
+      console.log('YEEHAW')
+			return {
 				...state,
-				cards: cloneDeep(state.cards)
+				progress: { ...state.progress, ...action.progress }
 			}
-			action.unlockedCards.forEach((card, i) => {
-				mergeDeep(nextState.cards[i], card)
-			})
-			return nextState
 		}
 
-		case SET_CARD_STATUSES: {
-			const nextState = {
-				...state,
-				cards: cloneDeep(state.cards)
-			}
-			action.cardStatuses.forEach((cardStatus, i) => {
-				nextState.cards[i].hints = cardStatus
-				hintStatusSeparation(nextState.cards[i])
-			})
-			return nextState
-		}
+		// case SET_UNLOCKED_CARDS: {
+		// 	const nextState = {
+		// 		...state,
+		// 		cards: cloneDeep(state.cards)
+		// 	}
+		// 	action.unlockedCards.forEach((card, i) => {
+		// 		mergeDeep(nextState.cards[i], card)
+		// 	})
+		// 	return nextState
+		// }
 
-		case RESET_TO_INITIAL_STATE: {
-			return initialState
-		}
+		// case SET_CARD_STATUSES: {
+		// 	const nextState = {
+		// 		...state,
+		// 		cards: cloneDeep(state.cards)
+		// 	}
+		// 	action.cardStatuses.forEach((cardStatus, i) => {
+		// 		nextState.cards[i].hints = cardStatus
+		// 		hintStatusSeparation(nextState.cards[i])
+		// 	})
+		// 	return nextState
+		// }
 
-		case SET_CARD: {
-			const nextState = {
-				...state,
-				cards: cloneDeep(state.cards)
-			}
-			const {
-				cards,
-				indicators: { lastCardUnlockedIndex }
-			} = nextState
-			hintStatusSeparation(action.card)
-			mergeDeep(cards[lastCardUnlockedIndex], action.card)
-			return nextState
-		}
+		// case RESET_TO_INITIAL_STATE: {
+		// 	return initialState
+		// }
+
+		// case SET_CARD: {
+
+		// }
+
+		// case SET_CARD: {
+		// 	const nextState = {
+		// 		...state,
+		// 		cards: cloneDeep(state.cards)
+		// 	}
+		// 	const {
+		// 		cards,
+		// 		indicators: { lastCardUnlockedIndex }
+		// 	} = nextState
+		// 	hintStatusSeparation(action.card)
+		// 	mergeDeep(cards[lastCardUnlockedIndex], action.card)
+		// 	return nextState
+		// }
 
 		case SET_HINT: {
 			// use hints not lockedhints instead because lockedhints removes nested objects
@@ -145,13 +140,17 @@ const reducer = (state = initialState, action) => {
 		}
 
 		case SET_CURRENT_CARD_BY_INDEX: {
-			console.error('changed!')
 			return {
 				...state,
 				indicators: {
 					...state.indicators,
 					currentCardIndex: action.cardIndex,
 					lastHintUnlockedId: undefined // smooth slidein for hints
+				},
+				progress: {
+					...state.progress,
+					unlockedHintIds: [],
+					lockedHintIds: []
 				}
 			}
 		}
@@ -161,6 +160,11 @@ const reducer = (state = initialState, action) => {
 				indicators: {
 					...state.indicators,
 					currentCardIndex: state.indicators.currentCardIndex + 1
+				},
+				progress: {
+					...state.progress,
+					unlockedHintIds: [],
+					lockedHintIds: []
 				}
 			}
 		}

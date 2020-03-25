@@ -10,14 +10,20 @@ import {
 	submitCheckpointProgress
 } from '../../services/LearnService'
 
-import { fetch } from '../../services/ContentService'
-import { WARD_CARD } from '../../components/HOC/WithApiCacheData'
+import { autoFetch } from '../../services/ContentService'
+import {
+	fetchContentUrls,
+	CACHE_CARD,
+	CACHE_HINT_PROGRESS
+} from '../../components/HOC/WithApiCache'
 
 import { STATE_HINT } from '../../components/Learn/NextButton/NextButton'
 
 import {
+	SET_INDICATORS,
+	SET_PROGRESS,
+	//
 	SET_ACTIVITY_SKELETON,
-	SET_ACTIVITY_PROGRESS,
 	SET_UNLOCKED_CARDS,
 	SET_CARD_STATUSES,
 	RESET_TO_INITIAL_STATE,
@@ -35,34 +41,39 @@ import {
 } from '../actionTypes'
 
 import { saveToCache } from './cache'
+import { CACHE_ACTIVITY_PROGRESS } from '../../components/HOC/WithApiCache'
 
 /* ===== INITIALIZATION */
 
-export const initActivityProgress = (
-	activity,
-	activityProgress
-) => async dispatch => {
+export const init = (activity, activityProgress) => dispatch => {
+	dispatch(initActivityProgress(activity, activityProgress))
+	dispatch(preloadActivityCards(activity))
+}
+
+const initActivityProgress = (activity, activityProgress) => async dispatch => {
 	const foundIndex = activity.cards.findIndex(
 		card => card.id === activityProgress.lastCardUnlockedId
 	)
 	const index = Math.max(0, foundIndex) // TODO this is also an error here
 
-	dispatch(
-		setActivityProgress({
+	dispatch({
+		type: SET_INDICATORS,
+		indicators: {
 			currentCardIndex: index,
 			lastCardUnlockedIndex: index
-		})
-	)
+		}
+	})
 }
 
-export const preloadActivityCards = activity => async dispatch => {
-	const data = await Promise.all(
+const preloadActivityCards = activity => async dispatch => {
+	const cards = await Promise.all(
 		activity.cards.map(async card => {
-			return { [card.id]: await fetch(card.id, WARD_CARD) }
+			const cardData = await autoFetch(card.id, CACHE_CARD)
+			const cardDataWithContent = await fetchContentUrls(cardData)
+			return { [card.id]: cardDataWithContent }
 		})
 	)
-	console.log(objectArrayToObject)
-	dispatch(saveToCache(WARD_CARD, objectArrayToObject(data)))
+	dispatch(saveToCache(CACHE_CARD, objectArrayToObject(cards)))
 }
 
 /**
@@ -70,26 +81,26 @@ export const preloadActivityCards = activity => async dispatch => {
  * and user progress
  * @param {*} activityId
  */
-export const init = activityId => async dispatch => {
-	/**
-	 * FETCH_ACTIVITY_PROGRESS
-	 *  - get the card the user is currently on
-	 */
-	// Process activityProgress
-	// const cardsProgressed = activitySkeleton.cards.slice(0, index + 1)
-	// // Fetch Unlocked Card data
-	// const unlockedCards = await fetchUnlockedCards(cardsProgressed)
-	// // console.log(unlockedCards)
-	// dispatch(setUnlockedCards(unlockedCards))
-	// // Fetch Cards and their Statuses
-	// // (from fetchActivityProgress, multiple fetchCardStatus)
-	// const cardStatuses = await initCardStatuses(activityId, unlockedCards)
-	// dispatch(setCardStatuses(cardStatuses))
-	// const checkpointProgresses = await initCheckpointProgress(unlockedCards)
-	// dispatch(
-	// 	pushToLoadedCheckpointsProgress(objectArrayToObject(checkpointProgresses))
-	// )
-}
+// export const init = activityId => async dispatch => {
+/**
+ * FETCH_ACTIVITY_PROGRESS
+ *  - get the card the user is currently on
+ */
+// Process activityProgress
+// const cardsProgressed = activitySkeleton.cards.slice(0, index + 1)
+// // Fetch Unlocked Card data
+// const unlockedCards = await fetchUnlockedCards(cardsProgressed)
+// // console.log(unlockedCards)
+// dispatch(setUnlockedCards(unlockedCards))
+// // Fetch Cards and their Statuses
+// // (from fetchActivityProgress, multiple fetchCardStatus)
+// const cardStatuses = await initCardStatuses(activityId, unlockedCards)
+// dispatch(setCardStatuses(cardStatuses))
+// const checkpointProgresses = await initCheckpointProgress(unlockedCards)
+// dispatch(
+// 	pushToLoadedCheckpointsProgress(objectArrayToObject(checkpointProgresses))
+// )
+// }
 
 const fetchUnlockedCards = cardsProgressed => {
 	return Promise.all(
@@ -180,11 +191,6 @@ const setActivitySkeleton = activity => ({
 	activity
 })
 
-const setActivityProgress = activityProgress => ({
-	type: SET_ACTIVITY_PROGRESS,
-	activityProgress
-})
-
 const setUnlockedCards = unlockedCards => ({
 	type: SET_UNLOCKED_CARDS,
 	unlockedCards
@@ -201,25 +207,31 @@ export const resetToInitialState = () => ({
 	type: RESET_TO_INITIAL_STATE
 })
 
-export const initUnlockCard = (activityId, id, contentId) => async dispatch => {
-	const card = await genFetch(contentId)
-
-	if (card.concepts && card.concepts.length) {
-		card.concepts = await Promise.all(
-			card.concepts.map(concept => {
-				return genFetch(concept.contentfulId)
-			})
+export const initUnlockCard = (activityId, id) => async dispatch => {
+	dispatch(
+		saveToCache(
+			CACHE_ACTIVITY_PROGRESS,
+			{ [activityId]: { lastCardUnlockedId: id } },
+			{ merge: true }
 		)
-	}
-
-	dispatch(setCard(card))
-
+	)
 	unlockCard(activityId, id).then(res => console.log(res.message))
 }
 
-export const initUnlockHint = (activityId, id, contentId) => async dispatch => {
-	const hint = await genFetch(contentId)
-	dispatch(setHint(id, contentId, hint))
+export const initUnlockHint = (activityId, id) => async dispatch => {
+	dispatch(
+		saveToCache(
+			CACHE_HINT_PROGRESS,
+			{ [id]: { isUnlocked: true } },
+			{ merge: true }
+		)
+	)
+	dispatch({
+		type: SET_INDICATORS,
+		indicators: {
+			lastHintUnlockedId: id
+		}
+	})
 	dispatch(scheduleButtonState(STATE_HINT))
 
 	unlockHint(activityId, id).then(res => console.log(res.message))

@@ -2,15 +2,20 @@ import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import anime from 'animejs'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
 
 import UnlockedHint from './UnlockedHint'
+
+import { objectArrayToObject } from '../../../utils/objUtils'
 
 const Container = styled.div`
 	padding: 0 0 2em;
 `
 
-const UnlockedHintSection = ({ unlockedHints, lastHintUnlockedId }) => {
+const UnlockedHintSection = ({
+	hintIdsTree,
+	scopedCachedHintsProgress,
+	lastHintUnlockedId
+}) => {
 	useEffect(() => {
 		if (lastHintUnlockedId) {
 			// TODO allow users to boost animations
@@ -25,37 +30,38 @@ const UnlockedHintSection = ({ unlockedHints, lastHintUnlockedId }) => {
 		}
 	}, [lastHintUnlockedId])
 
-	let hintIndexMapper = 0
-	let slideDownIndex = undefined
-	const renderedUnlockedHintsRecursive = unlockedHints => {
-		if (!unlockedHints) return
+	// let hintIndexMapper = 0
+	// let slideDownIndex = undefined
+	const renderedUnlockedHintsRecursive = hints => {
+		if (!hints) return
 
-		return unlockedHints.map(hint => {
-			const { id, name, steps } = hint
+		return hints.map(hint => {
+			const { id } = hint
+			const { isUnlocked } = scopedCachedHintsProgress[id] ?? {}
 
-			const visualIndex = hintIndexMapper++
-			if (id === lastHintUnlockedId) slideDownIndex = visualIndex
+			// const visualIndex = hintIndexMapper++
+			// if (id === lastHintUnlockedId) slideDownIndex = visualIndex
 			return (
 				<React.Fragment key={`hint-${id}`}>
-					<UnlockedHint
-						className={
-							visualIndex > slideDownIndex
-								? 'learn-r-lockedhints-hintslidedown'
-								: null
-						}
-						id={id}
-						name={name}
-						steps={steps}
-					/>
-					{renderedUnlockedHintsRecursive(hint.unlockedHints)}
+					{isUnlocked && (
+						<UnlockedHint
+							// className={
+							// 	visualIndex > slideDownIndex
+							// 		? 'learn-r-lockedhints-hintslidedown'
+							// 		: null
+							// }
+							id={id}
+						/>
+					)}
+					{renderedUnlockedHintsRecursive(hint.hints)}
 				</React.Fragment>
 			)
 		})
 	}
 
 	const renderedUnlockedHints = useMemo(
-		() => renderedUnlockedHintsRecursive(unlockedHints),
-		[unlockedHints]
+		() => renderedUnlockedHintsRecursive(hintIdsTree),
+		[scopedCachedHintsProgress]
 	)
 
 	return <Container>{renderedUnlockedHints}</Container>
@@ -63,16 +69,40 @@ const UnlockedHintSection = ({ unlockedHints, lastHintUnlockedId }) => {
 
 const mapStateToProps = state => {
 	const {
+		cache: {
+			selectedActivityId,
+			cachedActivities,
+			cachedCards,
+			cachedHintsProgress
+		},
 		learnData: {
-			cards,
 			indicators: { currentCardIndex, lastHintUnlockedId }
 		}
 	} = state
 
+	const cardId =
+		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
+
+	const hintIdsTree = cachedCards[cardId]?.hints
+
+	const flatHintIds = hintIdsTree.flatMap(hint => [
+		{ id: hint.id },
+		...hint.hints.map(hint => ({ id: hint.id }))
+	])
+	const scopedCachedHintsProgressArray = flatHintIds.map(hint => ({
+		[hint.id]: cachedHintsProgress[hint.id] ?? null
+	}))
+	const scopedCachedHintsProgress = objectArrayToObject(
+		scopedCachedHintsProgressArray
+	)
+
 	return {
-		unlockedHints: cards && get(cards[currentCardIndex], 'unlockedHints'),
-		lastHintUnlockedId
+		hintIdsTree,
+		lastHintUnlockedId,
+		scopedCachedHintsProgress
 	}
+
+	// unlockedHints: cards && get(cards[currentCardIndex], 'unlockedHints')
 }
 
 export default connect(mapStateToProps)(UnlockedHintSection)

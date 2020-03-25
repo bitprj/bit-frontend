@@ -74,7 +74,7 @@ const Settings = ({ activityId }) => {
 
 const mapStateToProps = state => {
 	const {
-		learnData: { id: activityId }
+		cache: { selectedActivityId: activityId }
 	} = state
 	return { activityId }
 }

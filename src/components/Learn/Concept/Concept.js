@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
 
 import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 import Slide from './Slide'
-import Peripheral from '../Peripheral'
-import DynamicModal from '../../../shared/containers/DynamicModal'
+import Peripheral from '../NextButton/Peripheral'
+import DynamicModal from '../../shared/containers/DynamicModal'
 
 const StyledCarousel = styled(Carousel)`
 	width: 100%;
@@ -72,7 +71,7 @@ const Concept = ({
 	open,
 	setOpen,
 
-	concepts,
+	conceptIds,
 	removeAndBroadcastButtonState
 }) => {
 	/**
@@ -81,19 +80,17 @@ const Concept = ({
 	 */
 	const [slideIndex, setSlideIndex] = useState(0)
 
-	const slides =
-		concepts &&
-		concepts.length &&
-		concepts.map((concept, index) => (
-			<Slide
-				key={`learn-concept-${concept.id}-${index}`}
-				name={concept.name}
-				steps={concept.steps}
-				slideIndex={slideIndex}
-				slidesLength={concepts && concepts.length}
-				setOpen={setOpen}
-			/>
-		))
+	const slides = conceptIds?.map((concept, index) => (
+		<Slide
+			key={`learn-concept-${concept.id}-${index}`}
+			id={concept.id}
+			// name={concept.name}
+			// steps={concept.steps}
+			slideIndex={slideIndex}
+			slidesLength={conceptIds?.length}
+			setOpen={setOpen}
+		/>
+	))
 
 	return (
 		<>
@@ -132,15 +129,19 @@ const Concept = ({
 
 const mapStateToProps = state => {
 	const {
+		cache: { selectedActivityId, cachedActivities, cachedCards },
 		learnData: {
-			cards,
 			indicators: { currentCardIndex }
 		}
 	} = state
 
-	const card = cards && cards[currentCardIndex]
+	const cardId =
+		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
+
+	const conceptIds = cachedCards[cardId]?.concepts
+
 	return {
-		concepts: get(card, 'concepts')
+		conceptIds
 	}
 }
 

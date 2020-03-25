@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash'
+import { cloneDeep, merge as mergeDeep } from 'lodash'
 
 export const objectArrayToObject = array =>
 	array.reduce((acc, item) => ({ ...acc, ...item }), {})

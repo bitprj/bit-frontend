@@ -17,6 +17,7 @@ const CodeBlock = ({ language, value, style }) => {
 				overflow: 'overlay',
 				...style
 			}}
+			codeTagProps={{ style: { whiteSpace: 'pre-wrap' } }}
 		>
 			{value}
 		</SyntaxHighlighter>

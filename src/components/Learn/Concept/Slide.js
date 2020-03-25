@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
 
-import ParsedContent from '../../../shared/OldParsedContent'
-import CodeBlock from '../../../shared/CodeBlock'
-import Icon from '../../../shared/gadgets/Icon'
-import IconLine from '../../../shared/gadgets/IconLine'
-import ConfirmCancel from '../../../shared/gadgets/ConfirmCancel'
-import DotRating from '../../../shared/gadgets/DotRating'
+import ParsedContent from '../../shared/OldParsedContent'
+import CodeBlock from '../../shared/CodeBlock'
+import Icon from '../../shared/gadgets/Icon'
+import IconLine from '../../shared/gadgets/IconLine'
+import ConfirmCancel from '../../shared/gadgets/ConfirmCancel'
+import DotRating from '../../shared/gadgets/DotRating'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
+
+import withApiCache, { CACHE_CONCEPT } from '../../HOC/WithApiCache'
+
+const profPic = require('../../../assets/icons/prof-pic.png')
 
 const Container = styled.div`
 	display: flex;
@@ -77,10 +81,20 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
 	align-items: center;
 `
 
-const Slide = ({ name, steps, slideIndex, slidesLength, setOpen }) => {
+const Slide = ({
+	id,
+	/*name, steps,*/
+	wac_data: [slide],
+
+	slideIndex,
+	slidesLength,
+	setOpen
+}) => {
+	const { name, steps } = slide
+
 	const [currentStepIndex, setCurrentStepIndex] = useState(0)
 
-	const step = steps && steps[currentStepIndex]
+	const step = steps?.[currentStepIndex]
 
 	useEffect(() => {
 		const codeBlock = document.querySelector('.learn-concept-codeblock')
@@ -173,14 +187,11 @@ const Slide = ({ name, steps, slideIndex, slidesLength, setOpen }) => {
 						/>
 					</CodeArea>
 				) : (
-					<Icon
-						width="69%"
-						src={require('../../../../assets/icons/prof-pic.png')}
-					/>
+					<Icon width="69%" src={profPic} />
 				)}
 			</RightPanel>
 		</Container>
 	)
 }
 
-export default Slide
+export default withApiCache(CACHE_CONCEPT)(Slide)

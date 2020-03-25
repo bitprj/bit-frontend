@@ -4,14 +4,11 @@ import anime from 'animejs'
 import { connect } from 'react-redux'
 import { scroller } from 'react-scroll'
 import ReactMarkdown from 'react-markdown'
-import { get } from 'lodash'
 
 import ClampedText from '../../shared/utils/ClampedText'
 
-const Container = styled.div`
-	display: flex;
-	flex-direction: column;
-`
+import { objectArrayToObject } from '../../../utils/objUtils'
+import withApiCache, { CACHE_HINT } from '../../HOC/WithApiCache'
 
 const NavSubWrapper = styled.div`
 	padding: 0.75em;
@@ -38,7 +35,45 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
 	word-break: break-all;
 `
 
-const CardHints = ({ setHasSubitems, unlockedHints, lastHintUnlockedId }) => {
+const NavItem = ({ id, nestLevel, wac_data: [hint] }) => {
+	const { name } = hint ?? {}
+
+	const handleScrollTo = hintId => {
+		scroller.scrollTo(`unlocked-hint-${hintId}`, {
+			duration: 500,
+			smooth: true,
+			containerId: 'learn-content',
+			offset: -document.getElementById('learn-content-header').clientHeight + 1
+		})
+	}
+
+	return (
+		<NavSubWrapper
+			className={`invisible hover-lift transition-short learn-i-hintheader-${id}`}
+			nestLevel={nestLevel}
+			onClick={() => handleScrollTo(id)}
+		>
+			<NavSubitemImg>&bull;</NavSubitemImg>
+			<NavSubitem clamp={1}>
+				<StyledReactMarkdown className="markdown-header" source={name} />
+			</NavSubitem>
+		</NavSubWrapper>
+	)
+}
+
+const WacNavItem = withApiCache(CACHE_HINT)(NavItem)
+
+const Container = styled.div`
+	display: flex;
+	flex-direction: column;
+`
+
+const HintsNavigation = ({
+	setHasSubitems,
+	hintIdsTree,
+	lastHintUnlockedId,
+	scopedCachedHintsProgress
+}) => {
 	useEffect(() => {
 		if (lastHintUnlockedId) {
 			anime({
@@ -50,34 +85,18 @@ const CardHints = ({ setHasSubitems, unlockedHints, lastHintUnlockedId }) => {
 		}
 	}, [lastHintUnlockedId])
 
-	const handleScrollTo = hintId => {
-		scroller.scrollTo(`unlocked-hint-${hintId}`, {
-			duration: 500,
-			smooth: true,
-			containerId: 'learn-content',
-			offset: -document.getElementById('learn-content-header').clientHeight + 1
-		})
-	}
+	const renderedHintsRecursive = (hints, nestLevel = 0) => {
+		if (!hints) return
 
-	const renderedHintsRecursive = (unlockedHints, nestLevel = 0) => {
-		if (!unlockedHints) return
+		return hints.map(hint => {
+			const { id } = hint
+			const { isUnlocked } = scopedCachedHintsProgress[id] ?? {}
 
-		return unlockedHints.map(hint => {
-			const { id, name } = hint
 			setHasSubitems(true)
 			return (
 				<React.Fragment key={`sidebar-hint-${id}`}>
-					<NavSubWrapper
-						className={`invisible hover-lift transition-short learn-i-hintheader-${id}`}
-						nestLevel={nestLevel}
-						onClick={() => handleScrollTo(id)}
-					>
-						<NavSubitemImg>&bull;</NavSubitemImg>
-						<NavSubitem clamp={1}>
-							<StyledReactMarkdown className="markdown-header" source={name} />
-						</NavSubitem>
-					</NavSubWrapper>
-					{renderedHintsRecursive(hint.unlockedHints, nestLevel + 1)}
+					{isUnlocked && <WacNavItem id={id} nestLevel={nestLevel} />}
+					{renderedHintsRecursive(hint.hints, nestLevel + 1)}
 				</React.Fragment>
 			)
 		})
@@ -85,8 +104,8 @@ const CardHints = ({ setHasSubitems, unlockedHints, lastHintUnlockedId }) => {
 
 	// prettier-ignore
 	const renderedHints = useMemo(
-    () => renderedHintsRecursive(unlockedHints), 
-    [unlockedHints]
+    () => renderedHintsRecursive(hintIdsTree), 
+    [scopedCachedHintsProgress]
   )
 
 	return <Container>{renderedHints}</Container>
@@ -94,18 +113,38 @@ const CardHints = ({ setHasSubitems, unlockedHints, lastHintUnlockedId }) => {
 
 const mapStateToProps = state => {
 	const {
+		cache: {
+			selectedActivityId,
+			cachedActivities,
+			cachedCards,
+			cachedHintsProgress
+		},
 		learnData: {
-			cards,
 			indicators: { currentCardIndex, lastHintUnlockedId }
 		}
 	} = state
 
-	const unlockedHints = cards && get(cards[currentCardIndex], 'unlockedHints')
+	const cardId =
+		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
+
+	const hintIdsTree = cachedCards[cardId]?.hints
+
+	const flatHintIds = hintIdsTree.flatMap(hint => [
+		{ id: hint.id },
+		...hint.hints.map(hint => ({ id: hint.id }))
+	])
+	const scopedCachedHintsProgressArray = flatHintIds.map(hint => ({
+		[hint.id]: cachedHintsProgress[hint.id] ?? null
+	}))
+	const scopedCachedHintsProgress = objectArrayToObject(
+		scopedCachedHintsProgressArray
+	)
 
 	return {
-		unlockedHints,
-		lastHintUnlockedId
+		hintIdsTree,
+		lastHintUnlockedId,
+		scopedCachedHintsProgress
 	}
 }
 
-export default connect(mapStateToProps)(CardHints)
+export default connect(mapStateToProps)(HintsNavigation)

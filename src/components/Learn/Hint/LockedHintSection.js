@@ -1,7 +1,6 @@
 import React, { useRef, useMemo } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
 
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import Icon from '../../shared/gadgets/Icon'
@@ -9,11 +8,13 @@ import IconLine from '../../shared/gadgets/IconLine'
 import HeaderShadow from '../../shared/gadgets/HeaderShadow'
 
 import LockedHint from './LockedHint'
+import { objectArrayToObject } from '../../../utils/objUtils'
 
 const Container = styled.div`
 	margin: 0 -1.5em;
 	display: flex;
 	align-items: center;
+	line-height: initial;
 `
 
 const LockedHintsContainer = styled.div`
@@ -48,7 +49,12 @@ const AnimatingIconLine = styled(IconLine)`
 	}
 `
 
-const LockedHintSection = ({ activityId, hints }) => {
+const LockedHintSection = ({
+	isReady,
+	activityId,
+	hintIdsTree,
+	scopedCachedHintsProgress
+}) => {
 	const containerRef = useRef(null)
 
 	let isAllUnlocked = true
@@ -56,28 +62,20 @@ const LockedHintSection = ({ activityId, hints }) => {
 		if (!hints) return
 
 		return hints.map(hint => {
-			const { id, contentfulId, name, difficulty, gems, isUnlocked } = hint
+			const { id } = hint
+			const { isUnlocked } = scopedCachedHintsProgress[id] ?? {}
 			if (!isUnlocked) {
 				isAllUnlocked = false
-				return (
-					<LockedHint
-						key={`hint-${id}`}
-						activityId={activityId}
-						id={id}
-						contentfulId={contentfulId}
-						name={name}
-						difficulty={difficulty}
-						gems={gems}
-					/>
-				)
+
+				return <LockedHint key={`hint-${id}`} activityId={activityId} id={id} />
 			}
 			return renderedLockedHintsRecursive(hint.hints)
 		})
 	}
 
 	const renderedLockedHints = useMemo(
-		() => renderedLockedHintsRecursive(hints),
-		[hints]
+		() => renderedLockedHintsRecursive(hintIdsTree),
+		[scopedCachedHintsProgress]
 	)
 
 	return (
@@ -124,16 +122,39 @@ const LockedHintSection = ({ activityId, hints }) => {
 
 const mapStateToProps = state => {
 	const {
+		cache: {
+			selectedActivityId: activityId,
+			cachedActivities,
+			cachedCards,
+			cachedHintsProgress
+		},
 		learnData: {
-			id: activityId,
-			cards,
-			indicators: { currentCardIndex }
+			indicators: { currentCardIndex, lockedHintIds }
 		}
 	} = state
 
+	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
+
+	const hintIdsTree = cachedCards[cardId]?.hints
+
+	const flatHintIds = hintIdsTree.flatMap(hint => [
+		{ id: hint.id },
+		...hint.hints.map(hint => ({ id: hint.id }))
+	])
+	const scopedCachedHintsProgressArray = flatHintIds.map(hint => ({
+		[hint.id]: cachedHintsProgress[hint.id] ?? null
+	}))
+	const scopedCachedHintsProgress = objectArrayToObject(
+		scopedCachedHintsProgressArray
+	)
+
+	const isReady = cachedHintsProgress[hintIdsTree[0]?.id]?.isUnlocked
+
 	return {
+		isReady,
 		activityId,
-		hints: cards && get(cards[currentCardIndex], 'hints')
+		hintIdsTree,
+		scopedCachedHintsProgress
 	}
 }
 

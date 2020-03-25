@@ -10,12 +10,15 @@ export const fetchCard = cardId => {
 	return backend.get(endpoint)
 }
 
-export const fetch = (id, cacheType) => {
+export const autoFetch = async (id, cacheType) => {
 	const [type, progress] = cacheType
 		.replace('cached', '')
 		.split(/(?=[A-Z])/)
 		.map(w => w.toLowerCase())
 
 	const endpoint = `/${type}/${id}` + (progress ? `/${progress}` : '')
-	return backend.get(endpoint)
+	return backend.get(endpoint).then(
+		res => res,
+		e => console.log(e) || {}
+	)
 }

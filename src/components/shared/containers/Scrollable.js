@@ -8,19 +8,36 @@ const Container = styled.div``
 const Scrollable = ({
 	children,
 	className,
-	id,
+	idName,
 	topType,
 	topCallback,
 	bottomType,
-	bottomCallback
+	bottomCallback,
+
+	arrowNav = true
 }) => {
 	const containerRef = useRef(null)
 
 	return (
 		<Container
-			id={id}
+			id={idName}
 			ref={containerRef}
 			className={`${className || ''} low-profile-scrollbar only-hover`}
+			onKeyDown={e => {
+				if (!arrowNav) {
+					switch (e.key) {
+						case 'ArrowUp':
+						case 'ArrowLeft':
+						case 'ArrowRight':
+						case 'ArrowDown':
+						case ' ':
+							e.preventDefault()
+							break
+						default:
+							break
+					}
+				}
+			}}
 		>
 			<HeaderShadow
 				containerRef={containerRef}
