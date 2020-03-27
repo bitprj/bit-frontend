@@ -64,10 +64,7 @@ const Learn = ({ wac_data, id, isReady, onInit }) => {
 
 const mapStateToProps = state => {
 	const {
-		cache: { cachedActivities, cachedCards },
-		learnData: {
-			selectedActivity: { id, contentUrl }
-		}
+		cache: { selectedActivityId: id, cachedActivities, cachedCards }
 	} = state
 
 	const cardId = cachedActivities[id]?.cards[0]?.id
@@ -76,8 +73,7 @@ const mapStateToProps = state => {
 	const isReady = !!card?.content
 	return {
 		isReady,
-		id,
-		// contentUrl
+		id
 	}
 }
 

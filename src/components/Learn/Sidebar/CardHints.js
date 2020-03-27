@@ -113,14 +113,19 @@ const HintsNavigation = ({
 
 const mapStateToProps = state => {
 	const {
-		cache: { cachedActivities, cachedCards, cachedHintsProgress },
+		cache: {
+			selectedActivityId,
+			cachedActivities,
+			cachedCards,
+			cachedHintsProgress
+		},
 		learnData: {
-			selectedActivity: { id: activityId },
 			indicators: { currentCardIndex, lastHintUnlockedId }
 		}
 	} = state
 
-	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
+	const cardId =
+		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
 
 	const hintIdsTree = cachedCards[cardId]?.hints
 

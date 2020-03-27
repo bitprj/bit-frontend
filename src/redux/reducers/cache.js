@@ -1,8 +1,9 @@
 import { cloneDeep, merge as mergeDeep } from 'lodash'
-import { SAVE_TO_CACHE } from '../actionTypes'
+import { SET_SELECTED_ACTIVITY_ID, SAVE_TO_CACHE } from '../actionTypes'
 import * as cacheTypes from '../../components/HOC/WithApiCache'
 
 const initialState = {
+	selectedActivityId: undefined,
 	[cacheTypes.CACHE_TOPIC]: {},
 	[cacheTypes.CACHE_MODULE]: {},
 	[cacheTypes.CACHE_ACTIVITY]: {},
@@ -18,6 +19,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
+		case SET_SELECTED_ACTIVITY_ID: {
+			// return { ...state, selectedActivityId: action.activityId }
+			return { ...state, selectedActivityId: 65 }
+		}
+
 		case SAVE_TO_CACHE: {
 			const { merge } = action.options
 

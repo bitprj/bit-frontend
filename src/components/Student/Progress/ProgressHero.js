@@ -7,7 +7,7 @@ import { get } from 'lodash'
 import ProgressCard from './ProgressCard'
 import Hero from '../../shared/gadgets/Hero'
 import GoBack from '../../shared/external/GoBack'
-import { setSelectedActivity } from '../../../redux/actions/learnData'
+import { setSelectedActivityId } from '../../../redux/actions/cache'
 
 const ProgressBar = styled.div`
 	margin-top: 2em;
@@ -33,13 +33,12 @@ const ProgressBar = styled.div`
 const StudentHero = ({
 	firstName,
 	suggestedActivity,
-	onSetSelectedActivity
+	onSetSelectedActivityId
 }) => {
 	const history = useHistory()
-	const { id, contentUrl } = suggestedActivity ?? {}
 
 	const handleResume = () => {
-		onSetSelectedActivity({ id, contentUrl })
+		onSetSelectedActivityId(get(suggestedActivity, 'id'))
 		history.push('/learn/')
 	}
 
@@ -73,8 +72,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-	onSetSelectedActivity: ({ id, contentUrl }) =>
-		dispatch(setSelectedActivity({ id, contentUrl }))
+	onSetSelectedActivityId: activityId =>
+		dispatch(setSelectedActivityId(activityId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentHero)

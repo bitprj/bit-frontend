@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
+import { get } from 'lodash'
 
 import ActivityModal from './ActivityModal'
 import ProgressCircle from '../../shared/gadgets/ProgressCircle'
@@ -134,10 +135,10 @@ const ActivityList = ({ activities }) => {
 			<ActivityModal
 				open={openActivity}
 				closed={() => setOpenActivity(false)}
-				id={selectedActivity?.id}
-				name={selectedActivity?.name}
-				description={selectedActivity?.description}
-				learningObjectives={selectedActivity?.summary}
+				id={get(selectedActivity, 'id')}
+				name={get(selectedActivity, 'name')}
+				description={get(selectedActivity, 'description')}
+				learningObjectives={get(selectedActivity, 'summary')}
 			/>
 		</>
 	)

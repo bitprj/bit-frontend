@@ -85,14 +85,13 @@ const SidebarNav = ({
 
 const mapStateToProps = state => {
 	const {
-		cache: { cachedActivities, cachedCards },
+		cache: { selectedActivityId, cachedActivities, cachedCards },
 		learnData: {
-			selectedActivity: { id: activityId },
 			indicators: { currentCardIndex, lastCardUnlockedIndex }
 		}
 	} = state
 
-	const cardIds = cachedActivities[activityId]?.cards
+	const cardIds = cachedActivities[selectedActivityId]?.cards
 	const cardsMeta = cardIds.map(card => {
 		const { id, name } = cachedCards[card.id] ?? {}
 		return { id, name }

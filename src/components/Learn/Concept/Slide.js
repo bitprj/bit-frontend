@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
 
+import ParsedContent from '../../shared/OldParsedContent'
 import CodeBlock from '../../shared/CodeBlock'
 import Icon from '../../shared/gadgets/Icon'
 import IconLine from '../../shared/gadgets/IconLine'
@@ -60,7 +61,6 @@ const Dots = styled(DotRating)`
 const RightPanel = styled.div`
 	height: 100%;
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	background: ${props => props.theme.accentVariant}44;
@@ -78,32 +78,30 @@ const CodeArea = styled.div`
 
 const StyledReactMarkdown = styled(ReactMarkdown)`
 	width: 100%;
-	display: flex;
-	align-items: ${props => (props.alignCenter ? 'center' : 'flex-start')};
+	align-items: center;
 `
 
 const Slide = ({
 	id,
-
+	/*name, steps,*/
 	wac_data: [slide],
 
 	slideIndex,
 	slidesLength,
-	onClose
+	setOpen
 }) => {
-	const { name, steps } = slide ?? {}
+	const { name, steps } = slide
 
 	const [currentStepIndex, setCurrentStepIndex] = useState(0)
-	const [srmAlignCenter, setSrmAlignCenter] = useState(true)
 
-	const { stepName, content, codeSnippet, image } =
-		steps?.[currentStepIndex] ?? {}
+	const step = steps?.[currentStepIndex]
 
 	useEffect(() => {
 		const codeBlock = document.querySelector('.learn-concept-codeblock')
+		if (!codeBlock) return
 
-		if (codeBlock?.scrollHeight > codeBlock?.clientHeight)
-			setSrmAlignCenter(false)
+		if (codeBlock.scrollHeight <= codeBlock.clientHeight)
+			codeBlock.style.display = 'flex'
 	}, [currentStepIndex])
 
 	const buttons = (
@@ -139,7 +137,7 @@ const Slide = ({
 						.querySelector('.carousel .control-next.control-arrow')
 						.click()
 				} else {
-					onClose()
+					setOpen(false)
 				}
 			}}
 		/>
@@ -151,11 +149,11 @@ const Slide = ({
 				{/* <Name>{name}</Name> */}
 				<Content>
 					<h2>
-						<ReactMarkdown className="markdown-header" source={stepName} />
+						<ReactMarkdown className="markdown-header" source={step.heading} />
 					</h2>
-					<ReactMarkdown source={content} />
+					<ParsedContent document={step.content} />
 				</Content>
-				{steps && (
+				{steps.length !== 1 && (
 					<Indicators>
 						{buttons}
 						<Dots
@@ -172,12 +170,11 @@ const Slide = ({
 			</LeftPanel>
 
 			<RightPanel>
-				{codeSnippet && (
+				{step && step.snippet ? (
 					<CodeArea>
 						<StyledReactMarkdown
 							className="low-profile-scrollbar only-hover light learn-concept-codeblock"
-							alignCenter={srmAlignCenter}
-							source={codeSnippet}
+							source={step.snippet}
 							renderers={{
 								code: props =>
 									CodeBlock({
@@ -189,9 +186,9 @@ const Slide = ({
 							}}
 						/>
 					</CodeArea>
+				) : (
+					<Icon width="69%" src={profPic} />
 				)}
-
-				{image && <Icon sizeAuto src={image} />}
 			</RightPanel>
 		</Container>
 	)

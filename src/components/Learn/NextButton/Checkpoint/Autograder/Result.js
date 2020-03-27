@@ -142,11 +142,11 @@ const RightPanel = ({ results, testCaseIndex }) => {
 			<DetailsContainer>
 				<SmallHeader>Expected Output</SmallHeader>
 				<BlackTextArea className="code low-profile-scrollbar fat light">
-					{expected.join('\n') || output.join('\n')}
+					{(output && output.join('\n')) || (expected && expected.join('\n'))}
 				</BlackTextArea>
 				<SmallHeader>Your Output</SmallHeader>
 				<BlackTextArea className="code low-profile-scrollbar fat light">
-					{output.join('\n')}
+					{output && output.join('\n')}
 				</BlackTextArea>
 			</DetailsContainer>
 		</RightPanelContainer>

@@ -1,22 +1,14 @@
+import React from 'react'
 import styled from 'styled-components'
 
 const Icon = styled.img`
-  ${props => {
-		if (!props.sizeAuto) {
-			return `width: ${props.width || '5em'};
-        ${
-					props.height
-						? `height: ${props.height}`
-						: !props.width && !props.height
-						? 'height: 5em;'
-						: ''
-				}`
-		}
-	}}  
-
-
   ${props => (props.center ? 'margin: 0 auto;' : '')}
-
+	width: ${props => props.width || '5em'};
+  ${props => {
+		if (props.height) return `height: ${props.height}`
+		else if (!props.width && !props.height) return 'height: 5em;'
+	}}
+  
 	${props => {
 		if (props.sharp) {
 			return 'border-radius: 0;'

@@ -40,14 +40,13 @@ const SidebarHeader = ({
 
 const mapStateToProps = state => {
 	const {
-		cache: { cachedActivities },
+		cache: { selectedActivityId, cachedActivities },
 		learnData: {
-			selectedActivity: { id: activityId },
 			indicators: { currentCardIndex, lastCardUnlockedIndex }
 		}
 	} = state
 
-	const activity = cachedActivities[activityId]
+	const activity = cachedActivities[selectedActivityId]
 
 	return {
 		name: activity?.name,

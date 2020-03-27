@@ -13,7 +13,7 @@ import {
 	INCREMENT_GEMS_BY
 } from '../actionTypes'
 
-import { setSelectedActivity } from './learnData'
+import { setSelectedActivityId, pushToLoadedModules } from './cache'
 
 /* ===== INITIALIZATION */
 
@@ -89,13 +89,7 @@ export const init = () => async dispatch => {
 	dispatch(setStudentData(studentData))
 
 	// external
-	dispatch(
-		setSelectedActivity({
-			id: 65,
-			contentUrl:
-				'https://d36nt3c422j20i.cloudfront.net/Topic1_Mongo/Module_DB/Lab3_Minesweeper/Minesweeper.json'
-		})
-	)
+	dispatch(setSelectedActivityId(65))
 }
 
 export const initCurrentTrack = currentTrackID => {

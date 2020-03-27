@@ -12,7 +12,7 @@ const Container = styled.div`
 `
 
 const UnlockedHintSection = ({
-	hintMetasTree,
+	hintIdsTree,
 	scopedCachedHintsProgress,
 	lastHintUnlockedId
 }) => {
@@ -36,7 +36,7 @@ const UnlockedHintSection = ({
 		if (!hints) return
 
 		return hints.map(hint => {
-			const { id, contentUrl } = hint
+			const { id } = hint
 			const { isUnlocked } = scopedCachedHintsProgress[id] ?? {}
 
 			// const visualIndex = hintIndexMapper++
@@ -51,7 +51,6 @@ const UnlockedHintSection = ({
 							// 		: null
 							// }
 							id={id}
-							// contentUrl={contentUrl}
 						/>
 					)}
 					{renderedUnlockedHintsRecursive(hint.hints)}
@@ -61,7 +60,7 @@ const UnlockedHintSection = ({
 	}
 
 	const renderedUnlockedHints = useMemo(
-		() => renderedUnlockedHintsRecursive(hintMetasTree),
+		() => renderedUnlockedHintsRecursive(hintIdsTree),
 		[scopedCachedHintsProgress]
 	)
 
@@ -70,22 +69,27 @@ const UnlockedHintSection = ({
 
 const mapStateToProps = state => {
 	const {
-		cache: { cachedActivities, cachedCards, cachedHintsProgress },
+		cache: {
+			selectedActivityId,
+			cachedActivities,
+			cachedCards,
+			cachedHintsProgress
+		},
 		learnData: {
-			selectedActivity: { id: activityId },
 			indicators: { currentCardIndex, lastHintUnlockedId }
 		}
 	} = state
 
-	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
+	const cardId =
+		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
 
-	const hintMetasTree = cachedCards[cardId]?.hints
+	const hintIdsTree = cachedCards[cardId]?.hints
 
-	const flatHintMetas = hintMetasTree.flatMap(hint => [
+	const flatHintIds = hintIdsTree.flatMap(hint => [
 		{ id: hint.id },
-		...hint.hints.map(hint => ({ id: hint.id, contentUrl: hint.contentUrl }))
+		...hint.hints.map(hint => ({ id: hint.id }))
 	])
-	const scopedCachedHintsProgressArray = flatHintMetas.map(hint => ({
+	const scopedCachedHintsProgressArray = flatHintIds.map(hint => ({
 		[hint.id]: cachedHintsProgress[hint.id] ?? null
 	}))
 	const scopedCachedHintsProgress = objectArrayToObject(
@@ -93,10 +97,12 @@ const mapStateToProps = state => {
 	)
 
 	return {
-		hintMetasTree,
+		hintIdsTree,
 		lastHintUnlockedId,
 		scopedCachedHintsProgress
 	}
+
+	// unlockedHints: cards && get(cards[currentCardIndex], 'unlockedHints')
 }
 
 export default connect(mapStateToProps)(UnlockedHintSection)

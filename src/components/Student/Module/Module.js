@@ -8,6 +8,7 @@ import ActivityList from './ActivityList'
 import PickProject from './PickProject'
 import Hero from '../../shared/gadgets/Hero'
 
+import { genFetch } from '../../../services/ContentfulService'
 import media from '../../../styles/media'
 
 const Content = styled.div`
@@ -46,12 +47,13 @@ const Module = ({ modules }) => {
 					setActivities(get(mod.current, 'activities'))
 				}
 				// fetch activites for the module
-				setActivities()
-				// await Promise.all(
-				// 	mod.current.activities.map(async activity => {
-				// 		return { ...activity, ...(await genFetch(activity.contentfulId)) }
-				// 	})
-				// )
+				setActivities(
+					await Promise.all(
+						mod.current.activities.map(async activity => {
+							return { ...activity, ...(await genFetch(activity.contentfulId)) }
+						})
+					)
+				)
 			}
 		}
 		_()

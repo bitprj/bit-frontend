@@ -67,7 +67,7 @@ const LockedHint = ({
 	onInitUnlockHint,
 	onIncrementGemsBy
 }) => {
-	const { name, difficulty, gems } = hint ?? {}
+	const { name, difficulty, gems = 69 } = hint ?? {}
 	const { isUnlocked } = hintProgress ?? {}
 	// console.log(isUnlocked)
 

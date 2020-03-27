@@ -71,7 +71,7 @@ const UnlockedHint = ({
 	 */
 	const renderedSteps = () => {
 		return steps.map((step, i) => {
-			const { name: stepName, content, codeSnippet, image } = step
+			const { name: stepName, mdContent, codeSnippet, image } = step
 			return (
 				<React.Fragment key={`hint-step-${id}-${i}`}>
 					{steps.length === 1 && name.trim() !== stepName.trim() && (
@@ -79,11 +79,11 @@ const UnlockedHint = ({
 							<ReactMarkdown className="markdown-header" source={stepName} />
 						</h3>
 					)}
-					<ReactMarkdown source={content} />
+					<ReactMarkdown source={mdContent} />
 					{image && <img src={image} />}
 					{codeSnippet && (
 						<ReactMarkdown
-							className="low-profile-scrollbar only-hover light"
+							className="low-profile-scrollbar only-hover light learn-concept-codeblock"
 							source={codeSnippet}
 							renderers={{
 								code: props =>

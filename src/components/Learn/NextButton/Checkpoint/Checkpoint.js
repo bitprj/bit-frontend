@@ -10,7 +10,7 @@ import AutograderHome from './Autograder/Home'
 import AutograderCLI from './Autograder/CLI'
 import AutograderResult from './Autograder/Result'
 
-import Loading from './Loading'
+import AutograderLoading from './Autograder/Loading'
 
 import MediaHome from './Media/Home'
 
@@ -23,11 +23,7 @@ import DynamicModal from '../../../shared/containers/DynamicModal'
 import GradeStatus from '../../../shared/gadgets/GradeStatus'
 import Button from '../../../shared/gadgets/Button'
 
-import withApiCache, {
-	CACHE_CHECKPOINT,
-	CACHE_CHECKPOINTS_PROGRESS
-} from '../../../HOC/WithApiCache'
-import ReactMarkdown from 'react-markdown'
+import withApiCache, { CACHE_CHECKPOINT } from '../../../HOC/WithApiCache'
 
 const flagIcon = require('../../../../assets/icons/flag.svg')
 
@@ -62,7 +58,7 @@ const StyledIcon = styled(Icon)`
 	margin-right: 1em;
 `
 
-const TitleMarkdown = styled(ReactMarkdown)`
+const Title = styled.h1`
 	margin: 1em;
 `
 
@@ -148,6 +144,7 @@ const Checkpoint = ({
 
 			case AUTOGRADER:
 				const getSubmission = () => {
+					console.log(progress)
 					const unprocessed = progress.submissions[submissionIndex] ?? {}
 					if (unprocessed.error) return unprocessed
 
@@ -167,24 +164,19 @@ const Checkpoint = ({
 			case UPLOAD:
 				return (
 					<Upload
+						pushView={pushView}
+						previousView={previousView}
 						activityId={activityId}
 						id={id}
 						type={type}
-						progress={progress}
-						pushView={pushView}
-						previousView={previousView}
 					/>
 				)
 
 			case LOADING:
 				return (
-					<Loading
-						type={type}
+					<AutograderLoading
 						pushViewAndRemoveIntermediaries={newView => {
 							view.push(newView)
-							setView(view.filter(v => v !== LOADING && v !== UPLOAD))
-						}}
-						previousViewAndRemoveIntermediaries={() => {
 							setView(view.filter(v => v !== LOADING && v !== UPLOAD))
 						}}
 					/>
@@ -276,7 +268,7 @@ const Checkpoint = ({
 					peekView(view) !== LOADING ? (
 						<InfoContainer>
 							<StyledIcon width="3em" src={flagIcon} />
-							<TitleMarkdown source={`# ${name}`} />
+							<Title>{name}</Title>
 							{peekView(view) === HOME ? mostRecentGradeStatus() : null}
 						</InfoContainer>
 					) : null}
@@ -306,40 +298,38 @@ const Checkpoint = ({
 const mapStateToProps = state => {
 	const {
 		cache: {
+			selectedActivityId,
 			cachedActivities,
 			cachedCards,
-			cachedCheckpoints,
-			cachedCheckpointsProgress
+			cachedCheckpoints
 		},
 		learnData: {
-			selectedActivity: { id: activityId },
-			indicators: { currentCardIndex }
+			indicators: { currentCardIndex },
+			progress: { checkpointsProgress }
 		}
 	} = state
 
-	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
+	const cardId =
+		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
 
-	const { id: checkpointId, contentUrl } = cachedCards[cardId].checkpoint ?? {}
+	const checkpointId = cachedCards[cardId].checkpoint?.id
 
 	const checkpoint = cachedCheckpoints[checkpointId]
 
-	const progress = cachedCheckpointsProgress[checkpointId]
-
 	return {
-		activityId,
+		activityId: selectedActivityId,
 		id: checkpointId,
-		contentUrl,
 
 		name: checkpoint?.name,
 		instruction: checkpoint?.instruction,
 		type: checkpoint?.checkpointType,
-		progress
+		progress: checkpointsProgress?.[checkpoint?.id]
 	}
 }
 
 const enhancer = compose(
 	connect(mapStateToProps),
-	withApiCache(CACHE_CHECKPOINT, CACHE_CHECKPOINTS_PROGRESS)
+	withApiCache(CACHE_CHECKPOINT)
 )
 
 export default enhancer(Checkpoint)

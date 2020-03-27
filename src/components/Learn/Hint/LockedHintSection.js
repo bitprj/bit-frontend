@@ -52,7 +52,7 @@ const AnimatingIconLine = styled(IconLine)`
 const LockedHintSection = ({
 	isReady,
 	activityId,
-	hintMetasTree,
+	hintIdsTree,
 	scopedCachedHintsProgress
 }) => {
 	const containerRef = useRef(null)
@@ -62,26 +62,19 @@ const LockedHintSection = ({
 		if (!hints) return
 
 		return hints.map(hint => {
-			const { id, contentUrl } = hint
+			const { id } = hint
 			const { isUnlocked } = scopedCachedHintsProgress[id] ?? {}
 			if (!isUnlocked) {
 				isAllUnlocked = false
 
-				return (
-					<LockedHint
-						key={`hint-${id}`}
-						activityId={activityId}
-						id={id}
-						// contentUrl={contentUrl}
-					/>
-				)
+				return <LockedHint key={`hint-${id}`} activityId={activityId} id={id} />
 			}
 			return renderedLockedHintsRecursive(hint.hints)
 		})
 	}
 
 	const renderedLockedHints = useMemo(
-		() => renderedLockedHintsRecursive(hintMetasTree),
+		() => renderedLockedHintsRecursive(hintIdsTree),
 		[scopedCachedHintsProgress]
 	)
 
@@ -129,34 +122,38 @@ const LockedHintSection = ({
 
 const mapStateToProps = state => {
 	const {
-		cache: { cachedActivities, cachedCards, cachedHintsProgress },
+		cache: {
+			selectedActivityId: activityId,
+			cachedActivities,
+			cachedCards,
+			cachedHintsProgress
+		},
 		learnData: {
-			selectedActivity: { id: activityId },
-			indicators: { currentCardIndex }
+			indicators: { currentCardIndex, lockedHintIds }
 		}
 	} = state
 
 	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
 
-	const hintMetasTree = cachedCards[cardId]?.hints
+	const hintIdsTree = cachedCards[cardId]?.hints
 
-	const flatHintMetas = hintMetasTree.flatMap(hint => [
+	const flatHintIds = hintIdsTree.flatMap(hint => [
 		{ id: hint.id },
-		...hint.hints.map(hint => ({ id: hint.id, contentUrl: hint.contentUrl }))
+		...hint.hints.map(hint => ({ id: hint.id }))
 	])
-	const scopedCachedHintsProgressArray = flatHintMetas.map(hint => ({
+	const scopedCachedHintsProgressArray = flatHintIds.map(hint => ({
 		[hint.id]: cachedHintsProgress[hint.id] ?? null
 	}))
 	const scopedCachedHintsProgress = objectArrayToObject(
 		scopedCachedHintsProgressArray
 	)
 
-	const isReady = cachedHintsProgress[hintMetasTree[0]?.id]?.isUnlocked
+	const isReady = cachedHintsProgress[hintIdsTree[0]?.id]?.isUnlocked
 
 	return {
 		isReady,
 		activityId,
-		hintMetasTree,
+		hintIdsTree,
 		scopedCachedHintsProgress
 	}
 }
