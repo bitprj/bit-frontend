@@ -8,7 +8,7 @@ import ProgressBar from '../../shared/gadgets/ProgressBar'
 import Button from '../../shared/gadgets/Button'
 import ClampedText from '../../shared/utils/ClampedText'
 
-import { setSelectedActivityId } from '../../../redux/actions/cache'
+import { setSelectedActivity } from '../../../redux/actions/learnData'
 
 const Header = styled.div`
 	padding: 0 3em;
@@ -66,15 +66,16 @@ const ActivityModal = ({
 	open,
 	closed,
 	id,
+	contentUrl,
 	name,
 	description,
 	learningObjectives = `Coding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software.\n\nCoding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software.`,
-	onSetSelectedActivityId
+	onSetSelectedActivity
 }) => {
 	const history = useHistory()
 
 	const handleResume = () => {
-		onSetSelectedActivityId(id)
+		onSetSelectedActivity({ id, contentUrl })
 		setTimeout(() => history.push('/learn/'), 0)
 	}
 
@@ -128,8 +129,8 @@ const ActivityModal = ({
 }
 
 const mapDispatchToProps = dispatch => ({
-	onSetSelectedActivityId: activityId =>
-		dispatch(setSelectedActivityId(activityId))
+	onSetSelectedActivity: ({ id, contentUrl }) =>
+		dispatch(setSelectedActivity({ id, contentUrl }))
 })
 
 export default connect(null, mapDispatchToProps)(ActivityModal)

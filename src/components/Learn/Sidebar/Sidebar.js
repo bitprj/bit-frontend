@@ -40,10 +40,13 @@ const Sidebar = ({ isReady }) => {
 
 const mapStateToProps = state => {
 	const {
-		cache: { selectedActivityId, cachedActivities, cachedCards }
+		cache: { cachedActivities, cachedCards },
+		learnData: {
+			selectedActivity: { id: activityId }
+		}
 	} = state
 
-	const cardId = cachedActivities[selectedActivityId]?.cards[0].id
+	const cardId = cachedActivities[activityId]?.cards[0].id
 	const isReady = cachedCards[cardId]?.id
 
 	return {

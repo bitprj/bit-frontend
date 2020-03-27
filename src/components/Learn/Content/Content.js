@@ -155,20 +155,20 @@ const Content = ({
 
 const mapStateToProps = state => {
 	const {
-		cache: { selectedActivityId, cachedActivities, cachedCards },
+		cache: { cachedActivities, cachedCards },
 		learnData: {
+			selectedActivity: { id: activityId },
 			indicators: { currentCardIndex, lastCardUnlockedIndex }
 		}
 	} = state
 
-	const cardId =
-		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
+	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
 
 	const card = cachedCards[cardId]
 
 	return {
 		isReady: !!card?.content,
-		activityId: selectedActivityId,
+		activityId,
 		id: cardId,
 
 		currentCardIndex,

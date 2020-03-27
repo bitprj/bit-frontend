@@ -26,41 +26,7 @@ const StyledCarousel = styled(Carousel)`
 	}
 
 	.carousel.carousel-slider .control-arrow {
-		background: ${props => props.theme.accent};
-		top: 50%;
-		bottom: auto;
-		transform: translateY(-50%);
-		opacity: 1;
-		width: 2.2em;
-		height: 2.2em;
-		box-shadow: 0 4px 14px 0 ${props => props.theme.accent}88;
-
-		transition: box-shadow 0.2s ease, background-color 0.2s ease;
-	}
-
-	.carousel .control-prev.control-arrow {
-		padding: 0;
-		border-radius: 50%;
-		left: -1.1em;
-	}
-	.carousel .control-prev.control-arrow:before {
-		margin-left: 0.88em;
-		border-right: 8px solid ${props => props.theme.accentVariant};
-	}
-
-	.carousel .control-next.control-arrow {
-		padding: 0;
-		border-radius: 50%;
-		right: -1.1em;
-	}
-	.carousel .control-next.control-arrow:before {
-		margin-right: 0.88em;
-		border-left: 8px solid ${props => props.theme.accentVariant};
-	}
-
-	.carousel.carousel-slider .control-arrow:hover {
-		background: ${props => props.theme.accent}dd;
-		box-shadow: 0 4px 14px 0 ${props => props.theme.accent}55;
+		visibility: hidden;
 	}
 `
 
@@ -71,7 +37,7 @@ const Concept = ({
 	open,
 	setOpen,
 
-	conceptIds,
+	conceptMetas,
 	removeAndBroadcastButtonState
 }) => {
 	/**
@@ -80,15 +46,19 @@ const Concept = ({
 	 */
 	const [slideIndex, setSlideIndex] = useState(0)
 
-	const slides = conceptIds?.map((concept, index) => (
+	const handleClose = () => {
+		setOpen(false)
+		removeAndBroadcastButtonState(STATE_CONCEPT)
+	}
+
+	const slides = conceptMetas?.map((concept, index) => (
 		<Slide
 			key={`learn-concept-${concept.id}-${index}`}
 			id={concept.id}
-			// name={concept.name}
-			// steps={concept.steps}
+			// contentUrl={concept.contentUrl}
 			slideIndex={slideIndex}
-			slidesLength={conceptIds?.length}
-			setOpen={setOpen}
+			slidesLength={conceptMetas?.length}
+			onClose={handleClose}
 		/>
 	))
 
@@ -102,16 +72,7 @@ const Concept = ({
 					left="65%"
 				/>
 			)}
-			<DynamicModal
-				open={open}
-				closed={() => {
-					setOpen(false)
-					console.log('i closed')
-					removeAndBroadcastButtonState(STATE_CONCEPT)
-				}}
-				scaleX={0.9}
-				scaleY={0.9}
-			>
+			<DynamicModal open={open} closed={handleClose} scaleX={0.9} scaleY={0.9}>
 				<StyledCarousel
 					showThumbs={false}
 					showStatus={false}
@@ -129,19 +90,19 @@ const Concept = ({
 
 const mapStateToProps = state => {
 	const {
-		cache: { selectedActivityId, cachedActivities, cachedCards },
+		cache: { cachedActivities, cachedCards },
 		learnData: {
+			selectedActivity: { id: activityId },
 			indicators: { currentCardIndex }
 		}
 	} = state
 
-	const cardId =
-		cachedActivities[selectedActivityId]?.cards[currentCardIndex]?.id
+	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
 
-	const conceptIds = cachedCards[cardId]?.concepts
+	const conceptMetas = cachedCards[cardId]?.concepts
 
 	return {
-		conceptIds
+		conceptMetas
 	}
 }
 
