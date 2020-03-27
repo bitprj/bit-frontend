@@ -17,30 +17,59 @@ const ActiveList = ({
 }) => {
 	const ariaSelection = useRef(null)
 
-	const [ariaCurrentIndex, setAriaCurrentIndex] = useState(activeIndex)
-	const prevAriaIndex = usePrevious(ariaCurrentIndex)
+	// 	const [ariaCurrentIndex, setAriaCurrentIndex] = useState(activeIndex)
+	// 	const prevAriaIndex = usePrevious(ariaCurrentIndex)
 
-	const getAriaSelected = index => {
-		return ariaSelection.current.children[index]
-	}
+	// 	const getAriaSelected = index => {
+	// 		return ariaSelection.current.children[index]
+	// 	}
 
-	useEffect(() => {
-		const selected = getAriaSelected(activeIndex)
-		if (selected) {
-			selected.setAttribute('tabindex', 0)
-		}
-	}, [])
+	// 	useEffect(() => {
+	// 		const selected = getAriaSelected(activeIndex)
+	// 		if (selected) {
+	// 			selected.setAttribute('tabindex', 0)
+	// 		}
+	// 	}, [])
 
-	useEffect(() => {
-		const prevSelected = getAriaSelected(prevAriaIndex)
-		const selected = getAriaSelected(ariaCurrentIndex)
+	// 	useEffect(() => {
+	// 		const prevSelected = getAriaSelected(prevAriaIndex)
+	// 		const selected = getAriaSelected(ariaCurrentIndex)
 
-		if (prevSelected) {
-			prevSelected.setAttribute('tabindex', -1)
-			selected.setAttribute('tabindex', 0)
-			selected.focus()
-		}
-	}, [ariaCurrentIndex])
+	// 		if (prevSelected) {
+	// 			prevSelected.setAttribute('tabindex', -1)
+	// 			selected.setAttribute('tabindex', 0)
+	// 			selected.focus()
+	// 		}
+	// 	}, [ariaCurrentIndex])
+
+	// 	const handleKeyboardNav = (e, item, i) => {
+	// 		switch (e.key) {
+	// 			case 'ArrowUp':
+	// 				if (ariaCurrentIndex > activeMinIndex) {
+	// 					setAriaCurrentIndex(i - 1)
+	// 				}
+	// 				break
+	// 			case 'ArrowDown':
+	// 				if (ariaCurrentIndex < activeMaxIndex) {
+	// 					setAriaCurrentIndex(i + 1)
+	// 				}
+	// 				break
+
+	// 			case 'Tab':
+	// 				// const selected = getAriaSelected(ariaCurrentIndex)
+	// 				// const active = getAriaSelected(activeIndex)
+	// 				// selected.setAttribute('tabindex', -1)
+	// 				// active.setAttribute('tabindex', 0)
+	// 				break
+
+	// 			case 'Enter':
+	// 			case ' ':
+	// 				if (activeIndex !== ariaCurrentIndex) {
+	// 					selectCallback(item, i)
+	// 				}
+	// 				break
+	// 		}
+	// 	}
 
 	const handleScrollToBottom = container =>
 		animateScroll.scrollToBottom({
@@ -48,35 +77,6 @@ const ActiveList = ({
 			smooth: true,
 			containerId: container
 		})
-
-	const handleKeyboardNav = (e, item, i) => {
-		switch (e.key) {
-			case 'ArrowUp':
-				if (ariaCurrentIndex > activeMinIndex) {
-					setAriaCurrentIndex(i - 1)
-				}
-				break
-			case 'ArrowDown':
-				if (ariaCurrentIndex < activeMaxIndex) {
-					setAriaCurrentIndex(i + 1)
-				}
-				break
-
-			case 'Tab':
-				// const selected = getAriaSelected(ariaCurrentIndex)
-				// const active = getAriaSelected(activeIndex)
-				// selected.setAttribute('tabindex', -1)
-				// active.setAttribute('tabindex', 0)
-				break
-
-			case 'Enter':
-			case ' ':
-				if (activeIndex !== ariaCurrentIndex) {
-					selectCallback(item, i)
-				}
-				break
-		}
-	}
 
 	const renderedList =
 		itemList &&
@@ -88,9 +88,12 @@ const ActiveList = ({
 						id={key}
 						className={`${activeClassName(item, i) ||
 							''} ${identifier}-list-active`}
-						tabIndex="-1"
-						onClick={() => selectCallback(item, i)}
-						onKeyDown={e => handleKeyboardNav(e, item, i)}
+						// tabIndex="-1"
+						onClick={() => {
+							if (i >= activeMinIndex && i <= activeMaxIndex)
+								selectCallback(item, i)
+						}}
+						// onKeyDown={e => handleKeyboardNav(e, item, i)}
 					>
 						{children(item, i)}
 					</li>

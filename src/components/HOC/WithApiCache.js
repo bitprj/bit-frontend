@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
 
 import { autoFetch } from '../../services/ContentService'
 import { saveToCache } from '../../redux/actions/cache'
+import { useTraceUpdate } from '../../utils/customHooks'
 
 export const CACHE_TOPIC = 'cachedTopics'
 export const CACHE_MODULE = 'cachedModules'
@@ -21,16 +22,19 @@ const withApiCache = (...cacheTypes) => WrappedComponent => {
 	const _ = ({ wac_cache, wac_onSaveToCache, ...props }) => {
 		const { id } = props
 
-		const getInitialData = () =>
-			cacheTypes.map(type => {
-				return wac_cache[type][id]
-			})
+		const initialData = useMemo(
+			() => cacheTypes.map(type => wac_cache[type][id]),
+			[id]
+		)
+		console.log('testing')
+		useTraceUpdate({ ...wac_cache, wac_onSaveToCache, cacheTypes, ...props })
 
-		const [data, setData] = useState(getInitialData())
+		const [data, setData] = useState(initialData)
 
 		useEffect(() => {
-			if (id && !isDataReady(data)) {
+			if (id && !isDataReady(initialData)) {
 				console.log(cacheTypes)
+
 				Promise.all(
 					cacheTypes.map(type => {
 						return autoFetch(id, type)
@@ -72,7 +76,7 @@ export default withApiCache
  *
  */
 
-export const isDataReady = data => data.every(elem => elem !== undefined)
+export const isDataReady = data => data.some(elem => elem !== undefined)
 
 /**
  * make a recursive version
@@ -83,9 +87,15 @@ export const fetchContentUrls = async apiData => {
 		const pattern = new RegExp(
 			'^(https?:\\/\\/)?' + // protocol
 			'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|)' + // domain name
-				'.+.(md|json)$', // check for md
+				'.+.(md)$', // check for md
 			'i'
 		)
+		// const pattern = new RegExp(
+		// 	'^(https?:\\/\\/)?' + // protocol
+		// 	'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|)' + // domain name
+		// 		'.+.(md|json)$', // check for md
+		// 	'i'
+		// )
 		return !!pattern.test(str)
 	}
 	const processUrl = () => {
@@ -102,6 +112,9 @@ export const fetchContentUrls = async apiData => {
 	if (!url) {
 		return apiData
 	}
-	const response = await axios.get(processUrl())
-	return { ...apiData, content: response.data }
+
+	return await axios
+		.get(processUrl())
+		.then(res => ({ ...apiData, content: res.data }))
+		.catch(e => apiData)
 }

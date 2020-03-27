@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import anime, { get } from 'animejs'
+import anime from 'animejs'
 import { useDropzone } from 'react-dropzone'
 import { connect } from 'react-redux'
 
@@ -52,12 +52,14 @@ const Error = styled.p`
 `
 
 const Upload = ({
+	activityId,
+	id,
+	type,
+	progress,
+
 	pushView,
 	previousView,
 
-	activityId,
-	checkpointId,
-	type,
 	onInitSubmitCheckpointProgress
 }) => {
 	const themeContext = useContext(ThemeContext)
@@ -70,15 +72,12 @@ const Upload = ({
 		setError(false)
 		onInitSubmitCheckpointProgress(
 			activityId,
-			checkpointId,
+			id,
 			type,
-			acceptedFiles[0]
+			acceptedFiles[0],
+			progress
 		)
-		if (type === 'Autograder') {
-			pushView(LOADING)
-		} else {
-			previousView()
-		}
+		pushView(LOADING)
 	}
 
 	const handleError = () => {
@@ -192,9 +191,9 @@ const Upload = ({
 }
 
 const mapDispatchToProps = dispatch => ({
-	onInitSubmitCheckpointProgress: (activityId, checkpointId, type, content) =>
+	onInitSubmitCheckpointProgress: (activityId, id, type, content, progress) =>
 		dispatch(
-			initSubmitCheckpointProgress(activityId, checkpointId, type, content)
+			initSubmitCheckpointProgress(activityId, id, type, content, progress)
 		)
 })
 
