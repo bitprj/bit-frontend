@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
 
-import ParsedContent from '../../../shared/ParsedContent'
-import CodeBlock from '../../../shared/CodeBlock'
-import Icon from '../../../shared/gadgets/Icon'
-import IconLine from '../../../shared/gadgets/IconLine'
-import ConfirmCancel from '../../../shared/gadgets/ConfirmCancel'
-import DotRating from '../../../shared/gadgets/DotRating'
+import CodeBlock from '../../shared/CodeBlock'
+import Icon from '../../shared/gadgets/Icon'
+import IconLine from '../../shared/gadgets/IconLine'
+import ConfirmCancel from '../../shared/gadgets/ConfirmCancel'
+import DotRating from '../../shared/gadgets/DotRating'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
+
+import withApiCache, { CACHE_CONCEPT } from '../../HOC/WithApiCache'
+
+const profPic = require('../../../assets/icons/prof-pic.png')
 
 const Container = styled.div`
 	display: flex;
@@ -57,6 +60,7 @@ const Dots = styled(DotRating)`
 const RightPanel = styled.div`
 	height: 100%;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	background: ${props => props.theme.accentVariant}44;
@@ -74,20 +78,32 @@ const CodeArea = styled.div`
 
 const StyledReactMarkdown = styled(ReactMarkdown)`
 	width: 100%;
-	align-items: center;
+	display: flex;
+	align-items: ${props => (props.alignCenter ? 'center' : 'flex-start')};
 `
 
-const Slide = ({ name, steps, slideIndex, slidesLength, setOpen }) => {
-	const [currentStepIndex, setCurrentStepIndex] = useState(0)
+const Slide = ({
+	id,
 
-	const step = steps && steps[currentStepIndex]
+	wac_data: [slide],
+
+	slideIndex,
+	slidesLength,
+	onClose
+}) => {
+	const { name, steps } = slide ?? {}
+
+	const [currentStepIndex, setCurrentStepIndex] = useState(0)
+	const [srmAlignCenter, setSrmAlignCenter] = useState(true)
+
+	const { stepName, content, codeSnippet, image } =
+		steps?.[currentStepIndex] ?? {}
 
 	useEffect(() => {
 		const codeBlock = document.querySelector('.learn-concept-codeblock')
-		if (!codeBlock) return
 
-		if (codeBlock.scrollHeight <= codeBlock.clientHeight)
-			codeBlock.style.display = 'flex'
+		if (codeBlock?.scrollHeight > codeBlock?.clientHeight)
+			setSrmAlignCenter(false)
 	}, [currentStepIndex])
 
 	const buttons = (
@@ -123,7 +139,7 @@ const Slide = ({ name, steps, slideIndex, slidesLength, setOpen }) => {
 						.querySelector('.carousel .control-next.control-arrow')
 						.click()
 				} else {
-					setOpen(false)
+					onClose()
 				}
 			}}
 		/>
@@ -135,11 +151,11 @@ const Slide = ({ name, steps, slideIndex, slidesLength, setOpen }) => {
 				{/* <Name>{name}</Name> */}
 				<Content>
 					<h2>
-						<ReactMarkdown className="markdown-header" source={step.heading} />
+						<ReactMarkdown className="markdown-header" source={stepName} />
 					</h2>
-					<ParsedContent document={step.content} />
+					<ReactMarkdown source={content} />
 				</Content>
-				{steps.length !== 1 && (
+				{steps && (
 					<Indicators>
 						{buttons}
 						<Dots
@@ -156,11 +172,12 @@ const Slide = ({ name, steps, slideIndex, slidesLength, setOpen }) => {
 			</LeftPanel>
 
 			<RightPanel>
-				{step && step.snippet ? (
+				{codeSnippet && (
 					<CodeArea>
 						<StyledReactMarkdown
 							className="low-profile-scrollbar only-hover light learn-concept-codeblock"
-							source={step.snippet}
+							alignCenter={srmAlignCenter}
+							source={codeSnippet}
 							renderers={{
 								code: props =>
 									CodeBlock({
@@ -172,15 +189,12 @@ const Slide = ({ name, steps, slideIndex, slidesLength, setOpen }) => {
 							}}
 						/>
 					</CodeArea>
-				) : (
-					<Icon
-						width="69%"
-						src={require('../../../../assets/icons/prof-pic.png')}
-					/>
 				)}
+
+				{image && <Icon sizeAuto src={image} />}
 			</RightPanel>
 		</Container>
 	)
 }
 
-export default Slide
+export default withApiCache(CACHE_CONCEPT)(Slide)

@@ -1,13 +1,19 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
+import { compose } from 'redux'
 
 import Toolbar from './Toolbar/Toolbar'
 import Sidebar from './Sidebar/Sidebar'
 import Content from './Content/Content'
 import WithPageSpinner from '../HOC/WithPageSpinner'
-import { init, resetToInitialState } from '../../redux/actions/learnData'
+
+import withApiCache, {
+	isDataReady,
+	CACHE_ACTIVITY,
+	CACHE_ACTIVITY_PROGRESS
+} from '../HOC/WithApiCache'
+import { init } from '../../redux/actions/learnData'
 
 const Container = styled.div`
 	display: flex;
@@ -38,19 +44,12 @@ const Container = styled.div`
 	}
 `
 
-const Learn = ({
-	selectedActivityId,
-	isReady,
-	activityId,
-	onInit,
-	onResetToInitialState
-}) => {
+const Learn = ({ wac_data, id, isReady, onInit }) => {
 	useEffect(() => {
-		if (selectedActivityId !== activityId) {
-			if (activityId) onResetToInitialState()
-			onInit(selectedActivityId)
+		if (id && isDataReady(wac_data)) {
+			onInit(...wac_data)
 		}
-	}, [selectedActivityId]) // eslint-disable-line react-hooks/exhaustive-deps
+	}, [id, wac_data]) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<WithPageSpinner show={!isReady}>
@@ -65,21 +64,32 @@ const Learn = ({
 
 const mapStateToProps = state => {
 	const {
-		ram: { selectedActivityId },
-		learnData: { id: activityId, cards }
+		cache: { cachedActivities, cachedCards },
+		learnData: {
+			selectedActivity: { id, contentUrl }
+		}
 	} = state
 
-	const isReady = !!get(cards, '[0].content')
+	const cardId = cachedActivities[id]?.cards[0]?.id
+	const card = cachedCards[cardId]
+
+	const isReady = !!card?.content
 	return {
-		selectedActivityId,
 		isReady,
-		activityId
+		id,
+		// contentUrl
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
-	onInit: activityId => dispatch(init(activityId)),
-	onResetToInitialState: () => dispatch(resetToInitialState())
+	onInit: (activity, activityProgress) =>
+		dispatch(init(activity, activityProgress))
+	// onResetToInitialState: () => dispatch(resetToInitialState())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Learn)
+const enhancer = compose(
+	connect(mapStateToProps, mapDispatchToProps),
+	withApiCache(CACHE_ACTIVITY, CACHE_ACTIVITY_PROGRESS)
+)
+
+export default enhancer(Learn)

@@ -46,9 +46,10 @@ const SidebarNav = ({
 		<StyledActiveList
 			identifier="learn"
 			itemList={cards}
+			activeIndex={currentCardIndex}
+			activeMaxIndex={lastCardUnlockedIndex}
 			selectCallback={(_, index) => {
-				if (index <= lastCardUnlockedIndex && index !== currentCardIndex)
-					onSetCurrentCardByIndex(index)
+				onSetCurrentCardByIndex(index)
 			}}
 			activeClassName={(_, index) =>
 				`${currentCardIndex === index ? 'strong-lift' : ''} ${
@@ -62,7 +63,7 @@ const SidebarNav = ({
 						imgWidthEms="3"
 						strongHover
 						imgText={index + 1}
-						title={card && card.name}
+						title={card?.name}
 						gap="0"
 						// time={'15 min'}
 						hasSubitems={currentCardIndex === index && hasSubitems}
@@ -84,16 +85,23 @@ const SidebarNav = ({
 
 const mapStateToProps = state => {
 	const {
+		cache: { cachedActivities, cachedCards },
 		learnData: {
-			cards,
+			selectedActivity: { id: activityId },
 			indicators: { currentCardIndex, lastCardUnlockedIndex }
 		}
 	} = state
 
+	const cardIds = cachedActivities[activityId]?.cards
+	const cardsMeta = cardIds.map(card => {
+		const { id, name } = cachedCards[card.id] ?? {}
+		return { id, name }
+	})
+
 	// TODO fix unnecessary rerenders: split cards into cards up to layer 1 and currentCard
 
 	return {
-		cards,
+		cards: cardsMeta,
 		currentCardIndex,
 		lastCardUnlockedIndex
 	}

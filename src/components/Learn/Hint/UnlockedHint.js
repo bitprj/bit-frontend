@@ -1,24 +1,32 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import anime from 'animejs'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
-import { get } from 'lodash'
 import { Element as ScrollElement } from 'react-scroll'
 
-import CodeBlock from '../../shared/CodeBlock'
-import ParsedContent from '../../shared/ParsedContent'
-
 import Icon from '../../shared/gadgets/Icon'
+import CodeBlock from '../../shared/CodeBlock'
+
+import withApiCache, {
+	CACHE_HINT,
+	CACHE_HINT_PROGRESS
+} from '../../HOC/WithApiCache'
 
 const UnlockedHint = ({
 	className,
 	id,
-	steps,
-	name,
-	lastHintUnlockedId,
-	currentButtonState
+
+	wac_data: [hint, hintProgress],
+
+	// steps,
+	// name,
+
+	lastHintUnlockedId
 }) => {
+	const { name, steps } = hint ?? {}
+
 	/**
 	 * In order to ensure a smooth slide-in without additional traces,
 	 * these selected elements are initially invisible. This effect ensures that
@@ -63,22 +71,20 @@ const UnlockedHint = ({
 	 */
 	const renderedSteps = () => {
 		return steps.map((step, i) => {
+			const { name: stepName, content, codeSnippet, image } = step
 			return (
 				<React.Fragment key={`hint-step-${id}-${i}`}>
-					{steps.length === 1 && name.trim() !== step.heading.trim() && (
+					{steps.length === 1 && name.trim() !== stepName.trim() && (
 						<h3>
-							<ReactMarkdown
-								className="markdown-header"
-								source={step.heading}
-							/>
+							<ReactMarkdown className="markdown-header" source={stepName} />
 						</h3>
 					)}
-					<ParsedContent document={step.content} />
-					{step.image && <img src={get(step, 'image.file.url')} />}
-					{step.snippet && (
+					<ReactMarkdown source={content} />
+					{image && <img src={image} />}
+					{codeSnippet && (
 						<ReactMarkdown
-							className="low-profile-scrollbar only-hover light learn-concept-codeblock"
-							source={step.snippet}
+							className="low-profile-scrollbar only-hover light"
+							source={codeSnippet}
 							renderers={{
 								code: props =>
 									CodeBlock({
@@ -114,14 +120,18 @@ const UnlockedHint = ({
 const mapStateToProps = state => {
 	const {
 		learnData: {
-			indicators: { lastHintUnlockedId, currentButtonState }
+			indicators: { lastHintUnlockedId }
 		}
 	} = state
 
 	return {
-		lastHintUnlockedId,
-		currentButtonState
+		lastHintUnlockedId
 	}
 }
 
-export default connect(mapStateToProps)(UnlockedHint)
+const enhancer = compose(
+	connect(mapStateToProps),
+	withApiCache(CACHE_HINT, CACHE_HINT_PROGRESS)
+)
+
+export default enhancer(UnlockedHint)

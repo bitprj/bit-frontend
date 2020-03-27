@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get, isEmpty } from 'lodash'
+import { compose } from 'redux'
+import { isEmpty } from 'lodash'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 
@@ -9,7 +10,7 @@ import AutograderHome from './Autograder/Home'
 import AutograderCLI from './Autograder/CLI'
 import AutograderResult from './Autograder/Result'
 
-import AutograderLoading from './Autograder/Loading'
+import Loading from './Loading'
 
 import MediaHome from './Media/Home'
 
@@ -21,6 +22,12 @@ import IconLine from '../../../shared/gadgets/IconLine'
 import DynamicModal from '../../../shared/containers/DynamicModal'
 import GradeStatus from '../../../shared/gadgets/GradeStatus'
 import Button from '../../../shared/gadgets/Button'
+
+import withApiCache, {
+	CACHE_CHECKPOINT,
+	CACHE_CHECKPOINTS_PROGRESS
+} from '../../../HOC/WithApiCache'
+import ReactMarkdown from 'react-markdown'
 
 const flagIcon = require('../../../../assets/icons/flag.svg')
 
@@ -55,7 +62,7 @@ const StyledIcon = styled(Icon)`
 	margin-right: 1em;
 `
 
-const Title = styled.h1`
+const TitleMarkdown = styled(ReactMarkdown)`
 	margin: 1em;
 `
 
@@ -90,8 +97,8 @@ const Checkpoint = ({
 	submissionIndex,
 	setSubmissionIndex,
 
+	id,
 	activityId,
-	checkpointId,
 	name,
 	instruction,
 	type,
@@ -141,7 +148,6 @@ const Checkpoint = ({
 
 			case AUTOGRADER:
 				const getSubmission = () => {
-					console.log(progress)
 					const unprocessed = progress.submissions[submissionIndex] ?? {}
 					if (unprocessed.error) return unprocessed
 
@@ -161,19 +167,24 @@ const Checkpoint = ({
 			case UPLOAD:
 				return (
 					<Upload
+						activityId={activityId}
+						id={id}
+						type={type}
+						progress={progress}
 						pushView={pushView}
 						previousView={previousView}
-						activityId={activityId}
-						checkpointId={checkpointId}
-						type={type}
 					/>
 				)
 
 			case LOADING:
 				return (
-					<AutograderLoading
+					<Loading
+						type={type}
 						pushViewAndRemoveIntermediaries={newView => {
 							view.push(newView)
+							setView(view.filter(v => v !== LOADING && v !== UPLOAD))
+						}}
+						previousViewAndRemoveIntermediaries={() => {
 							setView(view.filter(v => v !== LOADING && v !== UPLOAD))
 						}}
 					/>
@@ -265,7 +276,7 @@ const Checkpoint = ({
 					peekView(view) !== LOADING ? (
 						<InfoContainer>
 							<StyledIcon width="3em" src={flagIcon} />
-							<Title>{name}</Title>
+							<TitleMarkdown source={`# ${name}`} />
 							{peekView(view) === HOME ? mostRecentGradeStatus() : null}
 						</InfoContainer>
 					) : null}
@@ -294,28 +305,41 @@ const Checkpoint = ({
 
 const mapStateToProps = state => {
 	const {
+		cache: {
+			cachedActivities,
+			cachedCards,
+			cachedCheckpoints,
+			cachedCheckpointsProgress
+		},
 		learnData: {
-			id: activityId,
-			cards,
-			indicators: { currentCardIndex },
-			progress: { checkpointsProgress }
+			selectedActivity: { id: activityId },
+			indicators: { currentCardIndex }
 		}
 	} = state
 
-	const card = cards && cards[currentCardIndex]
-	const checkpointId = get(card, 'checkpoint.id')
-	const progress = checkpointsProgress && checkpointsProgress[checkpointId]
+	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
 
-	// console.log(progress)
+	const { id: checkpointId, contentUrl } = cachedCards[cardId].checkpoint ?? {}
+
+	const checkpoint = cachedCheckpoints[checkpointId]
+
+	const progress = cachedCheckpointsProgress[checkpointId]
 
 	return {
 		activityId,
-		checkpointId,
-		name: get(card, 'checkpoint.name'),
-		instruction: get(card, 'checkpoint.instruction'),
-		type: get(card, 'checkpoint.checkpointType'),
+		id: checkpointId,
+		contentUrl,
+
+		name: checkpoint?.name,
+		instruction: checkpoint?.instruction,
+		type: checkpoint?.checkpointType,
 		progress
 	}
 }
 
-export default connect(mapStateToProps)(Checkpoint)
+const enhancer = compose(
+	connect(mapStateToProps),
+	withApiCache(CACHE_CHECKPOINT, CACHE_CHECKPOINTS_PROGRESS)
+)
+
+export default enhancer(Checkpoint)

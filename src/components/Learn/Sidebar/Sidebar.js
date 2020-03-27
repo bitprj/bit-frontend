@@ -38,8 +38,20 @@ const Sidebar = ({ isReady }) => {
 	)
 }
 
-const mapStateToProps = state => ({
-	isReady: !!state.learnData.name
-})
+const mapStateToProps = state => {
+	const {
+		cache: { cachedActivities, cachedCards },
+		learnData: {
+			selectedActivity: { id: activityId }
+		}
+	} = state
+
+	const cardId = cachedActivities[activityId]?.cards[0].id
+	const isReady = cachedCards[cardId]?.id
+
+	return {
+		isReady
+	}
+}
 
 export default connect(mapStateToProps)(Sidebar)
