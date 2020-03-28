@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { useHistory } from 'react-router-dom'
 import { get } from 'lodash'
 
@@ -8,6 +9,7 @@ import ProgressCard from './ProgressCard'
 import Hero from '../../shared/gadgets/Hero'
 import GoBack from '../../shared/external/GoBack'
 import { setSelectedActivity } from '../../../redux/actions/learnData'
+import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 
 const ProgressBar = styled.div`
 	margin-top: 2em;
@@ -31,12 +33,16 @@ const ProgressBar = styled.div`
 `
 
 const StudentHero = ({
+	id,
+	contentUrl,
+
+	wac_data: [activity],
+
 	firstName,
-	suggestedActivity,
 	onSetSelectedActivity
 }) => {
 	const history = useHistory()
-	const { id, contentUrl } = suggestedActivity ?? {}
+	const { name, summary } = activity ?? {}
 
 	const handleResume = () => {
 		onSetSelectedActivity({ id, contentUrl })
@@ -52,8 +58,8 @@ const StudentHero = ({
 			rightPanel={
 				<ProgressCard
 					image={'brickwall'}
-					name={get(suggestedActivity, 'name')}
-					summary={get(suggestedActivity, 'summary')}
+					name={name}
+					summary={summary}
 					onClickButton={handleResume}
 				/>
 			}
@@ -66,9 +72,12 @@ const mapStateToProps = state => {
 		studentData: { firstName, suggestedActivity }
 	} = state
 
+	const { id, contentUrl } = suggestedActivity
+
 	return {
-		firstName,
-		suggestedActivity
+		id,
+		contentUrl,
+		firstName
 	}
 }
 
@@ -77,4 +86,9 @@ const mapDispatchToProps = dispatch => ({
 		dispatch(setSelectedActivity({ id, contentUrl }))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentHero)
+const enhancer = compose(
+	connect(mapStateToProps, mapDispatchToProps),
+	withApiCache([CACHE_ACTIVITY])
+)
+
+export default enhancer(StudentHero)

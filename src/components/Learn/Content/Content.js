@@ -188,7 +188,7 @@ const mapDispatchToProps = dispatch => ({
 
 const enhancer = compose(
 	connect(mapStateToProps, mapDispatchToProps),
-	withApiCache(CACHE_CARD)
+	withApiCache([CACHE_CARD])
 )
 
 export default enhancer(Content)

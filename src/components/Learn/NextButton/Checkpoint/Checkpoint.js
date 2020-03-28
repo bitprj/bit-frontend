@@ -339,7 +339,7 @@ const mapStateToProps = state => {
 
 const enhancer = compose(
 	connect(mapStateToProps),
-	withApiCache(CACHE_CHECKPOINT, CACHE_CHECKPOINTS_PROGRESS)
+	withApiCache([CACHE_CHECKPOINT, CACHE_CHECKPOINTS_PROGRESS])
 )
 
 export default enhancer(Checkpoint)

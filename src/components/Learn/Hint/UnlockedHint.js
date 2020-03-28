@@ -131,7 +131,7 @@ const mapStateToProps = state => {
 
 const enhancer = compose(
 	connect(mapStateToProps),
-	withApiCache(CACHE_HINT, CACHE_HINT_PROGRESS)
+	withApiCache([CACHE_HINT, CACHE_HINT_PROGRESS])
 )
 
 export default enhancer(UnlockedHint)

@@ -7,7 +7,7 @@ import {
 } from '../../services/LearnService'
 import { autoFetch } from '../../services/ContentService'
 import {
-	fetchContentUrls,
+	fetchContentUrl,
 	CACHE_CARD,
 	CACHE_HINT_PROGRESS,
 	CACHE_CHECKPOINTS_PROGRESS
@@ -39,6 +39,8 @@ export const init = (activity, activityProgress) => dispatch => {
 }
 
 const initActivityProgress = (activity, activityProgress) => async dispatch => {
+	if (!activityProgress) return
+
 	const foundIndex = activity.cards.findIndex(
 		card => card.id === activityProgress.lastCardUnlockedId
 	)
@@ -57,7 +59,7 @@ const preloadActivityCards = activity => async dispatch => {
 	const cards = await Promise.all(
 		activity.cards.map(async card => {
 			const cardData = await autoFetch(card.id, CACHE_CARD)
-			const cardDataWithContent = await fetchContentUrls(cardData)
+			const cardDataWithContent = await fetchContentUrl(cardData)
 			return { [card.id]: cardDataWithContent }
 		})
 	)

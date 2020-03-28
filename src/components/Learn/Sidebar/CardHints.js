@@ -61,7 +61,7 @@ const NavItem = ({ id, nestLevel, wac_data: [hint] }) => {
 	)
 }
 
-const WacNavItem = withApiCache(CACHE_HINT)(NavItem)
+const WacNavItem = withApiCache([CACHE_HINT], { allowFetch: false })(NavItem)
 
 const Container = styled.div`
 	display: flex;
