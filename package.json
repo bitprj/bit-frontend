@@ -24,6 +24,7 @@
     "filepond-plugin-image-preview": "^4.6.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
+    "p-cancelable": "^2.0.0",
     "pusher-js": "^5.1.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

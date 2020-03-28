@@ -76,7 +76,7 @@ const mapStateToProps = state => {
 	const isReady = !!card?.content
 	return {
 		isReady,
-		id,
+		id
 		// contentUrl
 	}
 }
@@ -89,7 +89,7 @@ const mapDispatchToProps = dispatch => ({
 
 const enhancer = compose(
 	connect(mapStateToProps, mapDispatchToProps),
-	withApiCache(CACHE_ACTIVITY, CACHE_ACTIVITY_PROGRESS)
+	withApiCache([CACHE_ACTIVITY, CACHE_ACTIVITY_PROGRESS])
 )
 
 export default enhancer(Learn)

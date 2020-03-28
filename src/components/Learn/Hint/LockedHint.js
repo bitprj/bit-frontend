@@ -69,6 +69,7 @@ const LockedHint = ({
 }) => {
 	const { name, difficulty, gems } = hint ?? {}
 	const { isUnlocked } = hintProgress ?? {}
+	console.log(hint)
 	// console.log(isUnlocked)
 
 	let clickOnce = false
@@ -163,7 +164,7 @@ const mapDispatchToProps = dispatch => ({
 
 const enhancer = compose(
 	connect(mapStateToProps, mapDispatchToProps),
-	withApiCache(CACHE_HINT, CACHE_HINT_PROGRESS)
+	withApiCache([CACHE_HINT, CACHE_HINT_PROGRESS])
 )
 
 export default enhancer(LockedHint)

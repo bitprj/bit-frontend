@@ -17,8 +17,5 @@ export const autoFetch = async (id, cacheType) => {
 		.map(w => w.toLowerCase())
 
 	const endpoint = `/${type}/${id}` + (progress ? `/${progress}` : '')
-	return backend.get(endpoint).then(
-		res => res,
-		e => console.log(e) || {}
-	)
+	return backend.get(endpoint).catch(e => ({}))
 }

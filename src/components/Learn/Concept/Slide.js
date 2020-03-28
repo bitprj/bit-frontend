@@ -197,4 +197,4 @@ const Slide = ({
 	)
 }
 
-export default withApiCache(CACHE_CONCEPT)(Slide)
+export default withApiCache([CACHE_CONCEPT])(Slide)

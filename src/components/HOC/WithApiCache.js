@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
+import PCancelable from 'p-cancelable'
 
 import { autoFetch } from '../../services/ContentService'
 import { saveToCache } from '../../redux/actions/cache'
@@ -18,7 +19,16 @@ export const CACHE_ACTIVITY_PROGRESS = 'cachedActivitiesProgress'
 export const CACHE_HINT_PROGRESS = 'cachedHintsProgress'
 export const CACHE_CHECKPOINTS_PROGRESS = 'cachedCheckpointsProgress'
 
-const withApiCache = (...cacheTypes) => WrappedComponent => {
+const initialConfig = {
+	allowFetch: true
+}
+
+const withApiCache = (cacheTypes, config) => WrappedComponent => {
+	const { allowFetch } = { ...initialConfig, ...config }
+
+	let isMounted = true
+	let apiCall
+
 	const _ = ({ wac_cache, wac_onSaveToCache, ...props }) => {
 		const { id } = props
 
@@ -26,47 +36,70 @@ const withApiCache = (...cacheTypes) => WrappedComponent => {
 			() => cacheTypes.map(type => wac_cache[type][id]),
 			[id]
 		)
-		console.log('testing')
-		useTraceUpdate({ ...wac_cache, wac_onSaveToCache, cacheTypes, ...props })
+
+		useEffect(() => {
+			return () => {
+				isMounted = false
+				if (apiCall) {
+					apiCall.cancel()
+					console.log(apiCall.isCanceled)
+				}
+			}
+		}, [])
+
+		const getApiData = PCancelable.fn(onCancel => {
+			onCancel.shouldReject = false
+			onCancel(() => {
+				console.log('[REJECTED]', cacheTypes)
+			})
+			return Promise.all(
+				cacheTypes.map(async (type, i) => {
+					if (data[i]) return data[i]
+
+					const apiData = await autoFetch(id, type)
+					return fetchContentUrl(apiData)
+				})
+			)
+		})
 
 		const [data, setData] = useState(initialData)
 
 		useEffect(() => {
-			if (id && !isDataReady(initialData)) {
+			if (allowFetch && id && !isDataReady(initialData)) {
 				console.log(cacheTypes)
+				;(async () => {
+					console.log('[req data]', isMounted)
+					apiCall = getApiData()
 
-				Promise.all(
-					cacheTypes.map(type => {
-						return autoFetch(id, type)
-					})
-				).then(async apiData => {
-					const finalData = await Promise.all(
-						apiData.map(ad => fetchContentUrls(ad))
-					)
-
-					finalData.forEach((fd, i) => {
-						wac_onSaveToCache(cacheTypes[i], { [id]: fd })
-					})
-
-					setData(finalData)
-				})
+					console.log('[set/send data]', isMounted)
+					if (isMounted)
+						apiCall.then(data => {
+							data.forEach((fd, i) => {
+								wac_onSaveToCache(cacheTypes[i], { [id]: fd })
+							})
+							setData(data)
+						})
+				})()
 			}
 		}, [id])
 
 		return <WrappedComponent wac_data={data} {...props} />
 	}
 
+	const mapStateToProps = state => {
+		return {
+			wac_cache: cacheTypes.reduce((acc, type) => {
+				return { ...acc, [type]: state.cache[type] }
+			}, {})
+		}
+	}
+	const mapDispatchToProps = dispatch => ({
+		wac_onSaveToCache: (cacheType, newLoads) =>
+			dispatch(saveToCache(cacheType, newLoads))
+	})
+
 	return connect(mapStateToProps, mapDispatchToProps)(_)
 }
-
-const mapStateToProps = state => ({
-	wac_cache: state.cache
-})
-
-const mapDispatchToProps = dispatch => ({
-	wac_onSaveToCache: (cacheType, newLoads) =>
-		dispatch(saveToCache(cacheType, newLoads))
-})
 
 export default withApiCache
 
@@ -76,45 +109,20 @@ export default withApiCache
  *
  */
 
-export const isDataReady = data => data.some(elem => elem !== undefined)
+export const isDataReady = data => data.every(elem => elem !== undefined)
 
 /**
  * make a recursive version
  * @param {object} apiData
  */
-export const fetchContentUrls = async apiData => {
-	const isValidMdUrl = str => {
-		const pattern = new RegExp(
-			'^(https?:\\/\\/)?' + // protocol
-			'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|)' + // domain name
-				'.+.(md)$', // check for md
-			'i'
-		)
-		// const pattern = new RegExp(
-		// 	'^(https?:\\/\\/)?' + // protocol
-		// 	'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|)' + // domain name
-		// 		'.+.(md|json)$', // check for md
-		// 	'i'
-		// )
-		return !!pattern.test(str)
-	}
-	const processUrl = () => {
-		if (url.includes('github.com')) return convertToRawGithubUrl(url)
-		return url
-	}
-	const convertToRawGithubUrl = url =>
-		url.replace('github.com', 'raw.githubusercontent.com').replace('/raw/', '/')
-
-	/**
-	 * Function Start
-	 */
-	const url = Object.values(apiData).find(e => isValidMdUrl(e))
-	if (!url) {
+export const fetchContentUrl = apiData => {
+	const { contentUrl } = apiData
+	if (!contentUrl) {
 		return apiData
 	}
 
-	return await axios
-		.get(processUrl())
-		.then(res => ({ ...apiData, content: res.data }))
+	return axios
+		.get(contentUrl)
+		.then(res => ({ ...apiData, ...res.data }))
 		.catch(e => apiData)
 }

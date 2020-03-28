@@ -57,33 +57,34 @@ const LockedHintSection = ({
 }) => {
 	const containerRef = useRef(null)
 
-	let isAllUnlocked = true
-	const renderedLockedHintsRecursive = hints => {
-		if (!hints) return
+	let isAllUnlocked
+	// let isAllUnlocked = true
+	// const renderedLockedHintsRecursive = hints => {
+	// 	if (!hints) return
 
-		return hints.map(hint => {
-			const { id, contentUrl } = hint
-			const { isUnlocked } = scopedCachedHintsProgress[id] ?? {}
-			if (!isUnlocked) {
-				isAllUnlocked = false
+	// 	return hints.map(hint => {
+	// 		const { id, contentUrl } = hint
+	// 		const { isUnlocked } = scopedCachedHintsProgress[id] ?? {}
+	// 		if (!isUnlocked) {
+	// 			isAllUnlocked = false
 
-				return (
-					<LockedHint
-						key={`hint-${id}`}
-						activityId={activityId}
-						id={id}
-						// contentUrl={contentUrl}
-					/>
-				)
-			}
-			return renderedLockedHintsRecursive(hint.hints)
-		})
-	}
+	// 			return (
+	// 				<LockedHint
+	// 					key={`hint-${id}`}
+	// 					activityId={activityId}
+	// 					id={id}
+	// 					contentUrl={contentUrl}
+	// 				/>
+	// 			)
+	// 		}
+	// 		return renderedLockedHintsRecursive(hint.hints)
+	// 	})
+	// }
 
-	const renderedLockedHints = useMemo(
-		() => renderedLockedHintsRecursive(hintMetasTree),
-		[scopedCachedHintsProgress]
-	)
+	// const renderedLockedHints = useMemo(
+	// 	() => renderedLockedHintsRecursive(hintMetasTree),
+	// 	[scopedCachedHintsProgress]
+	// )
 
 	return (
 		<Container className="learn-r-lockedhints-hintslidedown">
@@ -95,7 +96,7 @@ const LockedHintSection = ({
 							className="low-profile-scrollbar only-hover"
 							ref={containerRef}
 						>
-							{renderedLockedHints}
+							{/* {renderedLockedHints} */}
 						</LockedHints>
 						<HeaderShadow reverse containerRef={containerRef} />
 					</LockedHintsContainer>

@@ -24,10 +24,9 @@ export const init = () => async dispatch => {
 		...studentData,
 		firstName,
 		suggestedActivity: {
-			id: 12,
-			name: 'Minesweeper',
-			summary:
-				'Build Minesweeper in Python! Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+			id: 65,
+			contentUrl:
+				'https://d36nt3c422j20i.cloudfront.net/Topic1_Mongo/Module_DB/Lab3_Minesweeper/Minesweeper.json'
 		},
 		inprogressModules: [
 			{
