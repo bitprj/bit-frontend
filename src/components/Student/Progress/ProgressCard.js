@@ -99,4 +99,4 @@ const ActivityCard = ({
 	)
 }
 
-export default withApiCache([CACHE_ACTIVITY], { debug: true })(ActivityCard)
+export default withApiCache([CACHE_ACTIVITY])(ActivityCard)

@@ -25,7 +25,7 @@ const WithAuthentication = ({
 				}
 			} catch (error) {
 				if (!isVisitor) onDeauthenticate()
-				history.push('/')
+				// history.push('/') axios instance does it
 			}
 		}
 		_onCheckLogin()

@@ -9,9 +9,11 @@ const WithGlobalHOC = ({ children }) => (
 	<WithStyledTheme>
 		<WithAuthentication>
 			<WithNavBar>
-				<WithErrorBoundaries>
-					{/*                */ children /*                */}
-				</WithErrorBoundaries>
+				{process.env.NODE_ENV === 'production' ? (
+					children
+				) : (
+					<WithErrorBoundaries>{children}</WithErrorBoundaries>
+				)}
 			</WithNavBar>
 		</WithAuthentication>
 	</WithStyledTheme>

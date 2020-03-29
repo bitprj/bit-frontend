@@ -10,7 +10,6 @@ const VerticalAlign = styled.div`
 
 const AccountContainer = styled.div`
 	display: flex;
-	cursor: default;
 `
 
 const ProfilePicture = styled(Icon)`

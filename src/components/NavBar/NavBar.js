@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import Login from '../Account/Login'
+import AuthModal from '../Account/AuthModal'
 import Logout from '../Account/Logout'
 import setTheme from '../../redux/actions/theme'
 import { deauthenticate } from '../../redux/actions/account'
@@ -81,8 +81,19 @@ const NavButton = styled(Button)`
 
 const styledLink = { color: 'black', textDecoration: 'none' }
 
-const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
-	const [openLogin, setOpenLogin] = useState(false)
+const NavBar = ({
+	firstName,
+	userType,
+	onDeauthenticate,
+	onSetTheme,
+	location
+}) => {
+	const authModal = useMemo(() => {
+		const search = new URLSearchParams(location.search)
+		return search.get('authModal')
+	}, [location.search])
+
+	const [openAuthModal, setOpenAuthModal] = useState(authModal == 'true')
 	const [logout, setLogout] = useState(null)
 
 	useEffect(() => {
@@ -95,7 +106,7 @@ const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
 		<>
 			<Nav id="nav-bar">
 				<NavElement style={{ height: contentHeight }}>
-					<Link to={'/'}>
+					<Link to="/">
 						<Icon
 							alt="Bit Project"
 							src={require('../../assets/logo/logo.svg')}
@@ -113,12 +124,12 @@ const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
 							</Link>
 						</NavElement> */}
 						<NavElement>
-							<Link style={styledLink} to={'/explore/'}>
+							<Link style={styledLink} to="/explore/">
 								Explore
 							</Link>
 						</NavElement>
 						<NavElement>
-							<Link style={styledLink} to={'./'}>
+							<Link style={styledLink} to="./">
 								Community
 							</Link>
 						</NavElement>
@@ -142,7 +153,7 @@ const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
 
 				{userType === 'TEACHER' && (
 					<NavElement>
-						<Link style={styledLink} to={'/grade/'}>
+						<Link style={styledLink} to="/grade/">
 							Grading
 						</Link>
 					</NavElement>
@@ -151,12 +162,14 @@ const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
 				{userType === 'STUDENT' || userType === 'TEACHER' ? (
 					<AlignRight userType={userType}>
 						<NavElement onClick={() => setLogout(true)}>
-							<ProfPic
-								src={require('../../assets/icons/prof-pic.png')}
-								iconSize={contentHeight}
-							>
-								{firstName}
-							</ProfPic>
+							<div style={{ cursor: 'pointer' }}>
+								<ProfPic
+									src={require('../../assets/icons/prof-pic.png')}
+									iconSize={contentHeight}
+								>
+									{firstName}
+								</ProfPic>
+							</div>
 						</NavElement>
 					</AlignRight>
 				) : null}
@@ -166,13 +179,13 @@ const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
 						{/* <NavButton onClick={() => onSetTheme(palepink)}>
 							Theme
 						</NavButton> */}
-						<NavButton invert onClick={() => setOpenLogin(true)}>
+						<NavButton invert onClick={() => setOpenAuthModal(true)}>
 							Login
 						</NavButton>
 					</AlignRight>
 				) : null}
 			</Nav>
-			<Login open={openLogin} setOpen={setOpenLogin} />
+			<AuthModal open={openAuthModal} setOpen={setOpenAuthModal} />
 			{logout && <Logout />}
 		</>
 	)

@@ -15,14 +15,20 @@ backend.interceptors.response.use(
 		const {
 			status,
 			statusText,
-			config: { method, url }
+			config: { method, url },
+			data: { message }
 		} = error.response
+		console.log(error.response)
 
-		console.log(localStorage)
-
-		if (status !== 401)
+		if (status !== 401) {
 			alert(`${method.toUpperCase()} ${url}
-         ${status} (${statusText})`)
+         ${status} (${statusText})
+         ${message}`)
+		} else {
+			if (window.location.pathname !== '/') {
+				window.location.replace('/?authModal=true')
+			}
+		}
 		return error
 	}
 )

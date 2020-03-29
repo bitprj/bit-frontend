@@ -1,74 +1,30 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 import validator from 'validator'
 
 import TextField from '@material-ui/core/TextField'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import ArrowRight from '@material-ui/icons/ArrowForwardRounded'
+import EmailIcon from '@material-ui/icons/MailOutlineRounded'
 import LockOpenIcon from '@material-ui/icons/LockOpenRounded'
+import LockIcon from '@material-ui/icons/LockRounded'
+import ClassroomIcon from '@material-ui/icons/MeetingRoomRounded'
 
-import Button from '../../components/shared/gadgets/Button'
-import Icon from '../../components/shared/gadgets/Icon'
+import { Form, Field, Submit, iconStyle } from './Login'
 
-import { login } from '../../services/AccountService'
+import { signUp } from '../../services/AccountService'
 import { authenticate } from '../../redux/actions/account'
-
-const SubmitButton = styled(Button)`
-	margin: 0 auto;
-	margin-top: 1em;
-	width: 1.5em;
-	height: 1.5em;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0;
-	border-radius: 50%;
-	font-size: 2.4em;
-	border: 0;
-`
-
-export const Submit = ({ disabled, error, onClick }) => {
-	const themeContext = useContext(ThemeContext)
-	return (
-		<SubmitButton
-			invert
-			type="submit"
-			disabled={disabled}
-			dark={error ? themeContext.muted.red : undefined}
-			onClick={onClick}
-		>
-			<ArrowRight fontSize="inherit" />
-		</SubmitButton>
-	)
-}
-
-export const Form = styled.form`
-	width: 100%;
-	text-align: center;
-`
-
-export const Logo = styled(Icon)`
-	margin: 0 auto;
-	margin-bottom: 2em;
-`
-
-export const Field = styled.div`
-	margin: 0.8em auto;
-	display: flex;
-	justify-content: center;
-	> :nth-child(1) {
-		margin-right: 0.3em;
-	}
-`
-
-export const iconStyle = { fontSize: '1.8em', marginTop: '16px' }
 
 const UnconnectedRightPanel = ({ onClose, onAuthenticate }) => {
 	const history = useHistory()
 
-	const [userCombo, setUserCombo] = useState({ username: null, password: null })
+	const [userCombo, setUserCombo] = useState({
+		name: null,
+		username: null,
+		password: null,
+		classCode: null
+	})
 	const [isWaiting, setIsWaiting] = useState(false)
 	const [error, setError] = useState(false)
 
@@ -79,28 +35,33 @@ const UnconnectedRightPanel = ({ onClose, onAuthenticate }) => {
 		})
 	}
 
-	const handleLogin = async e => {
+	const handleSignUp = async e => {
 		e.preventDefault()
 		setIsWaiting(true)
 
+		const { rePassword, ...processedUserCombo } = userCombo
+
 		try {
 			if (
+				userCombo.name === null ||
 				userCombo.username === null ||
 				userCombo.password === null ||
+				userCombo.classCode === null ||
+				userCombo.password !== rePassword ||
 				!validator.isEmail(userCombo.username)
 			) {
 				throw new Error()
 			}
 
-			const response = await login(userCombo)
+			const response = await signUp(processedUserCombo)
 			localStorage.setItem('csrf-token', response.csrfToken)
-			onAuthenticate(response.userType.toUpperCase())
+			onAuthenticate('STUDENT')
 
 			onClose()
 			history.push('/')
 		} catch (err) {
+			console.log(err)
 			setError(true)
-		} finally {
 			setIsWaiting(false)
 		}
 	}
@@ -109,18 +70,23 @@ const UnconnectedRightPanel = ({ onClose, onAuthenticate }) => {
 	// const [passError, setPassError] = useState(false)
 
 	return (
-		<Form onSubmit={handleLogin}>
-			<Logo src={require('../../assets/logo/logo.svg')} />
+		<Form onSubmit={handleSignUp}>
 			<Field>
 				<AccountCircleIcon style={iconStyle} />
+				<TextField
+					name="name"
+					type="text"
+					label="Full Name"
+					onChange={changeInput}
+				/>
+			</Field>
+			<Field>
+				<EmailIcon style={iconStyle} />
 				<TextField
 					name="username"
 					type="text"
 					label="Email"
-					// error
-					// helperText="no"
 					onChange={changeInput}
-					// onBlur={}
 				/>
 			</Field>
 			<Field>
@@ -129,6 +95,24 @@ const UnconnectedRightPanel = ({ onClose, onAuthenticate }) => {
 					name="password"
 					type="password"
 					label="Password"
+					onChange={changeInput}
+				/>
+			</Field>
+			<Field>
+				<LockIcon style={iconStyle} />
+				<TextField
+					name="rePassword"
+					type="password"
+					label="Re-enter Password"
+					onChange={changeInput}
+				/>
+			</Field>
+			<Field>
+				<ClassroomIcon style={iconStyle} />
+				<TextField
+					name="classCode"
+					type="text"
+					label="Class Code"
 					onChange={changeInput}
 				/>
 			</Field>

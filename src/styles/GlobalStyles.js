@@ -73,6 +73,16 @@ export const GlobalStyle = createGlobalStyle`
       display: none;
     } 
   }
+
+  /**
+   * Change Highlight Color
+   */
+  ::selection {
+    background: ${props => props.theme.accentVariant};  
+  }
+  ::-moz-selection {
+    background: ${props => props.theme.accentVariant};
+  } 
   
   /**
    * LOW PROFILE SCROLLBAR
