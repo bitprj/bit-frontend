@@ -5,7 +5,6 @@ import PCancelable from 'p-cancelable'
 
 import { autoFetch } from '../../services/ContentService'
 import { saveToCache } from '../../redux/actions/cache'
-import { useTraceUpdate } from '../../utils/customHooks'
 
 export const CACHE_TOPIC = 'cachedTopics'
 export const CACHE_MODULE = 'cachedModules'
@@ -37,32 +36,44 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 			[id]
 		)
 
+		const getApiData = PCancelable.fn(onCancel => {
+			onCancel.shouldReject = false
+			onCancel(() => {
+				console.log('[REJECTED]', cacheTypes, apiCall)
+			})
+			return Promise.all(
+				cacheTypes.map(async (type, i) => {
+					// console.log(
+					// 	'am i here',
+					// 	initialData[i],
+					// 	`? I am about to fetch id ${id}`
+					// )
+					if (initialData[i]) return initialData[i]
+
+					const apiData = await autoFetch(id, type)
+					return apiData
+					// return fetchContentUrl(apiData)
+				})
+			)
+		})
+
+		/**
+		 * Not safe to use because when unmounted,
+		 * maintains reference to previous cache_type data
+		 *  - use initialData instead for calculations
+		 *  - can't update this state bc it's async and
+		 *    need to use it immediately
+		 */
+		const [data, setData] = useState(initialData)
+
 		useEffect(() => {
 			return () => {
 				isMounted = false
 				if (apiCall) {
 					apiCall.cancel()
-					console.log(apiCall.isCanceled)
 				}
 			}
 		}, [])
-
-		const getApiData = PCancelable.fn(onCancel => {
-			onCancel.shouldReject = false
-			onCancel(() => {
-				console.log('[REJECTED]', cacheTypes)
-			})
-			return Promise.all(
-				cacheTypes.map(async (type, i) => {
-					if (data[i]) return data[i]
-
-					const apiData = await autoFetch(id, type)
-					return fetchContentUrl(apiData)
-				})
-			)
-		})
-
-		const [data, setData] = useState(initialData)
 
 		useEffect(() => {
 			if (allowFetch && id && !isDataReady(initialData)) {

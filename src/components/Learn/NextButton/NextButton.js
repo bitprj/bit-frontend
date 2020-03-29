@@ -37,7 +37,7 @@ const NextButtonManager = ({
 	lastCardUnlockedIndex,
 	buttonStateScheduleQueue,
 	onBroadcastButtonState,
-	onResetButtonStateSchedule
+	onResetButtonStateSchedule 
 }) => {
 	/**
 	 * Stack-based system to determine current button state

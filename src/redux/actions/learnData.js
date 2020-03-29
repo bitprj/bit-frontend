@@ -59,7 +59,8 @@ const preloadActivityCards = activity => async dispatch => {
 	const cards = await Promise.all(
 		activity.cards.map(async card => {
 			const cardData = await autoFetch(card.id, CACHE_CARD)
-			const cardDataWithContent = await fetchContentUrl(cardData)
+			const cardDataWithContent = cardData
+			// const cardDataWithContent = await fetchContentUrl(cardData)
 			return { [card.id]: cardDataWithContent }
 		})
 	)
@@ -166,8 +167,11 @@ export const initSubmitCheckpointProgress = (
 		let final = response
 
 		if (type === 'Autograder') {
-			const newProgress = { ...progress }
-			newProgress.submissions.slice().unshift(response)
+			const newProgress = {
+				...progress,
+				submissions: [...progress.submissions]
+			}
+			newProgress.submissions.unshift(response)
 			final = newProgress
 		}
 
@@ -175,7 +179,6 @@ export const initSubmitCheckpointProgress = (
 			saveToCache(CACHE_CHECKPOINTS_PROGRESS, { [id]: final }, { merge: true })
 		)
 	} catch (e) {
-		console.log(e)
 		dispatch({
 			type: SET_INDICATORS,
 			indicators: {

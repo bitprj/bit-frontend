@@ -58,32 +58,33 @@ const ButtonArea = styled(ConfirmCancel)`
 const LockedHint = ({
 	activityId,
 	id,
+	hints,
 
 	wac_data: [hint, hintProgress],
 
 	studentGems,
-	currentCardIndex,
 
 	onInitUnlockHint,
 	onIncrementGemsBy
 }) => {
 	const { name, difficulty, gems } = hint ?? {}
+
 	const { isUnlocked } = hintProgress ?? {}
-	console.log(hint)
+	// console.log(hint)
 	// console.log(isUnlocked)
 
 	let clickOnce = false
 	const [openConfirmHint, setOpenConfirmHint] = useState(false)
 
+	/**
+	 * TODO change from this approach to
+	 * https://stackoverflow.com/questions/41824730/redux-how-to-handle-errors-in-reducer
+	 * basically, global error catcher, notify user (or not) and move on
+	 */
 	const unlockHint = () => {
 		setOpenConfirmHint(false)
 
 		if (!clickOnce) {
-			/**
-			 * TODO change from this approach to
-			 * https://stackoverflow.com/questions/41824730/redux-how-to-handle-errors-in-reducer
-			 * basically, global error catcher, notify user (or not) and move on
-			 */
 			if (studentGems < gems) return alert('Not enough gems')
 
 			onInitUnlockHint(activityId, id)
@@ -92,67 +93,87 @@ const LockedHint = ({
 		}
 	}
 
-	const unlockHintModal = (
-		<DynamicModal
-			open={openConfirmHint}
-			closed={() => setOpenConfirmHint(false)}
-			scaleX={0.5}
-			scaleY={0.5}
-			heightAuto
-		>
-			<RenderedModal>
-				<h2 style={{ margin: 0 }}>Unlock Hint</h2>
-				<ModalIcon src={require('../../../assets/icons/locked-hint.svg')} />
-				<ReactMarkdown
-					className="markdown-header"
-					source={`Unlock *${name}* ?`}
-				/>
-				<ButtonArea
-					cancelText={
-						<IconLine className="sans" icon={<LeftArrow />}>
-							Cancel
-						</IconLine>
-					}
-					confirmText={
-						<span style={{ lineHeight: '1em' }}>
-							💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
-						</span>
-					}
-					cancelOnClick={() => setOpenConfirmHint(false)}
-					confirmOnClick={unlockHint}
-				/>
-			</RenderedModal>
-		</DynamicModal>
-	)
-
 	return (
 		<>
-			<Container
-				className="hover-raise transition-medium"
-				onClick={() => {
-					clickOnce = false
-					setOpenConfirmHint(true)
-				}}
-			>
-				<span>💎 {gems}</span>
-				<TopRight>{difficulty}</TopRight>
-				<Name clamp={1}>
-					<ReactMarkdown className="markdown-header" source={name} />
-				</Name>
-			</Container>
-			{unlockHintModal}
+			{hints.map(hint => {
+				const { id, contentUrl, hints: subHints } = hint
+				console.log(id, subHints, hints)
+				return (
+					<>
+						{isUnlocked === false ? (
+							<>
+								<Container
+									className="hover-raise transition-medium"
+									onClick={() => {
+										clickOnce = false
+										setOpenConfirmHint(true)
+									}}
+								>
+									<span>💎 {gems}</span>
+									<TopRight>{difficulty}</TopRight>
+									<Name clamp={1}>
+										<ReactMarkdown className="markdown-header" source={name} />
+									</Name>
+								</Container>
+								<DynamicModal
+									open={openConfirmHint}
+									closed={() => setOpenConfirmHint(false)}
+									scaleX={0.5}
+									scaleY={0.5}
+									heightAuto
+								>
+									<RenderedModal>
+										<h2 style={{ margin: 0 }}>Unlock Hint</h2>
+										<ModalIcon
+											src={require('../../../assets/icons/locked-hint.svg')}
+										/>
+										<ReactMarkdown
+											className="markdown-header"
+											source={`Unlock *${name}* ?`}
+										/>
+										<ButtonArea
+											cancelText={
+												<IconLine className="sans" icon={<LeftArrow />}>
+													Cancel
+												</IconLine>
+											}
+											confirmText={
+												<span style={{ lineHeight: '1em' }}>
+													💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
+												</span>
+											}
+											cancelOnClick={() => setOpenConfirmHint(false)}
+											confirmOnClick={unlockHint}
+										/>
+									</RenderedModal>
+								</DynamicModal>
+							</>
+						) : (
+							<>
+								{subHints.length > 0 && (
+									<LockedHint
+										key={`learn-hints-locked-${id}`}
+										activityId={activityId}
+										id={id}
+										contentUrl={contentUrl}
+										hints={subHints}
+									/>
+								)}
+							</>
+						)}
+					</>
+				)
+			})}
 		</>
 	)
 }
 
 const mapStateToProps = state => {
 	const {
-		studentData: { gems },
-		learnData: { currentCardIndex }
+		studentData: { gems }
 	} = state
 	return {
-		studentGems: gems,
-		currentCardIndex
+		studentGems: gems
 	}
 }
 

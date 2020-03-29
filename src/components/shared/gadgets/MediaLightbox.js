@@ -17,7 +17,6 @@ const Video = styled.video`
 
 const MediaLightbox = ({ type = TYPE_IMAGE, className, src }) => {
 	const [open, setOpen] = useState(false)
-	console.log(src)
 
 	const selectMedia = () => {
 		switch (type) {

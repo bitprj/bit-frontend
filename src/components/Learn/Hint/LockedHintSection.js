@@ -9,6 +9,7 @@ import HeaderShadow from '../../shared/gadgets/HeaderShadow'
 
 import LockedHint from './LockedHint'
 import { objectArrayToObject } from '../../../utils/objUtils'
+import Scrollable from '../../shared/containers/Scrollable'
 
 const Container = styled.div`
 	margin: 0 -1.5em;
@@ -26,11 +27,10 @@ const LockedHintsContainer = styled.div`
 		margin-right: 2.5em;
 	}
 `
-const LockedHints = styled.div`
+const StyledScrollable = styled(Scrollable)`
 	padding: 0 1em;
 	padding-bottom: 0.75em;
 	height: 24em;
-	overflow-y: auto;
 `
 
 const HelpInfo = styled.div`
@@ -52,12 +52,10 @@ const AnimatingIconLine = styled(IconLine)`
 const LockedHintSection = ({
 	isReady,
 	activityId,
-	hintMetasTree,
-	scopedCachedHintsProgress
+	hintMetasTree
+	// scopedCachedHintsProgress
 }) => {
-	const containerRef = useRef(null)
-
-	let isAllUnlocked
+	let isAllUnlocked = true
 	// let isAllUnlocked = true
 	// const renderedLockedHintsRecursive = hints => {
 	// 	if (!hints) return
@@ -91,14 +89,21 @@ const LockedHintSection = ({
 			{!isAllUnlocked && (
 				<>
 					<LockedHintsContainer>
-						<HeaderShadow containerRef={containerRef} />
-						<LockedHints
-							className="low-profile-scrollbar only-hover"
-							ref={containerRef}
-						>
-							{/* {renderedLockedHints} */}
-						</LockedHints>
-						<HeaderShadow reverse containerRef={containerRef} />
+						<StyledScrollable>
+							{/* {hintMetasTree.map(hint => {
+								const { id, contentUrl, hints } = hint
+								return ( */}
+							<LockedHint
+								// key={`learn-hints-locked-${id}`}
+								activityId={activityId}
+								hints={hintMetasTree}
+								// id={id}
+								// contentUrl={contentUrl}
+								// hints={hints}
+							/>
+							{/* )
+							})} */}
+						</StyledScrollable>
 					</LockedHintsContainer>
 
 					<HelpInfo>
@@ -141,24 +146,12 @@ const mapStateToProps = state => {
 
 	const hintMetasTree = cachedCards[cardId]?.hints
 
-	const flatHintMetas = hintMetasTree.flatMap(hint => [
-		{ id: hint.id },
-		...hint.hints.map(hint => ({ id: hint.id, contentUrl: hint.contentUrl }))
-	])
-	const scopedCachedHintsProgressArray = flatHintMetas.map(hint => ({
-		[hint.id]: cachedHintsProgress[hint.id] ?? null
-	}))
-	const scopedCachedHintsProgress = objectArrayToObject(
-		scopedCachedHintsProgressArray
-	)
-
 	const isReady = cachedHintsProgress[hintMetasTree[0]?.id]?.isUnlocked
 
 	return {
 		isReady,
 		activityId,
-		hintMetasTree,
-		scopedCachedHintsProgress
+		hintMetasTree
 	}
 }
 

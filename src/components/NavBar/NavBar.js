@@ -105,7 +105,7 @@ const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
 					</Link>
 				</NavElement>
 
-				{userType === 'STUDENT' ? (
+				{userType === 'STUDENT' && (
 					<>
 						{/* <NavElement>
 							<Link style={styledLink} to={'/dashboard/'}>
@@ -138,7 +138,15 @@ const NavBar = ({ firstName, userType, onDeauthenticate, onSetTheme }) => {
 							</VerticalAlign>
 						</NavElement>
 					</>
-				) : null}
+				)}
+
+				{userType === 'TEACHER' && (
+					<NavElement>
+						<Link style={styledLink} to={'/grade/'}>
+							Grading
+						</Link>
+					</NavElement>
+				)}
 
 				{userType === 'STUDENT' || userType === 'TEACHER' ? (
 					<AlignRight userType={userType}>

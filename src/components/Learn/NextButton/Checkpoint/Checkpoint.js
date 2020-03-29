@@ -148,7 +148,7 @@ const Checkpoint = ({
 
 			case AUTOGRADER:
 				const getSubmission = () => {
-					const unprocessed = progress.submissions[submissionIndex] ?? {}
+					const unprocessed = progress?.submissions[submissionIndex] ?? {}
 					if (unprocessed.error) return unprocessed
 
 					const results = { ...unprocessed.results }

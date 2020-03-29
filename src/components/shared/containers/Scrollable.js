@@ -7,8 +7,8 @@ const Container = styled.div``
 
 const Scrollable = ({
 	children,
-	className,
 	idName,
+	className,
 	topType,
 	topCallback,
 	bottomType,

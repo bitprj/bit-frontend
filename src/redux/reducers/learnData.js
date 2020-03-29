@@ -54,11 +54,6 @@ const reducer = (state = initialState, action) => {
 					...state.indicators,
 					currentCardIndex: action.cardIndex,
 					lastHintUnlockedId: undefined // smooth slidein for hints
-				},
-				progress: {
-					...state.progress,
-					unlockedHintIds: [],
-					lockedHintIds: []
 				}
 			}
 		}
