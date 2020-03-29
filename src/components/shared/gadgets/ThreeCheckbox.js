@@ -34,23 +34,24 @@ const Container = styled.button`
 	border: 0.1em solid transparent;
 	background-color: ${props => selectColor(props)};
 	box-shadow: 0 4px 1.5em ${props => selectColor(props)}88;
-  cursor: pointer;
-  font-size: 170%;
-  outline: 0;
+	cursor: pointer;
+	font-size: 170%;
+	outline: 0;
 
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  
-  :focus {
-    border: 0.1em solid ${props => {
-			if (states[props.state] === 'NONE') return '#00000001'
-			return `${selectColor(props)}66`
-		}};
-  }
+	transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+	:focus {
+		border: 0.1em solid
+			${props => {
+				if (states[props.state] === 'NONE') return '#00000001'
+				return `${selectColor(props)}66`
+			}};
+	}
 `
 
 const states = ['NONE', 'PASS', 'FAIL']
 
-const ThreeCheckbox = ({ size }) => {
+const ThreeCheckbox = ({ size, onChange = v => console.log(v) }) => {
 	const containerRef = useRef(null)
 
 	const [state, setState] = useState(0)
@@ -62,6 +63,7 @@ const ThreeCheckbox = ({ size }) => {
 			easing: 'easeOutElastic()',
 			duration: 750
 		})
+		onChange(states[state])
 	}, [state])
 
 	const handleNextState = () => {

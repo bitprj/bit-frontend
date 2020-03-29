@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import ImgAndContent from '../../../../shared/gadgets/ImgAndContent'
+import ImgAndContent from '../../../shared/gadgets/ImgAndContent'
 
-const cliSvg = require('../../../../../assets/icons/cli.svg')
+const cliSvg = require('../../../../assets/icons/cli.svg')
 
 const Container = styled.div`
 	height: 100%;
@@ -22,8 +22,8 @@ const CodeArea = styled.pre`
 	padding: 1em 1.5em;
 	background-color: #2b2b2b;
 	color: #fff;
-  white-space: nowrap;
-  border-radius: 0.5em;
+	white-space: nowrap;
+	border-radius: 0.5em;
 `
 
 const CLI = ({

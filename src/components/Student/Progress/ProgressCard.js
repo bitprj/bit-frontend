@@ -3,8 +3,9 @@ import styled from 'styled-components'
 
 import BrickWall from '../../../assets/icons/unused/brickwall'
 import GitHub from '../../../assets/icons/github'
-
 import Button from '../../shared/gadgets/Button'
+
+import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 
 const Container = styled.div`
 	padding: 2em;
@@ -56,14 +57,13 @@ const StyledButton = styled(Button)`
 `
 
 const ActivityCard = ({
-	type,
-	width,
-	clicked,
+	wac_data: [activity],
+
 	image,
-	name,
-	summary,
 	onClickButton
 }) => {
+	const { name, summary } = activity ?? {}
+
 	const renderAppropriateImage = (imageName, width, height) => {
 		switch (imageName) {
 			case 'brickwall':
@@ -78,12 +78,7 @@ const ActivityCard = ({
 	}
 
 	return (
-		<Container
-			className="hover-lift-shadowless transition-medium"
-			type={type}
-			width={width}
-			onClick={clicked}
-		>
+		<Container className="hover-lift-shadowless transition-medium">
 			<InfoArea>
 				<IconWrapper>{renderAppropriateImage(image, '3em')}</IconWrapper>
 				<Name>{name}</Name>
@@ -104,4 +99,4 @@ const ActivityCard = ({
 	)
 }
 
-export default ActivityCard
+export default withApiCache([CACHE_ACTIVITY], { debug: true })(ActivityCard)

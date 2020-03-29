@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { isEmpty } from 'lodash'
 
-import Icon from '../../../../shared/gadgets/Icon'
-import IconArea from '../../../../shared/gadgets/IconArea'
-import Scrollable from '../../../../shared/containers/Scrollable'
-import TwoPanel from '../../../../shared/containers/TwoPanel'
+import Icon from '../../../shared/gadgets/Icon'
+import IconArea from '../../../shared/gadgets/IconArea'
+import Scrollable from '../../../shared/containers/Scrollable'
+import TwoPanel from '../../../shared/containers/TwoPanel'
 
-const flagIcon = require('../../../../../assets/icons/flag.svg')
+const flagIcon = require('../../../../assets/icons/flag.svg')
 
 const TestLineContainer = styled.div`
 	padding: 1em;
@@ -164,18 +165,27 @@ const AutograderResult = ({ results }) => {
 		return <h1>{results.error}</h1>
 	}
 
+	const processedResults = { ...results }
+	const { passCases, failCase } = processedResults
+	processedResults.allCases = [...passCases].reverse()
+	if (!isEmpty(failCase)) {
+		processedResults.allCases.unshift(failCase)
+	}
+
 	return (
 		<StyledTwoPanel
 			fullSizeAxis
 			fullSizeOffAxis
 			first={
 				<LeftPanel
-					results={results}
+					results={processedResults}
 					testCaseIndex={testCaseIndex}
 					setTestCaseIndex={setTestCaseIndex}
 				/>
 			}
-			second={<RightPanel results={results} testCaseIndex={testCaseIndex} />}
+			second={
+				<RightPanel results={processedResults} testCaseIndex={testCaseIndex} />
+			}
 		/>
 	)
 }

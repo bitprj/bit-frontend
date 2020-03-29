@@ -5,13 +5,13 @@ import { Card } from '../Autograder/Home'
 import MediaLightbox, {
 	TYPE_IMAGE,
 	TYPE_VIDEO
-} from '../../../../shared/gadgets/MediaLightbox'
-import TwoPanel from '../../../../shared/containers/TwoPanel'
-import Button from '../../../../shared/gadgets/Button'
+} from '../../../shared/gadgets/MediaLightbox'
+import TwoPanel from '../../../shared/containers/TwoPanel'
+import Button from '../../../shared/gadgets/Button'
 
 import { UPLOAD } from '../Checkpoint'
 
-const uploadCardsSvg = require('../../../../../assets/icons/upload-cards.svg')
+const uploadCardsSvg = require('../../../../assets/icons/upload-cards.svg')
 
 const Instruction = styled.div`
 	padding-top: 1em;

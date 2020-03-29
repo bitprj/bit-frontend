@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { isEmpty } from 'lodash'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 
@@ -16,20 +15,20 @@ import MediaHome from './Media/Home'
 
 import Upload from './Upload'
 
-import Peripheral from '../Peripheral'
-import Icon from '../../../shared/gadgets/Icon'
-import IconLine from '../../../shared/gadgets/IconLine'
-import DynamicModal from '../../../shared/containers/DynamicModal'
-import GradeStatus from '../../../shared/gadgets/GradeStatus'
-import Button from '../../../shared/gadgets/Button'
+import Peripheral from '../NextButton/Peripheral'
+import Icon from '../../shared/gadgets/Icon'
+import IconLine from '../../shared/gadgets/IconLine'
+import DynamicModal from '../../shared/containers/DynamicModal'
+import GradeStatus from '../../shared/gadgets/GradeStatus'
+import Button from '../../shared/gadgets/Button'
 
 import withApiCache, {
 	CACHE_CHECKPOINT,
 	CACHE_CHECKPOINTS_PROGRESS
-} from '../../../HOC/WithApiCache'
+} from '../../HOC/WithApiCache'
 import ReactMarkdown from 'react-markdown'
 
-const flagIcon = require('../../../../assets/icons/flag.svg')
+const flagIcon = require('../../../assets/icons/flag.svg')
 
 export const HOME = 'HOME'
 export const UPLOAD = 'UPLOAD'
@@ -148,16 +147,10 @@ const Checkpoint = ({
 
 			case AUTOGRADER:
 				const getSubmission = () => {
-					const unprocessed = progress?.submissions[submissionIndex] ?? {}
-					if (unprocessed.error) return unprocessed
+					const submission = progress?.submissions[submissionIndex] ?? {}
+					if (submission.error) return submission
 
-					const results = { ...unprocessed.results }
-					const { passCases, failCase } = results
-					results.allCases = [...passCases].reverse()
-					if (!isEmpty(failCase)) {
-						results.allCases.unshift(failCase)
-					}
-					return results
+					return submission.results
 				}
 				return <AutograderResult results={getSubmission()} />
 

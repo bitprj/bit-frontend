@@ -50,11 +50,11 @@ const SidebarNav = ({
 					imgWidthEms="3.3"
 					strongHover
 					imgText={index + 1}
-					title={submission.activity.name}
+					// title={submission.activity.name}
 					gap="0"
 				>
 					<Person width={'8em'} inline>
-						{submission.student.name}
+						{/* {submission.student.name} */}
 					</Person>
 				</NavItem>
 			)}

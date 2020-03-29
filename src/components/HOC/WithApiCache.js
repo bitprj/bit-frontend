@@ -19,14 +19,19 @@ export const CACHE_HINT_PROGRESS = 'cachedHintsProgress'
 export const CACHE_CHECKPOINTS_PROGRESS = 'cachedCheckpointsProgress'
 
 const initialConfig = {
-	allowFetch: true
+	allowFetch: true,
+	debug: false
 }
 
 const withApiCache = (cacheTypes, config) => WrappedComponent => {
-	const { allowFetch } = { ...initialConfig, ...config }
+	const { allowFetch, debug } = { ...initialConfig, ...config }
 
-	let isMounted = true
+	let isMounted
 	let apiCall
+
+	if (debug) {
+		console.log('INITIATED:', `cacheTypes=${cacheTypes}`, WrappedComponent)
+	}
 
 	const _ = ({ wac_cache, wac_onSaveToCache, ...props }) => {
 		const { id } = props
@@ -39,7 +44,7 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 		const getApiData = PCancelable.fn(onCancel => {
 			onCancel.shouldReject = false
 			onCancel(() => {
-				console.log('[REJECTED]', cacheTypes, apiCall)
+				console.log('REJECTED:', cacheTypes, apiCall)
 			})
 			return Promise.all(
 				cacheTypes.map(async (type, i) => {
@@ -67,24 +72,34 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 		const [data, setData] = useState(initialData)
 
 		useEffect(() => {
+			if (debug) console.log('MOUNTED')
+			isMounted = true
 			return () => {
-				isMounted = false
 				if (apiCall) {
+					if (debug) console.log('UNMOUNTED')
+					isMounted = false
 					apiCall.cancel()
 				}
 			}
 		}, [])
 
 		useEffect(() => {
+			if (debug)
+				console.log(
+					'REQUIRED:',
+					`id=${id}`,
+					`isDataReady=${isDataReady(initialData)}`,
+					`allowFetch=${allowFetch}`
+				)
+
 			if (allowFetch && id && !isDataReady(initialData)) {
-				console.log(cacheTypes)
 				;(async () => {
-					console.log('[req data]', isMounted)
+					console.log('FETCHING:', `cacheTypes=${cacheTypes}`)
 					apiCall = getApiData()
 
-					console.log('[set/send data]', isMounted)
 					if (isMounted)
 						apiCall.then(data => {
+							if (debug) console.log('SETTING:', `data=`, data)
 							data.forEach((fd, i) => {
 								wac_onSaveToCache(cacheTypes[i], { [id]: fd })
 							})

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import Icon from '../../../shared/gadgets/Icon'
+import Icon from '../../shared/gadgets/Icon'
 import { AUTOGRADER } from './Checkpoint'
 
-import { resetSubmittedCheckpointSuccessful } from '../../../../redux/actions/learnData'
+import { resetSubmittedCheckpointSuccessful } from '../../../redux/actions/learnData'
 
-const autograderLoading = require('../../../../assets/icons/autograder-loading.svg')
+const autograderLoading = require('../../../assets/icons/autograder-loading.svg')
 
 const Container = styled.div`
 	height: 100%;

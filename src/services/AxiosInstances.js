@@ -9,8 +9,22 @@ export const backend = axios.create({
 	baseURL: backendBaseURL,
 	withCredentials: true
 })
-backend.interceptors.response.use(response =>
-	camelCase(response.data, { deep: true })
+backend.interceptors.response.use(
+	response => camelCase(response.data, { deep: true }),
+	error => {
+		const {
+			status,
+			statusText,
+			config: { method, url }
+		} = error.response
+
+		console.log(localStorage)
+
+		if (status !== 401)
+			alert(`${method.toUpperCase()} ${url}
+         ${status} (${statusText})`)
+		return error
+	}
 )
 
 export const backendSaves = axios.create({

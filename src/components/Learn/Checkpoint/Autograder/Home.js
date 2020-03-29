@@ -5,15 +5,15 @@ import anime from 'animejs'
 import CheckIcon from '@material-ui/icons/CheckRounded'
 import CloseIcon from '@material-ui/icons/CloseRounded'
 
-import Icon from '../../../../shared/gadgets/Icon'
-import IconArea from '../../../../shared/gadgets/IconArea'
-import MuiIconBox from '../../../../shared/external/MuiIconBox'
-import TwoPanel from '../../../../shared/containers/TwoPanel'
+import Icon from '../../../shared/gadgets/Icon'
+import IconArea from '../../../shared/gadgets/IconArea'
+import MuiIconBox from '../../../shared/external/MuiIconBox'
+import TwoPanel from '../../../shared/containers/TwoPanel'
 
 import { CLI, UPLOAD, AUTOGRADER } from '../Checkpoint'
 
-const cliSvg = require('../../../../../assets/icons/cli.svg')
-const uploadCardsSvg = require('../../../../../assets/icons/upload-cards.svg')
+const cliSvg = require('../../../../assets/icons/cli.svg')
+const uploadCardsSvg = require('../../../../assets/icons/upload-cards.svg')
 
 const PassedLineIconArea = styled(IconArea)`
 	width: fit-content;

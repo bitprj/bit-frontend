@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
 
-import SubmissionCheckpoint from './SubmissionCheckpoints'
+import SubmissionCheckpoint from './SubmissionCheckpoint'
 
 import { fadeIn } from '../../../styles/GlobalAnime'
 
@@ -24,19 +23,20 @@ const Content = ({ isReady, checkpoints, currentSubmissionIndex }) => {
 	const currentScrollTop = useRef(0)
 	const cardsScrollTop = useRef([])
 
+	/** note: initial state undefined, set in effect */
+	const [grading, setGrading] = useState([])
+
 	useEffect(() => {
+		/** Update current scroll in currentScrollTop */
+		const handleScroll = () => {
+			const scrollTop = containerRef.current.scrollTop
+			currentScrollTop.current = scrollTop
+		}
+
 		containerRef.current.addEventListener('scroll', handleScroll)
 		return () =>
 			containerRef.current.removeEventListener('scroll', handleScroll)
 	}, [])
-
-	/**
-	 * Keep track of scroll in scrollTopRef
-	 */
-	const handleScroll = () => {
-		const scrollTop = containerRef.current.scrollTop
-		currentScrollTop.current = scrollTop
-	}
 
 	/**
 	 * scroll to top each card change so that unlocking a new
@@ -64,16 +64,24 @@ const Content = ({ isReady, checkpoints, currentSubmissionIndex }) => {
 		fadeIn('.teacher-i-contentheader, .teacher-i-contentarea')
 	}, [isReady])
 
-	const renderCheckpoints =
-		checkpoints &&
-		checkpoints.map(checkpoint => (
+	const renderCheckpoints = checkpoints?.map((checkpoint, i) => {
+		const { checkpointId, content, studentComment } = checkpoint
+		return (
 			<SubmissionCheckpoint
-				key={`teacher-checkpoint-${checkpoint.checkpointId}`}
-				name={checkpoint.name}
-				type={checkpoint.type.toUpperCase()}
-				content={checkpoint.content}
+				key={`teacher-checkpoint-${checkpointId}`}
+				id={checkpointId}
+				content={content}
+				studentComment={studentComment}
+				onGradingChange={changes => {
+					setGrading(currentState => {
+						const newGrading = currentState.slice()
+						newGrading[i] = { ...grading[i], ...changes }
+						return newGrading
+					})
+				}}
 			/>
-		))
+		)
+	})
 
 	return (
 		<Container ref={containerRef} className="low-profile-scrollbar only-hover">
@@ -92,11 +100,11 @@ const mapStateToProps = state => {
 		}
 	} = state
 
-	const submission = submissions && submissions[currentSubmissionIndex]
+	const checkpoints = submissions?.[currentSubmissionIndex]?.checkpoints
 
 	return {
 		isReady: !!submissions.length,
-		checkpoints: get(submission, 'checkpoints'),
+		checkpoints,
 		currentSubmissionIndex
 	}
 }

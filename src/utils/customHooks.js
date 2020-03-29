@@ -26,6 +26,17 @@ export const useTraceUpdate = props => {
 	})
 }
 
+export const usePureTraceUpdate = props => {
+	const prev = usePreviousSafe(props)
+	const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+		if (prev[k] !== v) {
+			ps[k] = [prev[k], v]
+		}
+		return ps
+	}, {})
+	console.log('Changed props:', changedProps)
+}
+
 export const usePrevious = value => {
 	const ref = useRef()
 	useEffect(() => {

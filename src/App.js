@@ -26,7 +26,7 @@ const App = ({ userType, onInit }) => {
 	}, [])
 
 	useEffect(() => {
-		if (userType && userType !== 'VISITOR') {
+		if (userType && userType === 'STUDENT') {
 			onInit()
 		}
 	}, [userType])

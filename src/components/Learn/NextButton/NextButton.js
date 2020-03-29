@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
 
 import Central from './Central/Central'
-import Checkpoint from './Checkpoint/Checkpoint'
+import Checkpoint from '../Checkpoint/Checkpoint'
 import Concept from '../Concept/Concept'
 
 import { SafeStack } from '../../../utils/DataStructures'
