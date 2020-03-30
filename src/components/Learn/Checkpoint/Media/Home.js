@@ -33,17 +33,17 @@ const Home = ({
 	pushView,
 	type: checkpointType,
 	instruction = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.',
-	progress
+	content
 }) => {
 	return (
 		<StyledTwoPanel
 			fullSizeOffAxis
 			first={<Instruction>{instruction}</Instruction>}
 			second={
-				progress?.content ? (
+				content ? (
 					<MediaLightbox
 						type={checkpointType === 'Video' ? TYPE_VIDEO : TYPE_IMAGE}
-						src={progress.content}
+						src={content}
 					/>
 				) : (
 					<Card
@@ -55,7 +55,7 @@ const Home = ({
 				)
 			}
 		>
-			{progress?.content && (
+			{content && (
 				<Resubmit invert onClick={() => pushView(UPLOAD)}>
 					Resubmit
 				</Resubmit>

@@ -64,11 +64,6 @@ const reducer = (state = initialState, action) => {
 				indicators: {
 					...state.indicators,
 					currentCardIndex: state.indicators.currentCardIndex + 1
-				},
-				progress: {
-					...state.progress,
-					unlockedHintIds: [],
-					lockedHintIds: []
 				}
 			}
 		}

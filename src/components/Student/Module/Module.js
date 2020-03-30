@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { useParams } from 'react-router-dom'
+import React from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
 
 import ActivityList from './ActivityList'
 import PickProject from './PickProject'
@@ -29,6 +26,15 @@ const Content = styled.div`
   `}
 `
 
+const Background = styled.div`
+	background-color: ${props => props.theme.bg};
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 40em;
+	clip-path: ellipse(110% 70% at 63% 25%);
+`
+
 const StyledHero = styled(Hero)`
 	height: 22.5em;
 `
@@ -38,6 +44,7 @@ const Module = ({ wac_data: [mod] }) => {
 
 	return (
 		<>
+			<Background />
 			<StyledHero goBack title={name} description={description} />
 
 			<Content>

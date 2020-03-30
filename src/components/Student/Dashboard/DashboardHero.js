@@ -5,29 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 import ProgressCard from './ProgressCard'
 import Hero from '../../shared/gadgets/Hero'
-import GoBack from '../../shared/external/GoBack'
 import { setSelectedActivity } from '../../../redux/actions/learnData'
-
-const ProgressBar = styled.div`
-	margin-top: 2em;
-	width: 90%;
-	height: 0.5em;
-	background-color: ${props =>
-		props.theme.fontInvert.length === 4
-			? props.theme.fontInvert + 'c'
-			: props.theme.fontInvert + 'cc'};
-	position: relative;
-
-	&:before {
-		content: '';
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		width: ${props => props.progress};
-		background-color: ${props => props.theme.accent};
-	}
-`
 
 const StudentHero = ({
 	id,

@@ -148,7 +148,7 @@ export const initSubmitCheckpointProgress = (
 	id,
 	type,
 	content,
-	progress
+	submissions
 ) => async dispatch => {
 	try {
 		const response = await submitCheckpointProgress(
@@ -164,16 +164,13 @@ export const initSubmitCheckpointProgress = (
 			}
 		})
 
-		let final = response
-
-		if (type === 'Autograder') {
-			const newProgress = {
-				...progress,
-				submissions: [...progress.submissions]
+		const final = (() => {
+			if (type === 'Autograder') {
+				const newSubmissions = submissions.slice().unshift(response)
+				return { content: { submissions: newSubmissions } }
 			}
-			newProgress.submissions.unshift(response)
-			final = newProgress
-		}
+			return response
+		})()
 
 		dispatch(
 			saveToCache(CACHE_CHECKPOINTS_PROGRESS, { [id]: final }, { merge: true })

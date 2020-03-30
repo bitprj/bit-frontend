@@ -37,7 +37,7 @@ const NextButtonManager = ({
 	lastCardUnlockedIndex,
 	buttonStateScheduleQueue,
 	onBroadcastButtonState,
-	onResetButtonStateSchedule 
+	onResetButtonStateSchedule
 }) => {
 	/**
 	 * Stack-based system to determine current button state
@@ -195,7 +195,12 @@ const NextButtonManager = ({
 
 const mapStateToProps = state => {
 	const {
-		cache: { cachedActivities, cachedCards, cachedCheckpointsProgress },
+		cache: {
+			cachedActivities,
+			cachedCards,
+			cachedCheckpoints,
+			cachedCheckpointsProgress
+		},
 		learnData: {
 			selectedActivity: { id: activityId },
 			indicators: {
@@ -207,26 +212,23 @@ const mapStateToProps = state => {
 	} = state
 
 	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
-
-	const card = cachedCards[cardId]
-
-	const checkpoint = card?.checkpoint
-	const concepts = card?.concepts
+	const { checkpoint, concepts } = cachedCards[cardId] ?? {}
 
 	/**
 	 * Checkpoint Finished calculation
 	 */
-	const checkpointId = checkpoint?.id
-	const checkpointType = checkpoint?.checkpointType
-
-	const progress = cachedCheckpointsProgress?.[checkpointId]
-
 	const getCheckpointFinished = () => {
+		const checkpointId = checkpoint?.id
+		const { checkpointType } = cachedCheckpoints[checkpointId] ?? {}
+		if (!checkpointType) return
+
+		const { content } = cachedCheckpointsProgress?.[checkpointId] ?? {}
 		if (checkpointType === 'Autograder') {
-			const { numPass, numFail } = progress?.submissions[0]?.results ?? {}
+			const { numPass, numFail } = content?.submissions[0]?.results ?? {}
+			console.log(numPass, numFail)
 			return numPass >= numFail
 		}
-		return !isEmpty(progress?.content)
+		return !isEmpty(content)
 	}
 	const checkpointFinished = getCheckpointFinished()
 
@@ -234,7 +236,7 @@ const mapStateToProps = state => {
 		currentCardIndex,
 		lastCardUnlockedIndex,
 		buttonStateScheduleQueue,
-		hasConcepts: !!(concepts && concepts.length),
+		hasConcepts: !!concepts?.length,
 		hasCheckpoint: !!checkpoint,
 		checkpointFinished
 	}

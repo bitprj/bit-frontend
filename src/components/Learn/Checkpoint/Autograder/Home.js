@@ -96,8 +96,6 @@ const UnloadedLineWrapper = styled.div`
 `
 
 const UnloadedLine = ({}) => {
-	useEffect(() => {}, [])
-
 	return (
 		<UnloadedIconArea
 			gap={'1.5em'}
@@ -143,9 +141,8 @@ const VerticalLine = styled.div`
       );`}
 `
 
-const Progress = ({ pushView, progress, setSubmissionIndex }) => {
-	const isReady = !!progress
-	const submissions = progress?.submissions
+const Progress = ({ pushView, submissions, setSubmissionIndex }) => {
+	const isReady = !!submissions
 
 	return (
 		<ProgressContainer>
@@ -223,16 +220,18 @@ const NavigationTwoPanel = styled(TwoPanel)`
 const Home = ({
 	pushView,
 	instruction = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.',
-	progress,
+	content,
 	setSubmissionIndex
 }) => {
+	const { submissions } = content ?? {}
+
 	return (
 		<>
 			<TopAreaTwoPanel
 				first={<div style={{ paddingTop: '1em' }}>{instruction}</div>}
 				second={
 					<Progress
-						progress={progress}
+						submissions={submissions}
 						pushView={pushView}
 						setSubmissionIndex={setSubmissionIndex}
 					/>

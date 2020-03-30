@@ -55,10 +55,9 @@ const Upload = ({
 	activityId,
 	id,
 	type,
-	progress,
-
 	pushView,
-	previousView,
+
+	submissions, // only used for autograder
 
 	onInitSubmitCheckpointProgress
 }) => {
@@ -75,7 +74,7 @@ const Upload = ({
 			id,
 			type,
 			acceptedFiles[0],
-			progress
+			submissions
 		)
 		pushView(LOADING)
 	}
@@ -191,9 +190,15 @@ const Upload = ({
 }
 
 const mapDispatchToProps = dispatch => ({
-	onInitSubmitCheckpointProgress: (activityId, id, type, content, progress) =>
+	onInitSubmitCheckpointProgress: (
+		activityId,
+		id,
+		type,
+		content,
+		submissions
+	) =>
 		dispatch(
-			initSubmitCheckpointProgress(activityId, id, type, content, progress)
+			initSubmitCheckpointProgress(activityId, id, type, content, submissions)
 		)
 })
 

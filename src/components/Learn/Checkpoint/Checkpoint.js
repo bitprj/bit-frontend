@@ -103,6 +103,8 @@ const Checkpoint = ({
 	type,
 	progress
 }) => {
+	const { content } = progress ?? {}
+
 	const previousView = () => {
 		view.pop()
 		setView([...view])
@@ -125,7 +127,7 @@ const Checkpoint = ({
 							<AutograderHome
 								pushView={pushView}
 								instruction={instruction}
-								progress={progress}
+								content={content}
 								setSubmissionIndex={setSubmissionIndex}
 							/>
 						)
@@ -137,7 +139,7 @@ const Checkpoint = ({
 								pushView={pushView}
 								type={type}
 								instruction={instruction}
-								progress={progress}
+								content={content}
 							/>
 						)
 
@@ -147,7 +149,7 @@ const Checkpoint = ({
 
 			case AUTOGRADER:
 				const getSubmission = () => {
-					const submission = progress?.submissions[submissionIndex] ?? {}
+					const submission = content?.submissions[submissionIndex] ?? {}
 					if (submission.error) return submission
 
 					return submission.results
@@ -163,9 +165,8 @@ const Checkpoint = ({
 						activityId={activityId}
 						id={id}
 						type={type}
-						progress={progress}
+						submissions={content?.submissions}
 						pushView={pushView}
-						previousView={previousView}
 					/>
 				)
 
@@ -188,18 +189,14 @@ const Checkpoint = ({
 		}
 	}
 
-	const getRecentSubmissionContent = () => {
-		return progress?.content ?? progress?.submissions?.[0]
-	}
-
 	const mostRecentGradeStatus = () => {
 		let status = 'NONE'
 		let message = 'LOADING'
 
 		const calculateGradeStatus = () => {
-			if (!progress) return
+			if (!content) return
 
-			const recent = getRecentSubmissionContent()
+			const recent = content.submissions?.[0] ?? content
 
 			if (!recent) {
 				status = ''
@@ -220,7 +217,8 @@ const Checkpoint = ({
 			 * AUTOGRADING
 			 */
 			if (type === 'Autograder') {
-				const results = recent.results
+				console.log(recent)
+				const { results } = recent
 				if (results.numPass === 0) {
 					status = 'FATAL'
 					message = 'NOT PASSING'
@@ -280,10 +278,7 @@ const Checkpoint = ({
 						noOutline
 						onClick={() => {
 							if (peekView(view) === HOME) setOpen(false)
-							else {
-								view.pop()
-								setView([...view])
-							}
+							else previousView()
 						}}
 					>
 						<IconLine icon={<LeftArrow />}>
