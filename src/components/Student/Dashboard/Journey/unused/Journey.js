@@ -35,43 +35,41 @@ const StyledButton = styled(Button)`
 `
 
 const Journey = ({ inprogressModules }) => {
-	const colOne =
-		inprogressModules &&
-		inprogressModules
-			.filter((_, index) => index % 2 === 0)
-			.map((mod, index) => {
-				return (
-					<ActivityCard
-						key={`module-activity-${mod.id}`}
-						id={mod.id}
-						name={mod.name}
-						// isLeft
-						// isLast={inprogressModules.length === index}
-					/>
-				)
-			})
+	const colOne = inprogressModules
+		.filter((_, index) => index % 2 === 0)
+		.map((mod, index) => {
+			return (
+				<ActivityCard
+					key={`module-activity-${mod.id}`}
+					id={mod.id}
+					name={mod.name}
+					// isLeft
+					// isLast={inprogressModules.length === index}
+				/>
+			)
+		})
 
-	const colTwo =
-		inprogressModules &&
-		inprogressModules
-			.filter((_, index) => index % 2 === 1)
-			.map((mod, index) => {
-				return (
-					<ActivityCard
-						key={`module-activity-${mod.id}`}
-						id={mod.id}
-						name={mod.name}
-						// isLeft
-						// isLast={inprogressModules.length === index}
-					/>
-				)
-			})
+	const colTwo = inprogressModules
+		?.filter((_, index) => index % 2 === 1)
+		.map((mod, index) => {
+			return (
+				<ActivityCard
+					key={`module-activity-${mod.id}`}
+					id={mod.id}
+					name={mod.name}
+					// isLeft
+					// isLast={inprogressModules.length === index}
+				/>
+			)
+		})
 
 	const [classCode, setClassCode] = useState()
 
 	const action = () =>
 		joinClassroom(classCode).then(res => {
-			const success = !res.response?.status && !res.message.includes('Error')
+			const success =
+				!res.response?.status &&
+				(!res.message?.includes('Error') || !res.msg?.includes('Error'))
 			if (success) {
 				window.location.replace('/')
 			}

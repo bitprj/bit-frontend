@@ -4,7 +4,7 @@ import camelCase from 'camelcase-keys-deep'
 /** GENERAL BACKEND (mainly for GET) */
 
 const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
-// const backendBaseURL = 'https://080f200e.ngrok.io/'
+// const backendBaseURL = 'https://bd34d3c6.ngrok.io/'
 export const backend = axios.create({
 	baseURL: backendBaseURL,
 	withCredentials: true
@@ -37,9 +37,6 @@ export const backendSaves = axios.create({
 	baseURL: backendBaseURL,
 	withCredentials: true
 })
-backendSaves.defaults.headers.common['X-CSRF-TOKEN'] = localStorage.getItem(
-	'csrf-token'
-)
 
 /** BACKEND_SAVES (with CSRF, mainly for PUT, POST, DELETE) */
 
@@ -50,9 +47,10 @@ let pending = 0
 // 	return 'Changes may not be saved. Continue?'
 // }
 
-backendSaves.interceptors.request.use(response => {
+backendSaves.interceptors.request.use(request => {
+	request.headers['X-CSRF-TOKEN'] = localStorage.getItem('csrf-token')
 	pending++
-	return response
+	return request
 })
 backendSaves.interceptors.response.use(
 	response => camelCase(response.data, { deep: true }),

@@ -31,7 +31,9 @@ const StyledButton = styled(Button)`
 const Settings = ({ activityId }) => {
 	const action = () =>
 		deleteActivityProgress(activityId).then(res => {
-			const success = !res.response?.status && !res.message.includes('Error')
+			const success =
+				!res.response?.status &&
+				(!res.message?.includes('Error') || !res.msg?.includes('Error'))
 			if (success) {
 				window.location.replace('/learn/')
 			}
