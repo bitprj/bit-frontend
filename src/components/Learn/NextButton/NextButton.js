@@ -16,10 +16,11 @@ import {
 	resetButtonStateSchedule
 } from '../../../redux/actions/learnData'
 
-export const STATE_HINT = 'STATE_HINT'
-export const STATE_CHECKPOINT = 'STATE_CHECKPOINT'
+export const STATE_NEXT = 'STATE_NEXT'
+export const STATE_FINISH = 'STATE_FINISH'
 export const STATE_CONCEPT = 'STATE_CONCEPT'
-export const STATE_CARD = 'STATE_CARD'
+export const STATE_CHECKPOINT = 'STATE_CHECKPOINT'
+export const STATE_HINT = 'STATE_HINT'
 
 const Container = styled.div`
 	position: fixed;
@@ -30,6 +31,7 @@ const Container = styled.div`
 
 const NextButtonManager = ({
 	className,
+	cardsLength,
 	hasConcepts,
 	hasCheckpoint,
 	checkpointFinished,
@@ -46,7 +48,7 @@ const NextButtonManager = ({
 	 *    ...essentially, the effect with resetAndBroadcastButtonState
 	 *    didn't work because the removal wasn't immediate
 	 */
-	const buttonStateStack = useRef(new SafeStack([STATE_CARD]))
+	const buttonStateStack = useRef(new SafeStack([STATE_NEXT]))
 	const [finishedButtonStates, setFinishedButtonStates] = useState([])
 
 	/**
@@ -59,9 +61,28 @@ const NextButtonManager = ({
 	const [submissionIndex, setSubmissionIndex] = useState(0)
 
 	useEffect(() => {
-		if (buttonStateStack.current.peek() === STATE_CARD)
-			onBroadcastButtonState(STATE_CARD)
+		if (buttonStateStack.current.peek() === STATE_NEXT)
+			onBroadcastButtonState(STATE_NEXT)
 	}, [])
+
+	const prevCurrentCardIndex = usePrevious(currentCardIndex)
+	useEffect(() => {
+		if (
+			prevCurrentCardIndex !== undefined &&
+			prevCurrentCardIndex !== currentCardIndex
+		) {
+			removeFromFinishedButtonStates(STATE_CHECKPOINT)
+			removeFromFinishedButtonStates(STATE_CONCEPT)
+			resetAndBroadcastButtonState()
+		}
+	})
+
+	useEffect(() => {
+		if (currentCardIndex !== undefined)
+			if (currentCardIndex === cardsLength - 1) {
+				addAndBroadcastButtonState(STATE_FINISH)
+			}
+	})
 
 	/**
 	 * Update currentButtonState with all states from the schedule queue FIRST
@@ -101,7 +122,6 @@ const NextButtonManager = ({
 	 * Properly adding/removing buttonStates to finishedButtonStates
 	 * during card changes
 	 */
-	const prevCurrentCardIndex = usePrevious(currentCardIndex)
 	useEffect(() => {
 		if (buttonStateStack.current.peek() === STATE_CONCEPT) {
 			setOpenConcepts(true)
@@ -121,18 +141,7 @@ const NextButtonManager = ({
 				addAndBroadcastButtonState(STATE_CHECKPOINT) // on revisit
 			}
 		}
-
-		if (
-			prevCurrentCardIndex !== undefined &&
-			prevCurrentCardIndex !== currentCardIndex
-		) {
-			removeFromFinishedButtonStates(STATE_CHECKPOINT)
-			removeFromFinishedButtonStates(STATE_CONCEPT)
-			resetAndBroadcastButtonState()
-		}
 	})
-
-	useEffect(() => {})
 
 	/** Helper Methods */
 
@@ -143,6 +152,7 @@ const NextButtonManager = ({
 		buttonStateStack.current.pop(buttonState)
 	}
 	const addAndBroadcastButtonState = buttonState => {
+		if (buttonStateStack.current.has(buttonState)) return
 		pushToButtonStateStack(buttonState)
 		onBroadcastButtonState(buttonStateStack.current.peek())
 	}
@@ -152,7 +162,7 @@ const NextButtonManager = ({
 		onBroadcastButtonState(buttonStateStack.current.peek())
 	}
 	const resetAndBroadcastButtonState = () => {
-		buttonStateStack.current = new SafeStack([STATE_CARD])
+		buttonStateStack.current = new SafeStack([STATE_NEXT])
 		onBroadcastButtonState(buttonStateStack.current.peek())
 	}
 
@@ -211,7 +221,8 @@ const mapStateToProps = state => {
 		}
 	} = state
 
-	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
+	const cards = cachedActivities[activityId]?.cards
+	const cardId = cards[currentCardIndex]?.id
 	const { checkpoint, concepts } = cachedCards[cardId] ?? {}
 
 	/**
@@ -225,7 +236,6 @@ const mapStateToProps = state => {
 		const { content } = cachedCheckpointsProgress?.[checkpointId] ?? {}
 		if (checkpointType === 'Autograder') {
 			const { numPass, numFail } = content?.submissions[0]?.results ?? {}
-			console.log(numPass, numFail)
 			return numPass >= numFail
 		}
 		return !isEmpty(content)
@@ -233,6 +243,7 @@ const mapStateToProps = state => {
 	const checkpointFinished = getCheckpointFinished()
 
 	return {
+		cardsLength: cards.length,
 		currentCardIndex,
 		lastCardUnlockedIndex,
 		buttonStateScheduleQueue,

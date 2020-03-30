@@ -7,9 +7,13 @@ import 'react-aspect-ratio/aspect-ratio.css'
 export const TYPE_IMAGE = 'image'
 export const TYPE_VIDEO = 'video'
 
-const Image = styled.img``
+const Image = styled.img`
+	max-height: 98%;
+`
 
-const Video = styled.video``
+const Video = styled.video`
+	max-height: 98%;
+`
 
 const MediaLightbox = ({
 	type = TYPE_IMAGE,
@@ -50,7 +54,7 @@ const MediaLightbox = ({
 		switch (type) {
 			case TYPE_VIDEO:
 				return (
-					<Video className={`strong-lift ${className || ''}`} controls>
+					<Video className={className} controls>
 						<source src={src} type="video/mp4" />
 					</Video>
 				)
@@ -59,7 +63,7 @@ const MediaLightbox = ({
 			default:
 				return (
 					<Image
-						className={`strong-lift ${className || ''}`}
+						className={className}
 						src={src}
 						onClick={() => setOpen(true)}
 					/>

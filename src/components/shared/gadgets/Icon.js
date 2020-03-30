@@ -27,7 +27,10 @@ const Icon = styled.img`
 		}
 	}}
 
-	${props => (props.src ? '' : `background-color: ${props.theme.accentVariant};`)}
+	${props =>
+		props.noDefault || props.src
+			? ''
+			: `background-color: ${props.theme.accentVariant};`}
 `
 
 export default Icon

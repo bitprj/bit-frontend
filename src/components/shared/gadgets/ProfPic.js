@@ -15,14 +15,21 @@ const AccountContainer = styled.div`
 const ProfilePicture = styled(Icon)`
 	margin-right: 0.5em;
 	padding: 0.1em;
-	background-color: ${props => props.theme.accentVariant};
 `
 
 const ProfPic = ({ src, children, iconSize }) => {
 	return (
 		<AccountContainer>
 			<VerticalAlign>
-				<ProfilePicture src={src} width={iconSize} height={iconSize} circle />
+				{src && (
+					<ProfilePicture
+						src={src}
+						noDefault
+						width={iconSize}
+						height={iconSize}
+						circle
+					/>
+				)}
 				{children}
 			</VerticalAlign>
 		</AccountContainer>

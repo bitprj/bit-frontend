@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { scroller } from 'react-scroll'
 import { connect } from 'react-redux'
@@ -8,10 +9,11 @@ import CentralContent from '../SelectState/CentralContent'
 import CentralStyles from '../SelectState/CentralStyles'
 
 import {
-	STATE_CARD,
+	STATE_NEXT,
+	STATE_FINISH,
+	STATE_CONCEPT,
 	STATE_CHECKPOINT,
-	STATE_HINT,
-	STATE_CONCEPT
+	STATE_HINT
 } from '../NextButton'
 
 import {
@@ -61,6 +63,8 @@ const Central = ({
 	onIncrementLastCardUnlockedIndex,
 	removeAndBroadcastButtonState
 }) => {
+	const history = useHistory()
+
 	/**
 	 * Determine if STATE_HINT is necessary using IntersectionObserver
 	 * and detecting if hint is in viewpoint
@@ -115,7 +119,12 @@ const Central = ({
 				setOpenConcepts(true)
 				break
 			}
-			case STATE_CARD: {
+			case STATE_FINISH: {
+				history.push('/')
+				break
+			}
+
+			case STATE_NEXT: {
 				if (!isLast) {
 					onIncrementCurrentCardIndex()
 					if (currentCardIndex === lastCardUnlockedIndex) {

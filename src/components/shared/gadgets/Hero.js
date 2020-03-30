@@ -1,49 +1,44 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import GoBack from '../external/GoBack'
 import TwoPanel from '../containers/TwoPanel'
 
 const StyledTwoPanel = styled(TwoPanel)`
-	// padding: 2.5em;
-	// padding-bottom: 2em;
+	background-color: ${props => props.theme.bgVariant};
 `
 
-const Description = styled.div`
-	margin-top: -4em;
-	padding: 0 em;
+const LeftPanel = styled.div`
 	color: white;
 	font-size: 85%;
-
-	@media screen and (max-width: 1000px) {
-		padding: 0 1em;
-	}
 `
 
 const Hero = ({
 	className,
+	leftStyle,
 
-	goBack,
+	above,
 	title,
 	description,
-	children,
+	below,
 
-	rightPanel
+	ratio,
+	children
 }) => (
 	<StyledTwoPanel
 		className={className}
-		ratio={5 / 9}
+		fullSizeAxis
+		ratio={ratio}
 		first={
-			<Description>
-				{goBack && <GoBack />}
-				<h1 style={{ margin: 0, whiteSpace: 'nowrap' }}>{title}</h1>
+			<LeftPanel style={leftStyle}>
+				{above}
+				<h1 style={{ margin: 0 }}>{title}</h1>
 				<p style={{ lineHeight: 1.6 }}>{description}</p>
-				{children}
-			</Description>
+				{below}
+			</LeftPanel>
 		}
-		firstStyle={{ overflow: 'visible' }}
-		second={rightPanel}
 		firstCenterBoth
+		// firstStyle={{ overflow: 'visible' }}
+		second={children}
 		secondCenterX
 	/>
 )

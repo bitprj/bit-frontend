@@ -93,7 +93,9 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 					'REQUIRED:',
 					`id=${id}`,
 					`isDataReady=${isDataReady(initialData)}`,
-					`allowFetch=${allowFetch}`
+					`allowFetch=${allowFetch}`,
+					'data=',
+					{ initialData, data }
 				)
 
 			if (allowFetch && id && !isDataReady(initialData)) {
@@ -113,7 +115,12 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 			}
 		}, [id])
 
-		return <WrappedComponent wac_data={data} {...props} />
+		return (
+			<WrappedComponent
+				wac_data={isDataReady(data) ? data : initialData}
+				{...props}
+			/>
+		)
 	}
 
 	const mapStateToProps = state => {

@@ -43,7 +43,9 @@ const DetailsHeader = ({ activityName, studentName }) => {
 			</GradeStatus>
 			<AssignmentName>{`${activityName}`}</AssignmentName>
 			<ProfPic
-				src={require('../../../assets/icons/prof-pic.png')}
+				src={
+					'http://icon-library.com/images/no-profile-picture-icon/no-profile-picture-icon-15.jpg'
+				}
 				iconSize={'2em'}
 			>
 				{`${studentName}`}

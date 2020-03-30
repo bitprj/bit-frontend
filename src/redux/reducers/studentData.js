@@ -8,6 +8,8 @@ import {
 
 const initialState = {
 	indicators: {},
+	image:
+		'http://icon-library.com/images/no-profile-picture-icon/no-profile-picture-icon-15.jpg',
 	suggestedActivity: {},
 	inprogressModules: [],
 	inprogressTopics: [],
@@ -18,7 +20,7 @@ const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case SET_STUDENT_DATA: {
 			return {
-				...state,
+				...initialState,
 				...action.studentData
 			}
 		}

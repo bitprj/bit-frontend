@@ -13,8 +13,6 @@ import RightArrow from '@material-ui/icons/KeyboardArrowRightRounded'
 
 import withApiCache, { CACHE_CONCEPT } from '../../HOC/WithApiCache'
 
-const profPic = require('../../../assets/icons/prof-pic.png')
-
 const Container = styled.div`
 	display: flex;
 `

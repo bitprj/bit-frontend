@@ -104,23 +104,45 @@ export const GlobalStyle = createGlobalStyle`
     width: 1em; 
     height: 1em; 
   }
+  
+  .low-profile-scrollbar::-webkit-scrollbar-thumb
+  .low-profile-scrollbar::-webkit-scrollbar-track {
+    border-radius: 0.5em;
+  }
+  .low-profile-scrollbar.sharp::-webkit-scrollbar-thumb {
+    border-radius: 0.2em;
+  }
+  .low-profile-scrollbar.sharp::-webkit-scrollbar-track {
+    border-radius: 0
+  }
 
   .low-profile-scrollbar::-webkit-scrollbar-track {
     background: #0000; // not working
   }
   .low-profile-scrollbar.fat::-webkit-scrollbar-track {
     background: #0001;
-    border-radius: 0.5em;
   }
 
-  .low-profile-scrollbar::-webkit-scrollbar-thumb { background: #0002; border-radius: 0.5em; }
-  .low-profile-scrollbar.light::-webkit-scrollbar-thumb { background: #fff6; }
+  .low-profile-scrollbar::-webkit-scrollbar-thumb { 
+    background: #0002; 
+  }
+  .low-profile-scrollbar.light::-webkit-scrollbar-thumb { 
+    background: #fff6; 
+  }
   
-  .low-profile-scrollbar::-webkit-scrollbar-thumb:hover { background: #0003; }
-  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:hover { background: #fff7; }
+  .low-profile-scrollbar::-webkit-scrollbar-thumb:hover { 
+    background: #0003; 
+  }
+  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:hover { 
+    background: #fff7; 
+  }
 
-  .low-profile-scrollbar::-webkit-scrollbar-thumb:active { background: #0004; }
-  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:active { background: #fff8; }
+  .low-profile-scrollbar::-webkit-scrollbar-thumb:active { 
+    background: #0004; 
+  }
+  .low-profile-scrollbar.light::-webkit-scrollbar-thumb:active { 
+    background: #fff8; 
+  }
 
   /**
    * TRANSITIONS 

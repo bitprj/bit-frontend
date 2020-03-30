@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import {
-	STATE_CARD,
+	STATE_NEXT,
+	STATE_FINISH,
 	STATE_CHECKPOINT,
 	STATE_CONCEPT,
 	STATE_HINT
@@ -16,12 +17,17 @@ const CentralStyles = styled.div`
 		switch (props.currentButtonState) {
 			case STATE_HINT:
 				return createColorTemplate(props.theme.pastel.magenta)
+
 			case STATE_CONCEPT:
 				return createColorTemplate(props.theme.pastel.yellow)
+
 			case STATE_CHECKPOINT:
 				return createColorTemplate(props.theme.pastel.green)
-			case STATE_CARD:
+
+			case STATE_FINISH:
+			case STATE_NEXT:
 				return createColorTemplate(props.theme.accent)
+
 			default:
 				if (props.currentButtonState !== undefined)
 					console.log('[CentralStyles] error... missing state check?')

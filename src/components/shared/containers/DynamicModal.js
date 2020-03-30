@@ -34,7 +34,6 @@ export const Container = styled.div`
 
 	// target vertical phone
 	@media screen and (orientation: portrait) and (max-width: ${sizes.thone}px) {
-		// ${props => props.type === 'PANELS' && 'flex-direction: column'};
 		height: calc((100% - 10em) * ${props => props.scaleY});
 		${props => props.heightAuto && 'height: auto;'}
 	}

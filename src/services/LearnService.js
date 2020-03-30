@@ -1,31 +1,5 @@
 import { backend, backendSaves, grader } from './AxiosInstances'
 
-/* ===== CDN */
-
-// export const fetchCard =
-
-/* ===== INITIAL */
-
-export const fetchActivityProgress = activityId => {
-	const endpoint = `/activities/${activityId}/progress`
-	return backend.get(endpoint)
-}
-
-export const fetchActivity = activityId => {
-	const endpoint = `/activities/${activityId}`
-	return backend.get(endpoint)
-}
-
-export const fetchCardStatus = (activityId, cardId) => {
-	const endpoint = `/activities/${activityId}/cards/${cardId}`
-	return backend.get(endpoint)
-}
-
-export const fetchCheckpointProgress = checkpointId => {
-	const endpoint = `/checkpoints/${checkpointId}/progress`
-	return backend.get(endpoint)
-}
-
 /* ===== RUNTIME */
 
 export const deleteActivityProgress = activityId => {

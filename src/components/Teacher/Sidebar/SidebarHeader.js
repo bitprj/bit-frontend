@@ -9,8 +9,8 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
 	padding: 2em;
-  flex-shrink: 0;
-  opacity: 0;
+	flex-shrink: 0;
+	opacity: 0;
 
 	background-color: ${props => props.theme.bgVariant};
 	color: ${props => props.theme.offFont};
@@ -24,7 +24,9 @@ const SidebarHeader = ({}) => {
 					Intro to API Development
 				</h3>
 				<ProfPic
-					src={require('../../../assets/icons/prof-pic.png')}
+					src={
+						'http://icon-library.com/images/no-profile-picture-icon/no-profile-picture-icon-15.jpg'
+					}
 					iconSize={'2em'}
 				>
 					Potato

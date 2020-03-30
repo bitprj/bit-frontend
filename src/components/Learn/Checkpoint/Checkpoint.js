@@ -194,11 +194,14 @@ const Checkpoint = ({
 		let message = 'LOADING'
 
 		const calculateGradeStatus = () => {
-			if (!content) return
+			const recent = (() => {
+				if (type === 'Autograder') {
+					return content?.submissions?.[0]
+				}
+				return content
+			})()
 
-			const recent = content.submissions?.[0] ?? content
-
-			if (!recent) {
+			if (recent == null) {
 				status = ''
 				message = 'NO SUBMISSIONS'
 				return
@@ -218,7 +221,7 @@ const Checkpoint = ({
 			 */
 			if (type === 'Autograder') {
 				console.log(recent)
-				const { results } = recent
+				const { results } = recent ?? {}
 				if (results.numPass === 0) {
 					status = 'FATAL'
 					message = 'NOT PASSING'

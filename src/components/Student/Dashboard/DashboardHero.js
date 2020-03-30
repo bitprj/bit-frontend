@@ -1,17 +1,43 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import ProgressCard from './ProgressCard'
+import Suggested from './Suggested'
 import Hero from '../../shared/gadgets/Hero'
+import MuiIconBox from '../../shared/external/MuiIconBox'
+import CheckIcon from '@material-ui/icons/CheckRounded'
 import { setSelectedActivity } from '../../../redux/actions/learnData'
+
+const StyledHero = styled(Hero)`
+	height: 20em;
+`
+
+const PicWrapper = styled.div`
+	margin-bottom: 1em;
+	width: 4.5em;
+	height: 4.5em;
+	position: relative;
+`
+
+const Picture = styled.img`
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+`
+
+const VerifiedWrapper = styled(MuiIconBox)`
+	position: absolute;
+	right: 0;
+	bottom: 0;
+`
 
 const StudentHero = ({
 	id,
 	contentUrl,
 
 	firstName,
+	image,
 	onSetSelectedActivity
 }) => {
 	const history = useHistory()
@@ -22,34 +48,46 @@ const StudentHero = ({
 	}
 
 	return (
-		<Hero
-			title={`Welcome back ${firstName || ''}!`}
+		<StyledHero
+			ratio={8 / 17}
+			leftStyle={{ padding: '0 4em' }}
+			above={
+				image && (
+					<PicWrapper>
+						<Picture src={image} />
+						<VerifiedWrapper circle width="1.5em">
+							<CheckIcon fontSize="inherit" />
+						</VerifiedWrapper>
+					</PicWrapper>
+				)
+			}
+			title={'Hi ' + (firstName ? `${firstName},` : '')}
 			description={
-				'Coding Best Practices are a set of informal rules that the software development community has learned over time which can  help improve the quality of software'
+				'You are on your way to becoming a master of Lorem Ipsum. You are on your way to becoming a master of Lorem Ipsum.'
 			}
-			rightPanel={
-				<ProgressCard
-					image={'brickwall'}
-					id={id}
-					contentUrl={contentUrl}
-					onClickButton={handleResume}
-				/>
-			}
-		/>
+		>
+			<Suggested
+				loading={!firstName}
+				id={id}
+				contentUrl={contentUrl}
+				onClickButton={handleResume}
+			/>
+		</StyledHero>
 	)
 }
 
 const mapStateToProps = state => {
 	const {
-		studentData: { firstName, suggestedActivity }
+		studentData: { firstName, image, suggestedActivity }
 	} = state
 
-	const { id, contentUrl } = suggestedActivity
+	const { id, contentUrl } = suggestedActivity ?? {}
 
 	return {
 		id,
 		contentUrl,
-		firstName
+		firstName,
+		image
 	}
 }
 

@@ -1,11 +1,16 @@
-import { backend } from './AxiosInstances'
+import { backend, backendSaves } from './AxiosInstances'
 
 /**
  * GET request for getting Student data
  */
-export const fetchStudentInfo = () => {
+export const fetchStudentData = () => {
 	const endpoint = '/students/data'
 	return backend.get(endpoint)
+}
+
+export const joinClassroom = classCode => {
+	const endpoint = '/students/classrooms'
+	return backendSaves.put(endpoint, { class_code: classCode })
 }
 
 //@unused
@@ -29,14 +34,5 @@ export const fetchTrackProgress = trackID => {
  */
 export const fetchTopic = topicID => {
 	const endpoint = `topics/${topicID}`
-	return backend.get(endpoint)
-}
-
-/**
- * GET request for getting activity data
- * @param {String} activityID
- */
-export const fetchActivity = activityID => {
-	const endpoint = `activities/${activityID}`
 	return backend.get(endpoint)
 }

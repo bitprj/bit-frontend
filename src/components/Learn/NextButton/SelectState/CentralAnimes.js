@@ -1,8 +1,9 @@
 import anime from 'animejs'
 import {
-	STATE_CARD,
-	STATE_CONCEPT,
+  STATE_NEXT,
+  STATE_FINISH,
 	STATE_CHECKPOINT,
+	STATE_CONCEPT,
 	STATE_HINT
 } from '../NextButton'
 
@@ -58,9 +59,13 @@ export default function CentralAnimes(currentButtonState) {
 
 		case STATE_CONCEPT: {
 			break
-		}
+    }
+    
+    case STATE_FINISH: {
+      break
+    }
 
-		case STATE_CARD: {
+		case STATE_NEXT: {
 			break
 		}
 

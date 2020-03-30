@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import StatusIcon from '../../../shared/gadgets/StatusIcon'
+import StatusIcon from '../../../../shared/gadgets/StatusIcon'
 
 const ActivityCardWrapper = styled.div`
 	margin: 4.5em 2.25em;

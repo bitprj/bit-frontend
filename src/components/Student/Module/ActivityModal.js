@@ -122,7 +122,7 @@ const ActivityModal = ({
 			ratio={0.4}
 		>
 			<StyledButton invert onClick={handleResume}>
-				Continue
+				Start
 			</StyledButton>
 		</PostModal>
 	)

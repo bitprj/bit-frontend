@@ -23,7 +23,7 @@ backend.interceptors.response.use(
 		if (status !== 401) {
 			alert(`${method.toUpperCase()} ${url}
          ${status} (${statusText})
-         ${message}`)
+         ${message || ''}`)
 		} else {
 			if (window.location.pathname !== '/') {
 				window.location.replace('/?authModal=true')

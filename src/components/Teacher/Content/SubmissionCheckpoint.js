@@ -88,10 +88,24 @@ const Checkpoint = ({
 	const selectContent = () => {
 		switch (type) {
 			case 'Image':
-				return <MediaLightbox type={TYPE_IMAGE} src={content} ratio={16 / 9} />
+				return (
+					<MediaLightbox
+						className="strong-lift"
+						type={TYPE_IMAGE}
+						src={content}
+						ratio={16 / 9}
+					/>
+				)
 
 			case 'Video':
-				return <MediaLightbox type={TYPE_VIDEO} src={content} ratio={16 / 9} />
+				return (
+					<MediaLightbox
+						className="strong-lift"
+						type={TYPE_VIDEO}
+						src={content}
+						ratio={16 / 9}
+					/>
+				)
 
 			case 'Autograder':
 				const { submissions } = content

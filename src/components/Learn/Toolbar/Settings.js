@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 
 import SettingsIcon from '@material-ui/icons/Settings'
 
-import DynamicModal from '../../shared/containers/DynamicModal'
-import Icon from '../../shared/gadgets/Icon'
+import QuickAction from '../../shared/containers/QuickAction'
 import Button from '../../shared/gadgets/Button'
 
 import { deleteActivityProgress } from '../../../services/LearnService'
@@ -30,45 +29,24 @@ const StyledButton = styled(Button)`
 `
 
 const Settings = ({ activityId }) => {
-	const [open, setOpen] = useState(false)
-	const [waiting, setWaiting] = useState(false) // waiting for response
-
-	const resetActivity = async () => {
-		try {
-			setWaiting(true)
-			const res = await deleteActivityProgress(activityId)
-			if (res.message === 'Student activity progress successfully deleted.') {
+	const action = () =>
+		deleteActivityProgress(activityId).then(res => {
+			const success = !res.message.includes('Error')
+			if (success) {
 				window.location.replace('/learn/')
 			}
-		} catch (e) {
-			console.log(e)
-		} finally {
-			setWaiting(false)
-		}
-	}
+		})
 
 	return (
-		<>
-			<IconWrapper onClick={() => setOpen(true)}>
+		<QuickAction
+			action={action}
+			title={'Reset Progress'}
+			field={<p>Reset your progress for this activity?</p>}
+		>
+			<IconWrapper>
 				<SettingsIcon fontSize="inherit" htmlColor="#fff" />
 			</IconWrapper>
-			<DynamicModal
-				open={open}
-				closed={() => setOpen(false)}
-				scaleX={0.6}
-				scaleY={0.5}
-			>
-				<Container>
-					<div style={{ textAlign: 'center' }}>
-						<h2>Reset Progress</h2>
-						<p>Reset your progress for this activity?</p>
-						<StyledButton invert disabled={waiting} onClick={resetActivity}>
-							Confirm
-						</StyledButton>
-					</div>
-				</Container>
-			</DynamicModal>
-		</>
+		</QuickAction>
 	)
 }
 

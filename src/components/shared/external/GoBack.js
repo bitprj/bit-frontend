@@ -7,7 +7,7 @@ import BackIcon from '@material-ui/icons/KeyboardArrowLeftRounded'
 import IconLine from '../gadgets/IconLine'
 
 const Container = styled.div`
-  margin-bottom: 0.2em;
+	margin-bottom: 0.2em;
 	width: fit-content;
 	color: ${props => props.theme.offFont};
 	cursor: pointer;
@@ -17,9 +17,9 @@ const Container = styled.div`
 	}
 `
 
-const GoBack = ({ className, history }) => (
+const GoBack = ({ className, text = 'Back', history }) => (
 	<Container className={className} onClick={history.goBack}>
-		<IconLine icon={<BackIcon />}>Go Back</IconLine>
+		<IconLine icon={<BackIcon />}>{text}</IconLine>
 	</Container>
 )
 

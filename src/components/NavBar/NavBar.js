@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import AuthModal from '../Account/AuthModal'
 import Logout from '../Account/Logout'
 import setTheme from '../../redux/actions/theme'
-import { deauthenticate } from '../../redux/actions/account'
 import { orange, palepink } from '../../styles/theme'
 
 import ProfPic from '../shared/gadgets/ProfPic'
@@ -81,13 +80,7 @@ const NavButton = styled(Button)`
 
 const styledLink = { color: 'black', textDecoration: 'none' }
 
-const NavBar = ({
-	firstName,
-	userType,
-	onDeauthenticate,
-	onSetTheme,
-	location
-}) => {
+const NavBar = ({ firstName, image, userType, onSetTheme, location }) => {
 	const authModal = useMemo(() => {
 		const search = new URLSearchParams(location.search)
 		return search.get('authModal')
@@ -163,10 +156,7 @@ const NavBar = ({
 					<AlignRight userType={userType}>
 						<NavElement onClick={() => setLogout(true)}>
 							<div style={{ cursor: 'pointer' }}>
-								<ProfPic
-									src={require('../../assets/icons/prof-pic.png')}
-									iconSize={contentHeight}
-								>
+								<ProfPic src={image} iconSize={contentHeight}>
 									{firstName}
 								</ProfPic>
 							</div>
@@ -193,17 +183,17 @@ const NavBar = ({
 const mapStateToProps = state => {
 	const {
 		account: { userType },
-		studentData: { firstName }
+		studentData: { firstName, image }
 	} = state
 
 	return {
 		firstName,
-		userType
+		userType,
+		image
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
-	onDeauthenticate: () => dispatch(deauthenticate()),
 	onSetTheme: theme => dispatch(setTheme(theme))
 })
 
