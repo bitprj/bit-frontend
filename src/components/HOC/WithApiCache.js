@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
+import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import PCancelable from 'p-cancelable'
@@ -20,11 +21,12 @@ export const CACHE_CHECKPOINTS_PROGRESS = 'cachedCheckpointsProgress'
 
 const initialConfig = {
 	allowFetch: true,
+	fromUrl: false,
 	debug: false
 }
 
 const withApiCache = (cacheTypes, config) => WrappedComponent => {
-	const { allowFetch, debug } = { ...initialConfig, ...config }
+	const { allowFetch, fromUrl, debug } = { ...initialConfig, ...config }
 
 	let isMounted
 	let apiCall
@@ -34,7 +36,14 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 	}
 
 	const _ = ({ wac_cache, wac_onSaveToCache, ...props }) => {
-		const { id } = props
+		const { id: urlId } = useParams()
+
+		const id = (() => {
+			if (fromUrl) {
+				return urlId
+			}
+			return props.id
+		})()
 
 		const initialData = useMemo(
 			() => cacheTypes.map(type => wac_cache[type][id]),
@@ -48,11 +57,6 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 			})
 			return Promise.all(
 				cacheTypes.map(async (type, i) => {
-					// console.log(
-					// 	'am i here',
-					// 	initialData[i],
-					// 	`? I am about to fetch id ${id}`
-					// )
 					if (initialData[i]) return initialData[i]
 
 					const apiData = await autoFetch(id, type)

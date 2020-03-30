@@ -2,13 +2,14 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
+import { compose } from 'redux'
 
 import ActivityList from './ActivityList'
 import PickProject from './PickProject'
 import Hero from '../../shared/gadgets/Hero'
 
 import media from '../../../styles/media'
+import withApiCache, { CACHE_MODULE } from '../../HOC/WithApiCache'
 
 const Content = styled.div`
 	padding-bottom: 6em;
@@ -32,59 +33,19 @@ const StyledHero = styled(Hero)`
 	height: 22.5em;
 `
 
-const Module = ({ modules }) => {
-	const { id: moduleId } = useParams()
-
-	const mod = useRef(null)
-	const [activities, setActivities] = useState(null)
-
-	useEffect(() => {
-		const _ = async () => {
-			if (modules.length) {
-				if (activities === null) {
-					mod.current = modules.find(mod => mod.id == moduleId)
-					setActivities(get(mod.current, 'activities'))
-				}
-				// fetch activites for the module
-				setActivities()
-				// await Promise.all(
-				// 	mod.current.activities.map(async activity => {
-				// 		return { ...activity, ...(await genFetch(activity.contentfulId)) }
-				// 	})
-				// )
-			}
-		}
-		_()
-	}, [modules.length])
-	console.log(activities)
+const Module = ({ wac_data: [mod] }) => {
+	const { name, description, gemsNeeded, activities: activityIds } = mod ?? {}
 
 	return (
 		<>
-			<StyledHero
-				goBack
-				title={get(mod.current, 'name')}
-				// description={get(mod.current, 'description')}
-				description={
-					'Coding Best Practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software'
-				}
-			/>
+			<StyledHero goBack title={name} description={description} />
 
 			<Content>
-				<ActivityList activities={activities} />
+				<ActivityList activityIds={activityIds} />
 				<PickProject />
 			</Content>
 		</>
 	)
 }
 
-const mapStateToProps = state => {
-	const {
-		studentData: { inprogressModules }
-	} = state
-
-	const modules = inprogressModules
-
-	return { modules }
-}
-
-export default connect(mapStateToProps)(Module)
+export default withApiCache([CACHE_MODULE], { fromUrl: true })(Module)

@@ -5,6 +5,7 @@ import ActivityModal from './ActivityModal'
 import ProgressCircle from '../../shared/gadgets/ProgressCircle'
 import MuiIconBox from '../../shared/external/MuiIconBox'
 import media from '../../../styles/media'
+import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 
 const Container = styled.div`
 	flex: 1;
@@ -85,37 +86,46 @@ const Circle = styled(MuiIconBox)`
 	background-color: ${props => props.theme.accent};
 `
 
-const ActivityList = ({ activities }) => {
+const ActivityItem = withApiCache([CACHE_ACTIVITY])(
+	({
+		id,
+		wac_data: [activity],
+
+		setOpenActivity,
+		setSelectedActivity
+	}) => {
+		const { name, description, summary, isProject, image, cards: cardIds } =
+			activity ?? {}
+
+		return (
+			<Activity
+				className="hover-lift transition-short"
+				key={`module-activity-${id}`}
+				onClick={() => {
+					setOpenActivity(true)
+					setSelectedActivity(activity)
+				}}
+			>
+				<ProgressWrapper>
+					<CircleWrapper>
+						<Circle circle width={'1em'} />
+					</CircleWrapper>
+				</ProgressWrapper>
+
+				<ActivityContent>
+					<h3 style={{ margin: 0 }}>{name}</h3>
+					<p style={{ margin: 0 }}>{description}</p>
+				</ActivityContent>
+			</Activity>
+		)
+	}
+)
+
+const ActivityList = ({ activityIds }) => {
 	const themeContext = useContext(ThemeContext)
 
 	const [openActivity, setOpenActivity] = useState(false)
 	const [selectedActivity, setSelectedActivity] = useState(null)
-
-	const activityContentList =
-		activities &&
-		activities.map((activity, index) => {
-			return (
-				<Activity
-					className="hover-lift transition-short"
-					key={`module-${index}`}
-					onClick={() => {
-						setSelectedActivity(activities[index])
-						setOpenActivity(true)
-					}}
-				>
-					<ProgressWrapper>
-						<CircleWrapper>
-							<Circle circle width={'1em'} />
-						</CircleWrapper>
-					</ProgressWrapper>
-
-					<ActivityContent>
-						<h3 style={{ margin: 0 }}>{activity.name}</h3>
-						<p style={{ margin: 0 }}>{activity.description}</p>
-					</ActivityContent>
-				</Activity>
-			)
-		})
 
 	return (
 		<>
@@ -129,7 +139,18 @@ const ActivityList = ({ activities }) => {
 					</ActivityContent>
 				</Title>
 
-				<List>{activityContentList}</List>
+				<List>
+					{activityIds?.map(activity => {
+						return (
+							<ActivityItem
+								key={`module-activityitem-${activity.id}`}
+								id={activity.id}
+								setOpenActivity={setOpenActivity}
+								setSelectedActivity={setSelectedActivity}
+							/>
+						)
+					})}
+				</List>
 			</Container>
 			<ActivityModal
 				open={openActivity}
