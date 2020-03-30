@@ -86,7 +86,7 @@ const Circle = styled(MuiIconBox)`
 	background-color: ${props => props.theme.accent};
 `
 
-const ActivityItem = withApiCache([CACHE_ACTIVITY])(
+const ActivityItem = withApiCache([CACHE_ACTIVITY], { debug: true })(
 	({
 		id,
 		wac_data: [activity],

@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import ProgressHero from './ProgressHero'
-import Journey from './Journey'
-import Details from './Details'
+import ProgressHero from './DashboardHero'
+import Journey from './Journey/Journey'
+import Details from './Journey/Details'
 import { sizes } from '../../../styles/media'
 
 const Container = styled.div`

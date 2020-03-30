@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import PickCard from './PickCard'
+import PickCard from '../PickCard'
 import ActivityCard from './ActivityCard'
 
 const Container = styled.div`

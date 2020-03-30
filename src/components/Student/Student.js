@@ -1,14 +1,14 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import Progress from './Progress/Progress'
+import Dashboard from './Dashboard/Dashboard'
 
 const Student = ({}) => {
 	const { path } = useRouteMatch()
 
 	return (
 		<Switch>
-			<Route path={`${path}/`} component={Progress} />
+			<Route path={`${path}/`} component={Dashboard} />
 		</Switch>
 	)
 }

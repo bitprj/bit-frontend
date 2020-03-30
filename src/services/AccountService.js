@@ -10,25 +10,14 @@ export const login = ({ username, password }) => {
 	return backend.post(endpoint, { username, password })
 }
 
-export const signUp = ({ name, username, password, classCode }) => {
+export const signUp = ({ name, username, password }) => {
 	const endpoint = '/users/Student/create'
-	console.log({
-		name,
-		username,
-		password,
-		class_code: classCode,
-		image: 'uwu.png',
-		location: 'Davis',
-		track_id: 1
-	})
 	return backend.post(endpoint, {
 		name,
 		username,
 		password,
-		class_code: classCode,
 		image: 'uwu.png',
-		location: 'Davis',
-		track_id: 1
+		location: 'Davis'
 	})
 }
 

@@ -22,8 +22,7 @@ const UnconnectedRightPanel = ({ onClose, onAuthenticate }) => {
 	const [userCombo, setUserCombo] = useState({
 		name: null,
 		username: null,
-		password: null,
-		classCode: null
+		password: null
 	})
 	const [isWaiting, setIsWaiting] = useState(false)
 	const [error, setError] = useState(false)
@@ -46,7 +45,6 @@ const UnconnectedRightPanel = ({ onClose, onAuthenticate }) => {
 				userCombo.name === null ||
 				userCombo.username === null ||
 				userCombo.password === null ||
-				userCombo.classCode === null ||
 				userCombo.password !== rePassword ||
 				!validator.isEmail(userCombo.username)
 			) {
@@ -104,15 +102,6 @@ const UnconnectedRightPanel = ({ onClose, onAuthenticate }) => {
 					name="rePassword"
 					type="password"
 					label="Re-enter Password"
-					onChange={changeInput}
-				/>
-			</Field>
-			<Field>
-				<ClassroomIcon style={iconStyle} />
-				<TextField
-					name="classCode"
-					type="text"
-					label="Class Code"
 					onChange={changeInput}
 				/>
 			</Field>
