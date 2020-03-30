@@ -30,6 +30,10 @@ const ColTwo = styled.div`
 	top: 5em;
 `
 
+const StyledButton = styled(Button)`
+	position: absolute;
+`
+
 const Journey = ({ inprogressModules }) => {
 	const colOne =
 		inprogressModules &&
@@ -67,7 +71,7 @@ const Journey = ({ inprogressModules }) => {
 
 	const action = () =>
 		joinClassroom(classCode).then(res => {
-			const success = !res.message.includes('Error')
+			const success = !res.response?.status && !res.message.includes('Error')
 			if (success) {
 				window.location.replace('/')
 			}
@@ -92,7 +96,7 @@ const Journey = ({ inprogressModules }) => {
 				}
 				buttonText="Join"
 			>
-				<Button>Join Classroom</Button>
+				<StyledButton>Join Classroom</StyledButton>
 			</QuickAction>
 
 			<ColOne>

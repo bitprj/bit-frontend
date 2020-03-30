@@ -16,14 +16,14 @@ backend.interceptors.response.use(
 			status,
 			statusText,
 			config: { method, url },
-			data: { message }
+			data: { message, msg }
 		} = error.response
 		console.log(error.response)
 
 		if (status !== 401) {
 			alert(`${method.toUpperCase()} ${url}
          ${status} (${statusText})
-         ${message || ''}`)
+         ${message ?? msg ?? ''}`)
 		} else {
 			if (window.location.pathname !== '/') {
 				window.location.replace('/?authModal=true')
@@ -55,12 +55,25 @@ backendSaves.interceptors.request.use(response => {
 	return response
 })
 backendSaves.interceptors.response.use(
-	response => {
-		pending--
-		return camelCase(response.data, { deep: true })
-	},
+	response => camelCase(response.data, { deep: true }),
 	error => {
-		pending--
+		const {
+			status,
+			statusText,
+			config: { method, url },
+			data: { message, msg }
+		} = error.response
+		console.log(error.response)
+
+		// if (status !== 401) {
+		alert(`${method.toUpperCase()} ${url}
+         ${status} (${statusText})
+         ${message ?? msg ?? ''}`)
+		// } else {
+		// 	if (window.location.pathname !== '/') {
+		// 		window.location.replace('/?authModal=true')
+		// 	}
+		// }
 		return error
 	}
 )
