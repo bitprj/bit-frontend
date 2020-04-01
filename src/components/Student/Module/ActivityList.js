@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
-import ActivityModal from './ActivityModal'
 import MuiIconBox from '../../shared/external/MuiIconBox'
 import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 
@@ -80,33 +79,24 @@ const List = styled.div`
 	grid-row-gap: 1em;
 `
 
-const ActivityList = ({ activityIds }) => {
-	const [openActivity, setOpenActivity] = useState(false)
-	const [selectedActivity, setSelectedActivity] = useState(null)
-
+const ActivityList = ({
+	activityIds,
+	setOpenActivity,
+	setSelectedActivity
+}) => {
 	return (
-		<>
-			<List>
-				{activityIds?.map(activity => {
-					return (
-						<ActivityItem
-							key={`module-activityitem-${activity.id}`}
-							id={activity.id}
-							setOpenActivity={setOpenActivity}
-							setSelectedActivity={setSelectedActivity}
-						/>
-					)
-				})}
-			</List>
-			<ActivityModal
-				open={openActivity}
-				closed={() => setOpenActivity(false)}
-				id={selectedActivity?.id}
-				name={selectedActivity?.name}
-				description={selectedActivity?.description}
-				learningObjectives={selectedActivity?.summary}
-			/>
-		</>
+		<List>
+			{activityIds?.map(activity => {
+				return (
+					<ActivityItem
+						key={`module-activityitem-${activity.id}`}
+						id={activity.id}
+						setOpenActivity={setOpenActivity}
+						setSelectedActivity={setSelectedActivity}
+					/>
+				)
+			})}
+		</List>
 	)
 }
 

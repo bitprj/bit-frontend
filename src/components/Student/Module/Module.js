@@ -1,22 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
+import ActivityModal from './ActivityModal'
 import ActivityList from './ActivityList'
-import PickProject from './PickProject'
+import ChooseProject from './ChooseProject'
 
 import Hero from '../../shared/gadgets/Hero'
 import GoBack from '../../shared/external/GoBack'
 import ProgressCircle from '../../shared/gadgets/ProgressCircle'
 
 import media from '../../../styles/media'
-import withApiCache, { CACHE_MODULE } from '../../HOC/WithApiCache'
+import withApiCache, {
+	CACHE_MODULE,
+	CACHE_MODULE_PROGRESS
+} from '../../HOC/WithApiCache'
 
 const Content = styled.div`
 	padding-bottom: 6em;
 	display: flex;
 	flex-flow: row wrap;
-	align-items: start;
-	font-size: 90%;
+
+  font-size: 90%;
 	margin: 0 6em;
 	position: relative;
 
@@ -94,9 +98,18 @@ const ProgressWrapper = styled.div`
 	flex-shrink: 0;
 `
 
-const Module = ({ wac_data: [modu1e] }) => {
+const Module = ({ wac_data: [modu1e, modu1eProgress] }) => {
 	const { name, description, gemsNeeded, activities: activityIds } =
 		modu1e ?? {}
+	const {
+		incompleteActivities,
+		currentActivities,
+		completedActivities,
+		chosenProject
+	} = modu1eProgress ?? {}
+
+	const [openActivity, setOpenActivity] = useState(false)
+	const [selectedActivity, setSelectedActivity] = useState(null)
 
 	return (
 		<>
@@ -117,12 +130,37 @@ const Module = ({ wac_data: [modu1e] }) => {
 							<h2 style={{ marginLeft: '1em' }}>Activities</h2>
 						</ActivityContent>
 					</Title>
-					<ActivityList activityIds={activityIds} />
+
+					<ActivityList
+						activityIds={activityIds?.filter(a => !a.isProject)}
+						incompleteActivities={incompleteActivities}
+						currentActivities={currentActivities}
+						completedActivities={completedActivities}
+						setOpenActivity={setOpenActivity}
+						setSelectedActivity={setSelectedActivity}
+					/>
 				</Container>
-				<PickProject />
+
+				<ChooseProject
+					activityIds={activityIds?.filter(a => a.isProject)}
+					chosenProject={chosenProject}
+					setOpenActivity={setOpenActivity}
+					setSelectedActivity={setSelectedActivity}
+				/>
+
+				<ActivityModal
+					open={openActivity}
+					closed={() => setOpenActivity(false)}
+					id={selectedActivity?.id}
+					name={selectedActivity?.name}
+					description={selectedActivity?.description}
+					learningObjectives={selectedActivity?.summary}
+				/>
 			</Content>
 		</>
 	)
 }
 
-export default withApiCache([CACHE_MODULE], { fromUrl: true })(Module)
+export default withApiCache([CACHE_MODULE, CACHE_MODULE_PROGRESS], {
+	fromUrl: true
+})(Module)

@@ -4,7 +4,8 @@ import camelCase from 'camelcase-keys-deep'
 /** GENERAL BACKEND (mainly for GET) */
 
 const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
-// const backendBaseURL = 'https://bd34d3c6.ngrok.io/'
+// const backendBaseURL = 'https://bit-backend-auth0.herokuapp.com/'
+
 export const backend = axios.create({
 	baseURL: backendBaseURL,
 	withCredentials: true
@@ -26,7 +27,7 @@ backend.interceptors.response.use(
          ${message ?? msg ?? ''}`)
 		} else {
 			if (window.location.pathname !== '/') {
-				window.location.replace('/?authModal=true')
+				// window.location.replace('/?authModal=true')
 			}
 		}
 		return error

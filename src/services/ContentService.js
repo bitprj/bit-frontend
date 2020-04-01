@@ -1,15 +1,5 @@
 import { backend } from './AxiosInstances'
 
-export const fetchActivity = activityId => {
-	const endpoint = `/activities/${activityId}`
-	return backend.get(endpoint)
-}
-
-export const fetchCard = cardId => {
-	const endpoint = `/cards/${cardId}`
-	return backend.get(endpoint)
-}
-
 export const autoFetch = async (id, cacheType) => {
 	const [type, params] = cacheType
 		.replace('cached', '')

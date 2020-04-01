@@ -15,6 +15,7 @@ export const CACHE_CHECKPOINT = 'cachedCheckpoints'
 export const CACHE_CONCEPT = 'cachedConcepts'
 export const CACHE_HINT = 'cachedHints'
 
+export const CACHE_MODULE_PROGRESS = 'cachedModulesProgress'
 export const CACHE_ACTIVITY_PROGRESS = 'cachedActivitiesProgress'
 export const CACHE_HINT_PROGRESS = 'cachedHintsProgress'
 export const CACHE_CHECKPOINTS_PROGRESS = 'cachedCheckpointsProgress'
@@ -61,7 +62,6 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 
 					const apiData = await autoFetch(id, type)
 					return apiData
-					// return fetchContentUrl(apiData)
 				})
 			)
 		})
@@ -124,6 +124,7 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 	}
 
 	const mapStateToProps = state => {
+    console.log(cacheTypes)
 		return {
 			wac_cache: cacheTypes.reduce((acc, type) => {
 				return { ...acc, [type]: state.cache[type] }

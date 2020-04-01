@@ -68,7 +68,7 @@ const Nbsp = styled.p`
 	}
 `
 
-const FinalProject = props => {
+const FinalProject = ({ activityIds, ...props }) => {
 	const themeContext = useContext(ThemeContext)
 
 	const [listView, setListView] = useState(true)
