@@ -8,9 +8,8 @@ import {
 
 const initialState = {
 	indicators: {},
-	image:
-		'http://icon-library.com/images/no-profile-picture-icon/no-profile-picture-icon-15.jpg',
-	suggestedActivity: {},
+	image: 'https://i.imgur.com/6E6jSMy.png',
+	suggestedActivity: null,
 	inprogressModules: [],
 	inprogressTopics: [],
 	gems: 860

@@ -81,8 +81,6 @@ const mapStateToProps = state => {
 
 	const hintIdsTree = cachedCards[cardId]?.hints ?? []
 
-	console.log(hintIdsTree, cachedCards, cardId, activityId, currentCardIndex)
-
 	const flatHintMetas = hintIdsTree.flatMap(hint => [
 		{ id: hint.id },
 		...hint.hints.map(hint => ({ id: hint.id, contentUrl: hint.contentUrl }))

@@ -106,10 +106,10 @@ const preloadActivityCards = activity => async dispatch => {
 
 // ===== RUNTIME
 
-export const setSelectedActivity = ({ id, contentUrl }) => dispatch => {
+export const setSelectedActivity = selectedActivity => dispatch => {
 	dispatch({
 		type: SET_SELECTED_ACTIVITY,
-		selectedActivity: { id, contentUrl }
+		selectedActivity
 	})
 }
 

@@ -20,12 +20,10 @@ export const init = () => async dispatch => {
 	dispatch(setSelectedActivity(studentData.suggestedActivity))
 }
 
-const setStudentData = studentData => {
-	return {
-		type: SET_STUDENT_DATA,
-		studentData
-	}
-}
+const setStudentData = studentData => ({
+	type: SET_STUDENT_DATA,
+	studentData
+})
 
 // ===== RUNTIME
 
@@ -43,9 +41,7 @@ export const chooseProject = (moduleId, project) => dispatch => {
 	}).then(res => console.log(res.message))
 }
 
-export const incrementGemsBy = gemAmount => {
-	return {
-		type: INCREMENT_GEMS_BY,
-		gemAmount
-	}
-}
+export const incrementGemsBy = gemAmount => ({
+	type: INCREMENT_GEMS_BY,
+	gemAmount
+})
