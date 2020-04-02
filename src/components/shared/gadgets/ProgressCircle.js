@@ -1,43 +1,56 @@
-import React, { useContext } from "react";
-import styled, { ThemeContext } from "styled-components";
+import React, { useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const Load = styled.div`
-  position: absolute;
-  z-index: 99;
-`;
-
+	position: absolute;
+	z-index: 99;
+`
+const Mid = styled.div`
+	position: absolute;
+	z-index: 98;
+`
 const Back = styled.div`
-  position: absolute;
-  z-index: 98;
-`;
+	position: absolute;
+	z-index: 97;
+`
 
-const ProgressCircle = props => {
-  const themeContext = useContext(ThemeContext);
-  return (
-    <>
-      <Load>
-        <CircularProgress
-          variant="static"
-          thickness={5}
-          style={{ color: themeContext.accent }}
-          size={props.size}
-          value={props.value}
-        />
-      </Load>
+const ProgressCircle = ({ size, value, midValue }) => {
+	const themeContext = useContext(ThemeContext)
+	return (
+		<>
+			<Back>
+				<CircularProgress
+					variant="static"
+					thickness={5}
+					style={{ color: themeContext.offFont }}
+					size={size}
+					value={100}
+				/>
+			</Back>
 
-      <Back>
-        <CircularProgress
-          variant="static"
-          thickness={5}
-          style={{ color: themeContext.offFont }}
-          size={props.size}
-          value={100}
-        />
-      </Back>
-    </>
-  );
-};
+			<Mid>
+				<CircularProgress
+					variant="static"
+					thickness={5}
+					style={{ color: themeContext.accentVariant }}
+					size={size}
+					value={midValue}
+				/>
+			</Mid>
 
-export default ProgressCircle;
+			<Load>
+				<CircularProgress
+					variant="static"
+					thickness={5}
+					style={{ color: themeContext.accent }}
+					size={size}
+					value={value}
+				/>
+			</Load>
+		</>
+	)
+}
+
+export default ProgressCircle

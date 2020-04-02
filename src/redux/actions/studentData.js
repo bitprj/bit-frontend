@@ -1,14 +1,10 @@
 import { fetchStudentData } from '../../services/StudentService'
 
-import {
-	SET_STUDENT_DATA,
-	SET_CURRENT_TRACK,
-	SET_CURRENT_TOPIC,
-	SET_SUGGESTED_ACTIVITY,
-	INCREMENT_GEMS_BY
-} from '../actionTypes'
+import { SET_STUDENT_DATA, INCREMENT_GEMS_BY } from '../actionTypes'
 
 import { setSelectedActivity } from './learnData'
+import { saveToCache } from './cache'
+import { CACHE_MODULE_PROGRESS } from '../../components/HOC/WithApiCache'
 
 /* ===== INITIALIZATION */
 
@@ -36,6 +32,16 @@ const setStudentData = studentData => {
 }
 
 // ===== RUNTIME
+
+export const chooseProject = (moduleId, project) => dispatch => {
+	dispatch(
+		saveToCache(
+			CACHE_MODULE_PROGRESS,
+			{ [moduleId]: { chosenProject: project } },
+			{ merge: true }
+		)
+	)
+}
 
 export const incrementGemsBy = gemAmount => {
 	return {

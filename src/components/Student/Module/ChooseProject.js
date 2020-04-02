@@ -61,14 +61,14 @@ const UnconnectedWacProjectBox = ({
 }) => {
 	const {
 		name = 'Contributing to Git',
-		summary = 'Learn how to work collaboratively on coding projects!',
+		description = 'Learn how to work collaboratively on coding projects!',
 		image = 'https://i.imgur.com/MlfXbOo.png'
 	} = activity ?? {}
 
 	return (
 		<ProjectBox
 			title={name}
-			description={summary}
+			description={description}
 			src={image}
 			buttonIcon={<NextIcon fontSize="inherit" />}
 			onClick={() => {
@@ -97,8 +97,9 @@ const Container = styled.div`
 `
 
 const ChooseProject = ({
+	projectIds,
+	moduleId,
 	moduleName,
-	activityIds,
 	chosenProject,
 	setOpenActivity,
 	setSelectedActivity
@@ -127,10 +128,11 @@ const ChooseProject = ({
 			</Container>
 
 			<ProjectModal
+				moduleId={moduleId}
 				moduleName={moduleName}
 				open={openProject}
 				closed={() => setOpenProject(false)}
-				activityIds={activityIds}
+				projectIds={projectIds}
 			/>
 		</>
 	)

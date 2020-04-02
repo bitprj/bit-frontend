@@ -87,6 +87,17 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 			}
 		}, [])
 
+		/**
+		 * Temporary
+		 */
+		useEffect(() => {
+			console.log(wac_cache[cacheTypes[1]]?.[id])
+			if (isMounted && wac_cache[cacheTypes[1]]?.[id] !== undefined) {
+				console.log('changed!')
+				setData(state => [state[0], wac_cache[cacheTypes[1]][id]])
+			}
+		}, [wac_cache[cacheTypes[1]]?.[id]])
+
 		useEffect(() => {
 			if (debug)
 				console.log(
@@ -98,25 +109,30 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 					{ initialData, data }
 				)
 
-			if (allowFetch && id && !isDataReady(initialData)) {
-				;(async () => {
-					console.log('FETCHING:', `cacheTypes=${cacheTypes}`)
-					apiCall = getApiData()
+			if (allowFetch && id) {
+				if (!isDataReady(initialData)) {
+					;(async () => {
+						console.log('FETCHING:', `cacheTypes=${cacheTypes}`)
+						apiCall = getApiData()
 
-					if (isMounted)
-						apiCall.then(data => {
-							if (debug) console.log('SETTING:', `data=`, data)
-							data.forEach((fd, i) => {
-								wac_onSaveToCache(cacheTypes[i], { [id]: fd })
+						if (isMounted)
+							apiCall.then(apiData => {
+								if (debug) console.log('SETTING:', `apiData=`, apiData)
+								apiData.forEach((fd, i) => {
+									wac_onSaveToCache(cacheTypes[i], { [id]: fd })
+								})
+								setData(apiData)
 							})
-							setData(data)
-						})
-				})()
+					})()
+				} else {
+					setData(initialData)
+				}
 			}
 		}, [id])
 
 		return (
 			<WrappedComponent
+				id={id}
 				wac_data={isDataReady(data) ? data : initialData}
 				{...props}
 			/>

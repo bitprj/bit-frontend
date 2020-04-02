@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
+import { connect } from 'react-redux'
 
 import DynamicModal from '../../shared/containers/DynamicModal'
 import TwoPanel from '../../shared/containers/TwoPanel'
@@ -8,6 +9,7 @@ import Button from '../../shared/gadgets/Button'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
 import { sizes } from '../../../styles/media'
 
+import { chooseProject } from '../../../redux/actions/studentData'
 import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 
 const UnconnectedWacProject = ({
@@ -16,7 +18,6 @@ const UnconnectedWacProject = ({
 	setSelectedProject
 }) => {
 	const { image, name, summary, time } = project ?? {}
-	console.log(project)
 
 	return (
 		<ImgAndContent
@@ -35,9 +36,7 @@ const UnconnectedWacProject = ({
 	)
 }
 
-const WacProject = withApiCache([CACHE_ACTIVITY], { debug: true })(
-	UnconnectedWacProject
-)
+const WacProject = withApiCache([CACHE_ACTIVITY])(UnconnectedWacProject)
 
 const StyledTwoPanel = styled(TwoPanel)`
 	font-size: 80%;
@@ -90,18 +89,18 @@ const Nbsp = styled.p`
 	}
 `
 
-const FinalProject = ({ moduleName, activityIds, open, closed }) => {
+const FinalProject = ({
+	moduleId,
+	moduleName,
+	projectIds,
+	open,
+	closed,
+	onChooseProject
+}) => {
 	const themeContext = useContext(ThemeContext)
 
 	const [listView, setListView] = useState(true)
 	const [selectedProject, setSelectedProject] = useState(null)
-
-	const handleClosed = () => {
-		closed()
-		setTimeout(() => {
-			setListView(true)
-		}, 69)
-	}
 
 	/**
 	 * LIST VIEW
@@ -117,8 +116,7 @@ const FinalProject = ({ moduleName, activityIds, open, closed }) => {
 	)
 	const projects = (
 		<div style={{ padding: '1em', fontSize: '80%' }}>
-			{activityIds.map((project, index) => {
-				console.log(project.id)
+			{projectIds?.map((project, index) => {
 				return (
 					<WacProject
 						key={`learn-project-${index}`}
@@ -146,7 +144,14 @@ const FinalProject = ({ moduleName, activityIds, open, closed }) => {
 			)}
 			<span style={{ fontWeight: 'bold' }}>{selectedProject?.time}</span>
 			<div style={{ flexGrow: '1', display: 'flex', alignItems: 'flex-end' }}>
-				<Button invert fullWidth>
+				<Button
+					invert
+					fullWidth
+					onClick={() => {
+						onChooseProject(moduleId, selectedProject)
+						closed()
+					}}
+				>
 					Choose Project
 				</Button>
 			</div>
@@ -158,10 +163,15 @@ const FinalProject = ({ moduleName, activityIds, open, closed }) => {
 	const rightPanel = listView ? projects : fullPic
 
 	return (
-		<DynamicModal open={open} closed={handleClosed} ratio={0.43}>
+		<DynamicModal open={open} closed={closed} ratio={0.43}>
 			<StyledTwoPanel fullSizeAxis first={leftPanel} second={rightPanel} />
 		</DynamicModal>
 	)
 }
 
-export default FinalProject
+const mapDispatchToProps = dispatch => ({
+	onChooseProject: (moduleId, project) =>
+		dispatch(chooseProject(moduleId, project))
+})
+
+export default connect(null, mapDispatchToProps)(FinalProject)

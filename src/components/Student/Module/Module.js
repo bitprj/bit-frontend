@@ -98,18 +98,44 @@ const ProgressWrapper = styled.div`
 	flex-shrink: 0;
 `
 
-const Module = ({ wac_data: [modu1e, modu1eProgress] }) => {
+const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 	const { name, description, gemsNeeded, activities: activityIds } =
 		modu1e ?? {}
 	const {
 		incompleteActivities,
-		currentActivities,
+		inprogressActivities,
 		completedActivities,
 		chosenProject
 	} = modu1eProgress ?? {}
 
 	const [openActivity, setOpenActivity] = useState(false)
 	const [selectedActivity, setSelectedActivity] = useState(null)
+
+	const trueActivityIds = activityIds?.filter(a => !a.isProject)
+	const projectIds = activityIds?.filter(a => a.isProject)
+
+	/**
+	 * n^2 time
+	 */
+	const hasId = (id, activities) => activities?.find(a => id === a.id)
+	const trueActivityIdsWithProgress = trueActivityIds?.map(activity => {
+		const id = activity.id
+
+		if (hasId(id, completedActivities)) {
+			return { ...activity, status: 'completed' }
+		}
+		if (hasId(id, inprogressActivities)) {
+			return { ...activity, status: 'inprogress' }
+		}
+		return { ...activity, status: 'incomplete' }
+	})
+
+	const calculateProgressPercent = statusType =>
+		(trueActivityIdsWithProgress?.reduce((acc, activity) => {
+			if (activity.status === statusType) return acc + 1
+		}, 0) /
+			trueActivityIdsWithProgress?.length) *
+		100
 
 	return (
 		<>
@@ -124,7 +150,11 @@ const Module = ({ wac_data: [modu1e, modu1eProgress] }) => {
 				<Container>
 					<Title>
 						<ProgressWrapper>
-							<ProgressCircle size={'4em'} value={60} />
+							<ProgressCircle
+								size={'4em'}
+								midValue={calculateProgressPercent('inprogress') || 0}
+								value={calculateProgressPercent('completed') || 0}
+							/>
 						</ProgressWrapper>
 						<ActivityContent>
 							<h2 style={{ marginLeft: '1em' }}>Activities</h2>
@@ -132,23 +162,16 @@ const Module = ({ wac_data: [modu1e, modu1eProgress] }) => {
 					</Title>
 
 					<ActivityList
-						activityIds={activityIds?.filter(a => !a.isProject)}
-						incompleteActivities={incompleteActivities}
-						currentActivities={currentActivities}
-						completedActivities={completedActivities}
+						activityIds={trueActivityIdsWithProgress}
 						setOpenActivity={setOpenActivity}
 						setSelectedActivity={setSelectedActivity}
 					/>
 				</Container>
 
 				<ChooseProject
-					// activityIds={activityIds?.filter(a => a.isProject)}
+					projectIds={projectIds}
+					moduleId={id}
 					moduleName={name}
-					activityIds={[
-						{
-							id: 90
-						}
-					]}
 					chosenProject={chosenProject}
 					setOpenActivity={setOpenActivity}
 					setSelectedActivity={setSelectedActivity}
