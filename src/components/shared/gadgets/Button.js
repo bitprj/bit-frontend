@@ -86,10 +86,7 @@ const Button = props => {
 			disabled={props.disabled}
 			rounder={props.rounder}
 			noOutline={props.noOutline}
-			onClick={() => {
-				if (props.onClick) props.onClick()
-				else if (props.clicked) props.clicked()
-			}}
+			onClick={props.onClick}
 		>
 			{props.children}
 		</RenderedButton>

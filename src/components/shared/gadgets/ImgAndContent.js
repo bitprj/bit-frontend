@@ -46,7 +46,6 @@ const ImgAndContent = forwardRef(
 	(
 		{
 			className,
-			clicked,
 			onClick,
 			style,
 
@@ -81,7 +80,7 @@ const ImgAndContent = forwardRef(
 				className={`${className || ''} ${hover ? 'hover-lift' : ''} ${
 					strongHover ? 'hover-strong-lift' : ''
 				}`}
-				onClick={clicked || onClick}
+				onClick={onClick}
 			>
 				{showAppropriateImg}
 

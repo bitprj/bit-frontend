@@ -124,7 +124,6 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 	}
 
 	const mapStateToProps = state => {
-    console.log(cacheTypes)
 		return {
 			wac_cache: cacheTypes.reduce((acc, type) => {
 				return { ...acc, [type]: state.cache[type] }

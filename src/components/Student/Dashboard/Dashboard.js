@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
 
 import ProgressHero from './DashboardHero'
 import Journey from './Journey/unused/Journey'
@@ -15,7 +14,7 @@ const Container = styled.div`
 	}
 `
 
-const Progress = ({ firstName, suggestedActivity }) => {
+const Progress = ({}) => {
 	return (
 		<>
 			<ProgressHero />
@@ -24,15 +23,4 @@ const Progress = ({ firstName, suggestedActivity }) => {
 	)
 }
 
-const mapStateToProps = state => {
-	const {
-		studentData: { firstName, suggestedActivity }
-	} = state
-
-	return {
-		firstName,
-		suggestedActivity
-	}
-}
-
-export default connect(mapStateToProps)(Progress)
+export default Progress
