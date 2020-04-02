@@ -1,8 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 
 import MuiIconBox from '../../shared/external/MuiIconBox'
 import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
+
+import DotIcon from '@material-ui/icons/FiberManualRecord'
+import DoneIcon from '@material-ui/icons/Done'
 
 const Activity = styled.div`
 	padding: 1.5em 0;
@@ -23,18 +26,13 @@ const ProgressWrapper = styled.div`
 	width: 5em;
 	flex-shrink: 0;
 `
-const CircleWrapper = styled.div`
+
+const StatusWrapper = styled(MuiIconBox)`
+	padding: 0.8em;
 	background-color: #fff;
-	width: 3em;
-	height: 3em;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	font-size: 50%;
 `
 
-const Circle = styled(MuiIconBox)`
-	background-color: ${props => props.theme.accent};
-`
 const ActivityContent = styled.div`
 	flex: 7;
 `
@@ -44,11 +42,32 @@ const ActivityItem = withApiCache([CACHE_ACTIVITY])(
 		id,
 		wac_data: [activity],
 
+		status,
 		setOpenActivity,
 		setSelectedActivity
 	}) => {
+		const themeContext = useContext(ThemeContext)
+
 		const { name, description, summary, isProject, image, cards: cardIds } =
 			activity ?? {}
+
+		const showStatusIcon = () => {
+			switch (status) {
+				case 'completed':
+					return <DoneIcon htmlColor={themeContext.accent} fontSize="inherit" />
+				case 'inprogress':
+					return (
+						<DotIcon
+							htmlColor={themeContext.accentVariant}
+							fontSize="inherit"
+						/>
+					)
+				case 'incomplete':
+					return <DotIcon htmlColor="#ebebeb" fontSize="inherit" />
+				default:
+					break
+			}
+		}
 
 		return (
 			<Activity
@@ -60,9 +79,7 @@ const ActivityItem = withApiCache([CACHE_ACTIVITY])(
 				}}
 			>
 				<ProgressWrapper>
-					<CircleWrapper>
-						<Circle circle width={'1em'} />
-					</CircleWrapper>
+					<StatusWrapper width="4em">{showStatusIcon()}</StatusWrapper>
 				</ProgressWrapper>
 
 				<ActivityContent>
@@ -87,10 +104,12 @@ const ActivityList = ({
 	return (
 		<List>
 			{activityIds?.map(activity => {
+				const { id, status } = activity
 				return (
 					<ActivityItem
-						key={`module-activityitem-${activity.id}`}
-						id={activity.id}
+						key={`module-activityitem-${id}`}
+						id={id}
+						status={status}
 						setOpenActivity={setOpenActivity}
 						setSelectedActivity={setSelectedActivity}
 					/>

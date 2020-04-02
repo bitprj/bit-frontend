@@ -6,7 +6,7 @@ export const checkLogin = () => {
 }
 
 export const login = ({ username, password }) => {
-	const endpoint = 'user/login'
+	const endpoint = 'auth'
 	return backend.post(endpoint, { username, password })
 }
 
@@ -22,6 +22,6 @@ export const signUp = ({ name, username, password }) => {
 }
 
 export const logout = () => {
-	const endpoint = 'user/logout'
+	const endpoint = 'auth'
 	return backend.delete(endpoint)
 }
