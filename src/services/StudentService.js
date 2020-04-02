@@ -8,10 +8,19 @@ export const fetchStudentData = () => {
 	return backend.get(endpoint)
 }
 
+/** ===== RUNTIME */
+
 export const joinClassroom = classCode => {
 	const endpoint = '/students/classrooms'
 	return backendSaves.put(endpoint, { class_code: classCode })
 }
+
+export const updateModuleProgress = (id, updates) => {
+	const endpoint = `/modules/${id}/progress`
+	return backendSaves.put(endpoint, updates)
+}
+
+//
 
 //@unused
 /**

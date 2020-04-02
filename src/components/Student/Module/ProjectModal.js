@@ -12,31 +12,27 @@ import { sizes } from '../../../styles/media'
 import { chooseProject } from '../../../redux/actions/studentData'
 import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 
-const UnconnectedWacProject = ({
-	wac_data: [project],
-	setListView,
-	setSelectedProject
-}) => {
-	const { image, name, summary, time } = project ?? {}
+const WacProject = withApiCache([CACHE_ACTIVITY])(
+	({ wac_data: [project], setListView, setSelectedProject }) => {
+		const { image, name, summary, time } = project ?? {}
 
-	return (
-		<ImgAndContent
-			imgWidthEms="7"
-			imgURL={image}
-			title={name}
-			description={summary}
-			time={time}
-			hover
-			shadow
-			onClick={() => {
-				setListView(false)
-				setSelectedProject(project)
-			}}
-		/>
-	)
-}
-
-const WacProject = withApiCache([CACHE_ACTIVITY])(UnconnectedWacProject)
+		return (
+			<ImgAndContent
+				imgWidthEms="7"
+				imgURL={image}
+				title={name}
+				description={summary}
+				time={time}
+				hover
+				shadow
+				onClick={() => {
+					setListView(false)
+					setSelectedProject(project)
+				}}
+			/>
+		)
+	}
+)
 
 const StyledTwoPanel = styled(TwoPanel)`
 	font-size: 80%;

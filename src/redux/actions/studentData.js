@@ -1,7 +1,9 @@
-import { fetchStudentData } from '../../services/StudentService'
-
 import { SET_STUDENT_DATA, INCREMENT_GEMS_BY } from '../actionTypes'
 
+import {
+	fetchStudentData,
+	updateModuleProgress
+} from '../../services/StudentService'
 import { setSelectedActivity } from './learnData'
 import { saveToCache } from './cache'
 import { CACHE_MODULE_PROGRESS } from '../../components/HOC/WithApiCache'
@@ -15,13 +17,7 @@ export const init = () => async dispatch => {
 	dispatch(setStudentData({ ...studentData, firstName }))
 
 	// external
-	dispatch(
-		setSelectedActivity({
-			id: 65,
-			contentUrl:
-				'https://d36nt3c422j20i.cloudfront.net/Topic1_Mongo/Module_DB/Lab3_Minesweeper/Minesweeper.json'
-		})
-	)
+	dispatch(setSelectedActivity(studentData.suggestedActivity))
 }
 
 const setStudentData = studentData => {
@@ -41,6 +37,10 @@ export const chooseProject = (moduleId, project) => dispatch => {
 			{ merge: true }
 		)
 	)
+
+	updateModuleProgress(moduleId, {
+		chosen_project_id: project.id
+	}).then(res => console.log(res.message))
 }
 
 export const incrementGemsBy = gemAmount => {

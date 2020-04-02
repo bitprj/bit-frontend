@@ -62,6 +62,31 @@ const StyledButton = styled(Button)`
 	border-radius: 0;
 `
 
+const ProgressButton = ({ status, locked, handleResume }) => {
+	const showButtonText = () => {
+		if (locked) return 'Locked'
+		switch (status) {
+			case 'completed':
+				return 'Completed'
+			case 'inprogress':
+				return 'Resume'
+			case 'incomplete':
+				return 'Start'
+		}
+	}
+
+	return (
+		<StyledButton
+			invert
+			disabled={locked}
+			completed={status === 'completed'}
+			onClick={handleResume}
+		>
+			{showButtonText()}
+		</StyledButton>
+	)
+}
+
 const ActivityModal = ({
 	open,
 	closed,
@@ -69,7 +94,8 @@ const ActivityModal = ({
 	contentUrl,
 	name,
 	description,
-	learningObjectives = `Coding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software.\n\nCoding best practices are a set of informal rules that the software development community has learned over time which can help improve the quality of software.`,
+	learningObjectives,
+	status,
 	onSetSelectedActivity
 }) => {
 	const history = useHistory()
@@ -121,9 +147,7 @@ const ActivityModal = ({
 			content={content}
 			ratio={0.4}
 		>
-			<StyledButton invert onClick={handleResume}>
-				Start
-			</StyledButton>
+			<ProgressButton status={status} handleResume={handleResume} />
 		</PostModal>
 	)
 }

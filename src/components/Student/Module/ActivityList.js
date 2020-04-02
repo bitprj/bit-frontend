@@ -2,7 +2,10 @@ import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 
 import MuiIconBox from '../../shared/external/MuiIconBox'
-import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
+import withApiCache, {
+	CACHE_ACTIVITY,
+	CACHE_ACTIVITY_PROGRESS
+} from '../../HOC/WithApiCache'
 
 import DotIcon from '@material-ui/icons/FiberManualRecord'
 import DoneIcon from '@material-ui/icons/Done'
@@ -75,7 +78,10 @@ const ActivityItem = withApiCache([CACHE_ACTIVITY])(
 				key={`module-activity-${id}`}
 				onClick={() => {
 					setOpenActivity(true)
-					setSelectedActivity(activity)
+					setSelectedActivity({
+						...activity,
+						status
+					})
 				}}
 			>
 				<ProgressWrapper>

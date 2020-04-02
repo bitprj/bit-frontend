@@ -7,7 +7,10 @@ import NextIcon from '@material-ui/icons/NavigateNextRounded'
 import ProjectModal from './ProjectModal'
 import MuiIconBox from '../../shared/external/MuiIconBox'
 
-import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
+import withApiCache, {
+	CACHE_ACTIVITY,
+	CACHE_ACTIVITY_PROGRESS
+} from '../../HOC/WithApiCache'
 
 const Project = styled.div`
 	flex: 1;
@@ -46,40 +49,37 @@ const ProjectBox = ({ title, description, src, buttonIcon, onClick }) => {
 	return (
 		<Project onClick={onClick}>
 			<h2>{title}</h2>
-			<p style={{ padding: '0 5em' }}>{description}</p>
+			<p style={{ padding: '0 2.5em' }}>{description}</p>
 			<ButtonContainer width="2.5em">{buttonIcon}</ButtonContainer>
 			<Img src={src} />
 		</Project>
 	)
 }
 
-const UnconnectedWacProjectBox = ({
-	wac_data: [activity],
+const WacProjectBox = withApiCache([CACHE_ACTIVITY])(
+	({
+		wac_data: [activity],
 
-	setOpenActivity,
-	setSelectedActivity
-}) => {
-	const {
-		name = 'Contributing to Git',
-		description = 'Learn how to work collaboratively on coding projects!',
-		image = 'https://i.imgur.com/MlfXbOo.png'
-	} = activity ?? {}
+		status,
+		setOpenActivity,
+		setSelectedActivity
+	}) => {
+		const { name, description, image } = activity ?? {}
 
-	return (
-		<ProjectBox
-			title={name}
-			description={description}
-			src={image}
-			buttonIcon={<NextIcon fontSize="inherit" />}
-			onClick={() => {
-				setOpenActivity(true)
-				setSelectedActivity(activity)
-			}}
-		/>
-	)
-}
-
-const WacProjectBox = withApiCache([CACHE_ACTIVITY])(UnconnectedWacProjectBox)
+		return (
+			<ProjectBox
+				title={name}
+				description={description}
+				src={image}
+				buttonIcon={<NextIcon fontSize="inherit" />}
+				onClick={() => {
+					setOpenActivity(true)
+					setSelectedActivity({ ...activity, status })
+				}}
+			/>
+		)
+	}
+)
 
 const Container = styled.div`
 	flex: 1;
@@ -106,12 +106,20 @@ const ChooseProject = ({
 }) => {
 	const [openProject, setOpenProject] = useState(false)
 
+	const chosenProjectWithProgress = projectIds?.find(
+		p => p.id === chosenProject?.id
+	)
+
 	return (
 		<>
 			<Container>
 				<ProjectBox
 					title="Pick a Project"
-					description="Choose a Project to apply what you have learned!"
+					description={
+						<>
+							Choose a Project to apply <br /> what you have learned!
+						</>
+					}
 					src="https://i.imgur.com/u7s49uD.png"
 					buttonIcon={<AddIcon fontSize="inherit" />}
 					onClick={() => setOpenProject(true)}
@@ -120,6 +128,7 @@ const ChooseProject = ({
 				{chosenProject && (
 					<WacProjectBox
 						id={chosenProject?.id}
+						status={chosenProjectWithProgress?.status}
 						onClick={() => setOpenActivity()}
 						setOpenActivity={setOpenActivity}
 						setSelectedActivity={setSelectedActivity}

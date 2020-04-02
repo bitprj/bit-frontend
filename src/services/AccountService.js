@@ -22,6 +22,6 @@ export const signUp = ({ name, username, password }) => {
 }
 
 export const logout = () => {
-	const endpoint = 'auth'
+	const endpoint = '/user/logout'
 	return backend.delete(endpoint)
 }

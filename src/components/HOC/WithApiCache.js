@@ -53,9 +53,7 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 
 		const getApiData = PCancelable.fn(onCancel => {
 			onCancel.shouldReject = false
-			onCancel(() => {
-				console.log('REJECTED:', cacheTypes, apiCall)
-			})
+			onCancel(() => console.log('REJECTED:', cacheTypes, apiCall))
 			return Promise.all(
 				cacheTypes.map(async (type, i) => {
 					if (initialData[i]) return initialData[i]
@@ -91,7 +89,6 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 		 * Temporary
 		 */
 		useEffect(() => {
-			console.log(wac_cache[cacheTypes[1]]?.[id])
 			if (isMounted && wac_cache[cacheTypes[1]]?.[id] !== undefined) {
 				console.log('changed!')
 				setData(state => [state[0], wac_cache[cacheTypes[1]][id]])
@@ -115,14 +112,15 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 						console.log('FETCHING:', `cacheTypes=${cacheTypes}`)
 						apiCall = getApiData()
 
-						if (isMounted)
-							apiCall.then(apiData => {
-								if (debug) console.log('SETTING:', `apiData=`, apiData)
-								apiData.forEach((fd, i) => {
-									wac_onSaveToCache(cacheTypes[i], { [id]: fd })
-								})
-								setData(apiData)
+						apiCall.then(apiData => {
+							if (debug) console.log('SETTING:', `apiData=`, apiData)
+							apiData.forEach((fd, i) => {
+								wac_onSaveToCache(cacheTypes[i], { [id]: fd })
 							})
+							if (isMounted) {
+								setData(apiData)
+							}
+						})
 					})()
 				} else {
 					setData(initialData)

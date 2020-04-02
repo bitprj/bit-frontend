@@ -111,14 +111,11 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 	const [openActivity, setOpenActivity] = useState(false)
 	const [selectedActivity, setSelectedActivity] = useState(null)
 
-	const trueActivityIds = activityIds?.filter(a => !a.isProject)
-	const projectIds = activityIds?.filter(a => a.isProject)
-
 	/**
 	 * n^2 time
 	 */
 	const hasId = (id, activities) => activities?.find(a => id === a.id)
-	const trueActivityIdsWithProgress = trueActivityIds?.map(activity => {
+	const activityIdsWithProgress = activityIds?.map(activity => {
 		const id = activity.id
 
 		if (hasId(id, completedActivities)) {
@@ -129,6 +126,13 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 		}
 		return { ...activity, status: 'incomplete' }
 	})
+
+	const projectIdsWithProgress = activityIdsWithProgress?.filter(
+		a => a.isProject
+	)
+	const trueActivityIdsWithProgress = activityIdsWithProgress?.filter(
+		a => !a.isProject
+	)
 
 	const calculateProgressPercent = statusType =>
 		(trueActivityIdsWithProgress?.reduce((acc, activity) => {
@@ -169,7 +173,7 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 				</Container>
 
 				<ChooseProject
-					projectIds={projectIds}
+					projectIds={projectIdsWithProgress}
 					moduleId={id}
 					moduleName={name}
 					chosenProject={chosenProject}
@@ -184,6 +188,7 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 					name={selectedActivity?.name}
 					description={selectedActivity?.description}
 					learningObjectives={selectedActivity?.summary}
+					status={selectedActivity?.status}
 				/>
 			</Content>
 		</>
