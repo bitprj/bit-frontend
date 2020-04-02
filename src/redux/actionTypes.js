@@ -5,9 +5,8 @@ export const AUTHENTICATE = 'AUTHENTICATE'
 export const DEAUTHENTICATE = 'DEAUTHENTICATE'
 
 /**
- * ram
+ * cache
  */
-export const SET_SELECTED_ACTIVITY_ID = 'SET_SELECTED_ACTIVITY_ID'
 export const SAVE_TO_CACHE = 'SAVE_TO_CACHE'
 
 /**

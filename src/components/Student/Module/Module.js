@@ -66,7 +66,7 @@ const Container = styled.div`
 		height: 55%;
 		position: absolute;
 		left: 4.4em;
-		top: 50%;
+		top: 55%;
 		transform: translateY(-50%);
 		background-color: #ebebeb;
 		z-index: -1;

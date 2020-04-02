@@ -12,7 +12,7 @@ const Container = styled.div`
 `
 
 const UnlockedHintSection = ({
-	hintMetasTree,
+	hintIdsTree,
 	scopedCachedHintsProgress,
 	lastHintUnlockedId
 }) => {
@@ -61,7 +61,7 @@ const UnlockedHintSection = ({
 	}
 
 	const renderedUnlockedHints = useMemo(
-		() => renderedUnlockedHintsRecursive(hintMetasTree),
+		() => renderedUnlockedHintsRecursive(hintIdsTree),
 		[scopedCachedHintsProgress]
 	)
 
@@ -79,9 +79,11 @@ const mapStateToProps = state => {
 
 	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
 
-	const hintMetasTree = cachedCards[cardId]?.hints
+	const hintIdsTree = cachedCards[cardId]?.hints ?? []
 
-	const flatHintMetas = hintMetasTree.flatMap(hint => [
+	console.log(hintIdsTree, cachedCards, cardId, activityId, currentCardIndex)
+
+	const flatHintMetas = hintIdsTree.flatMap(hint => [
 		{ id: hint.id },
 		...hint.hints.map(hint => ({ id: hint.id, contentUrl: hint.contentUrl }))
 	])
@@ -93,7 +95,7 @@ const mapStateToProps = state => {
 	)
 
 	return {
-		hintMetasTree,
+		hintIdsTree,
 		lastHintUnlockedId,
 		scopedCachedHintsProgress
 	}

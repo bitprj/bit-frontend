@@ -25,6 +25,7 @@ const WithAuthentication = ({
 				}
 			} catch (error) {
 				if (!isVisitor) onDeauthenticate()
+				console.log('[WithAuthentication] deauthenticated')
 				// history.push('/') axios instance does it
 			}
 		}

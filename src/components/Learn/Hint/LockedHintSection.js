@@ -52,7 +52,7 @@ const AnimatingIconLine = styled(IconLine)`
 const LockedHintSection = ({
 	isReady,
 	activityId,
-	hintMetasTree
+	hintIdsTree
 	// scopedCachedHintsProgress
 }) => {
 	let isAllUnlocked = true
@@ -80,7 +80,7 @@ const LockedHintSection = ({
 	// }
 
 	// const renderedLockedHints = useMemo(
-	// 	() => renderedLockedHintsRecursive(hintMetasTree),
+	// 	() => renderedLockedHintsRecursive(hintIdsTree),
 	// 	[scopedCachedHintsProgress]
 	// )
 
@@ -90,13 +90,13 @@ const LockedHintSection = ({
 				<>
 					<LockedHintsContainer>
 						<StyledScrollable>
-							{/* {hintMetasTree.map(hint => {
+							{/* {hintIdsTree.map(hint => {
 								const { id, contentUrl, hints } = hint
 								return ( */}
 							<LockedHint
 								// key={`learn-hints-locked-${id}`}
 								activityId={activityId}
-								hints={hintMetasTree}
+								hints={hintIdsTree}
 								// id={id}
 								// contentUrl={contentUrl}
 								// hints={hints}
@@ -144,14 +144,14 @@ const mapStateToProps = state => {
 
 	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
 
-	const hintMetasTree = cachedCards[cardId]?.hints
+	const hintIdsTree = cachedCards[cardId]?.hints ?? []
 
-	const isReady = cachedHintsProgress[hintMetasTree[0]?.id]?.isUnlocked
+	const isReady = cachedHintsProgress[hintIdsTree[0]?.id]?.isUnlocked
 
 	return {
 		isReady,
 		activityId,
-		hintMetasTree
+		hintIdsTree
 	}
 }
 

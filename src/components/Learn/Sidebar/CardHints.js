@@ -122,7 +122,7 @@ const mapStateToProps = state => {
 
 	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
 
-	const hintIdsTree = cachedCards[cardId]?.hints
+	const hintIdsTree = cachedCards[cardId]?.hints ?? []
 
 	const flatHintIds = hintIdsTree.flatMap(hint => [
 		{ id: hint.id },
