@@ -97,6 +97,7 @@ const Container = styled.div`
 `
 
 const ChooseProject = ({
+	moduleName,
 	activityIds,
 	chosenProject,
 	setOpenActivity,
@@ -126,6 +127,7 @@ const ChooseProject = ({
 			</Container>
 
 			<ProjectModal
+				moduleName={moduleName}
 				open={openProject}
 				closed={() => setOpenProject(false)}
 				activityIds={activityIds}

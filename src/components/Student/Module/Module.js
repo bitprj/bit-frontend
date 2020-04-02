@@ -20,7 +20,7 @@ const Content = styled.div`
 	display: flex;
 	flex-flow: row wrap;
 
-  font-size: 90%;
+	font-size: 90%;
 	margin: 0 6em;
 	position: relative;
 
@@ -142,7 +142,13 @@ const Module = ({ wac_data: [modu1e, modu1eProgress] }) => {
 				</Container>
 
 				<ChooseProject
-					activityIds={activityIds?.filter(a => a.isProject)}
+					// activityIds={activityIds?.filter(a => a.isProject)}
+					moduleName={name}
+					activityIds={[
+						{
+							id: 90
+						}
+					]}
 					chosenProject={chosenProject}
 					setOpenActivity={setOpenActivity}
 					setSelectedActivity={setSelectedActivity}

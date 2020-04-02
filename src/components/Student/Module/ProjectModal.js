@@ -3,19 +3,41 @@ import styled, { ThemeContext } from 'styled-components'
 
 import DynamicModal from '../../shared/containers/DynamicModal'
 import TwoPanel from '../../shared/containers/TwoPanel'
-import { sizes } from '../../../styles/media'
-
-import Project from './Project'
-
 import DotRating from '../../shared/gadgets/DotRating'
 import Button from '../../shared/gadgets/Button'
+import ImgAndContent from '../../shared/gadgets/ImgAndContent'
+import { sizes } from '../../../styles/media'
 
-// const Sparkles2 = styled.div
-//   box-shadow: 0 0 7px 7px #f2f2f2;
-//   border-radius: 1em;
-//   line-height: 0.8em;
-//   padding: 0.5em 0.7em;
-// `;
+import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
+
+const UnconnectedWacProject = ({
+	wac_data: [project],
+	setListView,
+	setSelectedProject
+}) => {
+	const { image, name, summary, time } = project ?? {}
+	console.log(project)
+
+	return (
+		<ImgAndContent
+			imgWidthEms="7"
+			imgURL={image}
+			title={name}
+			description={summary}
+			time={time}
+			hover
+			shadow
+			onClick={() => {
+				setListView(false)
+				setSelectedProject(project)
+			}}
+		/>
+	)
+}
+
+const WacProject = withApiCache([CACHE_ACTIVITY], { debug: true })(
+	UnconnectedWacProject
+)
 
 const StyledTwoPanel = styled(TwoPanel)`
 	font-size: 80%;
@@ -68,13 +90,14 @@ const Nbsp = styled.p`
 	}
 `
 
-const FinalProject = ({ activityIds, ...props }) => {
+const FinalProject = ({ moduleName, activityIds, open, closed }) => {
 	const themeContext = useContext(ThemeContext)
 
 	const [listView, setListView] = useState(true)
+	const [selectedProject, setSelectedProject] = useState(null)
 
 	const handleClosed = () => {
-		props.closed()
+		closed()
 		setTimeout(() => {
 			setListView(true)
 		}, 69)
@@ -88,25 +111,20 @@ const FinalProject = ({ activityIds, ...props }) => {
 			<Nbsp>&nbsp;</Nbsp>
 			<h2 style={{ marginBottom: 0 }}>Choose a Project</h2>
 			<p>
-				Choose a Project to practice your newfound knowledge in Programming
-				Principles, GitHub, Command Lines, and other things.
+				Choose a Project to practice your newfound knowledge in {moduleName}.
 			</p>
-			{/* <Sparkles2>
-      ✨<span style={{ fontSize: "125%" }}>33</span>/110
-      </Sparkles2> */}
 		</>
 	)
 	const projects = (
 		<div style={{ padding: '1em', fontSize: '80%' }}>
-			{[...Array(4)].map((project, index) => {
+			{activityIds.map((project, index) => {
+				console.log(project.id)
 				return (
-					<Project
-						key={`project-${index}`}
-						name={props.name}
-						description={props.description}
-						imgURL={props.img}
-						time={props.time}
-						clicked={() => setListView(false)}
+					<WacProject
+						key={`learn-project-${index}`}
+						id={project.id}
+						setListView={setListView}
+						setSelectedProject={setSelectedProject}
 					/>
 				)
 			})}
@@ -119,14 +137,14 @@ const FinalProject = ({ activityIds, ...props }) => {
 	const description = (
 		<>
 			<Back onClick={() => setListView(true)}>&#8249; Back</Back>
-			<h2 style={{ margin: 0 }}>{props.name}</h2>
-			<p style={{ marginBottom: 0 }}>{props.description}</p>
-			<br />
+			<h2 style={{ margin: 0 }}>{selectedProject?.name}</h2>
+			<p style={{ marginBottom: '1em' }}>{selectedProject?.description}</p>
 			<SmallText>difficulty</SmallText>
 			<DotRating rating={3} offColor={themeContext.accentVariant} />
-			<br />
-			<SmallText>estimated time</SmallText>
-			<span style={{ fontWeight: 'bold' }}>{props.time}</span>
+			{selectedProject?.time && (
+				<SmallText style={{ marginTop: '1em' }}>estimated time</SmallText>
+			)}
+			<span style={{ fontWeight: 'bold' }}>{selectedProject?.time}</span>
 			<div style={{ flexGrow: '1', display: 'flex', alignItems: 'flex-end' }}>
 				<Button invert fullWidth>
 					Choose Project
@@ -134,15 +152,13 @@ const FinalProject = ({ activityIds, ...props }) => {
 			</div>
 		</>
 	)
-	const fullPic = (
-		<FullImg img="http://squareone.co.in/wp-content/uploads/2018/08/food-Birsto-Oakwood-Premier12-720x700.jpg" />
-	)
+	const fullPic = <FullImg img={selectedProject?.image} />
 
 	const leftPanel = <LeftPanel>{listView ? choose : description}</LeftPanel>
 	const rightPanel = listView ? projects : fullPic
 
 	return (
-		<DynamicModal open={props.open} closed={handleClosed} ratio={0.43}>
+		<DynamicModal open={open} closed={handleClosed} ratio={0.43}>
 			<StyledTwoPanel fullSizeAxis first={leftPanel} second={rightPanel} />
 		</DynamicModal>
 	)
