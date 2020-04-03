@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 
 import MuiIconBox from '../../shared/external/MuiIconBox'
@@ -46,6 +46,7 @@ const ActivityItem = withApiCache([CACHE_ACTIVITY])(
 		wac_data: [activity],
 
 		status,
+		selectedActivityId,
 		setOpenActivity,
 		setSelectedActivity
 	}) => {
@@ -53,6 +54,19 @@ const ActivityItem = withApiCache([CACHE_ACTIVITY])(
 
 		const { name, description, summary, isProject, image, cards: cardIds } =
 			activity ?? {}
+
+		useEffect(() => {
+			if (id === selectedActivityId) {
+				handleSetSelectedActivity()
+			}
+		}, [status, selectedActivityId])
+
+		const handleSetSelectedActivity = () => {
+			setSelectedActivity({
+				...activity,
+				status
+			})
+		}
 
 		const showStatusIcon = () => {
 			switch (status) {
@@ -78,10 +92,7 @@ const ActivityItem = withApiCache([CACHE_ACTIVITY])(
 				key={`module-activity-${id}`}
 				onClick={() => {
 					setOpenActivity(true)
-					setSelectedActivity({
-						...activity,
-						status
-					})
+					handleSetSelectedActivity()
 				}}
 			>
 				<ProgressWrapper>
@@ -104,6 +115,7 @@ const List = styled.div`
 
 const ActivityList = ({
 	activityIds,
+	selectedActivityId,
 	setOpenActivity,
 	setSelectedActivity
 }) => {
@@ -116,6 +128,7 @@ const ActivityList = ({
 						key={`module-activityitem-${id}`}
 						id={id}
 						status={status}
+						selectedActivityId={selectedActivityId}
 						setOpenActivity={setOpenActivity}
 						setSelectedActivity={setSelectedActivity}
 					/>

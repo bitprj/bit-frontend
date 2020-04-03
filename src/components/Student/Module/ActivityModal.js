@@ -70,6 +70,8 @@ const ProgressButton = ({ status, locked, handleResume }) => {
 				return 'Resume'
 			case 'incomplete':
 				return 'Start'
+			default:
+				return 'Loading...'
 		}
 	}
 

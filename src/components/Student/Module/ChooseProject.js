@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import AddIcon from '@material-ui/icons/Add'
@@ -7,10 +7,7 @@ import NextIcon from '@material-ui/icons/NavigateNextRounded'
 import ProjectModal from './ProjectModal'
 import MuiIconBox from '../../shared/external/MuiIconBox'
 
-import withApiCache, {
-	CACHE_ACTIVITY,
-	CACHE_ACTIVITY_PROGRESS
-} from '../../HOC/WithApiCache'
+import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 
 const Project = styled.div`
 	flex: 1;
@@ -58,13 +55,28 @@ const ProjectBox = ({ title, description, src, buttonIcon, onClick }) => {
 
 const WacProjectBox = withApiCache([CACHE_ACTIVITY])(
 	({
+		id,
 		wac_data: [activity],
 
 		status,
 		setOpenActivity,
+		selectedActivityId,
 		setSelectedActivity
 	}) => {
 		const { name, description, image } = activity ?? {}
+
+		useEffect(() => {
+			if (id === selectedActivityId) {
+				handleSetSelectedActivity()
+			}
+		}, [status, selectedActivityId])
+
+		const handleSetSelectedActivity = () => {
+			setSelectedActivity({
+				...activity,
+				status
+			})
+		}
 
 		return (
 			<ProjectBox
@@ -102,6 +114,7 @@ const ChooseProject = ({
 	moduleName,
 	chosenProject,
 	setOpenActivity,
+	selectedActivityId,
 	setSelectedActivity
 }) => {
 	const [openProject, setOpenProject] = useState(false)
@@ -131,6 +144,7 @@ const ChooseProject = ({
 						status={chosenProjectWithProgress?.status}
 						onClick={() => setOpenActivity()}
 						setOpenActivity={setOpenActivity}
+						selectedActivityId={selectedActivityId}
 						setSelectedActivity={setSelectedActivity}
 					/>
 				)}

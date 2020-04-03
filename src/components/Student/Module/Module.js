@@ -98,7 +98,7 @@ const ProgressWrapper = styled.div`
 	flex-shrink: 0;
 `
 
-const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
+const Module = ({ id, wac_data: [modu1e, moduleProgress] }) => {
 	const { name, description, gemsNeeded, activities: activityIds } =
 		modu1e ?? {}
 	const {
@@ -106,7 +106,9 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 		inprogressActivities,
 		completedActivities,
 		chosenProject
-	} = modu1eProgress ?? {}
+	} = moduleProgress ?? {}
+
+	const isModuleProgressReady = !!incompleteActivities
 
 	const [openActivity, setOpenActivity] = useState(false)
 	const [selectedActivity, setSelectedActivity] = useState(null)
@@ -115,31 +117,35 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 	 * n^2 time
 	 */
 	const hasId = (id, activities) => activities?.find(a => id === a.id)
-	const activityIdsWithProgress = activityIds?.map(activity => {
-		const id = activity.id
+	const getActivityIdsWithProgress = () =>
+		activityIds?.map(activity => {
+			const id = activity.id
 
-		if (hasId(id, completedActivities)) {
-			return { ...activity, status: 'completed' }
-		}
-		if (hasId(id, inprogressActivities)) {
-			return { ...activity, status: 'inprogress' }
-		}
-		return { ...activity, status: 'incomplete' }
-	})
+			if (hasId(id, completedActivities)) {
+				return { ...activity, status: 'completed' }
+			}
+			if (hasId(id, inprogressActivities)) {
+				return { ...activity, status: 'inprogress' }
+			}
+			return { ...activity, status: 'incomplete' }
+		})
 
-	const projectIdsWithProgress = activityIdsWithProgress?.filter(
-		a => a.isProject
-	)
-	const trueActivityIdsWithProgress = activityIdsWithProgress?.filter(
-		a => !a.isProject
-	)
+	const getProjectIds = () => activityIds?.filter(a => a.isProject)
+	const getProjectIdsWithProgress = () =>
+		getActivityIdsWithProgress()?.filter(a => a.isProject)
 
-	const calculateProgressPercent = statusType =>
-		(trueActivityIdsWithProgress?.reduce((acc, activity) => {
-			if (activity.status === statusType) return acc + 1
-		}, 0) /
-			trueActivityIdsWithProgress?.length) *
-		100
+	const getTrueActivityIds = () => activityIds?.filter(a => !a.isProject)
+	const getTrueActivityIdsWithProgress = () =>
+		getActivityIdsWithProgress()?.filter(a => !a.isProject)
+
+	const calculateProgressPercent = statusType => {
+		const trueActIds = getTrueActivityIdsWithProgress()
+		const progress =
+			trueActIds?.reduce((acc, activity) => {
+				return activity.status === statusType ? acc + 1 : acc
+			}, 0) / trueActIds?.length
+		return progress * 100
+	}
 
 	return (
 		<>
@@ -156,7 +162,10 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 						<ProgressWrapper>
 							<ProgressCircle
 								size={'4em'}
-								midValue={calculateProgressPercent('inprogress') || 0}
+								midValue={
+									calculateProgressPercent('inprogress') +
+										calculateProgressPercent('completed') || 0
+								}
 								value={calculateProgressPercent('completed') || 0}
 							/>
 						</ProgressWrapper>
@@ -166,18 +175,28 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 					</Title>
 
 					<ActivityList
-						activityIds={trueActivityIdsWithProgress}
+						activityIds={
+							isModuleProgressReady
+								? getTrueActivityIdsWithProgress()
+								: getTrueActivityIds()
+						}
+						selectedActivityId={selectedActivity?.id}
 						setOpenActivity={setOpenActivity}
 						setSelectedActivity={setSelectedActivity}
 					/>
 				</Container>
 
 				<ChooseProject
-					projectIds={projectIdsWithProgress}
+					projectIds={
+						isModuleProgressReady
+							? getProjectIdsWithProgress()
+							: getProjectIds()
+					}
 					moduleId={id}
 					moduleName={name}
 					chosenProject={chosenProject}
 					setOpenActivity={setOpenActivity}
+					selectedActivityId={selectedActivity?.id}
 					setSelectedActivity={setSelectedActivity}
 				/>
 

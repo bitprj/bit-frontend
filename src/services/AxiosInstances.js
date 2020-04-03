@@ -96,3 +96,11 @@ export const grader = axios.create({
 grader.interceptors.response.use(response =>
 	camelCase(response.data, { deep: true })
 )
+
+const cdnBaseUrl = 'https://d36nt3c422j20i.cloudfront.net/'
+export const cdn = axios.create({
+	baseURL: cdnBaseUrl
+})
+cdn.interceptors.response.use(response =>
+	camelCase(response.data, { deep: true })
+)

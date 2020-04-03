@@ -58,6 +58,7 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 		 *    need to use it immediately
 		 */
 		const [data, setData] = useState(initialData)
+		// if (cacheTypes.includes(CACHE_MODULE)) console.log(data)
 
 		useEffect(() => {
 			if (debug) console.log('MOUNTED', cacheTypes)
@@ -118,7 +119,8 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 		return (
 			<WrappedComponent
 				id={id}
-				wac_data={isDataReady(data) ? data : initialData}
+				// wac_data={isDataPartlyReady(data) ? data : initialData}
+				wac_data={data}
 				{...props}
 			/>
 		)
@@ -148,6 +150,7 @@ export default withApiCache
  */
 
 export const isDataReady = data => data.every(elem => elem !== undefined)
+export const isDataPartlyReady = data => data.some(elem => elem !== undefined)
 
 /**
  * make a recursive version
