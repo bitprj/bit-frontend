@@ -143,6 +143,12 @@ const Checkpoint = ({
 							/>
 						)
 
+					case 'Short Answer':
+						return
+
+					case 'Multiple Choice':
+						return
+
 					default:
 						return null
 				}
@@ -270,7 +276,7 @@ const Checkpoint = ({
 					peekView(view) !== LOADING ? (
 						<InfoContainer>
 							<StyledIcon width="3em" src={flagIcon} />
-							<TitleMarkdown source={`# ${name}`} />
+							<TitleMarkdown source={`# ${name || ''}`} />
 							{peekView(view) === HOME ? mostRecentGradeStatus() : null}
 						</InfoContainer>
 					) : null}

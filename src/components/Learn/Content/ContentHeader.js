@@ -1,8 +1,12 @@
 import React, { forwardRef } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 
 import HeaderShadow from '../../shared/gadgets/HeaderShadow'
 import ImgAndContent from '../../shared/gadgets/ImgAndContent'
+
+import withApiCache, { CACHE_MODULE } from '../../HOC/WithApiCache'
 
 const Container = styled.div`
 	position: fixed;
@@ -27,25 +31,39 @@ const Header = styled(ImgAndContent)`
 	}
 `
 
-const ContentHeader = forwardRef(({ containerRef, name }, ref) => {
-	return (
-		<Container id="learn-content-header" className="learn-i-contentheader">
-			<Header
-				ref={ref}
-				imgURL={require('../../../assets/icons/document.svg')}
-				imgWidthEms="4"
-				gap="2em"
-				reverse
-				contentSize={'150%'}
-				title={name}
-			>
-				<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
-					INTRODUCTION TO GITHUB
-				</code>
-			</Header>
-			<HeaderShadow containerRef={containerRef} />
-		</Container>
-	)
-})
+const ContentHeader = forwardRef(
+	({ wac_data: [modu1e], containerRef, name }, ref) => {
+		return (
+			<Container id="learn-content-header" className="learn-i-contentheader">
+				<Header
+					ref={ref}
+					imgURL={require('../../../assets/icons/document.svg')}
+					imgWidthEms="4"
+					gap="2em"
+					reverse
+					contentSize={'150%'}
+					title={name}
+				>
+					<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
+						{modu1e?.name.toUpperCase()}
+					</code>
+				</Header>
+				<HeaderShadow containerRef={containerRef} />
+			</Container>
+		)
+	}
+)
 
-export default ContentHeader
+const mapStateToProps = state => {
+	const {
+		learnData: {
+			selectedActivity: { moduleId }
+		}
+	} = state
+
+	return { id: moduleId }
+}
+
+const enhancer = compose(connect(mapStateToProps), withApiCache([CACHE_MODULE]))
+
+export default enhancer(ContentHeader)

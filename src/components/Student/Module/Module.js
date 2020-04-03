@@ -62,11 +62,11 @@ const Container = styled.div`
 	&:before {
 		content: '';
 		display: block;
-		width: 0.2em;
-		height: 55%;
+		width: 0.1em;
+		height: 70%;
 		position: absolute;
-		left: 4.4em;
-		top: 55%;
+		left: 4.43em;
+		top: 50%;
 		transform: translateY(-50%);
 		background-color: #ebebeb;
 		z-index: -1;
@@ -185,6 +185,7 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 					open={openActivity}
 					closed={() => setOpenActivity(false)}
 					id={selectedActivity?.id}
+					moduleId={id}
 					name={selectedActivity?.name}
 					description={selectedActivity?.description}
 					learningObjectives={selectedActivity?.summary}

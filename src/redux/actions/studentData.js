@@ -2,7 +2,7 @@ import { SET_STUDENT_DATA, INCREMENT_GEMS_BY } from '../actionTypes'
 
 import {
 	fetchStudentData,
-	updateModuleProgress
+	setChosenActivity
 } from '../../services/StudentService'
 import { setSelectedActivity } from './learnData'
 import { saveToCache } from './cache'
@@ -20,12 +20,10 @@ export const init = () => async dispatch => {
 	dispatch(setSelectedActivity(studentData.suggestedActivity))
 }
 
-const setStudentData = studentData => {
-	return {
-		type: SET_STUDENT_DATA,
-		studentData
-	}
-}
+const setStudentData = studentData => ({
+	type: SET_STUDENT_DATA,
+	studentData
+})
 
 // ===== RUNTIME
 
@@ -38,14 +36,10 @@ export const chooseProject = (moduleId, project) => dispatch => {
 		)
 	)
 
-	updateModuleProgress(moduleId, {
-		chosen_project_id: project.id
-	}).then(res => console.log(res.message))
+	setChosenActivity(moduleId, project).then(_ => console.log(_.message))
 }
 
-export const incrementGemsBy = gemAmount => {
-	return {
-		type: INCREMENT_GEMS_BY,
-		gemAmount
-	}
-}
+export const incrementGemsBy = gemAmount => ({
+	type: INCREMENT_GEMS_BY,
+	gemAmount
+})

@@ -34,6 +34,35 @@ const ContentArea = styled.div`
 	}
 `
 
+const MarkdownContentStyling = styled.div`
+	/**
+   * Image Styling
+   */
+	img {
+		margin: 0 auto;
+		max-width: 90%;
+	}
+
+	/**
+   * Table Styling
+   */
+	table {
+		margin: 0 auto;
+		width: 80%;
+		border-collapse: separate;
+		border-spacing: 0;
+	}
+	th,
+	td {
+		padding: 1em;
+		border: 0;
+		border-bottom: 1px solid ${props => props.theme.offFont};
+	}
+	tr:hover {
+		background-color: #f5f5f5;
+	}
+`
+
 const Content = ({
 	isReady,
 	activityId,
@@ -140,7 +169,9 @@ const Content = ({
 					/>
 
 					<ContentArea className="learn-i-contentarea">
-						<MarkdownContent source={content} />
+						<MarkdownContentStyling>
+							<MarkdownContent source={content} />
+						</MarkdownContentStyling>
 
 						<UnlockedHintSection />
 						<LockedHintSection />
