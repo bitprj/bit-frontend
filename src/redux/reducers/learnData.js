@@ -1,8 +1,9 @@
 import { SafeQueue } from '../../utils/DataStructures'
 
 import {
-	SET_INDICATORS,
+	RESET_LEARN_DATA,
 	SET_SELECTED_ACTIVITY,
+	SET_INDICATORS,
 	SET_CURRENT_CARD_BY_INDEX,
 	INCREMENT_CURRENT_CARD_INDEX,
 	SET_LAST_CARD_UNLOCKED_INDEX_BY_ID,
@@ -15,8 +16,7 @@ import {
 const initialState = {
 	selectedActivity: {
 		id: undefined,
-    contentUrl: undefined,
-    moduleId: undefined
+		moduleId: undefined
 	},
 	// variables helpful for navigation, etc
 	indicators: {
@@ -34,6 +34,10 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
+		case RESET_LEARN_DATA: {
+			return initialState
+		}
+
 		case SET_SELECTED_ACTIVITY: {
 			return {
 				...state,

@@ -7,7 +7,6 @@ import {
 } from '../../services/LearnService'
 import { autoFetch } from '../../services/ContentService'
 import {
-	fetchContentUrl,
 	CACHE_CARD,
 	CACHE_HINT_PROGRESS,
 	CACHE_CHECKPOINTS_PROGRESS
@@ -16,6 +15,7 @@ import { saveToCache } from './cache'
 import { CACHE_ACTIVITY_PROGRESS } from '../../components/HOC/WithApiCache'
 
 import {
+	RESET_LEARN_DATA,
 	SET_SELECTED_ACTIVITY,
 	SET_INDICATORS,
 	SET_CURRENT_CARD_BY_INDEX,
@@ -107,6 +107,7 @@ const preloadActivityCards = activity => async dispatch => {
 // ===== RUNTIME
 
 export const setSelectedActivity = selectedActivity => dispatch => {
+	dispatch({ type: RESET_LEARN_DATA })
 	dispatch({
 		type: SET_SELECTED_ACTIVITY,
 		selectedActivity

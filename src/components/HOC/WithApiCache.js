@@ -30,7 +30,6 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 	const { allowFetch, fromUrl, debug } = { ...initialConfig, ...config }
 
 	let isMounted
-	let apiCall
 
 	if (debug) {
 		console.log('INITIATED:', `cacheTypes=${cacheTypes}`, WrappedComponent)
@@ -51,19 +50,6 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 			[id]
 		)
 
-		const getApiData = PCancelable.fn(onCancel => {
-			onCancel.shouldReject = false
-			onCancel(() => console.log('REJECTED:', cacheTypes, apiCall))
-			return Promise.all(
-				cacheTypes.map(async (type, i) => {
-					if (initialData[i]) return initialData[i]
-
-					const apiData = await autoFetch(id, type)
-					return apiData
-				})
-			)
-		})
-
 		/**
 		 * Not safe to use because when unmounted,
 		 * maintains reference to previous cache_type data
@@ -74,23 +60,20 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 		const [data, setData] = useState(initialData)
 
 		useEffect(() => {
-			if (debug) console.log('MOUNTED')
+			if (debug) console.log('MOUNTED', cacheTypes)
 			isMounted = true
 			return () => {
-				if (apiCall) {
-					if (debug) console.log('UNMOUNTED')
-					isMounted = false
-					apiCall.cancel()
-				}
+				if (debug) console.log('UNMOUNTED:', cacheTypes)
+				isMounted = false
 			}
 		}, [])
 
 		/**
 		 * Temporary
+		 * purpose is properly update progress data
 		 */
 		useEffect(() => {
 			if (isMounted && wac_cache[cacheTypes[1]]?.[id] !== undefined) {
-				console.log('changed!')
 				setData(state => [state[0], wac_cache[cacheTypes[1]][id]])
 			}
 		}, [wac_cache[cacheTypes[1]]?.[id]])
@@ -108,20 +91,24 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 
 			if (allowFetch && id) {
 				if (!isDataReady(initialData)) {
-					;(async () => {
-						console.log('FETCHING:', `cacheTypes=${cacheTypes}`)
-						apiCall = getApiData()
+					cacheTypes.map(async (type, i) => {
+						const apiData = await (() => {
+							if (initialData[i]) return initialData[i]
+							return autoFetch(id, type)
+						})()
 
-						apiCall.then(apiData => {
-							if (debug) console.log('SETTING:', `apiData=`, apiData)
-							apiData.forEach((fd, i) => {
-								wac_onSaveToCache(cacheTypes[i], { [id]: fd })
+						wac_onSaveToCache(type, { [id]: apiData })
+
+						if (debug) console.log('SETTING:', `apiData=`, apiData)
+
+						if (isMounted) {
+							setData(data => {
+								const newData = [...data]
+								newData[i] = apiData
+								return newData
 							})
-							if (isMounted) {
-								setData(apiData)
-							}
-						})
-					})()
+						}
+					})
 				} else {
 					setData(initialData)
 				}

@@ -70,7 +70,7 @@ const UnlockedHint = ({
 	 * Render all steps
 	 */
 	const renderedSteps = () => {
-		return steps.map((step, i) => {
+		return steps?.map((step, i) => {
 			const { name: stepName, content, codeSnippet, image } = step
 			return (
 				<React.Fragment key={`hint-step-${id}-${i}`}>

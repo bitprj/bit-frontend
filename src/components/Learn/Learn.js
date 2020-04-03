@@ -66,7 +66,7 @@ const mapStateToProps = state => {
 	const {
 		cache: { cachedActivities, cachedCards },
 		learnData: {
-			selectedActivity: { id, contentUrl }
+			selectedActivity: { id }
 		}
 	} = state
 
@@ -77,7 +77,6 @@ const mapStateToProps = state => {
 	return {
 		isReady,
 		id
-		// contentUrl
 	}
 }
 

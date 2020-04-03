@@ -95,75 +95,49 @@ const LockedHint = ({
 
 	return (
 		<>
-			{hints.map(hint => {
-				const { id, contentUrl, hints: subHints } = hint
-				console.log(id, subHints, hints)
-				return (
-					<>
-						{isUnlocked === false ? (
-							<>
-								<Container
-									className="hover-raise transition-medium"
-									onClick={() => {
-										clickOnce = false
-										setOpenConfirmHint(true)
-									}}
-								>
-									<span>💎 {gems}</span>
-									<TopRight>{difficulty}</TopRight>
-									<Name clamp={1}>
-										<ReactMarkdown className="markdown-header" source={name} />
-									</Name>
-								</Container>
-								<DynamicModal
-									open={openConfirmHint}
-									closed={() => setOpenConfirmHint(false)}
-									scaleX={0.5}
-									scaleY={0.5}
-									heightAuto
-								>
-									<RenderedModal>
-										<h2 style={{ margin: 0 }}>Unlock Hint</h2>
-										<ModalIcon
-											src={require('../../../assets/icons/locked-hint.svg')}
-										/>
-										<ReactMarkdown
-											className="markdown-header"
-											source={`Unlock *${name}* ?`}
-										/>
-										<ButtonArea
-											cancelText={
-												<IconLine className="sans" icon={<LeftArrow />}>
-													Cancel
-												</IconLine>
-											}
-											confirmText={
-												<span style={{ lineHeight: '1em' }}>
-													💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
-												</span>
-											}
-											cancelOnClick={() => setOpenConfirmHint(false)}
-											confirmOnClick={unlockHint}
-										/>
-									</RenderedModal>
-								</DynamicModal>
-							</>
-						) : (
-							<>
-								{subHints.length > 0 && (
-									<LockedHint
-										key={`learn-hints-locked-${id}`}
-										activityId={activityId}
-										id={id}
-										contentUrl={contentUrl}
-										hints={subHints}
-									/>
-								)}
-							</>
-						)}
-					</>
-				)
-			})}
+			<Container
+				className="hover-raise transition-medium"
+				onClick={() => {
+					clickOnce = false
+					setOpenConfirmHint(true)
+				}}
+			>
+				<span>💎 {gems}</span>
+				<TopRight>{difficulty}</TopRight>
+				<Name clamp={1}>
+					<ReactMarkdown className="markdown-header" source={name} />
+				</Name>
+			</Container>
+			<DynamicModal
+				open={openConfirmHint}
+				closed={() => setOpenConfirmHint(false)}
+				scaleX={0.5}
+				scaleY={0.5}
+				heightAuto
+			>
+				<RenderedModal>
+					<h2 style={{ margin: 0 }}>Unlock Hint</h2>
+					<ModalIcon src={require('../../../assets/icons/locked-hint.svg')} />
+					<ReactMarkdown
+						className="markdown-header"
+						source={`Unlock *${name}* ?`}
+					/>
+					<ButtonArea
+						cancelText={
+							<IconLine className="sans" icon={<LeftArrow />}>
+								Cancel
+							</IconLine>
+						}
+						confirmText={
+							<span style={{ lineHeight: '1em' }}>
+								💎 <h3 style={{ display: 'inline' }}>{gems}</h3>
+							</span>
+						}
+						cancelOnClick={() => setOpenConfirmHint(false)}
+						confirmOnClick={unlockHint}
+					/>
+				</RenderedModal>
+			</DynamicModal>
 		</>
 	)
 }
