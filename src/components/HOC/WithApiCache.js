@@ -41,7 +41,7 @@ const withApiCache = (cacheTypes, config) => WrappedComponent => {
 
 		const id = (() => {
 			if (fromUrl) {
-				return urlId
+				return parseInt(urlId)
 			}
 			return props.id
 		})()

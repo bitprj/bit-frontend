@@ -15,7 +15,8 @@ import {
 const initialState = {
 	selectedActivity: {
 		id: undefined,
-		contentUrl: undefined
+    contentUrl: undefined,
+    moduleId: undefined
 	},
 	// variables helpful for navigation, etc
 	indicators: {
