@@ -34,7 +34,7 @@ const VerifiedWrapper = styled(MuiIconBox)`
 
 const StudentHero = ({
 	id,
-	contentUrl,
+	moduleId,
 
 	firstName,
 	image,
@@ -43,7 +43,7 @@ const StudentHero = ({
 	const history = useHistory()
 
 	const handleResume = () => {
-		onSetSelectedActivity({ id, contentUrl })
+		onSetSelectedActivity({ id, moduleId })
 		history.push('/learn/')
 	}
 
@@ -69,7 +69,6 @@ const StudentHero = ({
 			<Suggested
 				loading={!firstName}
 				id={id}
-				contentUrl={contentUrl}
 				onClickButton={handleResume}
 			/>
 		</StyledHero>
@@ -81,11 +80,11 @@ const mapStateToProps = state => {
 		studentData: { firstName, image, suggestedActivity }
 	} = state
 
-	const { id, contentUrl } = suggestedActivity ?? {}
+	const { id, moduleId } = suggestedActivity ?? {}
 
 	return {
 		id,
-		contentUrl,
+		moduleId,
 		firstName,
 		image
 	}

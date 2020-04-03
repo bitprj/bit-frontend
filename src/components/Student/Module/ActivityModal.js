@@ -51,9 +51,6 @@ const Card = styled.div`
 const SmallText = styled.p`
 	font-size: 75%;
 `
-const SmallerText = styled.p`
-	font-size: 60%;
-`
 const SmallClampedText = styled(ClampedText)`
 	font-size: 75%;
 `
@@ -98,13 +95,15 @@ const ActivityModal = ({
 	name,
 	description,
 	learningObjectives,
+	prerequisiteActivities,
 	status,
 	onSetSelectedActivity
 }) => {
 	const history = useHistory()
 
 	const handleResume = () => {
-		onSetSelectedActivity({ id, contentUrl })
+		console.log({ id, moduleId })
+		onSetSelectedActivity({ id, moduleId })
 		setSuggestedActivity(id, moduleId).then(_ =>
 			console.log(_.message ?? _.msg)
 		)
@@ -115,11 +114,11 @@ const ActivityModal = ({
 		<Header>
 			<h2 style={{ margin: '0.5em 0' }}>{name}</h2>
 			<SmallClampedText clamp="3">{description}</SmallClampedText>
-			<ProgressBar
+			{/* <ProgressBar
 				style={{ marginTop: '1em', height: '0.4em' }}
 				width={'69%'}
 				progress={'44%'}
-			/>
+			/> */}
 		</Header>
 	)
 
@@ -131,17 +130,16 @@ const ActivityModal = ({
 					<SmallText>{learningObjectives}</SmallText>
 				</pre>
 			</LearningObjectives>
-			<Prerequisites>
-				<h3 style={{ marginTop: '0.5em' }}>Prerequisites</h3>
-				<Card>
-					<SmallerText style={{ margin: 0 }}>Completion</SmallerText>
-					<SmallText style={{ margin: 0 }}>Introduction to GitHub</SmallText>
-				</Card>
-				<Card>
-					<SmallerText style={{ margin: 0 }}>Completion</SmallerText>
-					<SmallText style={{ margin: 0 }}>Introduction to GitHub</SmallText>
-				</Card>
-			</Prerequisites>
+			{prerequisiteActivities?.length !== 0 && (
+				<Prerequisites>
+					<h3 style={{ marginTop: '0.5em' }}>Prerequisites</h3>
+					{prerequisiteActivities?.map(pa => (
+						<Card>
+							<SmallText>Introduction to GitHub</SmallText>
+						</Card>
+					))}
+				</Prerequisites>
+			)}
 		</Content>
 	)
 
@@ -159,8 +157,8 @@ const ActivityModal = ({
 }
 
 const mapDispatchToProps = dispatch => ({
-	onSetSelectedActivity: ({ id, contentUrl }) =>
-		dispatch(setSelectedActivity({ id, contentUrl }))
+	onSetSelectedActivity: ({ id, moduleId }) =>
+		dispatch(setSelectedActivity({ id, moduleId }))
 })
 
 export default connect(null, mapDispatchToProps)(ActivityModal)
