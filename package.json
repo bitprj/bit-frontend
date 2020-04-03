@@ -4,7 +4,7 @@
   "private": true,
   "engines": {
     "npm": "6.13.7",
-    "node": "v13.2.0"
+    "node": "12.x"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.6.5",
