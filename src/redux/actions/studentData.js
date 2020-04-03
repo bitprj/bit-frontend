@@ -14,11 +14,19 @@ export const init = () => async dispatch => {
 	const studentData = await fetchStudentData()
 	const [firstName] = studentData.name.split(' ')
 
-	dispatch(setStudentData({ ...studentData, firstName }))
+	/**
+	 * TODO TEMPORARY CODE TEMP WARN
+	 */
+	let inprogressModules = [...studentData.inprogressModules]
+	if (inprogressModules.length === 0) {
+		inprogressModules.push(studentData.incompleteModules[0])
+	}
+
+	dispatch(setStudentData({ ...studentData, firstName, inprogressModules }))
 
 	// external
-	dispatch(setSelectedActivity(studentData.suggestedActivity))
-	// dispatch(setSelectedActivity({ id: 86, moduleId: 23 }))
+	// dispatch(setSelectedActivity(studentData.suggestedActivity))
+	dispatch(setSelectedActivity({ id: 65, moduleId: 23 }))
 }
 
 const setStudentData = studentData => ({

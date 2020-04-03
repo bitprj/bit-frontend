@@ -189,6 +189,7 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 					name={selectedActivity?.name}
 					description={selectedActivity?.description}
 					learningObjectives={selectedActivity?.summary}
+					prerequisiteActivities={selectedActivity?.prerequisiteActivities}
 					status={selectedActivity?.status}
 				/>
 			</Content>

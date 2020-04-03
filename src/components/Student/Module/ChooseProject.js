@@ -15,7 +15,7 @@ import withApiCache, {
 const Project = styled.div`
 	flex: 1;
 	padding: 2em 0 0em;
-	max-height: 32em;
+	max-height: 28em;
 	position: relative;
 	border-radius: 0.5em;
 
