@@ -185,6 +185,7 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 					open={openActivity}
 					closed={() => setOpenActivity(false)}
 					id={selectedActivity?.id}
+					moduleId={id}
 					name={selectedActivity?.name}
 					description={selectedActivity?.description}
 					learningObjectives={selectedActivity?.summary}

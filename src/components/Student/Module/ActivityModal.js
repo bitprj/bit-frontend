@@ -9,6 +9,7 @@ import Button from '../../shared/gadgets/Button'
 import ClampedText from '../../shared/utils/ClampedText'
 
 import { setSelectedActivity } from '../../../redux/actions/learnData'
+import { setSuggestedActivity } from '../../../services/StudentService'
 
 const Header = styled.div`
 	padding: 0 3em;
@@ -88,10 +89,12 @@ const ProgressButton = ({ status, locked, handleResume }) => {
 }
 
 const ActivityModal = ({
-	open,
-	closed,
 	id,
 	contentUrl,
+
+	moduleId,
+	open,
+	closed,
 	name,
 	description,
 	learningObjectives,
@@ -102,7 +105,10 @@ const ActivityModal = ({
 
 	const handleResume = () => {
 		onSetSelectedActivity({ id, contentUrl })
-		setTimeout(() => history.push('/learn/'), 0)
+		setSuggestedActivity(id, moduleId).then(_ =>
+			console.log(_.message ?? _.msg)
+		)
+		history.push('/learn/')
 	}
 
 	const header = (
