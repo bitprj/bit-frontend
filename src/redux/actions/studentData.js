@@ -25,8 +25,7 @@ export const init = () => async dispatch => {
 	dispatch(setStudentData({ ...studentData, firstName, inprogressModules }))
 
 	// external
-	// dispatch(setSelectedActivity(studentData.suggestedActivity))
-	dispatch(setSelectedActivity({ id: 65, moduleId: 23 }))
+	dispatch(setSelectedActivity(studentData.suggestedActivity))
 }
 
 const setStudentData = studentData => ({

@@ -17,8 +17,17 @@ const Container = styled.div`
 	}
 `
 
-const GoBack = ({ className, text = 'Back', history }) => (
-	<Container className={className} onClick={history.goBack}>
+const GoBack = ({ history, className, text = 'Back', hardcodedUrl }) => (
+	<Container
+		className={className}
+		onClick={
+			hardcodedUrl
+				? () => {
+						history.push(hardcodedUrl)
+				  }
+				: history.goBack
+		}
+	>
 		<IconLine icon={<BackIcon />}>{text}</IconLine>
 	</Container>
 )

@@ -56,6 +56,7 @@ const Central = ({
 
 	currentButtonState,
 	isLast,
+	moduleId,
 	currentCardIndex,
 	lastCardUnlockedIndex,
 	lastHintUnlockedId,
@@ -120,7 +121,7 @@ const Central = ({
 				break
 			}
 			case STATE_FINISH: {
-				history.push('/')
+				history.push(`/modules/${moduleId}`)
 				break
 			}
 
@@ -154,6 +155,7 @@ const mapStateToProps = state => {
 	const {
 		learnData: {
 			cards,
+			selectedActivity: { moduleId },
 			indicators: {
 				currentCardIndex,
 				lastCardUnlockedIndex,
@@ -165,6 +167,7 @@ const mapStateToProps = state => {
 
 	return {
 		isLast: cards && currentCardIndex === cards.length - 1,
+		moduleId,
 		currentButtonState,
 		currentCardIndex,
 		lastCardUnlockedIndex,

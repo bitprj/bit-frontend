@@ -145,7 +145,7 @@ const Module = ({ id, wac_data: [modu1e, modu1eProgress] }) => {
 		<>
 			<Background />
 			<StyledHero
-				above={modu1e && <GoBack />}
+				above={modu1e && <GoBack hardcodedUrl={'/dashboard/'} />}
 				title={name}
 				description={description}
 			/>
