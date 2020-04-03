@@ -53,6 +53,7 @@ const UnconnectedRightPanel = ({ onClose, onAuthenticate }) => {
 
 			const response = await signUp(processedUserCombo)
 			localStorage.setItem('csrf-token', response.csrfToken)
+			localStorage.setItem('jwt-token', response.jwtToken)
 			onAuthenticate('STUDENT')
 
 			onClose()

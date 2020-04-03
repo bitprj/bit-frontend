@@ -16,7 +16,7 @@ const Logout = ({ onDeauthenticate }) => {
 		const _ = async () => {
 			try {
 				const response = await logout()
-				if (response.logout) {
+				if (response.message) {
 					onDeauthenticate()
 					history.push('/')
 				}

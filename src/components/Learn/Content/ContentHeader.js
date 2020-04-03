@@ -31,39 +31,34 @@ const Header = styled(ImgAndContent)`
 	}
 `
 
-const ContentHeader = forwardRef(
-	({ wac_data: [modu1e], containerRef, name }, ref) => {
-		return (
-			<Container id="learn-content-header" className="learn-i-contentheader">
-				<Header
-					ref={ref}
-					imgURL={require('../../../assets/icons/document.svg')}
-					imgWidthEms="4"
-					gap="2em"
-					reverse
-					contentSize={'150%'}
-					title={name}
-				>
-					<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
-						{modu1e?.name.toUpperCase()}
-					</code>
-				</Header>
-				<HeaderShadow containerRef={containerRef} />
-			</Container>
-		)
-	}
-)
-
-const mapStateToProps = state => {
-	const {
-		learnData: {
-			selectedActivity: { moduleId }
-		}
-	} = state
-
-	return { id: moduleId }
-}
-
+const mapStateToProps = state => ({
+	id: state.learnData.selectedActivity.moduleId
+})
 const enhancer = compose(connect(mapStateToProps), withApiCache([CACHE_MODULE]))
 
-export default enhancer(ContentHeader)
+const ModuleName = enhancer(({ wac_data: [modu1e] }) => (
+	<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
+		{modu1e?.name.toUpperCase()}
+	</code>
+))
+
+const ContentHeader = forwardRef(({ containerRef, name }, ref) => {
+	return (
+		<Container id="learn-content-header" className="learn-i-contentheader">
+			<Header
+				ref={ref}
+				imgURL={require('../../../assets/icons/document.svg')}
+				imgWidthEms="4"
+				gap="2em"
+				reverse
+				contentSize={'150%'}
+				title={name}
+			>
+				<ModuleName />
+			</Header>
+			<HeaderShadow containerRef={containerRef} />
+		</Container>
+	)
+})
+
+export default ContentHeader

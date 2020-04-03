@@ -36,6 +36,21 @@ const ContentArea = styled.div`
 
 const MarkdownContentStyling = styled.div`
 	/**
+   * Header Styling
+   */
+	h1,
+	h2 {
+		padding-bottom: 0.25em;
+		border-bottom: 0.5px solid #ddd;
+	}
+
+	h1 + h1,
+	h2 + h2 {
+		padding: 0;
+		border: 0;
+	}
+
+	/**
    * Image Styling
    */
 	img {

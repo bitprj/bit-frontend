@@ -94,6 +94,7 @@ const UnconnectedRightPanel = ({ onClose, onAuthenticate }) => {
 
 			const response = await login(userCombo)
 			localStorage.setItem('csrf-token', response.csrfToken)
+			localStorage.setItem('jwt-token', response.jwtToken)
 			onAuthenticate(response.userType.toUpperCase())
 
 			onClose()

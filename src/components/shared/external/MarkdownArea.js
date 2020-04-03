@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import TurndownService from 'turndown'
 
@@ -10,9 +10,10 @@ const turndownService = new TurndownService({
 	fence: '```'
 })
 
-const RenderedMarkdownArea = styled(ReactQuill)`
+const MarkdownArea = styled(ReactQuill)`
 	border-radius: 0.5em;
 	width: 100%;
+	height: ${props => props.height ?? 'auto'};
 
 	.ql-editor {
 		padding: 1.5em;
@@ -21,23 +22,40 @@ const RenderedMarkdownArea = styled(ReactQuill)`
 	}
 `
 
-const MarkdownArea = ({ placeholder = 'Comments...', onChange }) => {
+const MarkdownAreaInput = ({
+	className,
+	placeholder = 'Comments...',
+	initialValue,
+	onChange,
+	height
+}) => {
 	const convertHtmlToMarkdown = html => {
 		return turndownService.turndown(html)
 	}
 
+	useEffect(() => {
+		const className = 'ql-editor'
+		Array.from(document.getElementsByClassName(className)).forEach(mai => {
+			if (!mai.classList.contains('low-profile-scrollbar')) {
+				mai.classList.add('low-profile-scrollbar', 'only-hover')
+			}
+		})
+	}, [])
+
 	return (
-		<RenderedMarkdownArea
-			className="strong-lift"
+		<MarkdownArea
+			className={`strong-lift ${className ?? ''}`}
 			theme="bubble"
 			placeholder={placeholder}
+			defaultValue={initialValue}
 			preserveWhitespace
 			onChange={contents => {
 				const markdown = convertHtmlToMarkdown(contents)
 				onChange(markdown)
 			}}
+			height={height}
 		/>
 	)
 }
 
-export default MarkdownArea
+export default MarkdownAreaInput

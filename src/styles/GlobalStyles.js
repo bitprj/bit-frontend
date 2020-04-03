@@ -86,7 +86,7 @@ export const GlobalStyle = createGlobalStyle`
   
   /**
    * LOW PROFILE SCROLLBAR
-   * - with only-hover, fat
+   * - with only-hover, fat, standard,
    */
   .low-profile-scrollbar { overflow: auto; }
   .low-profile-scrollbar.only-hover { overflow: overlay; }
@@ -104,8 +104,12 @@ export const GlobalStyle = createGlobalStyle`
     width: 1em; 
     height: 1em; 
   }
+  .low-profile-scrollbar.standard::-webkit-scrollbar { 
+    width: 1rem; 
+    height: 1rem; 
+  }
   
-  .low-profile-scrollbar::-webkit-scrollbar-thumb
+  .low-profile-scrollbar::-webkit-scrollbar-thumb,
   .low-profile-scrollbar::-webkit-scrollbar-track {
     border-radius: 0.5em;
   }
@@ -118,9 +122,6 @@ export const GlobalStyle = createGlobalStyle`
 
   .low-profile-scrollbar::-webkit-scrollbar-track {
     background: #0000; // not working
-  }
-  .low-profile-scrollbar.fat::-webkit-scrollbar-track {
-    background: #0001;
   }
 
   .low-profile-scrollbar::-webkit-scrollbar-thumb { 

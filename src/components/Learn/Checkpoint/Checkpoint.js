@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import ReactMarkdown from 'react-markdown'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 
@@ -9,11 +10,11 @@ import AutograderHome from './Autograder/Home'
 import AutograderCLI from './Autograder/CLI'
 import AutograderResult from './Autograder/Result'
 
-import Loading from './Loading'
-
 import MediaHome from './Media/Home'
+import ShortAnswerHome from './ShortAnswer/Home'
 
 import Upload from './Upload'
+import Loading from './Loading'
 
 import Peripheral from '../NextButton/Peripheral'
 import Icon from '../../shared/gadgets/Icon'
@@ -26,7 +27,6 @@ import withApiCache, {
 	CACHE_CHECKPOINT,
 	CACHE_CHECKPOINTS_PROGRESS
 } from '../../HOC/WithApiCache'
-import ReactMarkdown from 'react-markdown'
 
 const flagIcon = require('../../../assets/icons/flag.svg')
 
@@ -105,6 +105,8 @@ const Checkpoint = ({
 }) => {
 	const { content } = progress ?? {}
 
+	const parsedInstruction = <ReactMarkdown source={instruction} />
+
 	const previousView = () => {
 		view.pop()
 		setView([...view])
@@ -126,7 +128,8 @@ const Checkpoint = ({
 						return (
 							<AutograderHome
 								pushView={pushView}
-								instruction={instruction}
+								type={type}
+								instruction={parsedInstruction}
 								content={content}
 								setSubmissionIndex={setSubmissionIndex}
 							/>
@@ -138,13 +141,22 @@ const Checkpoint = ({
 							<MediaHome
 								pushView={pushView}
 								type={type}
-								instruction={instruction}
+								instruction={parsedInstruction}
 								content={content}
 							/>
 						)
 
 					case 'Short Answer':
-						return
+						return (
+							<ShortAnswerHome
+								activityId={activityId}
+								id={id}
+								pushView={pushView}
+								type={type}
+								instruction={parsedInstruction}
+								content={content}
+							/>
+						)
 
 					case 'Multiple Choice':
 						return

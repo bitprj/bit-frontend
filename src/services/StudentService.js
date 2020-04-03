@@ -15,14 +15,13 @@ export const joinClassroom = classCode => {
 	return backendSaves.put(endpoint, { class_code: classCode })
 }
 
-export const setSuggestedActivity = (id, moduleId) => {
+export const setSuggestedActivity = (id, moduleId) =>
 	updateStudentData({
 		suggested_activity: {
 			id,
 			module_id: moduleId
 		}
 	})
-}
 
 export const setChosenActivity = (moduleId, chosenActivity) =>
 	updateModuleProgress(moduleId, {

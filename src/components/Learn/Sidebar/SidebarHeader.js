@@ -1,15 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 
 import DotRating from '../../shared/gadgets/DotRating'
 import { setCurrentCardByIndex } from '../../../redux/actions/learnData'
+
+import withApiCache, { CACHE_MODULE } from '../../HOC/WithApiCache'
 
 const Container = styled.div`
 	padding: 2em;
 `
 
 const SidebarHeader = ({
+	wac_data: [modu1e],
+
 	name,
 	cardsLength,
 	currentCardIndex,
@@ -19,7 +24,7 @@ const SidebarHeader = ({
 	return (
 		<Container>
 			<code style={{ backgroundColor: 'transparent', fontSize: '85%' }}>
-				INTRODUCTION TO GITHUB
+				{modu1e?.name.toUpperCase()}
 			</code>
 			<h2 style={{ marginTop: '0.1em', marginBottom: '0.5em' }}>{name}</h2>
 			<DotRating
@@ -42,7 +47,7 @@ const mapStateToProps = state => {
 	const {
 		cache: { cachedActivities },
 		learnData: {
-			selectedActivity: { id: activityId },
+			selectedActivity: { id: activityId, moduleId },
 			indicators: { currentCardIndex, lastCardUnlockedIndex }
 		}
 	} = state
@@ -50,6 +55,7 @@ const mapStateToProps = state => {
 	const activity = cachedActivities[activityId]
 
 	return {
+		id: moduleId,
 		name: activity?.name,
 		cardsLength: activity?.cards.length,
 		currentCardIndex,
@@ -62,4 +68,9 @@ const mapDispatchToProps = dispatch => ({
 		dispatch(setCurrentCardByIndex(cardIndex))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarHeader)
+const enhancer = compose(
+	connect(mapStateToProps, mapDispatchToProps),
+	withApiCache([CACHE_MODULE])
+)
+
+export default enhancer(SidebarHeader)

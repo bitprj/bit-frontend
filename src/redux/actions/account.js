@@ -11,6 +11,7 @@ export const authenticate = userType => {
 export const deauthenticate = () => {
 	localStorage.setItem('userType', 'VISITOR')
 	localStorage.removeItem('csrf-token')
+	localStorage.removeItem('jwt-token')
 	return {
 		type: DEAUTHENTICATE
 	}

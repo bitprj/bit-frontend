@@ -18,6 +18,7 @@ export const init = () => async dispatch => {
 
 	// external
 	dispatch(setSelectedActivity(studentData.suggestedActivity))
+	// dispatch(setSelectedActivity({ id: 86, moduleId: 23 }))
 }
 
 const setStudentData = studentData => ({
