@@ -39,7 +39,7 @@ const Settings = ({ activityId }) => {
 			}
 		})
 
-	return (
+	return process.env.NODE_ENV === 'development' ? (
 		<QuickAction
 			action={action}
 			title={'Reset Progress'}
@@ -49,7 +49,7 @@ const Settings = ({ activityId }) => {
 				<SettingsIcon fontSize="inherit" htmlColor="#fff" />
 			</IconWrapper>
 		</QuickAction>
-	)
+	) : null
 }
 
 const mapStateToProps = state => {

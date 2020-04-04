@@ -106,7 +106,6 @@ const ActivityModal = ({
 	const history = useHistory()
 
 	const handleResume = () => {
-		console.log({ id, moduleId })
 		onSetSelectedActivity({ id, moduleId })
 		setSuggestedActivity(id, moduleId).then(_ => {})
 
