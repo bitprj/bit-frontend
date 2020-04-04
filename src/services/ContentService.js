@@ -13,7 +13,7 @@ export const autoFetch = async (id, cacheType) => {
 			const data = await cdn.get(`${endpoint}/data.json`)
 			return data
 		} catch (e) {
-			if (e.response.status === 401)
+			if (e.response?.status === 401)
 				console.log(
 					'[Content Service] Content not found on CDN. Fetching to servers...'
 				)
