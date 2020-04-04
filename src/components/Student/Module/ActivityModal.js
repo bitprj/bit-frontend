@@ -9,6 +9,7 @@ import Button from '../../shared/gadgets/Button'
 import ClampedText from '../../shared/utils/ClampedText'
 
 import { setSelectedActivity } from '../../../redux/actions/learnData'
+import { updateModuleActivityProgress } from '../../../redux/actions/studentData'
 import { setSuggestedActivity } from '../../../services/StudentService'
 
 const Header = styled.div`
@@ -89,7 +90,6 @@ const ProgressButton = ({ status, locked, handleResume }) => {
 
 const ActivityModal = ({
 	id,
-	contentUrl,
 
 	moduleId,
 	open,
@@ -99,16 +99,20 @@ const ActivityModal = ({
 	learningObjectives,
 	prerequisiteActivities,
 	status,
-	onSetSelectedActivity
+
+	onSetSelectedActivity,
+	onUpdateModuleActivityProgress
 }) => {
 	const history = useHistory()
 
 	const handleResume = () => {
 		console.log({ id, moduleId })
 		onSetSelectedActivity({ id, moduleId })
-		setSuggestedActivity(id, moduleId).then(_ =>
-			console.log(_.message ?? _.msg)
-		)
+		setSuggestedActivity(id, moduleId).then(_ => {})
+
+		if (status !== 'completed')
+			onUpdateModuleActivityProgress(moduleId, id, 'inprogress')
+
 		history.push('/learn/')
 	}
 
@@ -160,7 +164,9 @@ const ActivityModal = ({
 
 const mapDispatchToProps = dispatch => ({
 	onSetSelectedActivity: ({ id, moduleId }) =>
-		dispatch(setSelectedActivity({ id, moduleId }))
+		dispatch(setSelectedActivity({ id, moduleId })),
+	onUpdateModuleActivityProgress: (moduleId, id, actionType) =>
+		dispatch(updateModuleActivityProgress(moduleId, id, actionType))
 })
 
 export default connect(null, mapDispatchToProps)(ActivityModal)

@@ -66,11 +66,7 @@ const StudentHero = ({
 				'You are on your way to becoming a master of Lorem Ipsum. You are on your way to becoming a master of Lorem Ipsum.'
 			}
 		>
-			<Suggested
-				loading={!firstName}
-				id={id}
-				onClickButton={handleResume}
-			/>
+			<Suggested loading={!firstName} id={id} onClickButton={handleResume} />
 		</StyledHero>
 	)
 }
@@ -91,8 +87,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-	onSetSelectedActivity: ({ id, contentUrl }) =>
-		dispatch(setSelectedActivity({ id, contentUrl }))
+	onSetSelectedActivity: ({ id, moduleId }) =>
+		dispatch(setSelectedActivity({ id, moduleId }))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentHero)

@@ -328,7 +328,7 @@ const mapStateToProps = state => {
 
 	const cardId = cachedActivities[activityId]?.cards[currentCardIndex]?.id
 
-	const { id: checkpointId, contentUrl } = cachedCards[cardId].checkpoint ?? {}
+	const { id: checkpointId } = cachedCards[cardId].checkpoint ?? {}
 
 	const checkpoint = cachedCheckpoints[checkpointId]
 
@@ -337,7 +337,6 @@ const mapStateToProps = state => {
 	return {
 		activityId,
 		id: checkpointId,
-		contentUrl,
 
 		name: checkpoint?.name,
 		instruction: checkpoint?.instruction,

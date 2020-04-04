@@ -59,9 +59,7 @@ const preloadActivityCards = activity => async dispatch => {
 	const cards = await Promise.all(
 		activity.cards.map(async card => {
 			const cardData = await autoFetch(card.id, CACHE_CARD)
-			const cardDataWithContent = cardData
-			// const cardDataWithContent = await fetchContentUrl(cardData)
-			return { [card.id]: cardDataWithContent }
+			return { [card.id]: cardData }
 		})
 	)
 	dispatch(saveToCache(CACHE_CARD, objectArrayToObject(cards)))

@@ -20,6 +20,7 @@ import {
 	incrementCurrentCardIndex,
 	incrementLastCardUnlockedIndex
 } from '../../../../redux/actions/learnData'
+import { updateModuleActivityProgress } from '../../../../redux/actions/studentData'
 
 const Container = styled(CentralStyles)`
 	display: flex;
@@ -51,18 +52,22 @@ export const CentralTemplate = ({ className, currentButtonState, onClick }) => (
 )
 
 const Central = ({
+	moduleId,
+	id,
+
 	setOpenConcepts,
 	setOpenCheckpoint,
+	removeAndBroadcastButtonState,
 
-	currentButtonState,
 	isLast,
-	moduleId,
+	currentButtonState,
 	currentCardIndex,
 	lastCardUnlockedIndex,
 	lastHintUnlockedId,
+
 	onIncrementCurrentCardIndex,
 	onIncrementLastCardUnlockedIndex,
-	removeAndBroadcastButtonState
+	onUpdateModuleActivityProgress
 }) => {
 	const history = useHistory()
 
@@ -122,6 +127,7 @@ const Central = ({
 			}
 			case STATE_FINISH: {
 				history.push(`/modules/${moduleId}`)
+				onUpdateModuleActivityProgress(moduleId, id, 'completed')
 				break
 			}
 
@@ -155,7 +161,7 @@ const mapStateToProps = state => {
 	const {
 		learnData: {
 			cards,
-			selectedActivity: { moduleId },
+			selectedActivity: { id, moduleId },
 			indicators: {
 				currentCardIndex,
 				lastCardUnlockedIndex,
@@ -166,8 +172,9 @@ const mapStateToProps = state => {
 	} = state
 
 	return {
-		isLast: cards && currentCardIndex === cards.length - 1,
 		moduleId,
+		id,
+		isLast: cards && currentCardIndex === cards.length - 1,
 		currentButtonState,
 		currentCardIndex,
 		lastCardUnlockedIndex,
@@ -179,7 +186,9 @@ const mapDispatchToProps = dispatch => {
 	return {
 		onIncrementCurrentCardIndex: () => dispatch(incrementCurrentCardIndex()),
 		onIncrementLastCardUnlockedIndex: () =>
-			dispatch(incrementLastCardUnlockedIndex())
+			dispatch(incrementLastCardUnlockedIndex()),
+		onUpdateModuleActivityProgress: (moduleId, id, actionType) =>
+			dispatch(updateModuleActivityProgress(moduleId, id, actionType))
 	}
 }
 

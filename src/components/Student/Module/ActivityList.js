@@ -80,9 +80,8 @@ const ActivityItem = withApiCache([CACHE_ACTIVITY])(
 						/>
 					)
 				case 'incomplete':
-					return <DotIcon htmlColor="#ebebeb" fontSize="inherit" />
 				default:
-					break
+					return <DotIcon htmlColor="#ebebeb" fontSize="inherit" />
 			}
 		}
 

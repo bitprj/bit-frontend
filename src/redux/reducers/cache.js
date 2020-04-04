@@ -36,6 +36,44 @@ const reducer = (state = initialState, action) => {
 			}
 		}
 
+		case 'UPDATE_MODULE_ACTIVITY_PROGRESS': {
+			const modu1e = state[cacheTypes.CACHE_MODULE_PROGRESS][action.moduleId]
+			if (!modu1e) return state
+
+			const {
+				incompleteActivities,
+				inprogressActivities,
+				completedActivities
+			} = modu1e
+
+			let final = modu1e
+			if (action.actionType === 'inprogress') {
+				final = {
+					...final,
+					incompleteActivities: incompleteActivities.filter(
+						i => i.id !== action.id
+					),
+					inprogressActivities: inprogressActivities.concat([{ id: action.id }])
+				}
+			} else if (action.actionType === 'completed') {
+				final = {
+					...final,
+					inprogressActivities: inprogressActivities.filter(
+						i => i.id !== action.id
+					),
+					completedActivities: completedActivities.concat([{ id: action.id }])
+				}
+			}
+
+			return {
+				...state,
+				[cacheTypes.CACHE_MODULE_PROGRESS]: {
+					...state[cacheTypes.CACHE_MODULE_PROGRESS],
+					[action.moduleId]: final
+				}
+			}
+		}
+
 		default:
 			return state
 	}

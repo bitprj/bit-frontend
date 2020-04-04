@@ -126,7 +126,7 @@ const mapStateToProps = state => {
 
 	const flatHintIds = hintIdsTree.flatMap(hint => [
 		{ id: hint.id },
-		...hint.hints.map(hint => ({ id: hint.id, contentUrl: hint.contentUrl }))
+		...hint.hints.map(hint => ({ id: hint.id }))
 	])
 	const scopedCachedHintsProgressArray = flatHintIds.map(hint => ({
 		[hint.id]: cachedHintsProgress[hint.id] ?? null

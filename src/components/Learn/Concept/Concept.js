@@ -55,7 +55,6 @@ const Concept = ({
 		<Slide
 			key={`learn-concept-${concept.id}-${index}`}
 			id={concept.id}
-			// contentUrl={concept.contentUrl}
 			slideIndex={slideIndex}
 			slidesLength={conceptMetas?.length}
 			onClose={handleClose}

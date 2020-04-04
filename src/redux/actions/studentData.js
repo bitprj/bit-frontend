@@ -33,6 +33,19 @@ const setStudentData = studentData => ({
 	studentData
 })
 
+/**
+ * 
+ * @param {int} moduleId 
+ * @param {int} id 
+ * @param {string} actionType inprogress | completed
+ */
+export const updateModuleActivityProgress = (moduleId, id, actionType) => ({
+	type: 'UPDATE_MODULE_ACTIVITY_PROGRESS',
+	moduleId,
+  id,
+  actionType
+})
+
 // ===== RUNTIME
 
 export const chooseProject = (moduleId, project) => dispatch => {

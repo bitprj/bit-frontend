@@ -151,19 +151,3 @@ export default withApiCache
 
 export const isDataReady = data => data.every(elem => elem !== undefined)
 export const isDataPartlyReady = data => data.some(elem => elem !== undefined)
-
-/**
- * make a recursive version
- * @param {object} apiData
- */
-export const fetchContentUrl = apiData => {
-	const { contentUrl } = apiData
-	if (!contentUrl) {
-		return apiData
-	}
-
-	return axios
-		.get(contentUrl)
-		.then(res => ({ ...apiData, ...res.data }))
-		.catch(e => apiData)
-}

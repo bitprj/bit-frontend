@@ -36,7 +36,7 @@ const UnlockedHintSection = ({
 		if (!hints) return
 
 		return hints.map(hint => {
-			const { id, contentUrl } = hint
+			const { id } = hint
 			const { isUnlocked } = scopedCachedHintsProgress[id] ?? {}
 
 			// const visualIndex = hintIndexMapper++
@@ -51,7 +51,6 @@ const UnlockedHintSection = ({
 							// 		: null
 							// }
 							id={id}
-							// contentUrl={contentUrl}
 						/>
 					)}
 					{renderedUnlockedHintsRecursive(hint.hints)}
@@ -83,7 +82,7 @@ const mapStateToProps = state => {
 
 	const flatHintMetas = hintIdsTree.flatMap(hint => [
 		{ id: hint.id },
-		...hint.hints.map(hint => ({ id: hint.id, contentUrl: hint.contentUrl }))
+		...hint.hints.map(hint => ({ id: hint.id }))
 	])
 	const scopedCachedHintsProgressArray = flatHintMetas.map(hint => ({
 		[hint.id]: cachedHintsProgress[hint.id] ?? null
