@@ -6,6 +6,16 @@ export const autoFetch = async (id, cacheType) => {
 		.split(/(?=[A-Z])/)
 		.map(w => w.toLowerCase())
 
+	/**
+	 * TEMP SPECIAL
+	 */
+	if (type === 'students') {
+		return backend.get('/students/data?student_id=' + id).catch(e => {
+			console.log(e)
+			return {}
+		})
+	}
+
 	const endpoint = `/${type}/${id}` + (params ? `/${params}` : '')
 
 	if (!params) {

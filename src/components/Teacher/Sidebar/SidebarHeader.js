@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import ProfPic from '../../shared/gadgets/ProfPic'
 
 const Wrapper = styled.div`
-	background-color: ${props => props.theme.bgVariant};
+	background-color: black;
 `
 
 const Container = styled.div`
@@ -12,7 +12,7 @@ const Container = styled.div`
 	flex-shrink: 0;
 	opacity: 0;
 
-	background-color: ${props => props.theme.bgVariant};
+	background-color: black;
 	color: ${props => props.theme.offFont};
 `
 
@@ -21,7 +21,7 @@ const SidebarHeader = ({}) => {
 		<Wrapper>
 			<Container className="teacher-i-sidebar">
 				<h3 style={{ marginTop: '0', marginBottom: '0.5em' }}>
-					Intro to API Development
+					Grading View
 				</h3>
 				<ProfPic
 					src={

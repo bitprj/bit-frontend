@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
-import axios from 'axios'
-import PCancelable from 'p-cancelable'
 
 import { autoFetch } from '../../services/ContentService'
 import { saveToCache } from '../../redux/actions/cache'
@@ -15,6 +13,7 @@ export const CACHE_CHECKPOINT = 'cachedCheckpoints'
 export const CACHE_CONCEPT = 'cachedConcepts'
 export const CACHE_HINT = 'cachedHints'
 
+export const CACHE_STUDENT = 'cachedStudents'
 export const CACHE_MODULE_PROGRESS = 'cachedModulesProgress'
 export const CACHE_ACTIVITY_PROGRESS = 'cachedActivitiesProgress'
 export const CACHE_HINT_PROGRESS = 'cachedHintsProgress'

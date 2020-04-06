@@ -10,7 +10,7 @@ import { fadeIn } from '../../../styles/GlobalAnime'
 
 const Container = styled.div`
 	position: relative;
-	background: #fafafa;
+	background: ${props => props.theme.bgVariant};
 	display: flex;
 	flex-direction: column;
 	z-index: 1;

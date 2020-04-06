@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import ReactMarkdown from 'react-markdown'
 
 import MediaLightbox, {
 	TYPE_IMAGE,
@@ -54,11 +55,6 @@ const Type = styled(IconLine)`
 	color: ${props => selectTypeColor(props)};
 `
 
-const Name = styled.h1`
-	margin: 0;
-	margin-bottom: 0.3em;
-`
-
 const Instruction = styled.div`
 	font-size: 115%;
 `
@@ -94,6 +90,7 @@ const Checkpoint = ({
 						type={TYPE_IMAGE}
 						src={content}
 						ratio={16 / 9}
+						// maxWidthRatio={0.5}
 					/>
 				)
 
@@ -108,7 +105,8 @@ const Checkpoint = ({
 				)
 
 			case 'Autograder':
-				const { submissions } = content
+				const { submissions } = content ?? {}
+				if (submissions === undefined) return null
 				return <Autograder results={submissions[0].results} />
 
 			case 'Short Answer':
@@ -137,10 +135,9 @@ const Checkpoint = ({
 					<Type className="sans" icon={<Dot />} gap={'0.5em'} type={type}>
 						{type?.toUpperCase()}
 					</Type>
-					<Name>{name}</Name>
+					<ReactMarkdown source={`# ${name || ''}`} />
 					<Instruction>
-						{instruction ??
-							'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'}
+						<ReactMarkdown source={instruction} />
 					</Instruction>
 					<Content>{selectContent()}</Content>
 					<MarkdownArea

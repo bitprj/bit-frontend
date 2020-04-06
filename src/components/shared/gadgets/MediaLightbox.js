@@ -26,27 +26,32 @@ const MediaLightbox = ({
 
 	const mediaRef = useRef(null)
 
-	const [aspectRatioInfo, setAspectRatioInfo] = useState({
-		mediaMaxWidth: undefined,
-		mediaAspectRatio: 1
-	})
+	const [mediaMaxWidth, setMediaMaxWidth] = useState()
+	const [mediaAspectRatio, setMediaAspectRatio] = useState()
 
 	useEffect(() => {
 		if (ratio === undefined) return
 
 		if (type === TYPE_IMAGE) {
-			const width = mediaRef.current.node.clientWidth
-			const mediaMaxWidth = width / ratio
+			if (!mediaMaxWidth) {
+				const width = mediaRef.current.node.clientWidth
+				const mediaMaxWidth = width / ratio
+				setMediaMaxWidth(mediaMaxWidth)
+			}
 
-			const child = mediaRef.current.node.children[0]
-			const { naturalWidth, naturalHeight } = child
-			const mediaAspectRatio = naturalWidth / naturalHeight
-
-			if (!aspectRatioInfo.mediaMaxWidth)
-				setAspectRatioInfo({ mediaMaxWidth, mediaAspectRatio })
+			if (!setMediaAspectRatio) {
+				const child = mediaRef.current.node.children[0]
+				const { naturalWidth, naturalHeight } = child
+				const mediaAspectRatio = naturalWidth / naturalHeight
+				setMediaAspectRatio(mediaAspectRatio)
+			}
 		} else {
-			if (!aspectRatioInfo.mediaMaxWidth)
-				setAspectRatioInfo({ mediaMaxWidth: '100%', mediaAspectRatio: ratio })
+			if (!mediaMaxWidth) {
+				setMediaMaxWidth('100%')
+			}
+			if (!mediaAspectRatio) {
+				setMediaAspectRatio(ratio)
+			}
 		}
 	})
 
@@ -76,10 +81,10 @@ const MediaLightbox = ({
 			{ratio ? (
 				<AspectRatio
 					ref={mediaRef}
-					ratio={aspectRatioInfo.mediaAspectRatio}
+					ratio={mediaAspectRatio}
 					style={{
 						margin: '0 auto',
-						maxWidth: aspectRatioInfo.mediaMaxWidth + 'px'
+						maxWidth: mediaMaxWidth + 'px'
 					}}
 				>
 					{selectMedia()}

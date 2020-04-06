@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
 
 import DetailsHeader from './DetailsHeader'
 
@@ -12,8 +11,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	z-index: 1;
-
-	box-shadow: 0 0 1.5em rgba(0, 0, 0, 0.1);
+	border-left: 1px solid ${props => props.theme.offFont};
 `
 
 const Details = ({}) => {

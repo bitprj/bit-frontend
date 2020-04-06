@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 
 import SubmissionCheckpoint from './SubmissionCheckpoint'
 
+import Button from '../../shared/gadgets/Button'
 import { fadeIn } from '../../../styles/GlobalAnime'
+import { gradeSubmission } from '../../../services/TeacherService'
 
 const Container = styled.div`
 	position: relative;
@@ -17,7 +19,18 @@ const ContentArea = styled.div`
 	opacity: 0;
 `
 
-const Content = ({ isReady, checkpoints, currentSubmissionIndex }) => {
+const ButtonWrapper = styled.div`
+	margin: 2em;
+	text-align: right;
+`
+
+const Content = ({
+	isReady,
+	studentId,
+	activityId,
+	checkpoints,
+	currentSubmissionIndex
+}) => {
 	const containerRef = useRef(null)
 
 	const currentScrollTop = useRef(0)
@@ -25,6 +38,7 @@ const Content = ({ isReady, checkpoints, currentSubmissionIndex }) => {
 
 	/** note: initial state undefined, set in effect */
 	const [grading, setGrading] = useState([])
+	const [isWaiting, setIsWaiting] = useState(false)
 
 	useEffect(() => {
 		/** Update current scroll in currentScrollTop */
@@ -61,8 +75,32 @@ const Content = ({ isReady, checkpoints, currentSubmissionIndex }) => {
 	 * animation loading
 	 */
 	useEffect(() => {
-		fadeIn('.teacher-i-contentheader, .teacher-i-contentarea')
+		if (isReady) {
+			fadeIn('.teacher-i-contentheader, .teacher-i-contentarea')
+		}
 	}, [isReady])
+
+	const handleSubmitGrading = async () => {
+    const isFinished = grading.every(g => g.is_passed !== undefined)
+    console.log(checkpoints, grading)
+		if (isFinished) {
+			const data = {
+				student_id: studentId,
+				checkpoints: grading
+			}
+			try {
+				setIsWaiting(true)
+				const res = await gradeSubmission(activityId, data)
+			} catch (e) {
+				alert(e + '\nSaving not successful, please try again later')
+			} finally {
+				setIsWaiting(false)
+			}
+		} else {
+			const error = grading.find(g => g.is_passed === undefined)
+			alert('Grading is not complete')
+		}
+	}
 
 	const renderCheckpoints = checkpoints?.map((checkpoint, i) => {
 		const { checkpointId, content, studentComment } = checkpoint
@@ -86,7 +124,18 @@ const Content = ({ isReady, checkpoints, currentSubmissionIndex }) => {
 	return (
 		<Container ref={containerRef} className="low-profile-scrollbar only-hover">
 			<ContentArea className="teacher-i-contentarea">
-				{renderCheckpoints}
+				{renderCheckpoints?.length > 0 ? (
+					renderCheckpoints
+				) : (
+					<p style={{ textAlign: 'center' }}>
+						There are no checkpoints to grade
+					</p>
+				)}
+				<ButtonWrapper>
+					<Button invert disabled={isWaiting} onClick={handleSubmitGrading}>
+						Submit Grading
+					</Button>
+				</ButtonWrapper>
 			</ContentArea>
 		</Container>
 	)
@@ -100,10 +149,13 @@ const mapStateToProps = state => {
 		}
 	} = state
 
-	const checkpoints = submissions?.[currentSubmissionIndex]?.checkpoints
+	const { studentId, activityId, checkpoints } =
+		submissions?.[currentSubmissionIndex] ?? {}
 
 	return {
 		isReady: !!submissions.length,
+		studentId,
+		activityId,
 		checkpoints,
 		currentSubmissionIndex
 	}

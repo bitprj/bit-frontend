@@ -13,6 +13,7 @@ const ActiveList = ({
 	activeMaxIndex = itemList.length - 1,
 	selectCallback,
 	activeClassName,
+	activeStyles,
 	children
 }) => {
 	const ariaSelection = useRef(null)
@@ -86,8 +87,9 @@ const ActiveList = ({
 				<React.Fragment key={key}>
 					<li
 						id={key}
-						className={`${activeClassName(item, i) ||
-							''} ${identifier}-list-active`}
+						className={`${activeClassName?.(item, i) || ''} ${
+							activeIndex === i ? `${identifier}-list-active` : ''
+						}`}
 						// tabIndex="-1"
 						onClick={() => {
 							if (i >= activeMinIndex && i <= activeMaxIndex)
