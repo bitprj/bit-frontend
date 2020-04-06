@@ -3,7 +3,8 @@ import camelCase from 'camelcase-keys-deep'
 
 /** GENERAL BACKEND (mainly for GET) */
 
-const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
+const backendBaseURL = 'https://bit-backend.azurewebsites.net/'
+// const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
 // const backendBaseURL = 'https://bit-backend-auth0.herokuapp.com/'
 
 export const backend = axios.create({
@@ -11,10 +12,10 @@ export const backend = axios.create({
 	withCredentials: true
 })
 backend.interceptors.request.use(request => {
-	request.headers['Authorization'] = `Bearer ${localStorage.getItem(
-		'jwt-token'
-	) ||
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODU4Nzk2OTksIm5iZiI6MTU4NTg3OTY5OSwianRpIjoiYWQ3ZjYzNDItYTc5MC00YTA4LWI0OGEtMzRmOGMxMjllNTFlIiwiaWRlbnRpdHkiOiJTdHVkZW50QGV4YW1wbGUuY29tIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsicm9sZXMiOiJTdHVkZW50In19.J6fFOCheP-F87vjUYVl0j-6vmtDIBPAXK12NpksLyhs'}`
+	request.headers['Authorization'] = `Bearer ${
+		localStorage.getItem('jwt-token') ||
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODU4Nzk2OTksIm5iZiI6MTU4NTg3OTY5OSwianRpIjoiYWQ3ZjYzNDItYTc5MC00YTA4LWI0OGEtMzRmOGMxMjllNTFlIiwiaWRlbnRpdHkiOiJTdHVkZW50QGV4YW1wbGUuY29tIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsicm9sZXMiOiJTdHVkZW50In19.J6fFOCheP-F87vjUYVl0j-6vmtDIBPAXK12NpksLyhs'
+	}`
 	return request
 })
 backend.interceptors.response.use(
@@ -57,10 +58,10 @@ let pending = 0
 
 backendSaves.interceptors.request.use(request => {
 	request.headers['X-CSRF-TOKEN'] = localStorage.getItem('csrf-token')
-	request.headers['Authorization'] = `Bearer ${localStorage.getItem(
-		'jwt-token'
-	) ||
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODU4Nzk2OTksIm5iZiI6MTU4NTg3OTY5OSwianRpIjoiYWQ3ZjYzNDItYTc5MC00YTA4LWI0OGEtMzRmOGMxMjllNTFlIiwiaWRlbnRpdHkiOiJTdHVkZW50QGV4YW1wbGUuY29tIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsicm9sZXMiOiJTdHVkZW50In19.J6fFOCheP-F87vjUYVl0j-6vmtDIBPAXK12NpksLyhs'}`
+	request.headers['Authorization'] = `Bearer ${
+		localStorage.getItem('jwt-token') ||
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODU4Nzk2OTksIm5iZiI6MTU4NTg3OTY5OSwianRpIjoiYWQ3ZjYzNDItYTc5MC00YTA4LWI0OGEtMzRmOGMxMjllNTFlIiwiaWRlbnRpdHkiOiJTdHVkZW50QGV4YW1wbGUuY29tIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsicm9sZXMiOiJTdHVkZW50In19.J6fFOCheP-F87vjUYVl0j-6vmtDIBPAXK12NpksLyhs'
+	}`
 	return request
 })
 backendSaves.interceptors.response.use(
