@@ -23,58 +23,14 @@ const Container = styled.div`
 `
 
 const ContentArea = styled.div`
-	padding: 8em 2em 3em;
-	font-size: 84%;
+	margin: 8em 5em 3em;
+	font-size: 90%;
 	opacity: 0;
 	line-height: 2;
 
-	@media screen and (orientation: landscape) {
-		padding-left: 3.5em;
-		padding-right: 3.5em;
-	}
-`
-
-const MarkdownContentStyling = styled.div`
-	/**
-   * Header Styling
-   */
-	h1,
-	h2 {
-		padding-bottom: 0.25em;
-		border-bottom: 0.5px solid #ddd;
-	}
-
-	h1 + h1,
-	h2 + h2 {
-		padding: 0;
-		border: 0;
-	}
-
-	/**
-   * Image Styling
-   */
-	img {
-		margin: 0 auto;
-		max-width: 90%;
-	}
-
-	/**
-   * Table Styling
-   */
-	table {
-		margin: 0 auto;
-		width: 80%;
-		border-collapse: separate;
-		border-spacing: 0;
-	}
-	th,
-	td {
-		padding: 1em;
-		border: 0;
-		border-bottom: 1px solid ${props => props.theme.offFont};
-	}
-	tr:hover {
-		background-color: #f5f5f5;
+	@media only screen and (orientation: vertical) {
+		margin-left: 2.5em;
+		margin-right: 2.5em;
 	}
 `
 
@@ -184,10 +140,7 @@ const Content = ({
 					/>
 
 					<ContentArea className="learn-i-contentarea">
-						<MarkdownContentStyling>
-							<MarkdownContent source={content} />
-						</MarkdownContentStyling>
-
+						<MarkdownContent source={content} />
 						<UnlockedHintSection />
 						<LockedHintSection />
 					</ContentArea>

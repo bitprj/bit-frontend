@@ -54,7 +54,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   pre > code {
-    border: 0;
+    border: 0; 
     border-radius: 0;
     background: transparent;
     padding: 0;

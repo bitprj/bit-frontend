@@ -1,19 +1,105 @@
 import React from 'react'
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import codeStyle from 'react-syntax-highlighter/dist/esm/styles/prism/darcula'
 
-import CodeBlock from './CodeBlock'
+const Styles = styled.div`
+	/**
+   * Header Styling
+   */
+	// h1,
+	// h2 {
+	// 	padding-bottom: 0.25em;
+	// 	border-bottom: 0.5px solid #ddd;
+	// }
 
-const Image = styled.img`
-	display: block;
-	max-width: 90%;
-	margin-left: auto;
-	margin-right: auto;
+	h1 + h1,
+	h2 + h2 {
+		padding: 0;
+		border: 0;
+	}
+
+	p {
+		margin: 1.5em 0;
+	}
+	/**
+   * List Styling
+   */
+	li {
+		margin: 1em 0;
+	}
 `
 
+const Image = styled.img`
+	margin: 2em auto;
+	max-width: 90%;
+	max-height: calc(100vh - 8em);
+`
+
+const Blockquote = styled.blockquote`
+	margin: 2em -2em;
+	padding: 0.1px 1.25em;
+	background-color: ${props => props.theme.pastel.yellow}44;
+	border-left: 0.5em solid ${props => props.theme.pastel.yellow};
+`
+
+const Table = styled.table`
+	margin: 0 auto;
+	width: 80%;
+	border-collapse: separate;
+	border-spacing: 0;
+`
+
+const TableRow = styled.tr`
+	tr:hover {
+		background-color: #f5f5f5;
+	}
+`
+
+const TableCell = styled.td`
+	padding: 1em;
+	border: 0;
+	border-bottom: 1px solid ${props => props.theme.offFont};
+`
+
+export const CodeBlock = ({ language, value, style }) => {
+	return (
+		<SyntaxHighlighter
+			className="low-profile-scrollbar light only-hover"
+			language={language}
+			style={codeStyle}
+			showLineNumbers
+			lineNumberContainerProps={{ style: { paddingRight: '1em' } }}
+			customStyle={{
+				margin: '2em -2em',
+				borderRadius: '0.75em',
+				whiteSpace: 'pre-wrap',
+				display: 'flex',
+				overflow: 'overlay', // necessary to override default inlineStyles
+				...style
+			}}
+			codeTagProps={{ style: { whiteSpace: 'pre-wrap' } }}
+		>
+			{value}
+		</SyntaxHighlighter>
+	)
+}
+
 const MarkdownContent = ({ source }) => {
-	const renderers = { code: CodeBlock, img: Image }
-	return <ReactMarkdown source={source} renderers={renderers} />
+	const renderers = {
+		code: CodeBlock,
+		image: Image,
+		blockquote: Blockquote,
+		table: Table,
+		tableRow: TableRow,
+		tableCell: TableCell
+	}
+	return (
+		<Styles>
+			<ReactMarkdown source={source} renderers={renderers} />
+		</Styles>
+	)
 }
 
 export default MarkdownContent

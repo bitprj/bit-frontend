@@ -6,8 +6,7 @@ import { connect } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
 import { Element as ScrollElement } from 'react-scroll'
 
-import Icon from '../../shared/gadgets/Icon'
-import CodeBlock from '../../shared/CodeBlock'
+import MarkdownContent from '../../shared/MarkdownContent'
 
 import withApiCache, {
 	CACHE_HINT,
@@ -79,23 +78,7 @@ const UnlockedHint = ({
 							<ReactMarkdown className="markdown-header" source={stepName} />
 						</h3>
 					)}
-					<ReactMarkdown source={content} />
-					{image && <img src={image} />}
-					{codeSnippet && (
-						<ReactMarkdown
-							className="low-profile-scrollbar only-hover light"
-							source={codeSnippet}
-							renderers={{
-								code: props =>
-									CodeBlock({
-										...props,
-										style: {
-											width: '100%'
-										}
-									})
-							}}
-						/>
-					)}
+					<MarkdownContent source={content} />
 				</React.Fragment>
 			)
 		})

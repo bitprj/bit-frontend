@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
 
-import CodeBlock from '../../shared/CodeBlock'
+import { CodeBlock } from '../../shared/MarkdownContent'
 import Icon from '../../shared/gadgets/Icon'
 import IconLine from '../../shared/gadgets/IconLine'
 import ConfirmCancel from '../../shared/gadgets/ConfirmCancel'

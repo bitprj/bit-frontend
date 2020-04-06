@@ -19,7 +19,7 @@ const Container = styled.div`
 const Header = styled(ImgAndContent)`
 	margin: 0;
 	padding: 2em 1em 1.5em;
-	padding-left: 3em;
+	padding-left: 5em;
 	cursor: auto;
 	background-color: #fff;
 
@@ -28,6 +28,10 @@ const Header = styled(ImgAndContent)`
 	&.content-minimized {
 		padding-top: 1em;
 		padding-bottom: 1em;
+  }
+  
+	@media only screen and (orientation: vertical) {
+		padding-left: 2.5em;
 	}
 `
 
@@ -38,7 +42,7 @@ const enhancer = compose(connect(mapStateToProps), withApiCache([CACHE_MODULE]))
 
 const ModuleName = enhancer(({ wac_data: [modu1e] }) => (
 	<code style={{ fontSize: '50%', backgroundColor: 'transparent' }}>
-		{modu1e?.name.toUpperCase()}
+		{modu1e?.name?.toUpperCase()}
 	</code>
 ))
 
@@ -49,7 +53,7 @@ const ContentHeader = forwardRef(({ containerRef, name }, ref) => {
 				ref={ref}
 				imgURL={require('../../../assets/icons/document.svg')}
 				imgWidthEms="4"
-				gap="2em"
+				gap="1.5em"
 				reverse
 				contentSize={'150%'}
 				title={name}

@@ -23,8 +23,8 @@ const SidebarHeader = ({
 }) => {
 	return (
 		<Container>
-			<code style={{ backgroundColor: 'transparent', fontSize: '85%' }}>
-				{modu1e?.name.toUpperCase()}
+			<code style={{ backgroundColor: 'transparent', fontSize: '80%' }}>
+				{modu1e?.name?.toUpperCase()}
 			</code>
 			<h2 style={{ marginTop: '0.1em', marginBottom: '0.5em' }}>{name}</h2>
 			<DotRating

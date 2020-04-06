@@ -4,7 +4,7 @@ import { BLOCKS } from '@contentful/rich-text-types'
 
 import RichTextToReact from 'rich-text-to-react'
 import ReactMarkdown from 'react-markdown'
-import CodeBlock from './CodeBlock'
+import { CodeBlock } from './MarkdownContent'
 
 const Heading = styled.div`
 	color: black;
@@ -21,7 +21,10 @@ const renderingOptions = {
 	renderMark: {},
 	renderNode: {
 		[BLOCKS.EMBEDDED_ENTRY]: (node, key, next, options) => {
-      if (process.env.NODE_ENV !== 'production') console.log('if this message is seen, go to [ParsedContent] and record not to delete this block')
+			if (process.env.NODE_ENV !== 'production')
+				console.log(
+					'if this message is seen, go to [ParsedContent] and record not to delete this block'
+				)
 			return (
 				<ReactMarkdown
 					key={key}

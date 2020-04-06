@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ReactMarkdown from 'react-markdown';
-import CodeBlock from './CodeBlock';
+import { CodeBlock } from './MarkdownContent'
 
 const img_style = {
     height: '100%',
