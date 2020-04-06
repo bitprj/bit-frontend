@@ -92,6 +92,7 @@ const ActivityModal = ({
 	id,
 
 	moduleId,
+	isModuleProgressReady,
 	open,
 	closed,
 	name,
@@ -106,6 +107,8 @@ const ActivityModal = ({
 	const history = useHistory()
 
 	const handleResume = () => {
+		if (!isModuleProgressReady) return
+
 		onSetSelectedActivity({ id, moduleId })
 		setSuggestedActivity(id, moduleId).then(_ => {})
 

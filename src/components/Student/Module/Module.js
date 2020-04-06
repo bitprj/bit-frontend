@@ -201,6 +201,7 @@ const Module = ({ id, wac_data: [modu1e, moduleProgress] }) => {
 				/>
 
 				<ActivityModal
+					isModuleProgressReady={isModuleProgressReady}
 					open={openActivity}
 					closed={() => setOpenActivity(false)}
 					id={selectedActivity?.id}
