@@ -4,7 +4,7 @@ import camelCase from 'camelcase-keys-deep'
 /** GENERAL BACKEND (mainly for GET) */
 
 // const backendBaseURL = 'https://bit-backend.azurewebsites.net/'
-const backendBaseURL = 'http://wongband.pythonanywhere.com/'
+const backendBaseURL = 'https://wongband.pythonanywhere.com/'
 // const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
 // const backendBaseURL = 'http://localhost:5000/'
 
