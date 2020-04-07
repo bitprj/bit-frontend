@@ -64,8 +64,6 @@ const WacProjectBox = withApiCache([CACHE_ACTIVITY])(
 		setSelectedActivity
 	}) => {
 		const { name, description, image } = activity ?? {}
-		console.log(id)
-
 		useEffect(() => {
 			if (id === selectedActivityId) {
 				handleSetSelectedActivity()
@@ -123,7 +121,6 @@ const ChooseProject = ({
 	const chosenProjectWithProgress = projectIds?.find(
 		p => p.id === chosenProject
 	)
-	console.log(projectIds)
 
 	return (
 		<>
