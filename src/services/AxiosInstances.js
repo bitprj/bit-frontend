@@ -4,8 +4,9 @@ import camelCase from 'camelcase-keys-deep'
 /** GENERAL BACKEND (mainly for GET) */
 
 // const backendBaseURL = 'https://bit-backend.azurewebsites.net/'
-const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
-// const backendBaseURL = 'https://bit-backend-auth0.herokuapp.com/'
+const backendBaseURL = 'http://wongband.pythonanywhere.com/'
+// const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
+// const backendBaseURL = 'http://localhost:5000/'
 
 export const backend = axios.create({
 	baseURL: backendBaseURL,
@@ -21,13 +22,16 @@ backend.interceptors.request.use(request => {
 backend.interceptors.response.use(
 	response => camelCase(response.data, { deep: true }),
 	error => {
+		if (error.isAxiosError) {
+			throw Error('Unknown Network Error')
+		}
+
 		const {
 			status,
 			statusText,
 			config: { method, url },
 			data: { message, msg }
 		} = error.response
-		console.log(error.response)
 
 		if (status !== 401) {
 			alert(`${method.toUpperCase()} ${url}

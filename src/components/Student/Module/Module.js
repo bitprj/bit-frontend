@@ -108,7 +108,7 @@ const Module = ({ id, wac_data: [modu1e, moduleProgress] }) => {
 		chosenProject
 	} = moduleProgress ?? {}
 
-	const isModuleProgressReady = !!incompleteActivities
+	const isModuleProgressReady = !!moduleProgress
 
 	const [openActivity, setOpenActivity] = useState(false)
 	const [selectedActivity, setSelectedActivity] = useState(null)
