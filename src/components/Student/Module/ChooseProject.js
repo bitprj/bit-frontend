@@ -119,7 +119,7 @@ const ChooseProject = ({
 	const [openProject, setOpenProject] = useState(false)
 
 	const chosenProjectWithProgress = projectIds?.find(
-		p => p.id === chosenProject.id
+		p => p.id === chosenProject?.id
 	)
 
 	return (
