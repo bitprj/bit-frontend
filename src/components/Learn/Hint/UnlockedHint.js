@@ -78,7 +78,7 @@ const UnlockedHint = ({
 							<ReactMarkdown className="markdown-header" source={stepName} />
 						</h3>
 					)}
-					<MarkdownContent source={content} />
+					<ReactMarkdown source={content} escapeHtml={false} />
 				</React.Fragment>
 			)
 		})

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown'
+import htmlParser from 'react-markdown/plugins/html-parser'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import codeStyle from 'react-syntax-highlighter/dist/esm/styles/prism/darcula'
 
@@ -28,6 +29,15 @@ const Styles = styled.div`
    */
 	li {
 		margin: 1em 0;
+	}
+
+	/**
+   * Img Styling
+   */
+	img {
+		margin: 2em auto;
+		max-width: 90%;
+		max-height: calc(100vh - 8em);
 	}
 `
 
@@ -97,7 +107,14 @@ const MarkdownContent = ({ source }) => {
 	}
 	return (
 		<Styles>
-			<ReactMarkdown source={source} renderers={renderers} />
+			<ReactMarkdown
+				source={source}
+				renderers={renderers}
+				escapeHtml={false}
+				astPlugins={[
+					htmlParser({ isValidNode: node => node.type !== 'script' })
+				]}
+			/>
 		</Styles>
 	)
 }
