@@ -33,7 +33,7 @@ const selectTypeColor = props => {
 }
 
 const Container = styled.section`
-	margin: 3em 5em 3em 2em;
+	margin: 3em 5em 3em 2.5em;
 	display: flex;
 	font-size: 75%;
 `
@@ -61,9 +61,13 @@ const Instruction = styled.div`
 
 const Content = styled.div`
 	margin: 1.5em 0 2em;
-	// max-height: 45em;
-	// display: flex;
-	// justify-content: center;
+	font-style: italic;
+`
+
+const NormalizedReactMarkdown = styled(ReactMarkdown)`
+	* {
+		margin: 0;
+	}
 `
 
 const Checkpoint = ({
@@ -79,8 +83,8 @@ const Checkpoint = ({
 
 	useEffect(() => {
 		onGradingChange({ checkpoint_id: id })
-  }, [id])
-  
+	}, [id])
+
 	const selectContent = () => {
 		switch (type) {
 			case 'Image':
@@ -135,7 +139,7 @@ const Checkpoint = ({
 					<Type className="sans" icon={<Dot />} gap={'0.5em'} type={type}>
 						{type?.toUpperCase()}
 					</Type>
-					<ReactMarkdown source={`# ${name || ''}`} />
+					<NormalizedReactMarkdown source={`# ${name || ''}`} />
 					<Instruction>
 						<ReactMarkdown source={instruction} />
 					</Instruction>
