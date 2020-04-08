@@ -12,8 +12,8 @@ const Main = styled.main`
 const WithNavBar = props => (
 	<>
 		<Switch>
-			<Route path="/learn" exact />
-			<Route path="/grade" exact />
+			<Route path="/learn/" />
+			<Route path="/grade/" />
 			<Route path="/" component={NavBar} />
 		</Switch>
 		<Main>{props.children}</Main>
