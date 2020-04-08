@@ -1,4 +1,5 @@
 import {
+	RESET_STUDENT_DATA,
 	SET_STUDENT_DATA,
 	SET_CURRENT_TRACK,
 	SET_CURRENT_TOPIC,
@@ -17,6 +18,10 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
+		case RESET_STUDENT_DATA: {
+			return initialState
+		}
+
 		case SET_STUDENT_DATA: {
 			return {
 				...initialState,

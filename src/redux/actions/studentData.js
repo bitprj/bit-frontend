@@ -1,4 +1,8 @@
-import { SET_STUDENT_DATA, INCREMENT_GEMS_BY } from '../actionTypes'
+import {
+	RESET_STUDENT_DATA,
+	SET_STUDENT_DATA,
+	INCREMENT_GEMS_BY
+} from '../actionTypes'
 
 import {
 	fetchStudentData,
@@ -11,6 +15,10 @@ import { CACHE_MODULE_PROGRESS } from '../../components/HOC/WithApiCache'
 /* ===== INITIALIZATION */
 
 export const init = () => async dispatch => {
+	dispatch({
+		type: RESET_STUDENT_DATA
+	})
+
 	const studentData = await fetchStudentData()
 	const [firstName] = studentData.name.split(' ')
 

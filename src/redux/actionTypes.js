@@ -12,6 +12,7 @@ export const SAVE_TO_CACHE = 'SAVE_TO_CACHE'
 /**
  * studentData
  */
+export const RESET_STUDENT_DATA = 'RESET_STUDENT_DATA'
 export const SET_STUDENT_DATA = 'SET_STUDENT_DATA'
 export const SET_CURRENT_TRACK = 'SET_CURRENT_TRACK'
 export const SET_CURRENT_TOPIC = 'SET_CURRENT_TOPIC'
