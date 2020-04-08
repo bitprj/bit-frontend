@@ -109,11 +109,11 @@ const MarkdownContent = ({ source }) => {
 		<Styles>
 			<ReactMarkdown
 				source={source}
-				renderers={renderers}
 				escapeHtml={false}
 				astPlugins={[
 					htmlParser({ isValidNode: node => node.type !== 'script' })
 				]}
+				renderers={renderers}
 			/>
 		</Styles>
 	)

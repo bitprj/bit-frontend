@@ -136,10 +136,9 @@ const ChooseProject = ({
 					buttonIcon={<AddIcon fontSize="inherit" />}
 					onClick={() => setOpenProject(true)}
 				/>
-
 				{chosenProject && (
 					<WacProjectBox
-						id={chosenProject}
+						id={chosenProject?.id}
 						status={chosenProjectWithProgress?.status}
 						onClick={() => setOpenActivity()}
 						setOpenActivity={setOpenActivity}

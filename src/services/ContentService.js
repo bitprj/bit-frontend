@@ -1,5 +1,7 @@
 import { backend, cdn } from './AxiosInstances'
 
+const FETCH_FROM_CDN = true
+
 export const autoFetch = async (id, cacheType) => {
 	const [type, params] = cacheType
 		.replace('cached', '')
@@ -15,7 +17,7 @@ export const autoFetch = async (id, cacheType) => {
 
 	const endpoint = `/${type}/${id}` + (params ? `/${params}` : '')
 
-	if (!params) {
+	if (!params && FETCH_FROM_CDN) {
 		try {
 			const data = await cdn.get(`${endpoint}/data.json`)
 			return data
