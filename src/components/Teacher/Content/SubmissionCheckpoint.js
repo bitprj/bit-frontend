@@ -79,8 +79,8 @@ const Checkpoint = ({
 
 	useEffect(() => {
 		onGradingChange({ checkpoint_id: id })
-	}, [id])
-
+  }, [id])
+  
 	const selectContent = () => {
 		switch (type) {
 			case 'Image':

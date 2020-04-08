@@ -81,8 +81,8 @@ const Content = ({
 	}, [isReady])
 
 	const handleSubmitGrading = async () => {
-    const isFinished = grading.every(g => g.is_passed !== undefined)
-    console.log(checkpoints, grading)
+		const isFinished = grading.every(g => g.is_passed !== undefined)
+		console.log(checkpoints, grading)
 		if (isFinished) {
 			const data = {
 				student_id: studentId,
@@ -103,7 +103,11 @@ const Content = ({
 	}
 
 	const renderCheckpoints = checkpoints?.map((checkpoint, i) => {
-		const { checkpointId, content, studentComment } = checkpoint
+		const {
+			checkpoint: { id: checkpointId },
+			content,
+			studentComment
+		} = checkpoint
 		return (
 			<SubmissionCheckpoint
 				key={`teacher-checkpoint-${checkpointId}`}
@@ -149,13 +153,13 @@ const mapStateToProps = state => {
 		}
 	} = state
 
-	const { studentId, activityId, checkpoints } =
+	const { studentId, activity, checkpoints } =
 		submissions?.[currentSubmissionIndex] ?? {}
 
 	return {
 		isReady: !!submissions.length,
 		studentId,
-		activityId,
+		activityId: activity?.id,
 		checkpoints,
 		currentSubmissionIndex
 	}

@@ -31,7 +31,7 @@ const SidebarNav = ({
 			{(submission, index) => (
 				<NavItem
 					className={currentSubmissionIndex === index ? `active` : ''}
-					activityId={submission.activityId}
+					activityId={submission.activity.id}
 					studentId={submission.studentId}
 				/>
 			)}
