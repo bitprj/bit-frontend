@@ -4,8 +4,8 @@ import camelCase from 'camelcase-keys-deep'
 /** GENERAL BACKEND (mainly for GET) */
 
 // const backendBaseURL = 'https://bit-backend.azurewebsites.net/'
-const backendBaseURL = 'https://wongband.pythonanywhere.com/'
-// const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
+// const backendBaseURL = 'https://wongband.pythonanywhere.com/'
+const backendBaseURL = 'https://darlene-backend.herokuapp.com/'
 // const backendBaseURL = 'http://localhost:5000/'
 
 export const backend = axios.create({
