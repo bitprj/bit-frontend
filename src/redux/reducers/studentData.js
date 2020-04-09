@@ -1,11 +1,13 @@
 import {
 	RESET_STUDENT_DATA,
+	SAVE_TO_PROGRESS,
 	SET_STUDENT_DATA,
 	SET_CURRENT_TRACK,
 	SET_CURRENT_TOPIC,
 	SET_SUGGESTED_ACTIVITY,
 	INCREMENT_GEMS_BY
 } from '../actionTypes'
+import * as cacheTypes from '../../components/HOC/WithApiCache'
 
 const initialState = {
 	indicators: {},
@@ -13,13 +15,22 @@ const initialState = {
 	suggestedActivity: null,
 	inprogressModules: [],
 	inprogressTopics: [],
-	gems: 860
+	gems: 860,
+
+	[cacheTypes.CACHE_MODULE_PROGRESS]: {},
+	[cacheTypes.CACHE_ACTIVITY_PROGRESS]: {},
+	[cacheTypes.CACHE_HINT_PROGRESS]: {},
+	[cacheTypes.CACHE_CHECKPOINTS_PROGRESS]: {}
 }
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case RESET_STUDENT_DATA: {
 			return initialState
+		}
+
+		case SAVE_TO_PROGRESS: {
+			return state
 		}
 
 		case SET_STUDENT_DATA: {

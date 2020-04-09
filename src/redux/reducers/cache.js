@@ -54,7 +54,9 @@ const reducer = (state = initialState, action) => {
 					incompleteActivities: incompleteActivities.filter(
 						i => i.id !== action.id
 					),
-					inprogressActivities: inprogressActivities.concat([{ id: action.id }])
+					inprogressActivities: (inprogressActivities ?? []).concat([
+						{ id: action.id }
+					])
 				}
 			} else if (action.actionType === 'completed') {
 				final = {
@@ -62,7 +64,9 @@ const reducer = (state = initialState, action) => {
 					inprogressActivities: inprogressActivities.filter(
 						i => i.id !== action.id
 					),
-					completedActivities: completedActivities.concat([{ id: action.id }])
+					completedActivities: (completedActivities ?? []).concat([
+						{ id: action.id }
+					])
 				}
 			}
 
