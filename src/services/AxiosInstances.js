@@ -22,16 +22,13 @@ backend.interceptors.request.use(request => {
 backend.interceptors.response.use(
 	response => camelCase(response.data, { deep: true }),
 	error => {
-		if (error.isAxiosError) {
-			throw Error('Unknown Network Error')
-		}
-
 		const {
 			status,
 			statusText,
 			config: { method, url },
 			data: { message, msg }
 		} = error.response
+		console.log(error.response)
 
 		if (status !== 401) {
 			alert(`${method.toUpperCase()} ${url}
