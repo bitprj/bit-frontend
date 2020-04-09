@@ -165,7 +165,8 @@ export const initSubmitCheckpointProgress = (
 
 		const final = (() => {
 			if (type === 'Autograder') {
-				const newSubmissions = submissions.slice().unshift(response)
+				const newSubmissions = submissions.slice()
+				newSubmissions.unshift(response)
 				return { content: { submissions: newSubmissions } }
 			}
 			return response
