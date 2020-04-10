@@ -238,7 +238,6 @@ const Checkpoint = ({
 			 * AUTOGRADING
 			 */
 			if (type === 'Autograder') {
-				console.log(recent)
 				const { results } = recent ?? {}
 				if (results.numPass === 0) {
 					status = 'FATAL'

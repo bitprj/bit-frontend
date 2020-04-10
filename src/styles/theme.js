@@ -25,12 +25,12 @@ const constant = {
 	muted: {
 		red: '#ab5757',
 		orange: '#c78f3e',
-		yellow: '#dec340',
+		yellow: '#f5d63d',
 		green: '#609663',
 		blue: '#4780ad',
 		purple: '#7971a3',
-    magenta: '#8164a3',
-    pink: '#c484ba',
+		magenta: '#8164a3',
+		pink: '#c484ba',
 		cyan: '#5aada2'
 	}
 }

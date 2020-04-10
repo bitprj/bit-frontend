@@ -5,14 +5,14 @@ import Dot from '@material-ui/icons/FiberManualRecord'
 import IconLine from './IconLine'
 
 const selectColor = props => {
-	switch (props.status.toUpperCase()) {
-		case 'SUCCESS':
+	switch (props.status) {
+		case 'success':
 			return props.theme.pastel.green
-		case 'FATAL':
+		case 'fatal':
 			return props.theme.pastel.red
-		case 'WARNING':
-			return props.theme.pastel.yellow
-		case 'NONE':
+		case 'warning':
+			return props.theme.muted.yellow
+		case 'none':
 			return '#aaaaaa'
 		default:
 			return props.theme.accent
@@ -31,7 +31,7 @@ const GradeStatus = ({ className, status = '', children }) => {
 			className={className}
 			icon={<Dot />}
 			gap={'0.5em'}
-			status={status}
+			status={status.toLowerCase()}
 		>
 			{children}
 		</Container>

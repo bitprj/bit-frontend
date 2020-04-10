@@ -100,6 +100,8 @@ const Upload = ({
 				return 'video/*'
 			case 'Autograder':
 				return 'zip,application/zip,application/x-zip,application/x-zip-compressed'
+			default:
+				throw Error('default case reached')
 		}
 	}
 
@@ -116,6 +118,8 @@ const Upload = ({
 						Drag your <code>src.zip</code> to the browser
 					</>
 				)
+			default:
+				throw Error('default case reached')
 		}
 	}
 
@@ -131,6 +135,8 @@ const Upload = ({
 						Make sure you upload a <code>src.zip</code> file
 					</>
 				)
+			default:
+				throw Error('default case reached')
 		}
 	}
 
@@ -162,6 +168,8 @@ const Upload = ({
 						handleError()
 					}
 					break
+				default:
+					throw Error('default case reached')
 			}
 		}
 	}, [acceptedFiles])

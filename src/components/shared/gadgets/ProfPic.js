@@ -1,38 +1,14 @@
 import React from 'react'
-import styled from 'styled-components'
+import { Stack, Avatar, Text } from '@chakra-ui/core'
 
-import Icon from './Icon'
-
-const VerticalAlign = styled.div`
-	display: flex;
-	align-items: center;
-`
-
-const AccountContainer = styled.div`
-	display: flex;
-`
-
-const ProfilePicture = styled(Icon)`
-	margin-right: 0.5em;
-	padding: 0.1em;
-`
-
-const ProfPic = ({ src, children, iconSize }) => {
+const ProfPic = ({ name, src, size = 'xs' }) => {
 	return (
-		<AccountContainer>
-			<VerticalAlign>
-				{src && (
-					<ProfilePicture
-						src={src}
-						noDefault
-						width={iconSize}
-						height={iconSize}
-						circle
-					/>
-				)}
-				{children}
-			</VerticalAlign>
-		</AccountContainer>
+		<Stack isInline spacing={2} align="center" flex={1}>
+			<Avatar size={size} name={name} src={src} />
+			<Text m="0" fontSize={size}>
+				{name}
+			</Text>
+		</Stack>
 	)
 }
 

@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 import ReactMarkdown from 'react-markdown'
+import { updateFeedbacks } from '../../../redux/actions/teacherData'
 
 import MediaLightbox, {
 	TYPE_IMAGE,
@@ -72,17 +75,24 @@ const NormalizedReactMarkdown = styled(ReactMarkdown)`
 
 const Checkpoint = ({
 	id,
+	studentId,
 	wac_data: [checkpoint],
 
 	content,
 	studentComment,
-	onGradingChange
+	feedback,
+
+	onUpdateFeedbacks
 }) => {
 	const { name, instruction, checkpointType: type } = checkpoint ?? {}
 	const isReady = !!name
 
+	const updateFeedback = changes => {
+		onUpdateFeedbacks(studentId, id, changes)
+	}
+
 	useEffect(() => {
-		onGradingChange({ checkpoint_id: id })
+		updateFeedback({ checkpointId: id })
 	}, [id])
 
 	const selectContent = () => {
@@ -94,7 +104,6 @@ const Checkpoint = ({
 						type={TYPE_IMAGE}
 						src={content}
 						ratio={16 / 9}
-						// maxWidthRatio={0.5}
 					/>
 				)
 
@@ -128,9 +137,10 @@ const Checkpoint = ({
 			<Container>
 				<CheckArea>
 					<ThreeCheckbox
+						initialState={feedback?.isPassed}
 						onChange={state => {
-							onGradingChange({
-								is_passed: state === 'NONE' ? undefined : state === 'PASS'
+							updateFeedback({
+								isPassed: state
 							})
 						}}
 					/>
@@ -145,7 +155,8 @@ const Checkpoint = ({
 					</Instruction>
 					<Content>{selectContent()}</Content>
 					<MarkdownArea
-						onChange={contents => onGradingChange({ comment: contents })}
+						initialValue={feedback?.comment}
+						onChange={contents => updateFeedback({ comment: contents })}
 					/>
 				</ContentContainer>
 			</Container>
@@ -153,4 +164,29 @@ const Checkpoint = ({
 	)
 }
 
-export default withApiCache([CACHE_CHECKPOINT])(Checkpoint)
+const mapStateToProps = (state, ownProps) => {
+	const {
+		teacherData: {
+			ram: { feedbacks }
+		}
+	} = state
+
+	const { id, studentId } = ownProps
+
+	return {
+		studentId,
+		feedback: feedbacks[`student${studentId}_checkpoint${id}`]
+	}
+}
+
+const mapDispatchToProps = dispatch => ({
+	onUpdateFeedbacks: (studentId, checkpointId, feedbackChanges) =>
+		dispatch(updateFeedbacks(studentId, checkpointId, feedbackChanges))
+})
+
+const enhancer = compose(
+	connect(mapStateToProps, mapDispatchToProps),
+	withApiCache([CACHE_CHECKPOINT])
+)
+
+export default enhancer(Checkpoint)

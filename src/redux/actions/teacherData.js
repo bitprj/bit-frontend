@@ -1,6 +1,7 @@
 import {
-  SET_SUBMISSIONS,
-  SET_CURRENT_CLASSROOM_BY_INDEX,
+	SET_SUBMISSIONS,
+	UPDATE_FEEDBACKS,
+	SET_CURRENT_CLASSROOM_BY_INDEX,
 	SET_CURRENT_SUBMISSION_BY_INDEX
 } from '../actionTypes'
 
@@ -30,6 +31,13 @@ const setSubmissions = submissions => ({
 })
 
 /* ===== RUNTIME */
+export const updateFeedbacks = (studentId, checkpointId, feedbackChanges) => ({
+	type: UPDATE_FEEDBACKS,
+	studentId,
+	checkpointId,
+	feedbackChanges
+})
+
 export const setCurrentClassroomByIndex = classroomIndex => ({
 	type: SET_CURRENT_CLASSROOM_BY_INDEX,
 	classroomIndex

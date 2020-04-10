@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Avatar } from '@chakra-ui/core'
-import { Stack } from '@chakra-ui/core'
+
+import ProfPic from '../../shared/gadgets/ProfPic'
 
 import withApiCache, {
 	CACHE_ACTIVITY,
@@ -14,10 +14,7 @@ const Activity = withApiCache([CACHE_ACTIVITY])(({ wac_data: [activity] }) => (
 
 const Student = withApiCache([CACHE_STUDENT])(({ wac_data: [student] }) => (
 	<div>
-		<Stack isInline spacing={2} align="center" flex={1}>
-			<Avatar size="xs" name={student?.name} src={student?.image} />
-			<span style={{ fontSize: '70%' }}>{student?.name}</span>
-		</Stack>
+		<ProfPic name={student?.name} src={student?.image} />
 		{/* <Stack isInline spacing={3} align="center" flex={1}>
 			<span>{activity?.time}</span>
 		</Stack> */}

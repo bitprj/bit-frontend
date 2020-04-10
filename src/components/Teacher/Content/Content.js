@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import snakeCaseKeys from 'snakecase-keys'
 
 import SubmissionCheckpoint from './SubmissionCheckpoint'
 
@@ -29,6 +30,7 @@ const Content = ({
 	studentId,
 	activityId,
 	checkpoints,
+	feedbacksArray,
 	currentSubmissionIndex
 }) => {
 	const containerRef = useRef(null)
@@ -36,8 +38,6 @@ const Content = ({
 	const currentScrollTop = useRef(0)
 	const cardsScrollTop = useRef([])
 
-	/** note: initial state undefined, set in effect */
-	const [grading, setGrading] = useState([])
 	const [isWaiting, setIsWaiting] = useState(false)
 
 	useEffect(() => {
@@ -81,26 +81,26 @@ const Content = ({
 	}, [isReady])
 
 	const handleSubmitGrading = async () => {
-		const isFinished = grading.every(g => g.is_passed !== undefined)
-		console.log(checkpoints, grading)
-		if (isFinished) {
-			const data = {
-				student_id: studentId,
-				checkpoints: grading
-			}
-			try {
-				setIsWaiting(true)
-				const res = await gradeSubmission(activityId, data)
-			} catch (e) {
-				alert(e + '\nSaving not successful, please try again later')
-			} finally {
-				setIsWaiting(false)
-			}
-		} else {
-			const error = grading.find(g => g.is_passed === undefined)
-			alert('Grading is not complete')
+		if (!isAllowedToSubmit) return
+
+		const data = snakeCaseKeys({
+			studentId,
+			checkpoints: feedbacksArray
+		})
+
+		try {
+			setIsWaiting(true)
+			const res = await gradeSubmission(activityId, data)
+		} catch (e) {
+			alert(e + '\nFeedback not successful, please try again later')
+		} finally {
+			setIsWaiting(false)
 		}
 	}
+
+	const isAllowedToSubmit = feedbacksArray?.every(
+		feedback => feedback?.isPassed !== undefined && feedback?.comment
+	)
 
 	const renderCheckpoints = checkpoints?.map((checkpoint, i) => {
 		const {
@@ -112,15 +112,9 @@ const Content = ({
 			<SubmissionCheckpoint
 				key={`teacher-checkpoint-${checkpointId}`}
 				id={checkpointId}
+				studentId={studentId}
 				content={content}
 				studentComment={studentComment}
-				onGradingChange={changes => {
-					setGrading(currentState => {
-						const newGrading = currentState.slice()
-						newGrading[i] = { ...grading[i], ...changes }
-						return newGrading
-					})
-				}}
 			/>
 		)
 	})
@@ -136,7 +130,11 @@ const Content = ({
 					</p>
 				)}
 				<ButtonWrapper>
-					<Button invert disabled={isWaiting} onClick={handleSubmitGrading}>
+					<Button
+						invert
+						disabled={isWaiting || !isAllowedToSubmit}
+						onClick={handleSubmitGrading}
+					>
 						Submit Grading
 					</Button>
 				</ButtonWrapper>
@@ -149,18 +147,25 @@ const mapStateToProps = state => {
 	const {
 		teacherData: {
 			submissions,
-			indicators: { currentSubmissionIndex }
+			indicators: { currentSubmissionIndex },
+			ram: { feedbacks }
 		}
 	} = state
 
-	const { studentId, activity, checkpoints } =
+	const { studentId, student, activity, checkpoints } =
 		submissions?.[currentSubmissionIndex] ?? {}
+
+	const feedbacksArray = checkpoints?.map(checkpoint => {
+		const { id: checkpointId } = checkpoint.checkpoint
+		return feedbacks[`student${studentId}_checkpoint${checkpointId}`]
+	})
 
 	return {
 		isReady: !!submissions.length,
-		studentId,
+		studentId: studentId ?? student?.id,
 		activityId: activity?.id,
 		checkpoints,
+		feedbacksArray,
 		currentSubmissionIndex
 	}
 }

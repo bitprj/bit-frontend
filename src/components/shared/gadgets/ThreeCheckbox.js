@@ -7,18 +7,15 @@ import Fail from '@material-ui/icons/Close'
 import None from '@material-ui/icons/CheckBoxOutlineBlank'
 
 const selectColor = props => {
-	switch (states[props.state]) {
-		case 'PASS': {
+	switch (props.state) {
+		case true: {
 			return props.theme.pastel.green
 		}
-		case 'FAIL': {
+		case false: {
 			return props.theme.pastel.red
 		}
-		case 'NONE': {
-			return props.theme.offFont
-		}
 		default:
-			break
+			return props.theme.offFont
 	}
 }
 
@@ -43,18 +40,26 @@ const Container = styled.button`
 	:focus {
 		border: 0.1em solid
 			${props => {
-				if (states[props.state] === 'NONE') return '#00000001'
+				if (props.state === 'NONE') return '#00000001'
 				return `${selectColor(props)}66`
 			}};
 	}
 `
 
-const states = ['NONE', 'PASS', 'FAIL']
-
-const ThreeCheckbox = ({ size, onChange = v => console.log(v) }) => {
-	const containerRef = useRef(null)
-
-	const [state, setState] = useState(0)
+/**
+ * Uses three states as opposed to the traditional two-state checkbox
+ * - true, false, undefined
+ *
+ * @param {*} param0
+ */
+const ThreeCheckbox = ({
+	size,
+	initialState,
+	onChange = v => console.log(v)
+}) => {
+  const containerRef = useRef(null)
+  
+	const [state, setState] = useState(initialState)
 
 	useEffect(() => {
 		anime({
@@ -63,26 +68,35 @@ const ThreeCheckbox = ({ size, onChange = v => console.log(v) }) => {
 			easing: 'easeOutElastic()',
 			duration: 750
 		})
-		onChange(states[state])
+		onChange(state)
 	}, [state])
 
 	const handleNextState = () => {
-		if (state + 1 === states.length) setState(0)
-		else setState(state + 1)
+		switch (state) {
+			case true: {
+				setState(false)
+				break
+			}
+			case false: {
+				setState(undefined)
+				break
+			}
+			default:
+				setState(true)
+				break
+		}
 	}
 
 	const selectState = () => {
-		switch (states[state]) {
-			case 'PASS': {
+		switch (state) {
+			case true: {
 				return <Pass fontSize="inherit" />
 			}
-			case 'FAIL': {
+			case false: {
 				return <Fail fontSize="inherit" />
 			}
-			case 'NONE':
-				return <None fontSize="inherit" />
 			default:
-				break
+				return <None fontSize="inherit" />
 		}
 	}
 

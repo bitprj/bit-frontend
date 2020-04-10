@@ -20,17 +20,15 @@ const SidebarHeader = ({}) => {
 	return (
 		<Wrapper>
 			<Container className="teacher-i-sidebar">
-				<h3 style={{ marginTop: '0', marginBottom: '0.5em' }}>
-					Grading View
-				</h3>
+				<h3 style={{ marginTop: '0', marginBottom: '0.5em' }}>Grading View</h3>
 				<ProfPic
 					src={
-						'http://icon-library.com/images/no-profile-picture-icon/no-profile-picture-icon-15.jpg'
+						null // user.image
 					}
-					iconSize={'2em'}
-				>
-					Potato
-				</ProfPic>
+					name={
+						null ?? 'Expert' // user.name
+					}
+				/>
 			</Container>
 		</Wrapper>
 	)
