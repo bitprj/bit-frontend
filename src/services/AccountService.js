@@ -6,7 +6,7 @@ export const checkLogin = () => {
 }
 
 export const login = ({ username, password }) => {
-	const endpoint = 'auth'
+	const endpoint = '/auth'
 	return backend.post(endpoint, { username, password })
 }
 

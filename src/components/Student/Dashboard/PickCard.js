@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import AddIcon from '@material-ui/icons/Add'
-import MuiIconBox from '../../shared/external/MuiIconBox'
+import MuiIconBox from '../../shared/high/MuiIconBox'
 
 const Container = styled.div`
 	margin-top: 0;

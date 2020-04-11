@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 
-import MuiIconBox from '../../shared/external/MuiIconBox'
+import MuiIconBox from '../../shared/high/MuiIconBox'
 import withApiCache, {
 	CACHE_ACTIVITY,
 	CACHE_ACTIVITY_PROGRESS

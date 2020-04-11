@@ -5,9 +5,9 @@ import ActivityModal from './ActivityModal'
 import ActivityList from './ActivityList'
 import ChooseProject from './ChooseProject'
 
-import Hero from '../../shared/gadgets/Hero'
-import GoBack from '../../shared/external/GoBack'
-import ProgressCircle from '../../shared/gadgets/ProgressCircle'
+import Hero from '../../shared/low/Hero'
+import GoBack from '../../shared/high/GoBack'
+import ProgressCircle from '../../shared/low/ProgressCircle'
 
 import media from '../../../styles/media'
 import withApiCache, {

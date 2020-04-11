@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add'
 import NextIcon from '@material-ui/icons/NavigateNextRounded'
 
 import ProjectModal from './ProjectModal'
-import MuiIconBox from '../../shared/external/MuiIconBox'
+import MuiIconBox from '../../shared/high/MuiIconBox'
 
 import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 

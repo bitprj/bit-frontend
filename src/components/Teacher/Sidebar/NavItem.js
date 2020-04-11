@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import ProfPic from '../../shared/gadgets/ProfPic'
+import ProfPic from '../../shared/low/ProfPic'
 
 import withApiCache, {
 	CACHE_ACTIVITY,

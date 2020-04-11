@@ -6,7 +6,7 @@ import CheckIcon from '@material-ui/icons/CheckRounded'
 import ThreeDotsIcon from '@material-ui/icons/MoreHoriz'
 import LockIcon from '@material-ui/icons/LockRounded'
 
-import MuiIconBox from '../external/MuiIconBox'
+import MuiIconBox from '../high/MuiIconBox'
 
 const selectColor = props => {
 	switch (props.type) {

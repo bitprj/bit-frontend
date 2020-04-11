@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 
 import DynamicModal from '../../shared/containers/DynamicModal'
 import TwoPanel from '../../shared/containers/TwoPanel'
-import DotRating from '../../shared/gadgets/DotRating'
-import Button from '../../shared/gadgets/Button'
-import ImgAndContent from '../../shared/gadgets/ImgAndContent'
+import DotRating from '../../shared/low/DotRating'
+import Button from '../../shared/low/Button'
+import ImgAndContent from '../../shared/low/ImgAndContent'
 import { sizes } from '../../../styles/media'
 
 import { chooseProject } from '../../../redux/actions/studentData'

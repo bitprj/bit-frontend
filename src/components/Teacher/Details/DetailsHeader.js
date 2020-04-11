@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import { Divider } from '@chakra-ui/core'
-import GradeStatus from '../../shared/gadgets/GradeStatus'
-import ProfPic from '../../shared/gadgets/ProfPic'
+import GradeStatus from '../../shared/high/GradeStatus'
+import ProfPic from '../../shared/low/ProfPic'
 import ClampedDiv from '../../shared/utils/ClampedDiv'
 
 const Container = styled.div`

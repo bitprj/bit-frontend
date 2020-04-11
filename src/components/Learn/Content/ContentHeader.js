@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 
-import HeaderShadow from '../../shared/gadgets/HeaderShadow'
-import ImgAndContent from '../../shared/gadgets/ImgAndContent'
+import HeaderShadow from '../../shared/low/HeaderShadow'
+import ImgAndContent from '../../shared/low/ImgAndContent'
 
 import withApiCache, { CACHE_MODULE } from '../../HOC/WithApiCache'
 

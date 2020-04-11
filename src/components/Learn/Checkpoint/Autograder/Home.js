@@ -5,9 +5,9 @@ import anime from 'animejs'
 import CheckIcon from '@material-ui/icons/CheckRounded'
 import CloseIcon from '@material-ui/icons/CloseRounded'
 
-import Icon from '../../../shared/gadgets/Icon'
-import IconArea from '../../../shared/gadgets/IconArea'
-import MuiIconBox from '../../../shared/external/MuiIconBox'
+import Icon from '../../../shared/low/Icon'
+import IconArea from '../../../shared/low/IconArea'
+import MuiIconBox from '../../../shared/high/MuiIconBox'
 import TwoPanel from '../../../shared/containers/TwoPanel'
 
 import { CLI, UPLOAD, AUTOGRADER } from '../Checkpoint'

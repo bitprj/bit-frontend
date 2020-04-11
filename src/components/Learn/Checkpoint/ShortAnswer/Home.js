@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import MarkdownArea from '../../../shared/external/MarkdownArea'
-import Button from '../../../shared/gadgets/Button'
+import MarkdownArea from '../../../shared/high/MarkdownArea'
+import Button from '../../../shared/low/Button'
 
 import { initSubmitCheckpointProgress } from '../../../../redux/actions/learnData'
 

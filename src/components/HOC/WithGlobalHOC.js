@@ -11,11 +11,7 @@ const WithGlobalHOC = ({ children }) => (
 		<WithChakraTheme>
 			<WithAuthentication>
 				<WithNavBar>
-					{process.env.NODE_ENV === 'production' ? (
-						children
-					) : (
-						<WithErrorBoundaries>{children}</WithErrorBoundaries>
-					)}
+					<WithErrorBoundaries>{children}</WithErrorBoundaries>
 				</WithNavBar>
 			</WithAuthentication>
 		</WithChakraTheme>

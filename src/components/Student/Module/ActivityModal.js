@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import PostModal from '../../shared/containers/PostModal'
-import ProgressBar from '../../shared/gadgets/ProgressBar'
-import Button from '../../shared/gadgets/Button'
+import ProgressBar from '../../shared/low/ProgressBar'
+import Button from '../../shared/low/Button'
 import ClampedText from '../../shared/utils/ClampedText'
 
 import { setSelectedActivity } from '../../../redux/actions/learnData'

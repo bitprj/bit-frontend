@@ -11,7 +11,7 @@ import * as cacheTypes from '../../components/HOC/WithApiCache'
 
 const initialState = {
 	indicators: {},
-	image: 'https://i.imgur.com/6E6jSMy.png',
+	// image: 'https://i.imgur.com/6E6jSMy.png',
 	suggestedActivity: null,
 	inprogressModules: [],
 	inprogressTopics: [],

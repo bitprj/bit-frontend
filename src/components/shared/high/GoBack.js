@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 
 import BackIcon from '@material-ui/icons/KeyboardArrowLeftRounded'
 
-import IconLine from '../gadgets/IconLine'
+import IconLine from '../low/IconLine'
 
 const Container = styled.div`
 	margin-bottom: 0.2em;

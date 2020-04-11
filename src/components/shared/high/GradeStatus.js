@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Dot from '@material-ui/icons/FiberManualRecord'
 
-import IconLine from './IconLine'
+import IconLine from '../low/IconLine'
 
 const selectColor = props => {
 	switch (props.status) {

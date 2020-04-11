@@ -8,12 +8,12 @@ import Logout from '../Account/Logout'
 import setTheme from '../../redux/actions/theme'
 import { orange, palepink } from '../../styles/theme'
 
-import ProfPic from '../shared/gadgets/ProfPic'
+import ProfPic from '../shared/low/ProfPic'
 import SearchIcon from '@material-ui/icons/Search'
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import Button from '../shared/gadgets/Button'
-import Icon from '../shared/gadgets/Icon'
+import Button from '../shared/low/Button'
+import Icon from '../shared/low/Icon'
 
 const contentHeight = '2.2em'
 

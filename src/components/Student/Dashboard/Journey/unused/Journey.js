@@ -3,10 +3,9 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import TextField from '@material-ui/core/TextField'
-import PickCard from '../../PickCard'
 import ActivityCard from './ActivityCard'
 import QuickAction from '../../../../shared/containers/QuickAction'
-import Button from '../../../../shared/gadgets/Button'
+import Button from '../../../../shared/low/Button'
 
 import { joinClassroom } from '../../../../../services/StudentService'
 

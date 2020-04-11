@@ -8,13 +8,13 @@ import { updateFeedbacks } from '../../../redux/actions/teacherData'
 import MediaLightbox, {
 	TYPE_IMAGE,
 	TYPE_VIDEO
-} from '../../shared/gadgets/MediaLightbox'
+} from '../../shared/low/MediaLightbox'
 import Dot from '@material-ui/icons/FiberManualRecord'
 import Autograder from '../../Learn/Checkpoint/Autograder/Result'
 
-import MarkdownArea from '../../shared/external/MarkdownArea'
-import ThreeCheckbox from '../../shared/gadgets/ThreeCheckbox'
-import IconLine from '../../shared/gadgets/IconLine'
+import MarkdownArea from '../../shared/high/MarkdownArea'
+import ThreeCheckbox from '../../shared/low/ThreeCheckbox'
+import IconLine from '../../shared/low/IconLine'
 import withApiCache, { CACHE_CHECKPOINT } from '../../HOC/WithApiCache'
 
 const selectTypeColor = props => {

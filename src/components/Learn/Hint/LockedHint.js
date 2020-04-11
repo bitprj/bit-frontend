@@ -8,9 +8,9 @@ import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 
 import DynamicModal from '../../shared/containers/DynamicModal'
 import ClampedText from '../../shared/utils/ClampedText'
-import ConfirmCancel from '../../shared/gadgets/ConfirmCancel'
-import Icon from '../../shared/gadgets/Icon'
-import IconLine from '../../shared/gadgets/IconLine'
+import ConfirmCancel from '../../shared/low/ConfirmCancel'
+import Icon from '../../shared/low/Icon'
+import IconLine from '../../shared/low/IconLine'
 
 import withApiCache, {
 	CACHE_HINT,

@@ -9,8 +9,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import ArrowRight from '@material-ui/icons/ArrowForwardRounded'
 import LockOpenIcon from '@material-ui/icons/LockOpenRounded'
 
-import Button from '../../components/shared/gadgets/Button'
-import Icon from '../../components/shared/gadgets/Icon'
+import Button from '../../components/shared/low/Button'
+import Icon from '../../components/shared/low/Icon'
 
 import { login } from '../../services/AccountService'
 import { authenticate } from '../../redux/actions/account'

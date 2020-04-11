@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import ActionsIcon from '@material-ui/icons/RedoRounded'
 
 import DynamicModal from './DynamicModal'
-import Button from '../gadgets/Button'
+import Button from '../low/Button'
 
 const Container = styled.div`
 	width: 100%;

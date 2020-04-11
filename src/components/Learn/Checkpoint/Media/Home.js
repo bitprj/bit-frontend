@@ -5,9 +5,9 @@ import { Card } from '../Autograder/Home'
 import MediaLightbox, {
 	TYPE_IMAGE,
 	TYPE_VIDEO
-} from '../../../shared/gadgets/MediaLightbox'
+} from '../../../shared/low/MediaLightbox'
 import TwoPanel from '../../../shared/containers/TwoPanel'
-import Button from '../../../shared/gadgets/Button'
+import Button from '../../../shared/low/Button'
 
 import { UPLOAD } from '../Checkpoint'
 

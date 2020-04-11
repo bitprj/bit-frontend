@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 import ProgressHero from './DashboardHero'
-import Journey from './Journey/unused/Journey'
+import Journey from './Journey/Journey'
+import OldJourney from './Journey/unused/Journey'
 import { sizes } from '../../../styles/media'
 
 const Container = styled.div`
@@ -19,6 +20,7 @@ const Progress = ({}) => {
 		<>
 			<ProgressHero />
 			<Journey />
+			<OldJourney />
 		</>
 	)
 }

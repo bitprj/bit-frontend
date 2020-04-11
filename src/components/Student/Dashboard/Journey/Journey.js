@@ -1,22 +1,19 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components'
+import React from 'react'
+import { Stack } from '@chakra-ui/core'
 import { connect } from 'react-redux'
 
-
-const Container = styled.div`
-	padding-bottom: 6em;
-	flex: 6;
-	display: flex;
-	flex-flow: row wrap;
-	align-items: start;
-	font-size: 90%;
-	position: relative;
-`
+import Floating from './Floating'
+import Progress from './Progress'
 
 const Journey = ({ inprogressModules }) => {
 	console.log(inprogressModules)
 
-	return <Container></Container>
+	return (
+		<Stack isInline m="3em 8em">
+			<Floating />
+			<Progress />
+		</Stack>
+	)
 }
 
 const mapStateToProps = state => {

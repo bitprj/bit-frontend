@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Box } from '@chakra-ui/core'
+import Avatar from 'react-avatar'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import Suggested from './Suggested'
-import Hero from '../../shared/gadgets/Hero'
-import MuiIconBox from '../../shared/external/MuiIconBox'
+import Hero from '../../shared/low/Hero'
+import MuiIconBox from '../../shared/high/MuiIconBox'
 import CheckIcon from '@material-ui/icons/CheckRounded'
 import { setSelectedActivity } from '../../../redux/actions/learnData'
 
@@ -13,29 +15,19 @@ const StyledHero = styled(Hero)`
 	height: 20em;
 `
 
-const PicWrapper = styled.div`
-	margin-bottom: 1em;
-	width: 4.5em;
-	height: 4.5em;
-	position: relative;
-`
-
-const Picture = styled.img`
-	width: 100%;
-	height: 100%;
-	border-radius: 50%;
-`
-
 const VerifiedWrapper = styled(MuiIconBox)`
 	position: absolute;
-	right: 0;
-	bottom: 0;
+	right: -0.5em;
+	bottom: -0.5em;
+	border-radius: 50%;
+	border: solid 0.2em ${props => props.theme.bgVariant};
 `
 
 const StudentHero = ({
 	id,
 	moduleId,
 
+	name,
 	firstName,
 	image,
 	onSetSelectedActivity
@@ -52,28 +44,32 @@ const StudentHero = ({
 			ratio={8 / 17}
 			leftStyle={{ padding: '0 4em' }}
 			above={
-				image && (
-					<PicWrapper>
-						<Picture src={image} />
-						<VerifiedWrapper circle width="1.5em">
-							<CheckIcon fontSize="inherit" />
-						</VerifiedWrapper>
-					</PicWrapper>
-				)
+				<Box pos="relative" d="inline-block" mb="1em">
+					<Avatar
+						size="4.5em"
+						name={name}
+						src={image}
+						round
+						textSizeRatio={2.5}
+					/>
+					<VerifiedWrapper circle width="2em">
+						<CheckIcon fontSize="inherit" />
+					</VerifiedWrapper>
+				</Box>
 			}
-			title={'Hi ' + (firstName ? `${firstName},` : '')}
+			title={'Hi ' + (name ? `${firstName},` : '')}
 			description={
 				'You are on your way to becoming a master of Lorem Ipsum. You are on your way to becoming a master of Lorem Ipsum.'
 			}
 		>
-			<Suggested loading={!firstName} id={id} onClickButton={handleResume} />
+			<Suggested loading={!name} id={id} onClickButton={handleResume} />
 		</StyledHero>
 	)
 }
 
 const mapStateToProps = state => {
 	const {
-		studentData: { firstName, image, suggestedActivity }
+		studentData: { firstName, name, image, suggestedActivity }
 	} = state
 
 	const { id, moduleId } = suggestedActivity ?? {}
@@ -81,6 +77,7 @@ const mapStateToProps = state => {
 	return {
 		id,
 		moduleId,
+		name,
 		firstName,
 		image
 	}

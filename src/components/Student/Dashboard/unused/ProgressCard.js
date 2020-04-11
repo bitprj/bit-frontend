@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import BrickWall from '../../../../assets/icons/unused/brickwall'
 import GitHub from '../../../../assets/icons/github'
-import Button from '../../../shared/gadgets/Button'
+import Button from '../../../shared/low/Button'
 
 import withApiCache, { CACHE_ACTIVITY } from '../../../HOC/WithApiCache'
 

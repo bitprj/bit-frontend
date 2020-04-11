@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
 
-import Button from '../../../../shared/gadgets/Button'
-import Icon from '../../../../shared/gadgets/Icon'
+import Button from '../../../../shared/low/Button'
+import Icon from '../../../../shared/low/Icon'
 
 import { initSubmitCheckpointProgress } from '../../../../../redux/actions/learnData'
 
