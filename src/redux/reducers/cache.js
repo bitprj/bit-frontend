@@ -51,7 +51,7 @@ const reducer = (state = initialState, action) => {
 			if (action.actionType === 'inprogress') {
 				final = {
 					...final,
-					incompleteActivities: incompleteActivities.filter(
+					incompleteActivities: incompleteActivities?.filter(
 						i => i.id !== action.id
 					),
 					inprogressActivities: (inprogressActivities ?? []).concat([
