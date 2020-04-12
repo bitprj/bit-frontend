@@ -156,7 +156,7 @@ const NavBar = ({ firstName, image, userType, onSetTheme, location }) => {
 					<AlignRight userType={userType}>
 						<NavElement onClick={() => setLogout(true)}>
 							<div style={{ cursor: 'pointer' }}>
-								<ProfPic src={image} name={firstName} />
+								<ProfPic src={image} name={firstName} size="2em" />
 							</div>
 						</NavElement>
 					</AlignRight>

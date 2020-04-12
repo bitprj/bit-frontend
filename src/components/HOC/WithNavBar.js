@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import NavBar from '../NavBar/NavBar'
 
 const Main = styled.main`
-	background-color: ${props => props.theme.bgPage};
+	background-color: #f9fafa;
 	position: relative;
 `
 

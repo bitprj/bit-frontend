@@ -1,7 +1,7 @@
 import { backend } from './AxiosInstances'
 
 export const checkLogin = () => {
-	const endpoint = 'protected'
+	const endpoint = '/protected'
 	return backend.get(endpoint)
 }
 
