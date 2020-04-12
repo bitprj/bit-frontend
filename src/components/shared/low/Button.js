@@ -87,6 +87,7 @@ const Button = props => {
 			rounder={props.rounder}
 			noOutline={props.noOutline}
 			onClick={props.onClick}
+			{...props}
 		>
 			{props.children}
 		</RenderedButton>

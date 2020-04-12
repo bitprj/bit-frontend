@@ -173,10 +173,8 @@ export const GlobalStyle = createGlobalStyle`
   .hover-strong-lift:hover {
     box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.1);
   }
-  .strong-lift-bottom {
-    box-shadow: 0px 4px 1.5em -1.5em rgba(0, 0, 0, 0.1);
-  }
-  .big-lift {
+  .big-lift,
+  .hover-big-lift:hover {
     box-shadow: 0px 4px 1.5em rgba(0, 0, 0, 0.15);
   }
   .hover-lift:hover .lift {
