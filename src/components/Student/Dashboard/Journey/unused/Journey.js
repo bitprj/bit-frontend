@@ -1,13 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import TextField from '@material-ui/core/TextField'
 import ActivityCard from './ActivityCard'
-import QuickAction from '../../../../shared/containers/QuickAction'
-import Button from '../../../../shared/low/Button'
-
-import { joinClassroom } from '../../../../../services/StudentService'
 
 const Container = styled.div`
 	padding-bottom: 6em;
@@ -27,10 +22,6 @@ const ColTwo = styled.div`
 	flex: 1;
 	position: relative;
 	top: 5em;
-`
-
-const StyledButton = styled(Button)`
-	position: absolute;
 `
 
 const Journey = ({ inprogressModules }) => {
@@ -62,40 +53,8 @@ const Journey = ({ inprogressModules }) => {
 			)
 		})
 
-	const [classCode, setClassCode] = useState()
-
-	const action = () =>
-		joinClassroom(classCode).then(res => {
-			const success =
-				!res.response?.status &&
-				(!res.message?.includes('Error') || !res.msg?.includes('Error'))
-			if (success) {
-				window.location.replace('/')
-			}
-		})
-
 	return (
 		<Container>
-			<QuickAction
-				action={action}
-				title={'Join Classroom'}
-				field={
-					<div style={{ marginBottom: '1em' }}>
-						<TextField
-							variant="outlined"
-							type="text"
-							label="Class Code"
-							onChange={e => {
-								setClassCode(e.target.value)
-							}}
-						/>
-					</div>
-				}
-				buttonText="Join"
-			>
-				<StyledButton>Join Classroom</StyledButton>
-			</QuickAction>
-
 			<ColOne>
 				{/* <PickCard /> */}
 				{colOne}

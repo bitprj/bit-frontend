@@ -9,7 +9,7 @@ import ProgressBar from '../../../shared/low/ProgressBar'
 
 const Floating = ({ ...props }) => {
 	return (
-		<Box className="strong-lift" fontSize="70%" w="30em" bg="white" {...props}>
+		<Box className="big-lift" fontSize="70%" w="30em" bg="white" {...props}>
 			<Box pt="2.5em" px="3em">
 				{/* Heading */}
 				<Heading as="h1" mt={0} mb="1em" fontSize="1.8em">
@@ -25,8 +25,8 @@ const Floating = ({ ...props }) => {
 						Lorem Ipsum
 					</Text>
 
-					{/* ProgressBar TODO not working */}
-					<Box p="1.5em 0">
+					{/* ProgressBar */}
+					<Box m="2em 0">
 						<ProgressBar value={20} h="0.5em" color="theme.mild" />
 						<Stack isInline align="center" mt="0.4em" ml={3}>
 							<Box size={2} rounded="50%" bg="theme.mild" />
@@ -65,28 +65,28 @@ const Floating = ({ ...props }) => {
 					{/* Topics */}
 					<Grid m="0" mt="1em" templateColumns="1fr 1fr" gap="1em">
 						<Stack isInline spacing="0.4em" align="center">
-							<Box as={GitHubIcon} size="0.8em" color="theme.accent" />
+							<Box as={GitHubIcon} size="1.2em" color="theme.accent" />
 							<Text m="0" fontSize="0.8em">
 								GitHub
 							</Text>
 						</Stack>
 
 						<Stack isInline spacing="0.4em" align="center">
-							<Box as={GitHubIcon} size="0.8em" color="theme.accent" />
+							<Box as={GitHubIcon} size="1.2em" color="theme.accent" />
 							<Text m="0" fontSize="0.8em">
 								GitHub
 							</Text>
 						</Stack>
 
 						<Stack isInline spacing="0.4em" align="center">
-							<Box as={GitHubIcon} size="0.8em" color="theme.accent" />
+							<Box as={GitHubIcon} size="1.2em" color="theme.accent" />
 							<Text m="0" fontSize="0.8em">
 								GitHub
 							</Text>
 						</Stack>
 
 						<Stack isInline spacing="0.4em" align="center">
-							<Box as={GitHubIcon} size="0.8em" color="theme.accent" />
+							<Box as={GitHubIcon} size="1.2em" color="theme.accent" />
 							<Text m="0" fontSize="0.8em">
 								GitHub
 							</Text>
@@ -96,17 +96,17 @@ const Floating = ({ ...props }) => {
 			</Box>
 
 			{/* World Info */}
-			<Flex p="1em" bg="gray.50" justify="center">
-				<Stack isInline spacing="0.5em" align="center">
-					<Box as={GitHubIcon} size="1.5em" color="theme.accent" />
-					<Stack>
+			<Flex p="1.5em" bg="gray.50" justify="center">
+				<Stack isInline spacing="1.2em" align="center">
+					<Box as={GitHubIcon} size="2.4em" color="theme.accent" />
+					<Box>
 						<Heading as="h2" fontSize="1em" m="0">
 							Frontend Engineering
 						</Heading>
 						<Text fontSize="0.8em" m="0">
 							Focus in React.js
 						</Text>
-					</Stack>
+					</Box>
 				</Stack>
 			</Flex>
 		</Box>
