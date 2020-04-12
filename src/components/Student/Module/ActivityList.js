@@ -71,17 +71,17 @@ const ActivityItem = withApiCache([CACHE_ACTIVITY])(
 		const showStatusIcon = () => {
 			switch (status) {
 				case 'completed':
-					return <DoneIcon htmlColor={themeContext.accent} fontSize="inherit" />
+					return <DoneIcon htmlColor={themeContext.accent} />
 				case 'inprogress':
 					return (
 						<DotIcon
 							htmlColor={themeContext.accentVariant}
-							fontSize="inherit"
+							
 						/>
 					)
 				case 'incomplete':
 				default:
-					return <DotIcon htmlColor="#ebebeb" fontSize="inherit" />
+					return <DotIcon htmlColor="#ebebeb" />
 			}
 		}
 

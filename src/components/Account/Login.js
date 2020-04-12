@@ -39,7 +39,7 @@ export const Submit = ({ disabled, error, onClick }) => {
 			dark={error ? themeContext.muted.red : undefined}
 			onClick={onClick}
 		>
-			<ArrowRight fontSize="inherit" />
+			<ArrowRight />
 		</SubmitButton>
 	)
 }

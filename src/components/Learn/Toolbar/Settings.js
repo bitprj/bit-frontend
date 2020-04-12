@@ -46,7 +46,7 @@ const Settings = ({ activityId }) => {
 			field={<p>Reset your progress for this activity?</p>}
 		>
 			<IconWrapper>
-				<SettingsIcon fontSize="inherit" htmlColor="#fff" />
+				<SettingsIcon htmlColor="#fff" />
 			</IconWrapper>
 		</QuickAction>
 	) : null

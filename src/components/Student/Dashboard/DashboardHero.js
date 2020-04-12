@@ -53,7 +53,7 @@ const StudentHero = ({
 						textSizeRatio={2.5}
 					/>
 					<VerifiedWrapper circle width="2em">
-						<CheckIcon fontSize="inherit" />
+						<CheckIcon />
 					</VerifiedWrapper>
 				</Box>
 			}

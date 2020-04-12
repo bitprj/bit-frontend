@@ -99,7 +99,7 @@ const LockedHintSection = ({
 						<h3>
 							<AnimatingIconLine
 								reverse
-								icon={<ArrowForwardIcon fontSize="inherit" />}
+								icon={<ArrowForwardIcon />}
 							>
 								How it works
 							</AnimatingIconLine>

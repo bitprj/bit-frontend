@@ -90,13 +90,13 @@ const ThreeCheckbox = ({
 	const selectState = () => {
 		switch (state) {
 			case true: {
-				return <Pass fontSize="inherit" />
+				return <Pass />
 			}
 			case false: {
-				return <Fail fontSize="inherit" />
+				return <Fail />
 			}
 			default:
-				return <None fontSize="inherit" />
+				return <None />
 		}
 	}
 

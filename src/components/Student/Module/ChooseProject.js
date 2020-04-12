@@ -82,7 +82,7 @@ const WacProjectBox = withApiCache([CACHE_ACTIVITY])(
 				title={name}
 				description={description}
 				src={image}
-				buttonIcon={<NextIcon fontSize="inherit" />}
+				buttonIcon={<NextIcon />}
 				onClick={() => {
 					setOpenActivity(true)
 					setSelectedActivity({ ...activity, status })
@@ -133,7 +133,7 @@ const ChooseProject = ({
 						</>
 					}
 					src="https://i.imgur.com/u7s49uD.png"
-					buttonIcon={<AddIcon fontSize="inherit" />}
+					buttonIcon={<AddIcon />}
 					onClick={() => setOpenProject(true)}
 				/>
 				{chosenProject && (

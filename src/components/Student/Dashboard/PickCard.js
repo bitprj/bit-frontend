@@ -31,7 +31,7 @@ const PickCard = ({}) => {
 					Choose a module and learn an interesting tidbit about python
 				</p>
 				<ButtonContainer width={'2em'}>
-					<AddIcon fontSize="inherit" />
+					<AddIcon />
 				</ButtonContainer>
 			</div>
 		</Container>

@@ -53,11 +53,11 @@ const PassedLine = ({ className, error, score = '0/0', pass, onClick }) => (
 		icon={
 			pass ? (
 				<FilledGradientIconWrapper circle width="2em">
-					<CheckIcon fontSize="inherit" />
+					<CheckIcon />
 				</FilledGradientIconWrapper>
 			) : (
 				<UnfilledGradientIconWrapper circle width="2em">
-					<CloseIcon fontSize="inherit" />
+					<CloseIcon />
 				</UnfilledGradientIconWrapper>
 			)
 		}

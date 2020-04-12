@@ -52,7 +52,7 @@ const QuickAction = ({
 			<div style={{ cursor: 'pointer' }} onClick={() => setOpen(true)}>
 				{children || (
 					<IconWrapper>
-						<ActionsIcon fontSize="inherit" htmlColor="#000" />
+						<ActionsIcon htmlColor="#000" />
 					</IconWrapper>
 				)}
 			</div>

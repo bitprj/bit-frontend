@@ -193,6 +193,9 @@ export const GlobalStyle = createGlobalStyle`
   /**
    * Externals
    */
+  body .MuiSvgIcon-root {
+    font-size: inherit;
+  }
 	.react-images__view-image {
 		margin: 0 auto;
   }
