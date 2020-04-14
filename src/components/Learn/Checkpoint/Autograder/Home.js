@@ -7,13 +7,13 @@ import CloseIcon from '@material-ui/icons/CloseRounded'
 
 import Icon from '../../../shared/low/Icon'
 import IconArea from '../../../shared/low/IconArea'
-import MuiIconBox from '../../../shared/high/MuiIconBox'
+import MuiIconFormatter from '../../../shared/high/MuiIconFormatter'
 import TwoPanel from '../../../shared/containers/TwoPanel'
 
 import { CLI, UPLOAD, AUTOGRADER } from '../Checkpoint'
 
 const cliSvg = require('../../../../assets/icons/cli.svg')
-const uploadCardsSvg = require('../../../../assets/icons/upload-cards.svg')
+const uploadCardsSvg = require('../../../../assets/icons/split-cards.svg')
 
 const PassedLineIconArea = styled(IconArea)`
 	width: fit-content;
@@ -29,7 +29,7 @@ const PassedLineIconArea = styled(IconArea)`
 	}
 `
 
-const FilledGradientIconWrapper = styled(MuiIconBox)`
+const FilledGradientIconWrapper = styled(MuiIconFormatter)`
 	position: relative;
 	z-index: 1;
 	background: linear-gradient(
@@ -38,7 +38,7 @@ const FilledGradientIconWrapper = styled(MuiIconBox)`
 		#79b8ff 100%
 	);
 `
-const UnfilledGradientIconWrapper = styled(MuiIconBox)`
+const UnfilledGradientIconWrapper = styled(MuiIconFormatter)`
 	position: relative;
 	z-index: 1;
 	border: 0.1em solid ${props => props.theme.accent};
@@ -67,7 +67,7 @@ const PassedLine = ({ className, error, score = '0/0', pass, onClick }) => (
 	</PassedLineIconArea>
 )
 
-const UnloadedCircle = styled(MuiIconBox)`
+const UnloadedCircle = styled(MuiIconFormatter)`
 	position: relative;
 	z-index: 1;
 	border: 0.1em solid ${props => props.theme.offFont};

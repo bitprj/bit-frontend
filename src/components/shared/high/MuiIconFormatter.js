@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
-const MuiIconBox = styled.div`
+const MuiIconFormatter = styled.div.attrs(props => ({
+	width: props.size ?? props.width
+}))`
 	margin: 0 auto;
 	padding: calc(${props => props.width} / 7.5);
 	width: ${props => props.width};
@@ -19,4 +21,4 @@ const MuiIconBox = styled.div`
 	}
 `
 
-export default MuiIconBox
+export default MuiIconFormatter

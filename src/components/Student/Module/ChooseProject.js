@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add'
 import NextIcon from '@material-ui/icons/NavigateNextRounded'
 
 import ProjectModal from './ProjectModal'
-import MuiIconBox from '../../shared/high/MuiIconBox'
+import MuiIconFormatter from '../../shared/high/MuiIconFormatter'
 
 import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 
@@ -29,7 +29,7 @@ const Project = styled.div`
 	}
 `
 
-const ButtonContainer = styled(MuiIconBox)`
+const ButtonContainer = styled(MuiIconFormatter)`
 	margin: 3.5em auto 2.5em;
 	position: relative;
 	z-index: 1;

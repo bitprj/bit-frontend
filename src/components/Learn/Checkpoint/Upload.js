@@ -11,7 +11,7 @@ import { initSubmitCheckpointProgress } from '../../../redux/actions/learnData'
 
 import { LOADING } from './Checkpoint'
 
-const uploadCardsSvg = require('../../../assets/icons/upload-cards.svg')
+const uploadCardsSvg = require('../../../assets/icons/split-cards.svg')
 
 const selectColor = props => {
 	if (props.isDragAccept) {

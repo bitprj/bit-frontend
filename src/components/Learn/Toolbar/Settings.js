@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import SettingsIcon from '@material-ui/icons/Settings'
 
-import QuickAction from '../../shared/containers/QuickAction'
+import QuickAction from '../../shared/high/QuickAction'
 import Button from '../../shared/low/Button'
 
 import { deleteActivityProgress } from '../../../services/LearnService'
