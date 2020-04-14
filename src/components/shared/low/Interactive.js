@@ -1,17 +1,36 @@
 import React from 'react'
-import { Box } from '@chakra-ui/core'
-import styled from '@emotion/styled'
+import { PseudoBox } from '@chakra-ui/core'
+import styled from 'styled-components'
 
-const Rendered = styled(Box)`
+const Rendered = styled(PseudoBox)`
 	transition: 250ms all;
+	cursor: pointer;
+	outline: 0;
 
-	:focus {
-		box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6);
+	&.interactive:focus {
+		box-shadow: 0 0 0 3px ${props => props.theme.accentVariant};
 	}
 `
 
-const Interactive = ({ ...props }) => {
-	return <Rendered tabIndex="0" outline="0" {...props} />
+const Interactive = ({ className, onKeyDown, onClick, ...props }) => {
+	return (
+		<Rendered
+			className={`interactive ${className ?? ''}`}
+			tabIndex="0"
+			onKeyDown={e => {
+				switch (e.key) {
+					case ' ':
+					case 'Enter':
+						e.preventDefault()
+						onClick()
+					default:
+						break
+				}
+			}}
+			onClick={onClick}
+			{...props}
+		/>
+	)
 }
 
 export default Interactive

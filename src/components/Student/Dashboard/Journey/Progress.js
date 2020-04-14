@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import { Box, Flex, Stack, Heading, Text } from '@chakra-ui/core'
+import { Box, Flex, Stack, Heading } from '@chakra-ui/core'
+import styled from 'styled-components'
 
 import GitHubIcon from '@material-ui/icons/GitHub'
-import CheckIcon from '@material-ui/icons/CheckRounded'
-import DotIcon from '@material-ui/icons/FiberManualRecord'
 
 import ActivityModal from '../../Module/ActivityModal'
-import ActivityList from './ActivityList'
+import ProgressItem, { ProgressGroup } from './ProgressItem'
+
 import ProgressBar from '../../../shared/low/ProgressBar'
+import MuiIconFormatter from '../../../shared/high/MuiIconFormatter'
 
 import withApiCache, {
 	CACHE_MODULE,
@@ -17,22 +18,20 @@ import withApiCache, {
 export const TYPE_PREVIEW = 0
 export const TYPE_JOURNEY = 1
 
-const ProgressItem = ({ status = '' }) => {
-	return (
-		<Stack isInline>
-			<Box as={CheckIcon}></Box>
-			<Text>Recursion and Stack</Text>
-		</Stack>
-	)
-}
+const ProjectProgressGroup = styled(ProgressGroup)`
+	margin-left: -0.55em;
+	margin-top: -0.9em;
+`
 
 const Progress = ({
 	id,
 	wac_data: [modu1e, moduleProgress],
 
-	type = TYPE_PREVIEW,
-	reverse
+	className,
+	variant = TYPE_PREVIEW
 }) => {
+	const reverse = variant === TYPE_JOURNEY
+
 	const { name, description, gemsNeeded, activities: activityIds } =
 		modu1e ?? {}
 	const {
@@ -85,87 +84,68 @@ const Progress = ({
 
 	return (
 		<>
-			<Flex direction={!reverse ? 'column' : 'column-reverse'} maxW="20em">
-				{/* Title Area */}
-				<Stack isInline spacing="1.5em" align="center">
-					<Box
-						as={GitHubIcon}
-						size="3em"
-						color="white"
-						bg="theme.accentVariant"
-						borderRadius="50%"
-						p="0.3em"
-					/>
-					<Box>
-						<Heading as="h2" fontSize="1em" m="0">
-							{name}
-						</Heading>
-						<Text fontSize="0.8em" m="0">
-							Focus in React.js
-						</Text>
-					</Box>
-				</Stack>
+			<Flex
+				className={className ?? ''}
+				direction={!reverse ? 'column' : 'column-reverse'}
+				maxW="20em"
+			>
+				<TitleArea title={name} />
 
+				{/* Activity Area */}
 				<Stack isInline spacing="1.6em" py="2em" pos="relative">
-					{/* Vertical ProgressBar */}
-					<ProgressBar
-						orientation="vertical"
+					<VerticalProgress
 						reverse={reverse}
-						value={calculateProgressPercent('completed')}
-						midValue={
-							calculateProgressPercent('inprogress') +
-							calculateProgressPercent('completed')
-						}
-						w="0.2em"
-						m="1.4em"
+						calculateProgressPercent={calculateProgressPercent}
 					/>
 
-					{/* List of Activities */}
-					<Stack>
-						<ActivityList
-							reverse={reverse}
-							activityIds={
-								isModuleProgressReady
-									? getTrueActivityIdsWithProgress()
-									: getTrueActivityIds()
-							}
-							selectedActivityId={selectedActivity?.id}
-							setOpenActivity={setOpenActivity}
-							setSelectedActivity={setSelectedActivity}
-						/>
-					</Stack>
-
-					{/* Upper Starting ProgressBar */}
-					<ProgressBar
-						orientation="vertical"
-						reverse={reverse}
-						value={isModuleProgressReady && 100}
-						w="0.2em"
-						h="3.5em"
-						m="0 1.4em"
-						pos="absolute"
-						top={!reverse && 0}
-						bottom={reverse && 0}
-					/>
-
-					{/* Lower Finalizing ProgressBar */}
-					<ProgressBar
-						orientation="vertical"
-						reverse={reverse}
-						value={calculateProgressPercent('completed') > 100 && 100}
-						midValue={
-							calculateProgressPercent('inprogress') +
-								calculateProgressPercent('completed') >
-								100 && 100
-						}
-						w="0.2em"
-						h="3.5em"
-						m="0 1.4em"
-						pos="absolute"
-						top={reverse && 0}
-						bottom={!reverse && 0}
-					/>
+					<ProgressGroup reverse={reverse}>
+						{(isModuleProgressReady
+							? getTrueActivityIdsWithProgress()
+							: getTrueActivityIds()
+						)?.map(activity => {
+							const { id, status } = activity ?? {}
+							return (
+								<ProgressItem
+									key={`module-activityitem-${id}`}
+									id={id}
+									status={status}
+									selectedActivityId={selectedActivity?.id}
+									setOpenActivity={setOpenActivity}
+									setSelectedActivity={setSelectedActivity}
+								/>
+							)
+						})}
+					</ProgressGroup>
 				</Stack>
+
+				<ProjectProgressGroup reverse={reverse} spacing="1em">
+					{(isModuleProgressReady
+						? getProjectIdsWithProgress()
+						: getProjectIds()
+					)?.map((activity, i) => {
+						const { id, status } = activity ?? {}
+						const isFirst = i === 0
+						return (
+							<ProgressItem
+								key={`module-activityitem-${id}`}
+								iconUrl={require('../../../../assets/icons/cards.svg')}
+								isFirst={isFirst}
+								id={id}
+								status={status}
+								selectedActivityId={selectedActivity?.id}
+								setOpenActivity={setOpenActivity}
+								setSelectedActivity={setSelectedActivity}
+							/>
+						)
+					})}
+
+					<ProgressItem
+						key={`module-activityitem-${id}`}
+						iconUrl={require('../../../../assets/icons/cards.svg')}
+						isPickAModule
+						onClick={() => {}}
+					/>
+				</ProjectProgressGroup>
 			</Flex>
 
 			<ActivityModal
@@ -185,3 +165,76 @@ const Progress = ({
 }
 
 export default withApiCache([CACHE_MODULE, CACHE_MODULE_PROGRESS])(Progress)
+
+const TitleArea = ({ title, subtitle, ...props }) => {
+	return (
+		<Stack isInline spacing="1.5em" align="center" {...props}>
+			<Box
+				as={GitHubIcon}
+				size="3em"
+				color="white"
+				bg="theme.accentVariant"
+				borderRadius="50%"
+				p="0.3em"
+			/>
+			<Box>
+				<Heading as="h2" fontSize="1em" m="0">
+					{title}
+				</Heading>
+				{/* <Text fontSize="0.8em" m="0">
+					Focus in React.js
+				</Text> */}
+			</Box>
+		</Stack>
+	)
+}
+
+const VerticalProgress = ({ reverse, calculateProgressPercent, ...props }) => {
+	return (
+		<>
+			{/* Middle ProgressBar */}
+			<ProgressBar
+				orientation="vertical"
+				reverse={reverse}
+				value={calculateProgressPercent('completed')}
+				midValue={
+					calculateProgressPercent('inprogress') +
+					calculateProgressPercent('completed')
+				}
+				w="0.2em"
+				m="1.4em"
+			/>
+
+			{/* Upper Starting ProgressBar */}
+			<ProgressBar
+				orientation="vertical"
+				reverse={reverse}
+				value={100}
+				w="0.2em"
+				h="3.5em"
+				m="0 1.4em"
+				pos="absolute"
+				top={!reverse && 0}
+				bottom={reverse && 0}
+			/>
+
+			{/* Lower Finalizing ProgressBar */}
+			<ProgressBar
+				orientation="vertical"
+				reverse={reverse}
+				value={calculateProgressPercent('completed') > 100 && 100}
+				midValue={
+					calculateProgressPercent('inprogress') +
+						calculateProgressPercent('completed') >
+						100 && 100
+				}
+				w="0.2em"
+				h="3.5em"
+				m="0 1.4em"
+				pos="absolute"
+				top={reverse && 0}
+				bottom={!reverse && 0}
+			/>
+		</>
+	)
+}
