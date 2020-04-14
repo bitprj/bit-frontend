@@ -39,7 +39,7 @@ const ActivityCard = ({ isLast, isLeft, id, name }) => {
 						<StatusIcon type="incomplete" width={'2em'} />
 						<h2 style={{ margin: '0.5em 0', fontSize: '115%' }}>{name}</h2>
 						<p style={{ fontSize: '85%', margin: 0 }}>
-							Choose a module to learn an interesting tidbit about Python
+							{/* Choose a module to learn an interesting tidbit about Python */}
 						</p>
 					</div>
 				</RenderActivityCard>
