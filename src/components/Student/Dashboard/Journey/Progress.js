@@ -16,7 +16,6 @@ import {
 } from './ProgressItem'
 
 import ProgressBar from '../../../shared/low/ProgressBar'
-import MuiIconFormatter from '../../../shared/high/MuiIconFormatter'
 
 import withApiCache, {
 	CACHE_MODULE,
@@ -27,8 +26,8 @@ export const TYPE_PREVIEW = 0
 export const TYPE_JOURNEY = 1
 
 const ProjectProgressGroup = styled(ProgressGroup)`
-	margin-left: -0.55em;
-	margin-top: -0.9em;
+  margin: -0.9em -0.55em;
+  margin-right: 0;
 `
 
 const Progress = ({
@@ -46,10 +45,8 @@ const Progress = ({
 		incompleteActivities,
 		inprogressActivities,
 		completedActivities,
-		chosenProjects
-  } = moduleProgress ?? {}
-  
-  console.log(chosenProjects)
+		chosenProjects: chosenProjectIds
+	} = moduleProgress ?? {}
 
 	const isModuleProgressReady = !!moduleProgress
 
@@ -81,6 +78,15 @@ const Progress = ({
 	const getTrueActivityIds = () => activityIds?.filter(a => !a.isProject)
 	const getTrueActivityIdsWithProgress = () =>
 		getActivityIdsWithProgress()?.filter(a => !a.isProject)
+
+	const getChosenProjectsWithProgress = () => {
+		const projectIdsWithProgress = getProjectIdsWithProgress()
+		return chosenProjectIds?.map(chosen => {
+			for (const project of projectIdsWithProgress) {
+				if (chosen.id === project.id) return project
+			}
+		})
+	}
 
 	const calculateProgressPercent = statusType => {
 		const trueActIds = getTrueActivityIdsWithProgress()
@@ -130,10 +136,7 @@ const Progress = ({
 				</Stack>
 
 				<ProjectProgressGroup reverse={reverse} spacing="1em">
-					{(isModuleProgressReady
-						? getProjectIdsWithProgress()
-						: getProjectIds()
-					)?.map((activity, i) => {
+					{getChosenProjectsWithProgress()?.map((activity, i) => {
 						const { id, status } = activity ?? {}
 						return (
 							<ProjectProgressItem
@@ -178,12 +181,13 @@ const Progress = ({
 			/>
 
 			<ProjectModal
-				moduleId={id}
 				open={openProjectSelection}
 				closed={() => setOpenProjectSelection(false)}
+				moduleId={id}
 				projectIds={
 					isModuleProgressReady ? getProjectIdsWithProgress() : getProjectIds()
 				}
+				chosenProjectIds={chosenProjectIds}
 			/>
 		</>
 	)
