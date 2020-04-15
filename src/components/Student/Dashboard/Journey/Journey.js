@@ -6,8 +6,6 @@ import Floating from './Floating'
 import Progress, { TYPE_JOURNEY } from './Progress'
 
 const Journey = ({ inprogressModules }) => {
-	console.log(inprogressModules)
-
 	return (
 		<Stack isInline spacing="6em" justify="center" align="center" m="3em">
 			<Floating />
