@@ -3,9 +3,17 @@ import { Box, Flex, Stack, Heading } from '@chakra-ui/core'
 import styled from 'styled-components'
 
 import GitHubIcon from '@material-ui/icons/GitHub'
+import IconWithProgress from '../../../shared/high/IconWithProgress'
 
 import ActivityModal from '../../Module/ActivityModal'
-import ProgressItem, { ProgressGroup } from './ProgressItem'
+import ProjectModal from '../../Module/ProjectModal'
+
+import {
+	ProgressGroup,
+	Item,
+	ActivityProgressItem,
+	ProjectProgressItem
+} from './ProgressItem'
 
 import ProgressBar from '../../../shared/low/ProgressBar'
 import MuiIconFormatter from '../../../shared/high/MuiIconFormatter'
@@ -38,12 +46,15 @@ const Progress = ({
 		incompleteActivities,
 		inprogressActivities,
 		completedActivities,
-		chosenProject
-	} = moduleProgress ?? {}
+		chosenProjects
+  } = moduleProgress ?? {}
+  
+  console.log(chosenProjects)
 
 	const isModuleProgressReady = !!moduleProgress
 
 	const [openActivity, setOpenActivity] = useState(false)
+	const [openProjectSelection, setOpenProjectSelection] = useState(false)
 	const [selectedActivity, setSelectedActivity] = useState(null)
 
 	/**
@@ -105,7 +116,7 @@ const Progress = ({
 						)?.map(activity => {
 							const { id, status } = activity ?? {}
 							return (
-								<ProgressItem
+								<ActivityProgressItem
 									key={`module-activityitem-${id}`}
 									id={id}
 									status={status}
@@ -124,12 +135,10 @@ const Progress = ({
 						: getProjectIds()
 					)?.map((activity, i) => {
 						const { id, status } = activity ?? {}
-						const isFirst = i === 0
 						return (
-							<ProgressItem
-								key={`module-activityitem-${id}`}
-								iconUrl={require('../../../../assets/icons/cards.svg')}
-								isFirst={isFirst}
+							<ProjectProgressItem
+								key={`module-projectitem-${id}`}
+								iconUrl={require('../../../../assets/icons/split-cards.svg')}
 								id={id}
 								status={status}
 								selectedActivityId={selectedActivity?.id}
@@ -139,11 +148,18 @@ const Progress = ({
 						)
 					})}
 
-					<ProgressItem
-						key={`module-activityitem-${id}`}
-						iconUrl={require('../../../../assets/icons/cards.svg')}
-						isPickAModule
-						onClick={() => {}}
+					{/* Pick A Project */}
+					<Item
+						title="Pick a Project"
+						icon={
+							<IconWithProgress
+								iconUrl={require('../../../../assets/icons/cards.svg')}
+								size="1.75em"
+								midValue={100}
+								value={69}
+							/>
+						}
+						onClick={() => setOpenProjectSelection(true)}
 					/>
 				</ProjectProgressGroup>
 			</Flex>
@@ -159,6 +175,15 @@ const Progress = ({
 				learningObjectives={selectedActivity?.summary}
 				prerequisiteActivities={selectedActivity?.prerequisiteActivities}
 				status={selectedActivity?.status}
+			/>
+
+			<ProjectModal
+				moduleId={id}
+				open={openProjectSelection}
+				closed={() => setOpenProjectSelection(false)}
+				projectIds={
+					isModuleProgressReady ? getProjectIdsWithProgress() : getProjectIds()
+				}
 			/>
 		</>
 	)

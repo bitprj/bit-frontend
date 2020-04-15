@@ -87,7 +87,6 @@ const Nbsp = styled.p`
 
 const FinalProject = ({
 	moduleId,
-	moduleName,
 	projectIds,
 	open,
 	closed,
@@ -106,7 +105,7 @@ const FinalProject = ({
 			<Nbsp>&nbsp;</Nbsp>
 			<h2 style={{ marginBottom: 0 }}>Choose a Project</h2>
 			<p>
-				Choose a Project to practice your newfound knowledge in {moduleName}.
+				Choose a Project to practice your newfound knowledge in this module.
 			</p>
 		</>
 	)

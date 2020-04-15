@@ -9,6 +9,7 @@ const Container = styled.div`
 	width: ${props => props.size};
 	height: ${props => props.size};
 	position: relative;
+	border-radius: 50%;
 `
 
 const FullAbsolute = styled.div`
@@ -32,6 +33,7 @@ const IconWithProgress = ({
 	thickness = 3,
 	midValue,
 	value,
+	color,
 
 	...props
 }) => {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Box, Stack, Text } from '@chakra-ui/core'
+import { Stack, Text } from '@chakra-ui/core'
 import styled from 'styled-components'
 import Skeleton from '@material-ui/lab/Skeleton'
 
@@ -70,14 +70,24 @@ export const ProgressGroup = ({
 	)
 }
 
+export const Item = ({ className, title, icon, ...props }) => {
+	return (
+		<RenderedItem className={`hover-strong-lift ${className ?? ''}`} {...props}>
+			<IconSpacer>{icon}</IconSpacer>
+			<Text m="0" fontSize="0.8em">
+				{title}
+			</Text>
+		</RenderedItem>
+	)
+}
+
 const ProgressItem = withApiCache([CACHE_ACTIVITY])(
 	({
 		id,
 		wac_data: [activity],
 
+		icon,
 		status,
-		iconUrl,
-		isPickAModule,
 		selectedActivityId,
 		setOpenActivity,
 		setSelectedActivity,
@@ -104,62 +114,73 @@ const ProgressItem = withApiCache([CACHE_ACTIVITY])(
 			})
 		}
 
-		const showIcon = () => {
-			if (iconUrl) {
-				return (
-					<IconWithProgress
-						iconUrl={iconUrl}
-						size="1.75em"
-						midValue={100}
-						value={isPickAModule ? 100 : 69}
-					/>
-				)
-			}
-
-			switch (status) {
-				case 'completed':
-					return (
-						<DoneIconWrapper size="1.5em" circle>
-							<DoneIcon />
-						</DoneIconWrapper>
-					)
-				case 'inprogress':
-					return (
-						<ProgressCircle
-							size="1.25em"
-							color="white"
-							thickness={22}
-							midValue={100}
-							value={69}
-						/>
-					)
-				case 'incomplete':
-					return <IncompleteIcon size="1.25em" />
-				default:
-					return (
-						<Skeleton
-							variant="circle"
-							width="1.25em"
-							height="1.25em"
-							animation="wave"
-						/>
-					)
-			}
-		}
-
 		return (
-			<RenderedItem
-				className={`hover-strong-lift ${className ?? ''}`}
+			<Item
+				icon={icon}
+				title={name}
 				onClick={handleSetSelectedActivity}
 				{...props}
-			>
-				<IconSpacer>{showIcon()}</IconSpacer>
-				<Text m="0" fontSize="0.8em">
-					{isPickAModule ? 'Pick a Module' : name}
-				</Text>
-			</RenderedItem>
+			/>
 		)
 	}
 )
 
 export default ProgressItem
+
+export const ActivityProgressItem = ({ status, ...props }) => {
+	const icon = (() => {
+		switch (status) {
+			case 'completed':
+				return (
+					<DoneIconWrapper size="1.5em" circle>
+						<DoneIcon />
+					</DoneIconWrapper>
+				)
+			case 'inprogress':
+				return (
+					<ProgressCircle
+						size="1.25em"
+						color="white"
+						thickness={22}
+						midValue={100}
+						value={69}
+					/>
+				)
+			case 'incomplete':
+				return <IncompleteIcon size="1.25em" />
+			default:
+				return (
+					<Skeleton
+						variant="circle"
+						width="1.25em"
+						height="1.25em"
+						animation="wave"
+					/>
+				)
+		}
+	})()
+
+	return <ProgressItem icon={icon} status={status} {...props} />
+}
+
+export const ProjectProgressItem = ({
+	isChooseProject,
+	iconUrl,
+	status,
+	...props
+}) => {
+	const icon = (() => {
+		if (iconUrl) {
+			return (
+				<IconWithProgress
+					iconUrl={iconUrl}
+					size="1.75em"
+					midValue={100}
+					value={69}
+				/>
+			)
+		}
+	})()
+
+	return <ProgressItem icon={icon} status={status} {...props} />
+}
