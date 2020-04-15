@@ -11,7 +11,7 @@ const Journey = ({ inprogressModules }) => {
 	return (
 		<Stack isInline spacing="6em" justify="center" align="center" m="3em">
 			<Floating />
-			<Progress /*variant={TYPE_JOURNEY}*/ id={inprogressModules?.[0]?.id} />
+			<Progress variant={TYPE_JOURNEY} id={inprogressModules?.[0]?.id} />
 		</Stack>
 	)
 }

@@ -8,7 +8,8 @@ const Rendered = styled(PseudoBox)`
 	outline: 0;
 
 	&.interactive:focus {
-		box-shadow: 0 0 0 3px ${props => props.theme.accentVariant};
+    box-shadow: 0 0 0 3px ${props => props.theme.accentVariant};
+    z-index: 999;
 	}
 `
 

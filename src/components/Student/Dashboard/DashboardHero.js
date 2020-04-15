@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState, useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 import { Box } from '@chakra-ui/core'
 import Avatar from 'react-avatar'
 import { connect } from 'react-redux'
@@ -40,7 +40,6 @@ const StudentHero = ({
 	moduleId,
 
 	name,
-	firstName,
 	image,
 	onSetSelectedActivity
 }) => {
@@ -90,7 +89,7 @@ const StudentHero = ({
 			ratio={8 / 17}
 			leftStyle={{ padding: '0 4em' }}
 			above={
-				<Box pos="relative" d="inline-block" mb="1em">
+				<Box pos="relative" d="inline-block" mb="1em" borderRadius="50%" bg={image && "theme.accentVariant"}>
 					<Avatar
 						size="4.5em"
 						name={name}
@@ -103,11 +102,11 @@ const StudentHero = ({
 					</VerifiedWrapper>
 				</Box>
 			}
-			title={'Hi ' + (name ? `${firstName},` : '')}
+			title={'Hi ' + (name ? `${name?.replace(/ .*/, '')},` : '')}
 			description={
 				'You are on your way to becoming a master of Lorem Ipsum. You are on your way to becoming a master of Lorem Ipsum.'
-      }
-      below={join}
+			}
+			below={join}
 		>
 			<Suggested loading={!name} id={id} onClickButton={handleResume} />
 		</StyledHero>
@@ -116,16 +115,17 @@ const StudentHero = ({
 
 const mapStateToProps = state => {
 	const {
-		studentData: { firstName, name, image, suggestedActivity }
+		account: { user },
+		studentData: { suggestedActivity }
 	} = state
 
+	const { name, image } = user ?? {}
 	const { id, moduleId } = suggestedActivity ?? {}
 
 	return {
 		id,
 		moduleId,
 		name,
-		firstName,
 		image
 	}
 }

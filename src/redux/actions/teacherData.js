@@ -12,8 +12,8 @@ import {
 } from '../../services/TeacherService'
 
 /* ===== INITIALIZATION */
-export const init = () => async dispatch => {
-	const teacherData = await fetchTeacherData()
+export const init = teacherId => async dispatch => {
+	const teacherData = await fetchTeacherData(teacherId)
 	const classroomId = teacherData.classrooms[0].id
 
 	const [classroom, submissions] = await Promise.all([

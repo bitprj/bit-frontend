@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import AuthModal from '../Account/AuthModal'
-import Logout from '../Account/Logout'
-import setTheme from '../../redux/actions/theme'
-import { orange, palepink } from '../../styles/theme'
+import { login } from '../../services/AccountService'
+import { deauthenticate } from '../../redux/actions/account'
 
 import ProfPic from '../shared/low/ProfPic'
 import SearchIcon from '@material-ui/icons/Search'
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import Button from '../shared/low/Button'
 import Icon from '../shared/low/Icon'
 
@@ -32,7 +29,7 @@ const NavElement = styled.div`
 `
 
 const AlignRight = styled.div`
-	${props => (props.userType !== 'STUDENT' ? 'flex-grow: 1;' : '')}
+	${props => (props.isStudent ? '' : 'flex-grow: 1;')}
 	display: flex;
 	justify-content: flex-end;
 `
@@ -74,27 +71,13 @@ const VerticalAlign = styled.div`
 
 const NavButton = styled(Button)`
 	margin: 0 0.5em;
-	padding: 0.4em 0;
-	width: 8em;
+	padding: 0.4em 1em;
+	font-size: 80%;
 `
 
 const styledLink = { color: 'black', textDecoration: 'none' }
 
-const NavBar = ({ firstName, image, userType, onSetTheme, location }) => {
-	const authModal = useMemo(() => {
-		const search = new URLSearchParams(location.search)
-		return search.get('authModal')
-	}, [location.search])
-
-	const [openAuthModal, setOpenAuthModal] = useState(authModal == 'true')
-	const [logout, setLogout] = useState(null)
-
-	useEffect(() => {
-		if (logout) {
-			setLogout(false)
-		}
-	}, [logout])
-
+const NavBar = ({ meta, name, image }) => {
 	return (
 		<>
 			<Nav id="nav-bar">
@@ -109,13 +92,8 @@ const NavBar = ({ firstName, image, userType, onSetTheme, location }) => {
 					</Link>
 				</NavElement>
 
-				{userType === 'STUDENT' && (
+				{meta?.studentId && (
 					<>
-						{/* <NavElement>
-							<Link style={styledLink} to={'/dashboard/'}>
-								Dashboard
-							</Link>
-						</NavElement> */}
 						<NavElement>
 							<Link style={styledLink} to="/explore/">
 								Explore
@@ -144,7 +122,7 @@ const NavBar = ({ firstName, image, userType, onSetTheme, location }) => {
 					</>
 				)}
 
-				{userType === 'TEACHER' && (
+				{meta?.teacherId && (
 					<NavElement>
 						<Link style={styledLink} to="/grade/">
 							Grading
@@ -152,47 +130,43 @@ const NavBar = ({ firstName, image, userType, onSetTheme, location }) => {
 					</NavElement>
 				)}
 
-				{userType === 'STUDENT' || userType === 'TEACHER' ? (
-					<AlignRight userType={userType}>
-						<NavElement onClick={() => setLogout(true)}>
+				{meta?.studentId || meta?.teacherId ? (
+					<AlignRight isStudent={meta?.studentId}>
+						<NavElement onClick={deauthenticate}>
 							<div style={{ cursor: 'pointer' }}>
-								<ProfPic src={image} name={firstName} size="2em" />
+								<ProfPic
+									src={image}
+									name={name?.replace(/ .*/, '')}
+									size="2em"
+								/>
 							</div>
 						</NavElement>
 					</AlignRight>
 				) : null}
 
-				{userType === 'VISITOR' ? (
+				{!meta?.studentId && !meta?.teacherId ? (
 					<AlignRight>
-						{/* <NavButton onClick={() => onSetTheme(palepink)}>
-							Theme
-						</NavButton> */}
-						<NavButton invert onClick={() => setOpenAuthModal(true)}>
-							Login
+						<NavButton invert onClick={login}>
+							Login With GitHub
 						</NavButton>
 					</AlignRight>
 				) : null}
 			</Nav>
-			<AuthModal open={openAuthModal} setOpen={setOpenAuthModal} />
-			{logout && <Logout />}
 		</>
 	)
 }
 const mapStateToProps = state => {
 	const {
-		account: { userType },
-		studentData: { firstName, image }
+		account: { meta, user }
 	} = state
 
+	const { name, image } = user ?? {}
+
 	return {
-		firstName,
-		userType,
+		meta,
+		name,
 		image
 	}
 }
 
-const mapDispatchToProps = dispatch => ({
-	onSetTheme: theme => dispatch(setTheme(theme))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar)
+export default connect(mapStateToProps)(NavBar)

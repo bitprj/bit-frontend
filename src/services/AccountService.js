@@ -1,27 +1,22 @@
-import { backend } from './AxiosInstances'
+import { baseUrl, backend } from './AxiosInstances'
 
-export const checkLogin = () => {
-	const endpoint = '/protected'
+export const fetchMetaData = () => {
+	const endpoint = '/meta'
 	return backend.get(endpoint)
 }
 
-export const login = ({ username, password }) => {
-	const endpoint = '/auth'
-	return backend.post(endpoint, { username, password })
+export const fetchUserData = userId => {
+  const endpoint = `/users/${userId}`
+  return backend.get(endpoint)
 }
 
-export const signUp = ({ name, username, password }) => {
-	const endpoint = '/users/Student/create'
-	return backend.post(endpoint, {
-		name,
-		username,
-		password,
-		image: 'uwu.png',
-		location: 'Davis'
-	})
+export const login = () => {
+	window.location.href = `${baseUrl}/login`
+	// const endpoint = '/login'
+	// return backend.get(endpoint)
 }
 
 export const logout = () => {
-	const endpoint = '/auth'
-	return backend.delete(endpoint)
+	const endpoint = '/logout'
+	return backend.get(endpoint)
 }

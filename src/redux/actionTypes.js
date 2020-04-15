@@ -3,6 +3,7 @@
  */
 export const AUTHENTICATE = 'AUTHENTICATE'
 export const DEAUTHENTICATE = 'DEAUTHENTICATE'
+export const SET_USER_DATA = 'SET_USER_DATA'
 
 /**
  * cache
@@ -20,7 +21,6 @@ export const SET_CURRENT_TOPIC = 'SET_CURRENT_TOPIC'
 export const SET_SUGGESTED_ACTIVITY = 'SET_SUGGESTED_ACTIVITY'
 
 export const INCREMENT_GEMS_BY = 'INCREMENT_GEMS_BY'
-// export const SET_CURRENT_TOPIC_MODULES = "SET_CURRENT_TOPIC_MODULES";
 
 /**
  * teacherData

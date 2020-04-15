@@ -28,11 +28,11 @@ const Container = styled.div`
 	}
 `
 
-const Teacher = ({ isReady, onInit }) => {
+const Teacher = ({ teacherId, isReady, onInit }) => {
 	const containerRef = useRef(null)
 
 	useEffect(() => {
-		onInit()
+		if (teacherId) onInit(teacherId)
 	}, [])
 
 	return (
@@ -47,12 +47,19 @@ const Teacher = ({ isReady, onInit }) => {
 	)
 }
 
-const mapStateToProps = state => ({
-	isReady: !!get(state, 'teacherData.submissions.length')
-})
+const mapStateToProps = state => {
+	const {
+		account: { meta },
+		teacherData: { submissions }
+	} = state
+	return {
+		isReady: !!submissions?.length,
+		teacherId: meta?.teacherId
+	}
+}
 
 const mapDispatchToProps = dispatch => ({
-	onInit: () => dispatch(init())
+	onInit: teacherId => dispatch(init(teacherId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Teacher)
