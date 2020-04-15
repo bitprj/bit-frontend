@@ -4,28 +4,26 @@ import { connect } from 'react-redux'
 
 import Visitor from './Visitor/Visitor'
 
-const Home = ({ userType }) => {
+const Home = ({ meta }) => {
 	const selectHome = () => {
-		switch (userType) {
-			case 'VISITOR':
-				return <Visitor />
-			case 'STUDENT':
-				return <Redirect to="/dashboard/" />
-			case 'TEACHER':
-				return null
-			default:
-				console.log(
-					"[HOME] we shouldn't be here... missing userType?",
-					userType
-				)
-				return null
+		if (!meta) {
+			return <Visitor />
 		}
+		if (meta.studentId) {
+			return <Redirect to="/dashboard/" />
+		}
+		if (meta.teacherId) {
+			return null
+		}
+
+		console.log("[HOME] we shouldn't be here... missing meta?", meta)
+		return null
 	}
 	return <>{selectHome()}</>
 }
 
 const mapStateToProps = state => ({
-	userType: state.account.userType
+	meta: state.account.meta
 })
 
 export default connect(mapStateToProps)(Home)

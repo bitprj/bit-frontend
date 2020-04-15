@@ -3,8 +3,8 @@ import { backend, backendSaves } from './AxiosInstances'
 /**
  * GET request for getting Student data
  */
-export const fetchStudentData = () => {
-	const endpoint = '/students/data'
+export const fetchStudentData = studentId => {
+	const endpoint = `/students/${studentId}`
 	return backend.get(endpoint)
 }
 
@@ -23,9 +23,9 @@ export const setSuggestedActivity = (id, moduleId) =>
 		}
 	})
 
-export const setChosenActivity = (moduleId, chosenActivity) =>
+export const setChosenProjects = (moduleId, chosenProjects) =>
 	updateModuleProgress(moduleId, {
-		chosen_project_id: chosenActivity.id
+		chosen_project_ids: chosenProjects.map(p => p.id)
 	})
 
 const updateStudentData = updates => {
