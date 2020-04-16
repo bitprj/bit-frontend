@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Button from '../../shared/gadgets/Button'
+import Button from '../../shared/low/Button'
 
 import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 

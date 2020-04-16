@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import ImgAndContent from '../../../shared/gadgets/ImgAndContent'
+import ImgAndContent from '../../../shared/low/ImgAndContent'
 
 const cliSvg = require('../../../../assets/icons/cli.svg')
 

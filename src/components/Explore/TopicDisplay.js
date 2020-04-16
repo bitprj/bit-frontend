@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
-import IconLine from '../shared/gadgets/IconLine'
-import Icon from '../shared/gadgets/Icon'
+import IconLine from '../shared/low/IconLine'
+import Icon from '../shared/low/Icon'
 
 const Container = styled.div``
 

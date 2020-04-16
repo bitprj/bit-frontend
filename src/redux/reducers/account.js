@@ -1,9 +1,10 @@
-import { AUTHENTICATE, DEAUTHENTICATE } from '../actionTypes'
+import { AUTHENTICATE, DEAUTHENTICATE, SET_USER_DATA } from '../actionTypes'
 
-const type = localStorage.getItem('userType')
+const storedMeta = localStorage.getItem('meta')
 
 const initialState = {
-	userType: type || 'VISITOR'
+	meta: JSON.parse(storedMeta),
+	user: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -11,13 +12,18 @@ const reducer = (state = initialState, action) => {
 		case AUTHENTICATE:
 			return {
 				...state,
-				userType: action.userType
+				meta: action.meta
 			}
+
 		case DEAUTHENTICATE:
+			return {}
+
+		case SET_USER_DATA:
 			return {
 				...state,
-				userType: 'VISITOR'
+				user: action.userData
 			}
+
 		default:
 			return state
 	}

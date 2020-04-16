@@ -4,14 +4,14 @@ import anime from 'animejs'
 import { useDropzone } from 'react-dropzone'
 import { connect } from 'react-redux'
 
-import Icon from '../../shared/gadgets/Icon'
-import IconArea from '../../shared/gadgets/IconArea'
+import Icon from '../../shared/low/Icon'
+import IconArea from '../../shared/low/IconArea'
 
 import { initSubmitCheckpointProgress } from '../../../redux/actions/learnData'
 
 import { LOADING } from './Checkpoint'
 
-const uploadCardsSvg = require('../../../assets/icons/upload-cards.svg')
+const uploadCardsSvg = require('../../../assets/icons/split-cards.svg')
 
 const selectColor = props => {
 	if (props.isDragAccept) {

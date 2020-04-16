@@ -6,7 +6,7 @@ import {
 
 import {
 	fetchStudentData,
-	setChosenActivity
+	setChosenProjects
 } from '../../services/StudentService'
 import { setSelectedActivity } from './learnData'
 import { saveToCache } from './cache'
@@ -14,13 +14,12 @@ import { CACHE_MODULE_PROGRESS } from '../../components/HOC/WithApiCache'
 
 /* ===== INITIALIZATION */
 
-export const init = () => async dispatch => {
+export const init = studentId => async dispatch => {
 	dispatch({
 		type: RESET_STUDENT_DATA
 	})
 
-	const studentData = await fetchStudentData()
-	const [firstName] = studentData.name.split(' ')
+	const studentData = await fetchStudentData(studentId)
 
 	/**
 	 * TODO TEMPORARY CODE TEMP WARN
@@ -30,7 +29,7 @@ export const init = () => async dispatch => {
 		inprogressModules.push(studentData.incompleteModules[0])
 	}
 
-	dispatch(setStudentData({ ...studentData, firstName, inprogressModules }))
+	dispatch(setStudentData({ ...studentData, inprogressModules }))
 
 	// external
 	dispatch(setSelectedActivity(studentData.suggestedActivity))
@@ -56,16 +55,16 @@ export const updateModuleActivityProgress = (moduleId, id, actionType) => ({
 
 // ===== RUNTIME
 
-export const chooseProject = (moduleId, project) => dispatch => {
+export const chooseProjects = (moduleId, projects) => dispatch => {
 	dispatch(
 		saveToCache(
 			CACHE_MODULE_PROGRESS,
-			{ [moduleId]: { chosenProject: project } },
+			{ [moduleId]: { chosenProjects: projects } },
 			{ merge: true }
 		)
 	)
 
-	setChosenActivity(moduleId, project).then(_ => console.log(_.message))
+	setChosenProjects(moduleId, projects).then(_ => console.log(_.message))
 }
 
 export const incrementGemsBy = gemAmount => ({

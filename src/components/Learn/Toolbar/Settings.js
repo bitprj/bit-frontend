@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 
 import SettingsIcon from '@material-ui/icons/Settings'
 
-import QuickAction from '../../shared/containers/QuickAction'
-import Button from '../../shared/gadgets/Button'
+import QuickAction from '../../shared/high/QuickAction'
+import Button from '../../shared/low/Button'
 
 import { deleteActivityProgress } from '../../../services/LearnService'
 
@@ -46,7 +46,7 @@ const Settings = ({ activityId }) => {
 			field={<p>Reset your progress for this activity?</p>}
 		>
 			<IconWrapper>
-				<SettingsIcon fontSize="inherit" htmlColor="#fff" />
+				<SettingsIcon htmlColor="#fff" />
 			</IconWrapper>
 		</QuickAction>
 	) : null

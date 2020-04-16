@@ -25,17 +25,17 @@ export default function CentralContent({ className, currentButtonState }) {
 	const centralContent = () => {
 		switch (currentButtonState) {
 			case STATE_CHECKPOINT:
-				return <Flag fontSize="inherit" style={{ marginBottom: '0.1em' }} />
+				return <Flag style={{ marginBottom: '0.1em' }} />
 
 			case STATE_CONCEPT:
-				return <Clipboard fontSize="inherit" />
+				return <Clipboard />
 
 			case STATE_HINT:
 			case STATE_NEXT:
-				return <RightArrow fontSize="inherit" />
+				return <RightArrow />
 
 			case STATE_FINISH:
-				return <Finish fontSize="inherit" />
+				return <Finish />
 
 			default:
 				if (currentButtonState !== undefined)

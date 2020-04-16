@@ -4,7 +4,7 @@ import anime from 'animejs'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import Icon from '../../shared/gadgets/Icon'
+import Icon from '../../shared/low/Icon'
 
 const Container = styled.div`
 	position: relative;

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import ActiveList from '../../shared/containers/ActiveList'
 import CardHints from './CardHints'
-import ImgAndContent from '../../shared/gadgets/ImgAndContent'
+import ImgAndContent from '../../shared/low/ImgAndContent'
 
 import { setCurrentCardByIndex } from '../../../redux/actions/learnData'
 

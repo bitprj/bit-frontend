@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import AddIcon from '@material-ui/icons/Add'
-import MuiIconBox from '../../shared/external/MuiIconBox'
+import MuiIconFormatter from '../../shared/high/MuiIconFormatter'
 
 const Container = styled.div`
 	margin-top: 0;
@@ -18,7 +18,7 @@ const Container = styled.div`
 	cursor: pointer;
 `
 
-const ButtonContainer = styled(MuiIconBox)`
+const ButtonContainer = styled(MuiIconFormatter)`
 	margin-top: 1.5em;
 `
 
@@ -31,7 +31,7 @@ const PickCard = ({}) => {
 					Choose a module and learn an interesting tidbit about python
 				</p>
 				<ButtonContainer width={'2em'}>
-					<AddIcon fontSize="inherit" />
+					<AddIcon />
 				</ButtonContainer>
 			</div>
 		</Container>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import Settings from './Settings'
-import Icon from '../../shared/gadgets/Icon'
+import Icon from '../../shared/low/Icon'
 
 const Container = styled.div`
 	display: flex;

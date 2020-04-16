@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 
-import HeaderShadow from '../gadgets/HeaderShadow'
+import HeaderShadow from '../low/HeaderShadow'
 
 const Container = styled.div``
 

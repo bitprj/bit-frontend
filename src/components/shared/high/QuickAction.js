@@ -3,8 +3,8 @@ import styled from 'styled-components'
 
 import ActionsIcon from '@material-ui/icons/RedoRounded'
 
-import DynamicModal from './DynamicModal'
-import Button from '../gadgets/Button'
+import DynamicModal from '../containers/DynamicModal'
+import Button from '../low/Button'
 
 const Container = styled.div`
 	width: 100%;
@@ -52,7 +52,7 @@ const QuickAction = ({
 			<div style={{ cursor: 'pointer' }} onClick={() => setOpen(true)}>
 				{children || (
 					<IconWrapper>
-						<ActionsIcon fontSize="inherit" htmlColor="#000" />
+						<ActionsIcon htmlColor="#000" />
 					</IconWrapper>
 				)}
 			</div>
@@ -60,7 +60,7 @@ const QuickAction = ({
 				open={open}
 				closed={() => setOpen(false)}
 				scaleX={0.6}
-				scaleY={0.5}
+				scaleY={0.6}
 			>
 				<Container>
 					<div style={{ textAlign: 'center' }}>

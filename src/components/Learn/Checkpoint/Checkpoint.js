@@ -17,11 +17,11 @@ import Upload from './Upload'
 import Loading from './Loading'
 
 import Peripheral from '../NextButton/Peripheral'
-import Icon from '../../shared/gadgets/Icon'
-import IconLine from '../../shared/gadgets/IconLine'
+import Icon from '../../shared/low/Icon'
+import IconLine from '../../shared/low/IconLine'
 import DynamicModal from '../../shared/containers/DynamicModal'
-import GradeStatus from '../../shared/gadgets/GradeStatus'
-import Button from '../../shared/gadgets/Button'
+import GradeStatus from '../../shared/high/GradeStatus'
+import Button from '../../shared/low/Button'
 
 import withApiCache, {
 	CACHE_CHECKPOINT,

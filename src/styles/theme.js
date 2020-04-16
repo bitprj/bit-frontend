@@ -44,6 +44,15 @@ export const bitblue = {
 	bgPage: '#f5faff'
 }
 
+export const chakraTheme = {
+	...constant,
+	accent: '#007bed',
+	accentVariant: '#9acfff', //86c5ff
+	bg: '#0a192f',
+	bgVariant: '#172A45',
+	bgPage: '#f5faff'
+}
+
 export const palepink = {
 	...constant,
 	accent: '#db7093',

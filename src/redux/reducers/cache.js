@@ -1,4 +1,4 @@
-import { cloneDeep, merge as mergeDeep } from 'lodash'
+import { cloneDeep, mergeWith as mergeDeep } from 'lodash'
 import { SAVE_TO_CACHE } from '../actionTypes'
 import * as cacheTypes from '../../components/HOC/WithApiCache'
 
@@ -28,7 +28,12 @@ const reducer = (state = initialState, action) => {
 				[action.cacheType]: merge
 					? mergeDeep(
 							cloneDeep(state[action.cacheType]),
-							cloneDeep(action.newLoads)
+							cloneDeep(action.newLoads),
+							(objValue, srcValue) => {
+                if (Array.isArray(srcValue) && srcValue.length === 0) {
+                  return []
+                }
+              }
 					  )
 					: {
 							...action.newLoads,
@@ -51,7 +56,7 @@ const reducer = (state = initialState, action) => {
 			if (action.actionType === 'inprogress') {
 				final = {
 					...final,
-					incompleteActivities: incompleteActivities.filter(
+					incompleteActivities: incompleteActivities?.filter(
 						i => i.id !== action.id
 					),
 					inprogressActivities: (inprogressActivities ?? []).concat([

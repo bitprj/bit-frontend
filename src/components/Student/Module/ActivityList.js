@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 
-import MuiIconBox from '../../shared/external/MuiIconBox'
+import MuiIconFormatter from '../../shared/high/MuiIconFormatter'
 import withApiCache, {
 	CACHE_ACTIVITY,
 	CACHE_ACTIVITY_PROGRESS
@@ -30,7 +30,7 @@ const ProgressWrapper = styled.div`
 	flex-shrink: 0;
 `
 
-const StatusWrapper = styled(MuiIconBox)`
+const StatusWrapper = styled(MuiIconFormatter)`
 	padding: 0.8em;
 	background-color: #fff;
 	font-size: 50%;
@@ -71,17 +71,17 @@ const ActivityItem = withApiCache([CACHE_ACTIVITY])(
 		const showStatusIcon = () => {
 			switch (status) {
 				case 'completed':
-					return <DoneIcon htmlColor={themeContext.accent} fontSize="inherit" />
+					return <DoneIcon htmlColor={themeContext.accent} />
 				case 'inprogress':
 					return (
 						<DotIcon
 							htmlColor={themeContext.accentVariant}
-							fontSize="inherit"
+							
 						/>
 					)
 				case 'incomplete':
 				default:
-					return <DotIcon htmlColor="#ebebeb" fontSize="inherit" />
+					return <DotIcon htmlColor="#ebebeb" />
 			}
 		}
 

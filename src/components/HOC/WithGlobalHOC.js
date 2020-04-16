@@ -4,19 +4,18 @@ import WithStyledTheme from './WithStyledTheme'
 import WithChakraTheme from './WithChakraTheme'
 import WithErrorBoundaries from './WithErrorBoundaries'
 import WithAuthentication from './WithAuthentication'
+import WithUserData from './WithUserData'
 import WithNavBar from './WithNavBar'
 
 const WithGlobalHOC = ({ children }) => (
 	<WithStyledTheme>
 		<WithChakraTheme>
 			<WithAuthentication>
-				<WithNavBar>
-					{process.env.NODE_ENV === 'production' ? (
-						children
-					) : (
+				<WithUserData>
+					<WithNavBar>
 						<WithErrorBoundaries>{children}</WithErrorBoundaries>
-					)}
-				</WithNavBar>
+					</WithNavBar>
+				</WithUserData>
 			</WithAuthentication>
 		</WithChakraTheme>
 	</WithStyledTheme>

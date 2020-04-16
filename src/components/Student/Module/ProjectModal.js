@@ -4,12 +4,12 @@ import { connect } from 'react-redux'
 
 import DynamicModal from '../../shared/containers/DynamicModal'
 import TwoPanel from '../../shared/containers/TwoPanel'
-import DotRating from '../../shared/gadgets/DotRating'
-import Button from '../../shared/gadgets/Button'
-import ImgAndContent from '../../shared/gadgets/ImgAndContent'
+import DotRating from '../../shared/low/DotRating'
+import Button from '../../shared/low/Button'
+import ImgAndContent from '../../shared/low/ImgAndContent'
 import { sizes } from '../../../styles/media'
 
-import { chooseProject } from '../../../redux/actions/studentData'
+import { chooseProjects } from '../../../redux/actions/studentData'
 import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'
 
 const WacProject = withApiCache([CACHE_ACTIVITY])(
@@ -86,17 +86,37 @@ const Nbsp = styled.p`
 `
 
 const FinalProject = ({
-	moduleId,
-	moduleName,
-	projectIds,
 	open,
 	closed,
-	onChooseProject
+	moduleId,
+	projectIds,
+	chosenProjectIds,
+
+	onChooseProjects
 }) => {
 	const themeContext = useContext(ThemeContext)
 
 	const [listView, setListView] = useState(true)
 	const [selectedProject, setSelectedProject] = useState(null)
+
+	const isChosenAlready = chosenProjectIds?.find(
+		p => p.id === selectedProject.id
+	)
+
+	const handleClickButton = () => {
+		if (isChosenAlready) {
+			onChooseProjects(
+				moduleId,
+				chosenProjectIds.filter(p => p.id !== selectedProject.id)
+			)
+		} else {
+			onChooseProjects(
+				moduleId,
+				chosenProjectIds.concat([{ id: selectedProject.id }])
+			)
+		}
+		closed()
+	}
 
 	/**
 	 * LIST VIEW
@@ -106,7 +126,8 @@ const FinalProject = ({
 			<Nbsp>&nbsp;</Nbsp>
 			<h2 style={{ marginBottom: 0 }}>Choose a Project</h2>
 			<p>
-				Choose a Project to practice your newfound knowledge in {moduleName}.
+				Choose a Project to practice your newfound knowledge in interactive,
+				challenging projects.
 			</p>
 		</>
 	)
@@ -140,15 +161,8 @@ const FinalProject = ({
 			)}
 			<span style={{ fontWeight: 'bold' }}>{selectedProject?.time}</span>
 			<div style={{ flexGrow: '1', display: 'flex', alignItems: 'flex-end' }}>
-				<Button
-					invert
-					fullWidth
-					onClick={() => {
-						onChooseProject(moduleId, selectedProject)
-						closed()
-					}}
-				>
-					Choose Project
+				<Button invert fullWidth onClick={handleClickButton}>
+					{isChosenAlready ? 'Remove Project' : 'Choose Project'}
 				</Button>
 			</div>
 		</>
@@ -166,8 +180,8 @@ const FinalProject = ({
 }
 
 const mapDispatchToProps = dispatch => ({
-	onChooseProject: (moduleId, project) =>
-		dispatch(chooseProject(moduleId, project))
+	onChooseProjects: (moduleId, project) =>
+		dispatch(chooseProjects(moduleId, project))
 })
 
 export default connect(null, mapDispatchToProps)(FinalProject)

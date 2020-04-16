@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { isEmpty } from 'lodash'
 
-import Icon from '../../../shared/gadgets/Icon'
-import IconArea from '../../../shared/gadgets/IconArea'
+import Icon from '../../../shared/low/Icon'
+import IconArea from '../../../shared/low/IconArea'
 import Scrollable from '../../../shared/containers/Scrollable'
 import TwoPanel from '../../../shared/containers/TwoPanel'
 

@@ -5,7 +5,7 @@ import snakeCaseKeys from 'snakecase-keys'
 
 import SubmissionCheckpoint from './SubmissionCheckpoint'
 
-import Button from '../../shared/gadgets/Button'
+import Button from '../../shared/low/Button'
 import { fadeIn } from '../../../styles/GlobalAnime'
 import { gradeSubmission } from '../../../services/TeacherService'
 

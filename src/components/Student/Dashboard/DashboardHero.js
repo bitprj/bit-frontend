@@ -1,11 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useState, useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
+import { Box } from '@chakra-ui/core'
+import Avatar from 'react-avatar'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import TextField from '@material-ui/core/TextField'
+import QuickAction from '../../shared/high/QuickAction'
+import Button from '../../shared/low/Button'
+
+import { joinClassroom } from '../../../services/StudentService'
 import Suggested from './Suggested'
-import Hero from '../../shared/gadgets/Hero'
-import MuiIconBox from '../../shared/external/MuiIconBox'
+import Hero from '../../shared/low/Hero'
+import MuiIconFormatter from '../../shared/high/MuiIconFormatter'
 import CheckIcon from '@material-ui/icons/CheckRounded'
 import { setSelectedActivity } from '../../../redux/actions/learnData'
 
@@ -13,75 +20,112 @@ const StyledHero = styled(Hero)`
 	height: 20em;
 `
 
-const PicWrapper = styled.div`
-	margin-bottom: 1em;
-	width: 4.5em;
-	height: 4.5em;
-	position: relative;
-`
-
-const Picture = styled.img`
-	width: 100%;
-	height: 100%;
-	border-radius: 50%;
-`
-
-const VerifiedWrapper = styled(MuiIconBox)`
+const VerifiedWrapper = styled(MuiIconFormatter)`
 	position: absolute;
-	right: 0;
-	bottom: 0;
+	right: -0.5em;
+	bottom: -0.5em;
+	border-radius: 50%;
+	border: solid 0.2em ${props => props.theme.bgVariant};
+`
+
+const StyledButton = styled(Button)`
+	position: absolute;
+	top: 2em;
+	right: 2em;
+	font-size: 80%;
 `
 
 const StudentHero = ({
 	id,
 	moduleId,
 
-	firstName,
+	name,
 	image,
 	onSetSelectedActivity
 }) => {
 	const history = useHistory()
+
+	const [classCode, setClassCode] = useState()
 
 	const handleResume = () => {
 		onSetSelectedActivity({ id, moduleId })
 		history.push('/learn/')
 	}
 
+	const action = () =>
+		joinClassroom(classCode).then(res => {
+			const success =
+				!res.response?.status &&
+				(!res.message?.includes('Error') || !res.msg?.includes('Error'))
+			if (success) {
+				window.location.replace('/')
+			}
+		})
+
+	const join = (
+		<QuickAction
+			action={action}
+			title={'Join Classroom'}
+			field={
+				<div style={{ marginBottom: '1em' }}>
+					<TextField
+						variant="outlined"
+						type="text"
+						label="Class Code"
+						onChange={e => {
+							setClassCode(e.target.value)
+						}}
+					/>
+				</div>
+			}
+			buttonText="Join"
+		>
+			<StyledButton dark="#ff7f50">Join Classroom</StyledButton>
+		</QuickAction>
+	)
+
 	return (
 		<StyledHero
 			ratio={8 / 17}
 			leftStyle={{ padding: '0 4em' }}
 			above={
-				image && (
-					<PicWrapper>
-						<Picture src={image} />
-						<VerifiedWrapper circle width="1.5em">
-							<CheckIcon fontSize="inherit" />
-						</VerifiedWrapper>
-					</PicWrapper>
-				)
+				<Box pos="relative" d="inline-block" mb="1em" borderRadius="50%" bg={image && "theme.accentVariant"}>
+					<Avatar
+						size="4.5em"
+						name={name}
+						src={image}
+						round
+						textSizeRatio={2.5}
+					/>
+					<VerifiedWrapper circle width="2em">
+						<CheckIcon />
+					</VerifiedWrapper>
+				</Box>
 			}
-			title={'Hi ' + (firstName ? `${firstName},` : '')}
+			title={'Hi ' + (name ? `${name?.replace(/ .*/, '')},` : '')}
 			description={
 				'You are on your way to becoming a master of Lorem Ipsum. You are on your way to becoming a master of Lorem Ipsum.'
 			}
+			below={join}
 		>
-			<Suggested loading={!firstName} id={id} onClickButton={handleResume} />
+			<Suggested loading={!name} id={id} onClickButton={handleResume} />
 		</StyledHero>
 	)
 }
 
 const mapStateToProps = state => {
 	const {
-		studentData: { firstName, image, suggestedActivity }
+		account: { user },
+		studentData: { suggestedActivity }
 	} = state
 
+	const { name, image } = user ?? {}
 	const { id, moduleId } = suggestedActivity ?? {}
 
 	return {
 		id,
 		moduleId,
-		firstName,
+		name,
 		image
 	}
 }

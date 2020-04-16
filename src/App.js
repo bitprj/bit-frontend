@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react'
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { get } from 'lodash'
 
 import Home from './components/Home'
 
 import Student from './components/Student/Student'
 import Teacher from './components/Teacher/Teacher'
-import OldTeacher from './components/Teacher/unused/Teacher'
 
 import Learn from './components/Learn/Learn'
 import Explore from './components/Explore/Explore'
@@ -17,19 +14,12 @@ import NotFound from './components/Error/404NotFound'
 
 import WithGlobalHOC from './components/HOC/WithGlobalHOC'
 
-import { init } from './redux/actions/studentData'
 import { ping } from './services/TestService'
 
-const App = ({ userType, onInit }) => {
+const App = () => {
 	useEffect(() => {
 		ping()
 	}, [])
-
-	useEffect(() => {
-		if (userType && userType === 'STUDENT') {
-			onInit()
-		}
-	}, [userType])
 
 	return (
 		<BrowserRouter>
@@ -41,7 +31,6 @@ const App = ({ userType, onInit }) => {
 					<Route path="/dashboard/" component={Student} />
 					<Route path="/learn/" component={Learn} />
 					<Route path="/grade/" component={Teacher} />
-					<Route path="/oteacher/" component={OldTeacher} />
 					<Route component={NotFound} />
 				</Switch>
 			</WithGlobalHOC>
@@ -49,14 +38,4 @@ const App = ({ userType, onInit }) => {
 	)
 }
 
-const mapStateToProps = state => ({
-	userType: get(state, 'account.userType')
-})
-
-const mapDispatchToProps = dispatch => {
-	return {
-		onInit: () => dispatch(init())
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default App

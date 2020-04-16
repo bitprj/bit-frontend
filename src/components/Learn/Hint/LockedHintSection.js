@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
-import Icon from '../../shared/gadgets/Icon'
-import IconLine from '../../shared/gadgets/IconLine'
-import HeaderShadow from '../../shared/gadgets/HeaderShadow'
+import Icon from '../../shared/low/Icon'
+import IconLine from '../../shared/low/IconLine'
+import HeaderShadow from '../../shared/low/HeaderShadow'
 
 import LockedHint from './LockedHint'
 import { objectArrayToObject } from '../../../utils/objUtils'
@@ -99,7 +99,7 @@ const LockedHintSection = ({
 						<h3>
 							<AnimatingIconLine
 								reverse
-								icon={<ArrowForwardIcon fontSize="inherit" />}
+								icon={<ArrowForwardIcon />}
 							>
 								How it works
 							</AnimatingIconLine>

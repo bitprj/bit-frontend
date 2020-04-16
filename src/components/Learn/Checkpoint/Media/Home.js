@@ -5,13 +5,13 @@ import { Card } from '../Autograder/Home'
 import MediaLightbox, {
 	TYPE_IMAGE,
 	TYPE_VIDEO
-} from '../../../shared/gadgets/MediaLightbox'
+} from '../../../shared/low/MediaLightbox'
 import TwoPanel from '../../../shared/containers/TwoPanel'
-import Button from '../../../shared/gadgets/Button'
+import Button from '../../../shared/low/Button'
 
 import { UPLOAD } from '../Checkpoint'
 
-const uploadCardsSvg = require('../../../../assets/icons/upload-cards.svg')
+const splitCardsSvg = require('../../../../assets/icons/split-cards.svg')
 
 const Instruction = styled.div`
 	padding-top: 1em;
@@ -47,7 +47,7 @@ const Home = ({
 					/>
 				) : (
 					<Card
-						icon={uploadCardsSvg}
+						icon={splitCardsSvg}
 						title="Upload or Drag File"
 						description="Drag your files to the Browser"
 						onClick={() => pushView(UPLOAD)}

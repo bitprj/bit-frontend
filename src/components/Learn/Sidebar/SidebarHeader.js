@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 
-import DotRating from '../../shared/gadgets/DotRating'
+import DotRating from '../../shared/low/DotRating'
 import { setCurrentCardByIndex } from '../../../redux/actions/learnData'
 
 import withApiCache, { CACHE_MODULE } from '../../HOC/WithApiCache'
