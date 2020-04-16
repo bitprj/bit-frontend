@@ -20,7 +20,6 @@ const WithUserData = ({
 
 const mapStateToProps = state => {
 	const { userId, studentId } = state.account.meta ?? {}
-	console.log(state.account.meta)
 	return {
 		userId,
 		studentId
