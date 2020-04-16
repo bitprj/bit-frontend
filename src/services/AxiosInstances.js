@@ -1,6 +1,9 @@
 import axios from 'axios'
 import camelCase from 'camelcase-keys-deep'
 
+import { deauthenticate } from '../redux/actions/account'
+import store from '../redux/store'
+
 /** GENERAL BACKEND (mainly for GET) */
 
 // const baseUrl = 'https://wongband.pythonanywhere.com/'
@@ -28,9 +31,7 @@ backend.interceptors.response.use(
 		console.log(error.response)
 
 		if (status === 401) {
-			if (window.location.pathname !== '/') {
-				window.location.replace('/')
-			}
+			store.dispatch(deauthenticate())
 
 			// [WithAuthentication] continue error chain to deauthenticate
 			if (!localStorage.getItem('meta')) throw error
@@ -74,9 +75,8 @@ backendSaves.interceptors.response.use(
 		console.log(error.response)
 
 		if (status === 401) {
-			if (window.location.pathname !== '/') {
-				window.location.replace('/')
-			}
+			store.dispatch(deauthenticate())
+
 			return error
 		}
 

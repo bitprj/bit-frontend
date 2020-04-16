@@ -1,5 +1,5 @@
 import { AUTHENTICATE, DEAUTHENTICATE, SET_USER_DATA } from '../actionTypes'
-import { fetchUserData, logout } from '../../services/AccountService'
+import { fetchUserData } from '../../services/AccountService'
 
 export const initUserData = userId => async dispatch => {
 	const userData = await fetchUserData(userId)
@@ -18,9 +18,12 @@ export const authenticate = meta => {
 }
 
 export const deauthenticate = () => {
-	logout().then(_ => console.log(_))
-
 	localStorage.removeItem('meta')
+
+	if (window.location.pathname !== '/') {
+		console.log('ok')
+		window.location.replace('/')
+	}
 
 	return {
 		type: DEAUTHENTICATE

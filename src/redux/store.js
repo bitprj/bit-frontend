@@ -18,7 +18,7 @@ const actionCreators = {
 	...themeActions
 }
 
-export default function configureStore(initialState) {
+const configureStore = initialState => {
 	const composeEnhancers =
 		typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 			? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
@@ -53,3 +53,7 @@ export default function configureStore(initialState) {
 
 	return store
 }
+
+const store = configureStore()
+
+export default store

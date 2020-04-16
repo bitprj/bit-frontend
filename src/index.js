@@ -6,7 +6,7 @@ import store from './redux/store'
 import App from './App'
 
 ReactDOM.render(
-	<ReduxProvider store={store()}>
+	<ReduxProvider store={store}>
 		<App />
 	</ReduxProvider>,
 	document.getElementById('root')

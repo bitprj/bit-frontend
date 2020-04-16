@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import { login } from '../../services/AccountService'
+import { login, logout } from '../../services/AccountService'
 import { deauthenticate } from '../../redux/actions/account'
 
 import ProfPic from '../shared/low/ProfPic'
 import SearchIcon from '@material-ui/icons/Search'
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
+import GitHubIcon from '@material-ui/icons/GitHub'
 import Button from '../shared/low/Button'
 import Icon from '../shared/low/Icon'
+import IconLine from '../shared/low/IconLine'
 
 const contentHeight = '2.2em'
 
@@ -132,7 +134,12 @@ const NavBar = ({ meta, name, image }) => {
 
 				{meta?.studentId || meta?.teacherId ? (
 					<AlignRight isStudent={meta?.studentId}>
-						<NavElement onClick={deauthenticate}>
+						<NavElement
+							onClick={() => {
+								logout().then(_ => console.log(_))
+								deauthenticate()
+							}}
+						>
 							<div style={{ cursor: 'pointer' }}>
 								<ProfPic
 									src={image}
@@ -147,7 +154,7 @@ const NavBar = ({ meta, name, image }) => {
 				{!meta?.studentId && !meta?.teacherId ? (
 					<AlignRight>
 						<NavButton invert onClick={login}>
-							Login With GitHub
+							<IconLine icon={<GitHubIcon />}>Login With GitHub</IconLine>
 						</NavButton>
 					</AlignRight>
 				) : null}

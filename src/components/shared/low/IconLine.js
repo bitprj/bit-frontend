@@ -31,7 +31,7 @@ const IconLine = ({
 	className,
 	children,
 	icon,
-	gap,
+	gap = "0.5em",
 	reverse,
 	noTransition
 }) => {
