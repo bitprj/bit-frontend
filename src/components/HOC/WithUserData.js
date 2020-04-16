@@ -13,13 +13,14 @@ const WithUserData = ({
 	useEffect(() => {
 		if (userId) onInitUserData(userId)
 		if (studentId) onInitStudentData(studentId)
-	}, [])
+	}, [userId, studentId])
 
 	return children
 }
 
 const mapStateToProps = state => {
 	const { userId, studentId } = state.account.meta ?? {}
+	console.log(state.account.meta)
 	return {
 		userId,
 		studentId
