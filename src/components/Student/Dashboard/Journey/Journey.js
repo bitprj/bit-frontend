@@ -7,10 +7,12 @@ import Progress, { TYPE_JOURNEY } from './Progress'
 
 const Journey = ({ inprogressModules }) => {
 	return (
-		<Stack isInline spacing="6em" justify="center" align="center" m="3em">
-			<Floating />
-			<Progress variant={TYPE_JOURNEY} id={inprogressModules?.[0]?.id} />
-		</Stack>
+		inprogressModules && (
+			<Stack isInline spacing="6em" justify="center" align="center" p="3em">
+				<Floating id={inprogressModules?.[0]?.id} />
+				<Progress variant={TYPE_JOURNEY} id={inprogressModules?.[0]?.id} />
+			</Stack>
+		)
 	)
 }
 

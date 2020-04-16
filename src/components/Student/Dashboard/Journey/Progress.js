@@ -26,8 +26,8 @@ export const TYPE_PREVIEW = 0
 export const TYPE_JOURNEY = 1
 
 const ProjectProgressGroup = styled(ProgressGroup)`
-  margin: -0.9em -0.55em;
-  margin-right: 0;
+	margin: -0.9em -0.55em;
+	margin-right: 0;
 `
 
 const Progress = ({
@@ -198,14 +198,14 @@ export default withApiCache([CACHE_MODULE, CACHE_MODULE_PROGRESS])(Progress)
 const TitleArea = ({ title, subtitle, ...props }) => {
 	return (
 		<Stack isInline spacing="1.5em" align="center" {...props}>
-			<Box
-				as={GitHubIcon}
-				size="3em"
-				color="white"
-				bg="theme.accentVariant"
-				borderRadius="50%"
-				p="0.3em"
-			/>
+			<Box>
+				<IconWithProgress
+					iconUrl={require('../../../../assets/icons/cards.svg')}
+					size="3em"
+					midValue={100}
+					value={0}
+				/>
+			</Box>
 			<Box>
 				<Heading as="h2" fontSize="1em" m="0">
 					{title}

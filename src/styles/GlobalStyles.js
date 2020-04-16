@@ -105,8 +105,8 @@ export const GlobalStyle = createGlobalStyle`
     height: 1em; 
   }
   .low-profile-scrollbar.standard::-webkit-scrollbar { 
-    width: 1rem; 
-    height: 1rem; 
+    width: 0.8rem; 
+    height: 0.8rem; 
   }
   
   .low-profile-scrollbar::-webkit-scrollbar-thumb,
