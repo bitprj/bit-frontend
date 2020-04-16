@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Box, Flex, Stack, Heading } from '@chakra-ui/core'
 import styled from 'styled-components'
 
-import GitHubIcon from '@material-ui/icons/GitHub'
 import IconWithProgress from '../../../shared/high/IconWithProgress'
 
 import ActivityModal from '../../Module/ActivityModal'

@@ -9,10 +9,11 @@ import { deauthenticate } from '../../redux/actions/account'
 import ProfPic from '../shared/low/ProfPic'
 import SearchIcon from '@material-ui/icons/Search'
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
-import GitHubIcon from '@material-ui/icons/GitHub'
 import Button from '../shared/low/Button'
 import Icon from '../shared/low/Icon'
 import IconLine from '../shared/low/IconLine'
+
+import GitHubIcon from '@material-ui/icons/GitHub'
 
 const contentHeight = '2.2em'
 
@@ -136,8 +137,7 @@ const NavBar = ({ meta, name, image }) => {
 					<AlignRight isStudent={meta?.studentId}>
 						<NavElement
 							onClick={() => {
-								logout().then(_ => console.log(_))
-								deauthenticate()
+								logout().then(_ => deauthenticate())
 							}}
 						>
 							<div style={{ cursor: 'pointer' }}>

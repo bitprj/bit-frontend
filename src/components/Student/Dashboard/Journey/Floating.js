@@ -2,7 +2,11 @@ import React from 'react'
 import { Box, Flex, Stack, Heading, Text, Grid, Divider } from '@chakra-ui/core'
 
 import Avatar from 'react-avatar'
-import GitHubIcon from '@material-ui/icons/GitHub'
+
+import TwitterIcon from '@material-ui/icons/Twitter'
+import ShowChartIcon from '@material-ui/icons/ShowChartRounded'
+import SearchIcon from '@material-ui/icons/SearchRounded'
+import CodeIcon from '@material-ui/icons/CodeRounded'
 
 import AvatarGroup from '../../../shared/high/AvatarGroup'
 import ProgressBar from '../../../shared/low/ProgressBar'
@@ -126,30 +130,30 @@ const Tags = ({ ...props }) => {
 			{/* Topics */}
 			<Grid m="0" mt="1em" templateColumns="1fr 1fr" gap="1em">
 				<Stack isInline spacing="0.4em" align="center">
-					<Box as={GitHubIcon} size="1.2em" color="theme.accent" />
+					<Box as={TwitterIcon} size="1.2em" color="theme.accent" />
 					<Text m="0" fontSize="0.8em">
-						GitHub
+						Twitter
 					</Text>
 				</Stack>
 
 				<Stack isInline spacing="0.4em" align="center">
-					<Box as={GitHubIcon} size="1.2em" color="theme.accent" />
+					<Box as={SearchIcon} size="1.2em" color="theme.accent" />
 					<Text m="0" fontSize="0.8em">
-						GitHub
+						Social Science
 					</Text>
 				</Stack>
 
 				<Stack isInline spacing="0.4em" align="center">
-					<Box as={GitHubIcon} size="1.2em" color="theme.accent" />
+					<Box as={CodeIcon} size="1.2em" color="theme.accent" />
 					<Text m="0" fontSize="0.8em">
-						GitHub
+						Python
 					</Text>
 				</Stack>
 
 				<Stack isInline spacing="0.4em" align="center">
-					<Box as={GitHubIcon} size="1.2em" color="theme.accent" />
+					<Box as={ShowChartIcon} size="1.2em" color="theme.accent" />
 					<Text m="0" fontSize="0.8em">
-						GitHub
+						Data Science
 					</Text>
 				</Stack>
 			</Grid>
