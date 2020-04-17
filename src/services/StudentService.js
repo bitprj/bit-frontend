@@ -15,8 +15,8 @@ export const joinClassroom = classCode => {
 	return backendSaves.put(endpoint, { class_code: classCode })
 }
 
-export const setSuggestedActivity = (id, moduleId) =>
-	updateStudentData({
+export const setSuggestedActivity = (studentId, id, moduleId) =>
+	updateStudentData(studentId, {
 		suggested_activity: {
 			id,
 			module_id: moduleId
@@ -28,8 +28,8 @@ export const setChosenProjects = (moduleId, chosenProjects) =>
 		chosen_project_ids: chosenProjects.map(p => p.id)
 	})
 
-const updateStudentData = updates => {
-	const endpoint = `/students/data`
+const updateStudentData = (studentId, updates) => {
+	const endpoint = `/students/${studentId}`
 	return backendSaves.put(endpoint, updates)
 }
 

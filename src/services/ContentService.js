@@ -12,7 +12,7 @@ export const autoFetch = async (id, cacheType) => {
 	 * TEMP SPECIAL
 	 */
 	if (type === 'students') {
-		return backend.get('/students/data?student_id=' + id)
+		return backend.get(`/students/${id}`)
 	}
 
 	const endpoint = `/${type}/${id}` + (params ? `/${params}` : '')

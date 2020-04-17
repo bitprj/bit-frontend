@@ -91,6 +91,7 @@ const ProgressButton = ({ status, locked, handleResume }) => {
 const ActivityModal = ({
 	id,
 
+	studentId,
 	moduleId,
 	isModuleProgressReady,
 	open,
@@ -110,7 +111,7 @@ const ActivityModal = ({
 		if (!isModuleProgressReady) return
 
 		onSetSelectedActivity({ id, moduleId })
-		setSuggestedActivity(id, moduleId).then(_ => {})
+		setSuggestedActivity(studentId, id, moduleId).then(_ => {})
 
 		if (status !== 'completed')
 			onUpdateModuleActivityProgress(moduleId, id, 'inprogress')
@@ -164,6 +165,16 @@ const ActivityModal = ({
 	)
 }
 
+const mapStateToProps = state => {
+	const {
+		account: { meta }
+	} = state
+	const { studentId } = meta ?? {}
+	return {
+		studentId
+	}
+}
+
 const mapDispatchToProps = dispatch => ({
 	onSetSelectedActivity: ({ id, moduleId }) =>
 		dispatch(setSelectedActivity({ id, moduleId })),
@@ -171,4 +182,4 @@ const mapDispatchToProps = dispatch => ({
 		dispatch(updateModuleActivityProgress(moduleId, id, actionType))
 })
 
-export default connect(null, mapDispatchToProps)(ActivityModal)
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityModal)
