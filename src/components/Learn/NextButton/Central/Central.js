@@ -126,7 +126,7 @@ const Central = ({
 				break
 			}
 			case STATE_FINISH: {
-				history.push(`/modules/${moduleId}`)
+				history.push(`/`)
 				onUpdateModuleActivityProgress(moduleId, id, 'completed')
 				break
 			}
