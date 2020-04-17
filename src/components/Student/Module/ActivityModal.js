@@ -139,7 +139,7 @@ const ActivityModal = ({
 					<SmallText>{learningObjectives}</SmallText>
 				</pre>
 			</LearningObjectives>
-			{prerequisiteActivities?.length !== 0 && (
+			{/* {prerequisiteActivities?.length !== 0 && (
 				<Prerequisites>
 					<h3 style={{ marginTop: '0.5em' }}>Prerequisites</h3>
 					{prerequisiteActivities?.map(pa => (
@@ -148,7 +148,7 @@ const ActivityModal = ({
 						</Card>
 					))}
 				</Prerequisites>
-			)}
+			)} */}
 		</Content>
 	)
 
