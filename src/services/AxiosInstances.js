@@ -6,6 +6,35 @@ import store from '../redux/store'
 
 /** GENERAL BACKEND (mainly for GET) */
 
+const backendResponseInterceptor = error => {
+	if (!error.response) {
+		throw Error(
+			'A so called "CORS" error likely occurred. The request bounced.'
+		)
+	}
+	const {
+		status,
+		statusText,
+		config: { method, url },
+		data: { message, msg }
+	} = error.response
+
+	if (status === 401) {
+		store.dispatch(deauthenticate())
+
+		// [WithAuthentication] continue error chain to deauthenticate
+		if (!localStorage.getItem('meta')) throw error
+
+		return error
+	}
+
+	if (message !== 'Card already unlocked')
+		alert(`${method.toUpperCase()} ${url}
+      ${status} (${statusText})
+      ${message ?? msg ?? ''}`)
+	return error
+}
+
 export const baseUrl = 'https://wongband.pythonanywhere.com/'
 // export const baseUrl = 'https://bit-backend-staging.herokuapp.com/'
 // const baseUrl = 'https://darlene-backend.herokuapp.com/'
@@ -16,76 +45,25 @@ export const backend = axios.create({
 	baseURL: baseUrl,
 	withCredentials: true
 })
-backend.interceptors.request.use(request => {
-	return request
-})
 backend.interceptors.response.use(
 	response => camelCase(response.data, { deep: true }),
-	error => {
-		const {
-			status,
-			statusText,
-			config: { method, url },
-			data: { message, msg }
-		} = error.response
-		console.log(error.response)
-
-		if (status === 401) {
-			store.dispatch(deauthenticate())
-
-			// [WithAuthentication] continue error chain to deauthenticate
-			if (!localStorage.getItem('meta')) throw error
-
-			return error
-		}
-
-		alert(`${method.toUpperCase()} ${url}
-      ${status} (${statusText})
-      ${message ?? msg ?? ''}`)
-		return error
-	}
+	error => backendResponseInterceptor(error)
 )
-
-export const backendSaves = axios.create({
-	baseURL: baseUrl,
-	withCredentials: true
-})
 
 /** BACKEND_SAVES (with CSRF, mainly for PUT, POST, DELETE) */
 
-let pending = 0
 // window.onbeforeunload = e => {
 // 	e.preventDefault()
 // 	e.returnValue('Changes may not be saved. Continue?')
 // 	return 'Changes may not be saved. Continue?'
 // }
-
-backendSaves.interceptors.request.use(request => {
-	return request
+export const backendSaves = axios.create({
+	baseURL: baseUrl,
+	withCredentials: true
 })
 backendSaves.interceptors.response.use(
 	response => camelCase(response.data, { deep: true }),
-	error => {
-		const {
-			status,
-			statusText,
-			config: { method, url },
-			data: { message, msg }
-		} = error.response
-		console.log(error.response)
-
-		if (status === 401) {
-			store.dispatch(deauthenticate())
-
-			return error
-		}
-
-		if (message !== 'Card already unlocked')
-			alert(`${method.toUpperCase()} ${url}
-        ${status} (${statusText})
-        ${message ?? msg ?? ''}`)
-		return error
-	}
+	error => backendResponseInterceptor(error)
 )
 
 const graderBaseURL = 'https://darlene-autograder.herokuapp.com/'

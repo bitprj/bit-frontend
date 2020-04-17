@@ -35,7 +35,7 @@ const Journey = ({ hasProgress, inprogressModules }) => {
 	return (
 		hasProgress && (
 			<Container>
-				<Floating id={inprogressModules?.[0]?.id} />
+				<Floating id={inprogressModules?.[inprogressModules.length - 1]?.id} />
 
 				<ScrollableWrapper>
 					<StyledScrollable height="24em">
