@@ -5,9 +5,9 @@ import { connect } from 'react-redux'
 import Floating from './Floating'
 import Progress, { TYPE_JOURNEY } from './Progress'
 
-const Journey = ({ inprogressModules }) => {
+const Journey = ({ hasProgress, inprogressModules }) => {
 	return (
-		inprogressModules && (
+		hasProgress && (
 			<Stack isInline spacing="6em" justify="center" align="center" p="3em">
 				<Floating id={inprogressModules?.[0]?.id} />
 				<Progress variant={TYPE_JOURNEY} id={inprogressModules?.[0]?.id} />
@@ -18,10 +18,15 @@ const Journey = ({ inprogressModules }) => {
 
 const mapStateToProps = state => {
 	const {
-		studentData: { inprogressModules }
+		studentData: { inprogressModules, completedModules, incompleteModules }
 	} = state
 
-	return { inprogressModules }
+	const hasProgress =
+		!!inprogressModules?.length ||
+		!!completedModules?.length ||
+		!!incompleteModules?.length
+
+	return { hasProgress, inprogressModules }
 }
 
 export default connect(mapStateToProps)(Journey)
