@@ -20,7 +20,7 @@ const InstructionWrapper = styled.div`
 	margin-bottom: 2em;
 	min-height: 6em;
 	display: flex;
-	align-items: center;
+	align-items: safe center;
 `
 
 const StyledMarkdownArea = styled(MarkdownArea)`
@@ -54,11 +54,11 @@ const Home = ({
 	return (
 		<Container>
 			<InstructionWrapper>
-				<div>{instruction}</div>
+				<div style={{ height: '100%' }}>{instruction}</div>
 			</InstructionWrapper>
 			<StyledMarkdownArea
 				placeholder={'Your answer here...'}
-        initialValue={content}
+				initialValue={content}
 				onChange={contents => setAnswer(contents)}
 			/>
 			<Submit invert onClick={handleSubmit}>

@@ -140,7 +140,10 @@ const Content = ({
 					/>
 
 					<ContentArea className="learn-i-contentarea">
-						<MarkdownContent source={content} />
+						<MarkdownContent
+							source={content}
+							options={{ expandBlocks: true }}
+						/>
 						<UnlockedHintSection />
 						<LockedHintSection />
 					</ContentArea>

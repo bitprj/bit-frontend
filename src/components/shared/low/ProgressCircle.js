@@ -35,7 +35,7 @@ const ProgressCircle = ({
 	const parsedThickness = thickness === '100%' ? 22 : thickness
 
 	return (
-		<Container className={className ?? ''} size={size} {...props}>
+		<Container className={className || ''} size={size} {...props}>
 			<Back>
 				<CircularProgress
 					variant="static"

@@ -48,7 +48,7 @@ const Image = styled.img`
 `
 
 const Blockquote = styled.blockquote`
-	margin: 2em -2em;
+	margin: 2em ${props => (props.expandBlocks ? '-2em' : 0)};
 	padding: 0.1px 1.25em;
 	background-color: ${props => props.theme.pastel.yellow}44;
 	border-left: 0.5em solid ${props => props.theme.pastel.yellow};
@@ -73,7 +73,7 @@ const TableCell = styled.td`
 	border-bottom: 1px solid ${props => props.theme.offFont};
 `
 
-export const CodeBlock = ({ language, value, style }) => {
+export const CodeBlock = ({ language, value, style, expandBlocks }) => {
 	return (
 		<SyntaxHighlighter
 			className="low-profile-scrollbar light only-hover"
@@ -82,7 +82,7 @@ export const CodeBlock = ({ language, value, style }) => {
 			showLineNumbers
 			lineNumberContainerProps={{ style: { paddingRight: '1em' } }}
 			customStyle={{
-				margin: '2em -2em',
+				margin: `2em ${expandBlocks ? '-2em' : 0}`,
 				borderRadius: '0.75em',
 				whiteSpace: 'pre-wrap',
 				display: 'flex',
@@ -96,18 +96,25 @@ export const CodeBlock = ({ language, value, style }) => {
 	)
 }
 
-const MarkdownContent = ({ source }) => {
+const initialOptions = {
+	expandBlocks: false
+}
+
+const MarkdownContent = ({ className, source, options = initialOptions }) => {
+	const { expandBlocks } = { ...initialOptions, ...options }
+
 	const renderers = {
-		code: CodeBlock,
+		code: props => CodeBlock({ ...props, expandBlocks }),
 		image: Image,
-		blockquote: Blockquote,
+		blockquote: props => Blockquote({ ...props, expandBlocks }),
 		table: Table,
 		tableRow: TableRow,
 		tableCell: TableCell
 	}
 	return (
-		<Styles>
+		<Styles expandBlocks={expandBlocks}>
 			<ReactMarkdown
+				className={className}
 				source={source}
 				escapeHtml={false}
 				astPlugins={[

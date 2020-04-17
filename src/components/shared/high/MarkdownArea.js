@@ -13,12 +13,11 @@ const turndownService = new TurndownService({
 const MarkdownArea = styled(ReactQuill)`
 	border-radius: 0.5em;
 	width: 100%;
-	height: ${props => props.height ?? 'auto'};
 
 	.ql-editor {
 		padding: 1.5em;
-		min-height: 9em;
-		max-height: 18em;
+		// 	min-height: 9em;
+		// 	max-height: 18em;
 	}
 `
 
@@ -26,8 +25,7 @@ const MarkdownAreaInput = ({
 	className,
 	placeholder = 'Comments...',
 	initialValue,
-	onChange,
-	height
+	onChange
 }) => {
 	const convertHtmlToMarkdown = html => {
 		return turndownService.turndown(html)
@@ -44,7 +42,7 @@ const MarkdownAreaInput = ({
 
 	return (
 		<MarkdownArea
-			className={`strong-lift ${className ?? ''}`}
+			className={`strong-lift ${className || ''}`}
 			theme="bubble"
 			placeholder={placeholder}
 			defaultValue={initialValue}
@@ -53,7 +51,6 @@ const MarkdownAreaInput = ({
 				const markdown = convertHtmlToMarkdown(contents)
 				onChange(markdown)
 			}}
-			height={height}
 		/>
 	)
 }

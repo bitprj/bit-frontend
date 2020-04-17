@@ -16,7 +16,7 @@ const Rendered = styled(PseudoBox)`
 const Interactive = ({ className, onKeyDown, onClick, ...props }) => {
 	return (
 		<Rendered
-			className={`interactive ${className ?? ''}`}
+			className={`interactive ${className || ''}`}
 			tabIndex="0"
 			onKeyDown={e => {
 				switch (e.key) {

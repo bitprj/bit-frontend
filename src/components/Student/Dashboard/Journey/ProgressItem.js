@@ -60,7 +60,7 @@ export const ProgressGroup = ({
 }) => {
 	return (
 		<Stack
-			className={className ?? ''}
+			className={className || ''}
 			spacing={spacing}
 			direction={!reverse ? 'column' : 'column-reverse'}
 			{...props}
@@ -72,7 +72,7 @@ export const ProgressGroup = ({
 
 export const Item = ({ className, title, icon, ...props }) => {
 	return (
-		<RenderedItem className={`hover-strong-lift ${className ?? ''}`} {...props}>
+		<RenderedItem className={`hover-strong-lift ${className || ''}`} {...props}>
 			<IconSpacer>{icon}</IconSpacer>
 			<Text m="0" fontSize="0.8em">
 				{title}

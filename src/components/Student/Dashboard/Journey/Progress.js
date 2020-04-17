@@ -106,7 +106,7 @@ const Progress = ({
 
 	return (
 		<>
-			<Container className={className ?? ''} reverse={reverse}>
+			<Container className={className || ''} reverse={reverse}>
 				<TitleArea title={name} />
 
 				{/* Activity Area */}
