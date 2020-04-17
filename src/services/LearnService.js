@@ -27,7 +27,10 @@ export const submitCheckpointProgress = (
 
 	const formData = new FormData()
 	formData.append('content', content)
-	formData.append('comment', '')
+
+	if (type !== 'Multiple Choice') {
+		formData.append('comment', 'null')
+	}
 
 	if (type === 'Autograder') {
 		formData.append('activity_id', activityId)

@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import ReactMarkdown from 'react-markdown'
 
 import LeftArrow from '@material-ui/icons/KeyboardArrowLeftRounded'
 
@@ -12,15 +11,17 @@ import AutograderResult from './Autograder/Result'
 
 import MediaHome from './Media/Home'
 import ShortAnswerHome from './ShortAnswer/Home'
+import MultipleChoiceHome from './MultipleChoice/Home'
 
 import Upload from './Upload'
 import Loading from './Loading'
 
 import Peripheral from '../NextButton/Peripheral'
-import Icon from '../../shared/low/Icon'
-import IconLine from '../../shared/low/IconLine'
 import DynamicModal from '../../shared/containers/DynamicModal'
 import GradeStatus from '../../shared/high/GradeStatus'
+import MarkdownContent from '../../shared/MarkdownContent'
+import Icon from '../../shared/low/Icon'
+import IconLine from '../../shared/low/IconLine'
 import Button from '../../shared/low/Button'
 
 import withApiCache, {
@@ -48,9 +49,7 @@ const Container = styled.div`
 `
 
 const InfoContainer = styled.div`
-	padding: 2em;
-	padding-right: 4em;
-	padding-bottom: 0em;
+	padding: 2em 4em 1em;
 	display: flex;
 	align-items: center;
 	font-size: 90%;
@@ -61,7 +60,7 @@ const StyledIcon = styled(Icon)`
 	margin-right: 1em;
 `
 
-const TitleMarkdown = styled(ReactMarkdown)`
+const TitleMarkdown = styled(MarkdownContent)`
 	margin: 1em;
 `
 
@@ -86,6 +85,8 @@ const Back = styled(Button)`
 `
 
 const Checkpoint = ({
+	id,
+	activityId,
 	STATE_CHECKPOINT,
 
 	render,
@@ -96,16 +97,16 @@ const Checkpoint = ({
 	submissionIndex,
 	setSubmissionIndex,
 
-	id,
-	activityId,
 	name,
 	instruction,
 	type,
+	checkpointHelpers,
+
 	progress
 }) => {
 	const { content } = progress ?? {}
 
-	const parsedInstruction = <ReactMarkdown source={instruction} />
+	const parsedInstruction = <MarkdownContent source={instruction} />
 
 	const previousView = () => {
 		view.pop()
@@ -159,7 +160,17 @@ const Checkpoint = ({
 						)
 
 					case 'Multiple Choice':
-						return
+						return (
+							<MultipleChoiceHome
+								activityId={activityId}
+								id={id}
+								type={type}
+								instruction={parsedInstruction}
+								content={content}
+								choices={checkpointHelpers?.choices}
+								correctChoice={checkpointHelpers?.correctChoice}
+							/>
+						)
 
 					default:
 						return null
@@ -292,7 +303,9 @@ const Checkpoint = ({
 						</InfoContainer>
 					) : null}
 
-					<FillSpaceWrapper>{selectView()}</FillSpaceWrapper>
+					<FillSpaceWrapper className="low-profile-scrollbar fat">
+						{selectView()}
+					</FillSpaceWrapper>
 
 					<Back
 						noOutline
@@ -329,7 +342,8 @@ const mapStateToProps = state => {
 
 	const { id: checkpointId } = cachedCards[cardId].checkpoint ?? {}
 
-	const checkpoint = cachedCheckpoints[checkpointId]
+	const { name, instruction, checkpointType, ...checkpointHelpers } =
+		cachedCheckpoints[checkpointId] ?? {}
 
 	const progress = cachedCheckpointsProgress[checkpointId]
 
@@ -337,9 +351,11 @@ const mapStateToProps = state => {
 		activityId,
 		id: checkpointId,
 
-		name: checkpoint?.name,
-		instruction: checkpoint?.instruction,
-		type: checkpoint?.checkpointType,
+		name,
+		instruction,
+		type: checkpointType,
+		checkpointHelpers,
+
 		progress
 	}
 }

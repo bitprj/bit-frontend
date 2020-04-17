@@ -150,6 +150,16 @@ export const initSubmitCheckpointProgress = (
 	submissions
 ) => async dispatch => {
 	try {
+		if (type === 'Multiple Choice') {
+			dispatch(
+				saveToCache(
+					CACHE_CHECKPOINTS_PROGRESS,
+					{ [id]: { content } },
+					{ merge: true }
+				)
+			)
+		}
+
 		const response = await submitCheckpointProgress(
 			activityId,
 			id,

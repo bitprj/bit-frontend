@@ -199,9 +199,14 @@ const CardContainer = styled.div`
 	transition: box-shadow 0.2s ease, transform 0.2s ease;
 `
 
+const StyledIcon = styled(Icon)`
+	margin-bottom: 0.5em;
+	padding: 0.5em;
+`
+
 export const Card = ({ icon, title, description, onClick }) => (
 	<CardContainer className="hover-raise" onClick={onClick}>
-		<Icon src={icon} width="6.6em" height="6em" />
+		<StyledIcon src={icon} width="6.6em" height="6em" />
 		<h2 style={{ margin: 0, fontSize: '1.14em' }}>{title}</h2>
 		<p style={{ margin: '0.3em 0' }}>{description}</p>
 	</CardContainer>
