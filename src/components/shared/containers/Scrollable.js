@@ -3,17 +3,21 @@ import styled from 'styled-components'
 
 import HeaderShadow from '../low/HeaderShadow'
 
-const Container = styled.div``
+const Container = styled.div`
+	height: ${props => props.height};
+`
 
 const Scrollable = ({
-	children,
 	idName,
 	className,
+
+	children,
 	topType,
 	topCallback,
 	bottomType,
 	bottomCallback,
 
+	height = 'auto',
 	arrowNav = true
 }) => {
 	const containerRef = useRef(null)
@@ -23,6 +27,7 @@ const Scrollable = ({
 			id={idName}
 			ref={containerRef}
 			className={`${className || ''} low-profile-scrollbar only-hover`}
+			height={height}
 			onKeyDown={e => {
 				if (!arrowNav) {
 					switch (e.key) {

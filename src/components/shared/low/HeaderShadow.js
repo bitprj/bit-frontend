@@ -13,8 +13,9 @@ const ShadowWrapper = styled.div`
 	pointer-events: none;
 
 	${props =>
-		props.reverse &&
-		`transform: scaleY(-1);
+		!props.reverse
+			? `top: 0;`
+			: `transform: scaleY(-1);
     bottom: 0;
   `}
 

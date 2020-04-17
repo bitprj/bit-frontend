@@ -25,8 +25,8 @@ export const init = studentId => async dispatch => {
 	 * TODO TEMPORARY CODE TEMP WARN
 	 */
 	let inprogressModules = [...studentData.inprogressModules]
-	if (inprogressModules.length === 0 && studentData.incompleteModules.length) {
-		inprogressModules.push(studentData.incompleteModules[0])
+	if (studentData.incompleteModules.length) {
+		inprogressModules = inprogressModules.concat(studentData.incompleteModules)
 	}
 
 	dispatch(setStudentData({ ...studentData, inprogressModules }))

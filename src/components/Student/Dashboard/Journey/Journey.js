@@ -1,17 +1,60 @@
 import React from 'react'
-import { Stack } from '@chakra-ui/core'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import Floating from './Floating'
 import Progress, { TYPE_JOURNEY } from './Progress'
 
+import Scrollable from '../../../shared/containers/Scrollable'
+
+const Container = styled.div`
+	padding: 3em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	> *:first-child {
+		margin-right: 4em;
+	}
+`
+
+const ScrollableWrapper = styled.div`
+	position: relative;
+`
+
+const StyledScrollable = styled(Scrollable)`
+	padding: 2.5em 2em;
+
+	section:not(:last-of-type) {
+		margin-bottom: 4em;
+	}
+`
+
 const Journey = ({ hasProgress, inprogressModules }) => {
+	console.log(inprogressModules)
 	return (
 		hasProgress && (
-			<Stack isInline spacing="6em" justify="center" align="center" p="3em">
+			<Container>
 				<Floating id={inprogressModules?.[0]?.id} />
-				<Progress variant={TYPE_JOURNEY} id={inprogressModules?.[0]?.id} />
-			</Stack>
+
+				<ScrollableWrapper>
+					<StyledScrollable height="24em">
+						{inprogressModules
+							?.slice()
+							.reverse()
+							.map(im => {
+								return (
+									<Progress
+										key={`student-module-inprogress-${im.id}`}
+										className="journey-module"
+										variant={TYPE_JOURNEY}
+										id={im.id}
+									/>
+								)
+							})}
+					</StyledScrollable>
+				</ScrollableWrapper>
+			</Container>
 		)
 	)
 }

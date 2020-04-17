@@ -24,6 +24,12 @@ import withApiCache, {
 export const TYPE_PREVIEW = 0
 export const TYPE_JOURNEY = 1
 
+const Container = styled.section`
+	display: flex;
+	flex-direction: ${props => (!props.reverse ? 'column' : 'column-reverse')};
+	max-width: 20em;
+`
+
 const ProjectProgressGroup = styled(ProgressGroup)`
 	margin: -0.9em -0.55em;
 	margin-right: 0;
@@ -100,11 +106,7 @@ const Progress = ({
 
 	return (
 		<>
-			<Flex
-				className={className ?? ''}
-				direction={!reverse ? 'column' : 'column-reverse'}
-				maxW="20em"
-			>
+			<Container className={className ?? ''} reverse={reverse}>
 				<TitleArea title={name} />
 
 				{/* Activity Area */}
@@ -164,7 +166,7 @@ const Progress = ({
 						onClick={() => setOpenProjectSelection(true)}
 					/>
 				</ProjectProgressGroup>
-			</Flex>
+			</Container>
 
 			<ActivityModal
 				isModuleProgressReady={isModuleProgressReady}

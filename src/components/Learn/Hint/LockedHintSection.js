@@ -30,7 +30,6 @@ const LockedHintsContainer = styled.div`
 const StyledScrollable = styled(Scrollable)`
 	padding: 0 1em;
 	padding-bottom: 0.75em;
-	height: 24em;
 `
 
 const HelpInfo = styled.div`
@@ -81,7 +80,9 @@ const LockedHintSection = ({
 			{!isAllUnlocked && (
 				<>
 					<LockedHintsContainer>
-						<StyledScrollable>{renderedLockedHints}</StyledScrollable>
+						<StyledScrollable height="24em">
+							{renderedLockedHints}
+						</StyledScrollable>
 					</LockedHintsContainer>
 
 					<HelpInfo>
@@ -97,10 +98,7 @@ const LockedHintSection = ({
 							hints.
 						</p>
 						<h3>
-							<AnimatingIconLine
-								reverse
-								icon={<ArrowForwardIcon />}
-							>
+							<AnimatingIconLine reverse icon={<ArrowForwardIcon />}>
 								How it works
 							</AnimatingIconLine>
 						</h3>
