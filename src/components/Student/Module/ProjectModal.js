@@ -100,7 +100,7 @@ const FinalProject = ({
 	const [selectedProject, setSelectedProject] = useState(null)
 
 	const isChosenAlready = chosenProjectIds?.find(
-		p => p.id === selectedProject.id
+		p => p.id === selectedProject?.id
 	)
 
 	const handleClickButton = () => {
