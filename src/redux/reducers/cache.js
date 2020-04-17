@@ -30,10 +30,10 @@ const reducer = (state = initialState, action) => {
 							cloneDeep(state[action.cacheType]),
 							cloneDeep(action.newLoads),
 							(objValue, srcValue) => {
-                if (Array.isArray(srcValue) && srcValue.length === 0) {
-                  return []
-                }
-              }
+								if (Array.isArray(objValue) && Array.isArray(srcValue)) {
+									return srcValue
+								}
+							}
 					  )
 					: {
 							...action.newLoads,
