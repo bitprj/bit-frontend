@@ -104,6 +104,8 @@ const FinalProject = ({
 	)
 
 	const handleClickButton = () => {
+		if (!chosenProjectIds) return
+
 		if (isChosenAlready) {
 			onChooseProjects(
 				moduleId,
