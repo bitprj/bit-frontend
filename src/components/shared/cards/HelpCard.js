@@ -38,8 +38,9 @@ const Button = styled.button`
   font-size: 1.25em;
   color: white;
   margin: 1em 0em;
-  padding: 0.25em 1em;
+  padding: 0.5em 1em;
   background-color: ${props => props.color};
+  border-radius: 8px;
 `
 const HelpCard = (props) => {
     var title, description, btnText, btnColor, icon;
