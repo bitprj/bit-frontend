@@ -1,7 +1,7 @@
 import React from 'react';
-import { FaFlagCheckered, } from 'react-icons/fa';
-import { AiTwotonePieChart } from 'react-icons/ai';
 import styled from 'styled-components';
+import resumeIcon from '../../../assets/icons/resume-pie.png';
+import startIcon from '../../../assets/icons/start-flag.png';
 
 const BlueCard = styled.div`
   text-align: center;
@@ -25,20 +25,22 @@ const CardText = styled.h1`
 `
 
 const ActionCard = (props) => {
-    var text, icon, size=48;
+    var text, icon, width='48', height='48';
     if (props.type === 'resume'){
       text = 'Resume Activity';
-      icon = <AiTwotonePieChart size={size}/>;
+      icon = resumeIcon;
     } else if (props.type === 'start') {
       text = 'Start Activity';
-      icon = <FaFlagCheckered size={size}/>;
+      icon = startIcon;
+      height = '80';
+      width = '64';
     } else {
       // Invalid style property, you should not be here.
     }
 
     return (
-        <BlueCard>
-          <WhiteIcon>{icon}</WhiteIcon>
+        <BlueCard onClick={props.onClick}>
+          <WhiteIcon><img src={icon} alt="Icon" width={width} height={height}/></WhiteIcon>
           <CardText>{text}</CardText>
         </BlueCard>
     )
