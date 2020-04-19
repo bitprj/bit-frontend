@@ -2,16 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import greenIcon from '../../../assets/icons/green-exclamation.png';
 import orangeIcon from '../../../assets/icons/orange-exclamation.png';
+import Button from '../low/Button.js';
 
 const WhiteCard = styled.div`
   display: flex;
   text-align: left;
   background-color: white;
-  border-radius: 8px;
   margin: 1em 1em;
   padding: 0.25em 1em;
   max-width: 600px;
-  box-shadow: 5px 5px 5px grey;
+  background: #FFFFFF;
+  border: 3px solid rgba(210, 210, 210, 0.2);
+  box-sizing: border-box;
+  border-radius: 5px;
 `
 const LeftColumn = styled.div`
   flex: 33%;
@@ -34,24 +37,21 @@ const CardText = styled.p`
   padding: 0.25em 0em;
 
 `
-const Button = styled.button`
-  font-size: 1.25em;
-  color: white;
-  margin: 1em 0em;
-  padding: 0.5em 1em;
-  background-color: ${props => props.color};
-  border-radius: 8px;
-`
-const HelpCard = (props) => {
+
+const HelpCard = ({
+	type = 'issue',
+  onClick,
+	className
+  }) => {
     var title, description, btnText, btnColor, icon;
     var width='64', height='64';
-    if (props.type === 'issue'){
+    if (type === 'issue'){
       title = 'Raise an Issue';
       description = 'Is something unclear? Could be explained better? Raise an issue to improve the curriculum.';
       btnText = 'Raise an Issue';
       btnColor = 'rgba(86,171,104, 1.0)';
       icon = greenIcon;
-    } else if (props.type === 'feedback') {
+    } else if (type === 'feedback') {
       title = 'Feedback';
       description = 'Have feedback to provide? Send feedback to improve this product.';
       btnText = 'Provide Feedback';
@@ -71,7 +71,7 @@ const HelpCard = (props) => {
           <RightColumn>
             <h1>{title}</h1>
             <CardText>{description}</CardText>
-            <Button color={btnColor} onCLick={props.onClick}>{btnText}</Button>
+            <Button dark={btnColor} invert onClick={onClick}>{btnText}</Button>
           </RightColumn>
         </WhiteCard>
     )
