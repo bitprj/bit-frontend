@@ -10,6 +10,11 @@ import TwoPanel from '../../../shared/containers/TwoPanel'
 
 const Container = styled.div``
 
+const FloatingWrapper = styled.div`
+	position: sticky;
+	top: 0;
+`
+
 const ModulesContainer = styled.div`
 	padding: 2.5em 2em;
 
@@ -27,9 +32,11 @@ const Journey = ({ hasProgress, inprogressModules }) => {
 				firstCenterX
 				firstStyle={{ overflow: 'visible' }}
 				first={
-					<Floating
-						id={inprogressModules?.[inprogressModules.length - 1]?.id}
-					/>
+					<FloatingWrapper>
+						<Floating
+							id={inprogressModules?.[inprogressModules.length - 1]?.id}
+						/>
+					</FloatingWrapper>
 				}
 				second={
 					<ModulesContainer>
