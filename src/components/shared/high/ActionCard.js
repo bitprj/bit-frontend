@@ -25,12 +25,16 @@ const CardText = styled.h1`
   padding: 0.25em 1em;
 `
 
-const ActionCard = (props) => {
+const ActionCard = ({
+	type = 'issue',
+  onClick,
+	className
+  }) => {
     var text, icon, size='4em';
-    if (props.type === 'resume'){
+    if (type === 'resume'){
       text = 'Resume Activity';
       icon = resumeIcon;
-    } else if (props.type === 'start') {
+    } else if (type === 'start') {
       text = 'Start Activity';
       icon = startIcon;
     } else {
@@ -38,7 +42,7 @@ const ActionCard = (props) => {
     }
 
     return (
-        <BlueCard onClick={props.onClick}>
+        <BlueCard onClick={onClick}>
           <Icon center src={icon} height={size} width={size}></Icon>
           <CardText>{text}</CardText>
         </BlueCard>
