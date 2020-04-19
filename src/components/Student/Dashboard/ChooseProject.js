@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import AddIcon from '@material-ui/icons/Add'
 import NextIcon from '@material-ui/icons/NavigateNextRounded'
 
-import ProjectModal from './ProjectModal'
+import ProjectModal from '../Module/ProjectModal'
 import MuiIconFormatter from '../../shared/high/MuiIconFormatter'
 
 import withApiCache, { CACHE_ACTIVITY } from '../../HOC/WithApiCache'

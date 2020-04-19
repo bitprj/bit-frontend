@@ -15,6 +15,27 @@ import withApiCache, {
 	CACHE_ACTIVITY_PROGRESS
 } from '../../../HOC/WithApiCache'
 
+export const ProgressGroup = ({
+	children,
+
+	reverse,
+	spacing = '0.5em',
+
+	className,
+	...props
+}) => {
+	return (
+		<Stack
+			className={className || ''}
+			spacing={spacing}
+			direction={!reverse ? 'column' : 'column-reverse'}
+			{...props}
+		>
+			{children}
+		</Stack>
+	)
+}
+
 const IconSpacer = styled.div`
 	margin-right: 1em;
 `
@@ -48,27 +69,6 @@ const RenderedItem = styled(Interactive)`
 		z-index: 101; // to go over progressbar
 	}
 `
-
-export const ProgressGroup = ({
-	children,
-
-	reverse,
-	spacing = '0.5em',
-
-	className,
-	...props
-}) => {
-	return (
-		<Stack
-			className={className || ''}
-			spacing={spacing}
-			direction={!reverse ? 'column' : 'column-reverse'}
-			{...props}
-		>
-			{children}
-		</Stack>
-	)
-}
 
 export const Item = ({ className, title, icon, ...props }) => {
 	return (

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import ActivityModal from './ActivityModal'
 import ActivityList from './ActivityList'
-import ChooseProject from './ChooseProject'
+import ChooseProject from '../Dashboard/ChooseProject'
 
 import Hero from '../../shared/low/Hero'
 import GoBack from '../../shared/high/GoBack'

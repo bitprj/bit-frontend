@@ -6,23 +6,11 @@ import Floating from './Floating'
 import Progress, { TYPE_JOURNEY } from './Progress'
 
 import Scrollable from '../../../shared/containers/Scrollable'
+import TwoPanel from '../../../shared/containers/TwoPanel'
 
-const Container = styled.div`
-	padding: 3em;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+const Container = styled.div``
 
-	> *:first-child {
-		margin-right: 4em;
-	}
-`
-
-const ScrollableWrapper = styled.div`
-	position: relative;
-`
-
-const StyledScrollable = styled(Scrollable)`
+const ModulesContainer = styled.div`
 	padding: 2.5em 2em;
 
 	section:not(:last-of-type) {
@@ -34,11 +22,17 @@ const Journey = ({ hasProgress, inprogressModules }) => {
 	console.log(inprogressModules)
 	return (
 		hasProgress && (
-			<Container>
-				<Floating id={inprogressModules?.[inprogressModules.length - 1]?.id} />
-
-				<ScrollableWrapper>
-					<StyledScrollable height="24em">
+			<TwoPanel
+				ratio={0.55}
+				firstCenterX
+				firstStyle={{ overflow: 'visible' }}
+				first={
+					<Floating
+						id={inprogressModules?.[inprogressModules.length - 1]?.id}
+					/>
+				}
+				second={
+					<ModulesContainer>
 						{inprogressModules
 							?.slice()
 							.reverse()
@@ -52,9 +46,9 @@ const Journey = ({ hasProgress, inprogressModules }) => {
 									/>
 								)
 							})}
-					</StyledScrollable>
-				</ScrollableWrapper>
-			</Container>
+					</ModulesContainer>
+				}
+			/>
 		)
 	)
 }

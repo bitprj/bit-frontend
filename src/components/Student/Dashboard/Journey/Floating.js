@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Box, Flex, Stack, Heading, Text, Grid, Divider } from '@chakra-ui/core'
 
 import Avatar from 'react-avatar'
@@ -17,7 +18,23 @@ import withApiCache, {
 
 const defaultIcon = require('../../../../assets/icons/split-cards.svg')
 
-const Floating = ({ id, wac_data: [modu1e, moduleProgress], ...props }) => {
+const Container = styled.div`
+	padding: 3em;
+	padding-right: 0;
+	width: 30em;
+
+	position: sticky;
+	top: 0;
+	font-size: 80%;
+	background-color: #fff;
+`
+
+const Floating = ({
+	id,
+	wac_data: [modu1e, moduleProgress],
+	className,
+	...props
+}) => {
 	const { name, description, gemsNeeded, activities: activityIds } =
 		modu1e ?? {}
 	const { incompleteActivities, inprogressActivities, completedActivities } =
@@ -39,8 +56,8 @@ const Floating = ({ id, wac_data: [modu1e, moduleProgress], ...props }) => {
 	}
 
 	return (
-		<Box fontSize="70%" w="30em" bg="white" {...props}>
-			<Box pt="2.5em" pb="1.5em" px="3em">
+		<Container className={className} {...props}>
+			<Box p="2.5em 3em 1.5em">
 				<Box w="80%">
 					<HeadingArea name={name} />
 					<Description description={description} />
@@ -57,7 +74,7 @@ const Floating = ({ id, wac_data: [modu1e, moduleProgress], ...props }) => {
 
 				<Tags />
 			</Box>
-		</Box>
+		</Container>
 	)
 }
 
