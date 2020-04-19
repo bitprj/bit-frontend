@@ -29,8 +29,8 @@ Try to reuse components as much as possible. The shared components folder is und
 Documentation is a work in progress right now and much more will be created so that new contributors will have a more streamlined process in contributing to our project.
 
 
-[1]: (https://reactjs.org/docs/create-a-new-react-app.html)
-[2]: (https://reactjs.org/docs/hooks-intro.html)
-[3]: (https://redux.js.org/)
-[4]: (https://styled-components.com/)
-[5]: (https://www.figma.com/file/pyXHrfSlr2xx3xunNXjcpx/New-UI)
+[1]: https://reactjs.org/docs/create-a-new-react-app.html
+[2]: https://reactjs.org/docs/hooks-intro.html
+[3]: https://redux.js.org/
+[4]: https://styled-components.com/
+[5]: https://www.figma.com/file/pyXHrfSlr2xx3xunNXjcpx/New-UI
