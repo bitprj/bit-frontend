@@ -14,7 +14,9 @@ In order to create responsive styling in our application, we use `ems` and `perc
 ## Structure
 
 **Imports**: should be at the top of the file
+
 **styled-components**: declarations should come next, generally placed in the order that they are used.
+
 **Components**:
 - all styled-components declarations should be outside the component, before the component's declaration.
 - all props for the component should be destructured inline in the component parameters. This is to create a visible interface for each components.
