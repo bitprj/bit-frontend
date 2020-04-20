@@ -87,9 +87,10 @@ const Progress = ({
 	const getChosenProjectsWithProgress = () => {
 		const projectIdsWithProgress = getProjectIdsWithProgress()
 		return chosenProjectIds?.map(chosen => {
-			for (const project of projectIdsWithProgress) {
-				if (chosen.id === project.id) return project
-			}
+			if (projectIdsWithProgress)
+				for (const project of projectIdsWithProgress) {
+					if (chosen.id === project.id) return project
+				}
 		})
 	}
 

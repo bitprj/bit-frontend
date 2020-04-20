@@ -11,6 +11,7 @@ const initialState = {
 	[cacheTypes.CACHE_CONCEPT]: {},
 	[cacheTypes.CACHE_HINT]: {},
 
+	[cacheTypes.CACHE_USER]: {},
 	[cacheTypes.CACHE_STUDENT]: {},
 	[cacheTypes.CACHE_MODULE_PROGRESS]: {},
 	[cacheTypes.CACHE_ACTIVITY_PROGRESS]: {},

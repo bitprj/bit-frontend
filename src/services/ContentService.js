@@ -11,6 +11,9 @@ export const autoFetch = async (id, cacheType) => {
 	/**
 	 * TEMP SPECIAL
 	 */
+	if (type === 'users') {
+		return backend.get(`/users/${id}`)
+	}
 	if (type === 'students') {
 		return backend.get(`/students/${id}`)
 	}
@@ -23,11 +26,11 @@ export const autoFetch = async (id, cacheType) => {
 			return data
 		} catch (e) {
 			console.log(
-				'[Content Service] Error fetching from CDN. Moving to servers...'
+				'[ContentService] Error fetching from CDN. Moving to servers...'
 			)
 			if (e.response?.status === 404)
 				console.log(
-					'[Content Service] The above error was due to missing content'
+					'[ContentService] The above error was due to missing content'
 				)
 		}
 	}

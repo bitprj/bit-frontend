@@ -5,16 +5,19 @@ import ProfPic from '../../shared/low/ProfPic'
 
 import withApiCache, {
 	CACHE_ACTIVITY,
-	CACHE_STUDENT
+	CACHE_USER
 } from '../../HOC/WithApiCache'
 
 const Activity = withApiCache([CACHE_ACTIVITY])(({ wac_data: [activity] }) => (
 	<h3 style={{ margin: 0, marginBottom: '0.5em' }}>{activity?.name}</h3>
 ))
 
-const Student = withApiCache([CACHE_STUDENT])(({ wac_data: [student] }) => (
+const Student = withApiCache([CACHE_USER])(({ wac_data: [user] }) => (
 	<div>
-		<ProfPic name={student?.name} src={student?.image} />
+		<ProfPic
+			name={user?.name === 'None' ? user?.githubUsername : user?.name}
+			src={user?.image}
+		/>
 		{/* <Stack isInline spacing={3} align="center" flex={1}>
 			<span>{activity?.time}</span>
 		</Stack> */}
@@ -36,11 +39,11 @@ const Container = styled.div`
 	}
 `
 
-const NavItem = ({ className, activityId, studentId }) => {
+const NavItem = ({ className, activityId, userId, studentId }) => {
 	return (
 		<Container className={className}>
 			<Activity id={activityId} />
-			<Student id={studentId} />
+			<Student id={userId} />
 		</Container>
 	)
 }

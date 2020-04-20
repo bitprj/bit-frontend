@@ -3,9 +3,13 @@ import { fetchUserData } from '../../services/AccountService'
 
 export const initUserData = userId => async dispatch => {
 	const userData = await fetchUserData(userId)
+
+	const validatedName =
+		userData.name === 'None' ? userData.githubUsername : userData.name
+
 	dispatch({
 		type: SET_USER_DATA,
-		userData
+		userData: { ...userData, name: validatedName }
 	})
 }
 

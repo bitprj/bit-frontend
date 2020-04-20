@@ -32,7 +32,7 @@ const SidebarNav = ({
 				<NavItem
 					className={currentSubmissionIndex === index ? `active` : ''}
 					activityId={submission.activity.id}
-					studentId={submission.studentId}
+					userId={submission.userId}
 				/>
 			)}
 		</StyledActiveList>

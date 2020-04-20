@@ -21,7 +21,7 @@ const AssignmentName = styled(ClampedDiv)`
 	width: 12em;
 `
 
-const DetailsHeader = ({ isReady, activity, student, feedbacksArray }) => {
+const DetailsHeader = ({ isReady, activity, user, feedbacksArray }) => {
 	const isAllowedToSubmit = feedbacksArray?.every(
 		feedback => feedback?.isPassed !== undefined && feedback?.comment
 	)
@@ -49,7 +49,10 @@ const DetailsHeader = ({ isReady, activity, student, feedbacksArray }) => {
 					</GradeStatus>
 				</div>
 				<AssignmentName>{activity?.name}</AssignmentName>
-				<ProfPic name={student?.name} src={student?.image} />
+				<ProfPic
+					name={user?.name === 'None' ? user?.githubUsername : user?.name}
+					src={user?.image}
+				/>
 			</Container>
 		)
 	)
@@ -57,7 +60,7 @@ const DetailsHeader = ({ isReady, activity, student, feedbacksArray }) => {
 
 const mapStateToProps = state => {
 	const {
-		cache: { cachedActivities, cachedStudents },
+		cache: { cachedActivities, cachedUsers },
 		teacherData: {
 			submissions,
 			indicators: { currentSubmissionIndex },
@@ -65,7 +68,7 @@ const mapStateToProps = state => {
 		}
 	} = state
 
-	const { studentId, student, activity, checkpoints } =
+	const { userId, user, studentId, student, activity, checkpoints } =
 		submissions?.[currentSubmissionIndex] ?? {}
 
 	const feedbacksArray = checkpoints?.map(checkpoint => {
@@ -76,7 +79,7 @@ const mapStateToProps = state => {
 	return {
 		isReady: !!submissions.length,
 		activity: cachedActivities[activity?.id],
-		student: cachedStudents[studentId ?? student?.id],
+		user: cachedUsers[userId ?? user?.id],
 		feedbacksArray
 	}
 }
