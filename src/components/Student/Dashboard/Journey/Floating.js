@@ -19,8 +19,7 @@ import withApiCache, {
 const defaultIcon = require('../../../../assets/icons/split-cards.svg')
 
 const Container = styled.div`
-	margin: 3em;
-	margin-right: 0;
+  margin-left: 3em;
 	width: 30em;
 
 	font-size: 75%;

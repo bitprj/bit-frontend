@@ -13,6 +13,9 @@ const Container = styled.div``
 const FloatingWrapper = styled.div`
 	position: sticky;
 	top: 0;
+	height: 100vh;
+	display: flex;
+	align-items: center;
 `
 
 const ModulesContainer = styled.div`
