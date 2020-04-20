@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import exclamation from '../../../assets/icons/exclamation.svg';
 import Button from '../low/Button.js';
-import Icon from '../low/Icon.js';
+
+import ExclamationIcon from '../../../assets/icons/exclamation'
 
 const WhiteCard = styled.div`
   display: flex;
@@ -30,11 +30,12 @@ const CardText = styled.p`
   color: black;
   margin: 1em 0em;
   padding: 0.25em 0em;
-
 `
-const StyledIcon = styled(Icon)`
-  color: ${props => props.color};
+const IconWrapper = styled.div`
   margin: 2em auto;
+	width: 4em;
+	height: 4em;
+	color: ${props => props.color};
 `
 
 const HelpCard = ({
@@ -60,7 +61,9 @@ const HelpCard = ({
     return (
         <WhiteCard>
           <LeftColumn>
-            <StyledIcon center color={color} src={exclamation} height='3em' width='3em' />
+            <IconWrapper color={color}>
+              <ExclamationIcon />
+            </IconWrapper>
           </LeftColumn>
           <RightColumn>
             <h1>{title}</h1>
