@@ -10,6 +10,7 @@ import Learn from './components/Learn/Learn'
 import Explore from './components/Explore/Explore'
 import Module from './components/Student/Module/Module'
 import Activity from './components/Student/Activity/Activity'
+import World from './components/Student/World/World'
 
 import NotFound from './components/Error/404NotFound'
 
@@ -30,6 +31,7 @@ const App = () => {
 					<Route path="/explore/" component={Explore} />
 					<Route path="/modules/:id/" component={Module} />
 					<Route path="/activities/:id/" component={Activity} />
+					<Route path="/worlds/:id/" component={World} />
 					<Route path="/dashboard/" component={Student} />
 					<Route path="/learn/" component={Learn} />
 					<Route path="/grade/" component={Teacher} />
