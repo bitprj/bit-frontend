@@ -187,6 +187,9 @@ export const GlobalStyle = createGlobalStyle`
   .hover-raise:hover {
     box-shadow: 0px 0.75em 1.5em rgba(38, 38, 38, 0.125);
   }
+  .border-light {
+    border: 0.25em solid #d2d2d233;
+  }
 
   /**
    * Externals

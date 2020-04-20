@@ -23,7 +23,7 @@ const Container = styled.div`
 	margin-right: 0;
 	width: 30em;
 
-	font-size: 80%;
+	font-size: 75%;
 	background-color: #fff;
 `
 
@@ -54,7 +54,7 @@ const Floating = ({
 	}
 
 	return (
-		<Container className={className} {...props}>
+		<Container className={`border-light ${className || ''}`} {...props}>
 			<Box p="2.5em 3em 1.5em">
 				<Box w="80%">
 					<HeadingArea name={name} />

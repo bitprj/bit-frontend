@@ -28,7 +28,7 @@ const Journey = ({ hasProgress, inprogressModules }) => {
 	return (
 		hasProgress && (
 			<TwoPanel
-				ratio={0.55}
+				ratio={0.525}
 				firstCenterX
 				firstStyle={{ overflow: 'visible' }}
 				first={

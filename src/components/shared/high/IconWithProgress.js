@@ -25,6 +25,8 @@ const FullAbsolute = styled.div`
 `
 
 const Icon = styled.img`
+	width: 100%;
+	height: 100%;
 	padding: calc(${props => props.size} / 5);
 `
 
@@ -47,8 +49,8 @@ const IconWithProgress = ({
 					midValue={midValue}
 					value={value}
 				/>
-				<Icon src={iconUrl} size={size} />
 			</FullAbsolute>
+			<Icon src={iconUrl} size={size} />
 		</Container>
 	)
 }
