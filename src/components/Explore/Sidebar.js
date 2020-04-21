@@ -5,6 +5,9 @@ const Container = styled.div`
   padding: 2em 3em;
   padding-right: 0;
   width: 18em;
+  @media screen and (min-width: 0px) and (max-width: 500px) {
+    display: none;
+  }
 `;
 
 const MenuItem = styled.div`

@@ -1,38 +1,50 @@
 import React from "react";
 import styled from "styled-components";
+import { Box, Badge, Image, Flex, Avatar, Text, Stack} from "@chakra-ui/core";
 
-const Featured = styled.div`
-  padding: 4em 2.5em;
-  padding-right: 16em;
-  height: 20em;
-  width: 40em;
-  position: relative;
-  cursor: pointer;
-
-  border-radius: 0.8em;
-  background: ${props => props.theme.accentVariant} url(${props => props.url});
-  ${props => (props.bgColor ? `background-color: ${props.bgColor}` : "")};
-  background-size: 100% auto;
-  background-position: bottom right;
-`;
-
-const Category = styled.div`
-  position: absolute;
-  bottom: 2em;
-  left: 2.5em;
-  font-weight: bold;
-`;
+  const property = {
+    imageUrl: "https://res.cloudinary.com/practicaldev/image/fetch/s--b2wKHeXZ--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://raw.githubusercontent.com/app-generator/static/master/products/flask-dashboard-black-screen.png",
+    imageAlt: "Rear view of modern home with pool",
+    beds: 3,
+    baths: 2,
+    title: "Conditional rendering in React - using the && operator",
+    formattedPrice: "$1,900.00",
+    reviewCount: 34,
+    rating: 4,
+  };
 
 const FeaturedDisplay = props => {
   return (
-    <Featured
-      className="hover-raise transition-medium"
-      url={props.imgURL}
-      bgColor={props.bgColor}
-    >
-      <h1 style={{ margin: 0 }}>{props.name}</h1>
-      <Category>{props.category}</Category>
-    </Featured>
+      <Box maxW="100%" borderWidth="1px" mt="40px" overflow="hidden" bg="white" className="hover-raise transition-medium">
+      <Image src={property.imageUrl} alt={property.imageAlt} />
+
+      <Box p="6">
+        <Box
+          mt="1"
+          fontWeight="semibold"
+          as="h2"
+          lineHeight="tight"
+        >
+          {property.title}
+        </Box>
+        <Box
+          mt="1"
+          fontWeight="normal"
+          as="p"
+          lineHeight="tight"
+        >
+          {property.title}
+        </Box>
+        <Stack isInline mt="40px">
+        <Avatar name="Dan Abrahmov" size="xs" src="https://bit.ly/dan-abramov" />
+        <Avatar name="Kola Tioluwani" size="xs" src="https://bit.ly/tioluwani-kolawole" />
+        <Avatar name="Kent Dodds" size="xs" src="https://bit.ly/kent-c-dodds" />
+        </Stack>
+
+      </Box>
+    </Box>
+
+    
   );
 };
 
