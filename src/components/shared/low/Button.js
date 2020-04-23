@@ -16,9 +16,11 @@ const RenderedButton = styled.button.attrs(props => {
 })`
   display: inline-block;
   position: relative;
-  margin: ${props => (props.fullWidth ? '' : '0.5em')};
-  padding: 0.75em 1.5em;
+  margin: ${props => props.fullWidth ? '' : '0.5em'};
+  padding: ${props => props.smallFont ? '0.3em 1.5em' : ' 0.75em 1.5em'}; // avoid button height being too heigh when font size is small
 
+  ${props => (props.width ? 'width: ' + props.width: '')}
+  ${props => (props.height ? 'height: ' +  props.height: '')}
   ${props => (props.fullWidth ? 'width: 100%;' : '')}
   ${props =>
 		props.rounder ? 'border-radius: 0.5em;' : 'border-radius: 0.25em;'}
@@ -45,7 +47,7 @@ const RenderedButton = styled.button.attrs(props => {
   outline: none;
   white-space: nowrap;
   transition: 0.2s ease all;
-  font-size: inherit;
+  font-size: ${props => (props.fontSize ? props.fontSize : 'inherit')};
   user-select: none;
 
   ${props => (props.disabled ? 'pointer-events: none;' : '')}
