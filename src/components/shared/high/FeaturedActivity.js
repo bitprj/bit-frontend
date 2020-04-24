@@ -91,7 +91,7 @@ const FeaturedActivity = ({
                 <CardTtile>{titleText}</CardTtile>
                 <InlineDiv>
                     <AvatarWrappr>
-                        <AvatarGroup size="1.5em">
+                        <AvatarGroup size="1.5em" names={owners} showNames={true}>
                             {owners.map(owner => <Avatar key={owner} name={owner} />)}
                         </AvatarGroup>
                     </AvatarWrappr>

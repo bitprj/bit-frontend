@@ -8,6 +8,13 @@ const StyleProvider = styled.div`
 		border: 0.12em solid ${props => props.borderColor};
 	}
 `
+const Names = styled.p`
+	font-family: Open Sans;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 10px;
+	line-height: 14px;
+`
 
 const AvatarGroup = ({
 	size = '1.6em',
@@ -16,6 +23,8 @@ const AvatarGroup = ({
 	spacing = '-0.8em',
 	children,
 	textSizeRatio = 2.5,
+	names = [],
+	showNames = true,
 	...props
 }) => {
 	const clones = children?.map((a, i) => {
@@ -38,6 +47,7 @@ const AvatarGroup = ({
 			<Stack isInline {...props}>
 				{clones}
 			</Stack>
+			{showNames && <Names>{names}</Names>}
 		</StyleProvider>
 	)
 }
