@@ -47,7 +47,7 @@ const CardDescription = styled.p`
     margin-top: 2em;
 `
 const InlineDiv = styled.div`
-    margin: 0 auto;
+    margin: 1em auto;
     display: flex;
 `
 const CommitText = styled.p`
@@ -91,7 +91,7 @@ const FeaturedActivity = ({
                 <CardTtile>{titleText}</CardTtile>
                 <InlineDiv>
                     <AvatarWrappr>
-                        <AvatarGroup size="1.5em" names={owners} showNames={true}>
+                        <AvatarGroup size="1.1em" spacing='-0.5em' names={owners} showNames={true}>
                             {owners.map(owner => <Avatar key={owner} name={owner} />)}
                         </AvatarGroup>
                     </AvatarWrappr>
