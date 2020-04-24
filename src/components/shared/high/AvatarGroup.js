@@ -13,8 +13,8 @@ const Names = styled.p`
 	font-family: Open Sans;
 	font-style: normal;
 	font-weight: 600;
-	font-size: 10px;
-	line-height: 14px;
+	font-size: 0.37em;
+	line-height: 1.4em;
 	color: #6D6D6D;
 	margin-left: 0.2em;
 `
@@ -27,7 +27,7 @@ const AvatarGroup = ({
 	children,
 	textSizeRatio = 2.5,
 	names = [],
-	showNames = true,
+	showNames = false,
 	...props
 }) => {
 	const clones = children?.map((a, i) => {
