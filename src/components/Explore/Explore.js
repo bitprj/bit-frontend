@@ -3,6 +3,8 @@ import styled from 'styled-components'
 
 import Sidebar from './Sidebar'
 import Content from './Content'
+import RightSidebar from './RightSidebar'
+
 
 import { sizes } from '../../styles/media'
 
@@ -65,6 +67,11 @@ const Explore = () => {
 				setActiveName={setActiveName}
 			/>
 			<Content views={views} activeName={activeName} />
+			<RightSidebar
+				views={views}
+				activeName={activeName}
+				setActiveName={setActiveName}
+			/>
 		</Container>
 	)
 }
