@@ -36,7 +36,7 @@ const Contributor = styled.div`
 `
 
 const ContributorCount = styled.p`
-    margin-left: 1em;
+    margin-left: 0.6em;
     font-family: Open Sans;
     font-style: normal;
     font-weight: bold;
@@ -52,23 +52,21 @@ const ButtonConfig = {
 
 const ModuleSummary = ({
     title,
-    color,
     imageUrl,
-    count,
+    peoples,
+    avatarGroupWidth, //unit: em
     ...props
 }) => {
+    const spacing = 1.5 - avatarGroupWidth / peoples.length // make avatars distribute evenly within avatarGroupWidth
     return (
         <Card {...props}>
             <Img src={imageUrl} />
             <Title>{title}</Title>
             <Contributor>
-                <AvatarGroup size="1.5em">
-                    <Avatar name="Steven Long" />
-                    <Avatar name="Henry Chen" />
-                    <Avatar name="Kevin Vuong" />
-                    <Avatar name="Beaver Bong" />
+                <AvatarGroup size="1.5em" spacing={-spacing + 'em'} names={peoples} showNames={false}>
+                    {peoples.map(person => <Avatar key={person} name={person} />)}
                 </AvatarGroup>
-                <ContributorCount>{count} Contributors</ContributorCount>
+                <ContributorCount>{peoples.length} Contributors</ContributorCount>
             </Contributor>
             <Button invert {...ButtonConfig}>Explore Module</Button>
         </Card>
