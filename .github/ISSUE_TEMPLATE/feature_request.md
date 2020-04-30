@@ -15,3 +15,5 @@ A clear and concise description of what you want to happen.
 
 **Figma Design**
 Visualization of what needs to get created
+
+**Component Details**
