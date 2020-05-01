@@ -78,18 +78,18 @@ const TextBlock = styled.div`
 	padding-left: 2em;
 	width: 38em;
 `
-const Div1 = styled.div`
+const ImgTitleWrapper = styled.div`
 	display: flex;
 	align-items: top;
 `
 
-const Div2 = styled.div`
+const FootNoteWrapper = styled.div`
 	display:flex;
 	justify-content:space-between;
 	align-items: center;
 `
 
-const Wrapper = styled.div`
+const FieldsWrapper = styled.div`
 	width: 100%;
 	height: 100%;
 `
@@ -110,22 +110,20 @@ const handleClick = () =>{
 const PageHeader = props => {
 	return (
 		<PageHeaderContainer>
-			<Wrapper>
-				<Div1>
+			<FieldsWrapper>
+				<ImgTitleWrapper>
 					<ImgField {...props}/>
 					<TitleField {...props}/>
-				</Div1>
-				{
-					props.pageView !== 'Explore' ? <FootNoteField {...props}/> : null
-				}
-			</Wrapper>
+				</ImgTitleWrapper>
+				{props.pageView !== 'Explore' ? <FootNoteField {...props}/> : null}
+			</FieldsWrapper>
 		</PageHeaderContainer>
 	)
 };
 
 const FootNoteField = props =>{
 	return(
-		<Div2>
+		<FootNoteWrapper>
 			<AvatarGroup size="1.5em">
 				{props.authors ? props.authors.map((item) =>(<Avatar key = {item} name = {item}/>)) : null}
 			</AvatarGroup>
@@ -141,7 +139,7 @@ const FootNoteField = props =>{
 				dark = "black">
 				<b>{props.buttonTxt}</b>
 			</Button>
-		</Div2>
+		</FootNoteWrapper>
 	);
 }
 
