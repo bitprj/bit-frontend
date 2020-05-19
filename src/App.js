@@ -10,6 +10,7 @@ import Learn from './components/Learn/Learn'
 import Explore from './components/Explore/Explore'
 import Module from './components/Student/Module/Module'
 import Activity from './components/Student/Activity/Activity'
+import Article from './components/Article'
 import World from './components/Student/World/World'
 
 import NotFound from './components/Error/404NotFound'
@@ -36,6 +37,8 @@ const App = () => {
 					<Route path="/learn/" component={Learn} />
 					<Route path="/grade/" component={Teacher} />
 					<Route component={NotFound} />
+					<Route path="/articles/:id" component={Article} /> 
+					<Route component={NotFound} />				
 				</Switch>
 			</WithGlobalHOC>
 		</BrowserRouter>
