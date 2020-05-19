@@ -5,6 +5,10 @@ import ActivityModal from './ActivityModal'
 import ActivityList from './ActivityList'
 import ChooseProject from '../Dashboard/ChooseProject'
 
+import PageHeader from '../../shared/high/PageHeader'
+import {PartyIcon} from '../../../assets/icons/PageHeaderAssets'
+import {fetchModuleData, fetchModuleProgress} from '../../../services/ExploreService'
+
 import Hero from '../../shared/low/Hero'
 import GoBack from '../../shared/high/GoBack'
 import ProgressCircle from '../../shared/low/ProgressCircle'
@@ -147,8 +151,58 @@ const Module = ({ id, wac_data: [modu1e, moduleProgress] }) => {
 		return progress * 100
 	}
 
+	// MM May 11, 2020
+	const [moduleName, setModuleName] = React.useState(null);
+	const [moduleDescription, setModuleDescription] = React.useState(null);
+	const [numActivities, setNumActivities] = React.useState(null);
+	const [numCompletedActivities, setNumCompletedActivities] = React.useState(null);
+
+	React.useEffect(() => {
+		fetchModuleData(id)
+			.then(data => {
+				console.log(data)
+				const name = data.name;
+				const description = data.description;
+				const activities = data.activities
+				const number = activities.length.toString();
+				setModuleName(name);
+				setModuleDescription(description);
+				setNumActivities(number)
+			})
+			.catch(e => {
+				console.log(e);
+				setModuleName('Beginner Javascript');
+				setModuleDescription('Once relegated to the browser as one of the 3 core technologies of the web, JavaScript can now be found almost anywhere you find code.');
+				setNumActivities('5')
+			});
+
+		fetchModuleProgress(id)
+			.then(data => {
+			console.log(data)
+			const completedActivities = data.completedActivities;
+			const number = completedActivities.length.toString();
+			setNumCompletedActivities(number);
+		})
+			.catch(e => {
+				console.log(e)
+				setNumCompletedActivities('1');
+			})
+	},[])
+// MM May 11, 2020
 	return (
 		<>
+			<PageHeader pageView = 'Module'
+									titleText = {moduleName}
+									bodyText = {moduleDescription}
+									currSkill = {numCompletedActivities}
+									maxSkill = {numActivities}
+									trackName = {moduleName}
+									emoji = {<PartyIcon/>}
+									buttonTxt = 'Start'
+									lastCommitTime = "May 1st, 2020"
+									authors = {["Daniel Smith", "David Johnson", "Patricia Williams" , "Patrick Brown"]}
+			/>
+
 			<Background />
 			<StyledHero
 				above={modu1e && <GoBack hardcodedUrl={'/dashboard/'} />}
@@ -164,7 +218,7 @@ const Module = ({ id, wac_data: [modu1e, moduleProgress] }) => {
 								size={'4em'}
 								midValue={
 									calculateProgressPercent('inprogress') +
-										calculateProgressPercent('completed') || 0
+									calculateProgressPercent('completed') || 0
 								}
 								value={calculateProgressPercent('completed') || 0}
 							/>
