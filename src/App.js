@@ -36,7 +36,6 @@ const App = () => {
 					<Route path="/dashboard/" component={Student} />
 					<Route path="/learn/" component={Learn} />
 					<Route path="/grade/" component={Teacher} />
-					<Route component={NotFound} />
 					<Route path="/articles/:id" component={Article} /> 
 					<Route component={NotFound} />				
 				</Switch>
